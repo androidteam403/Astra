@@ -1,4 +1,4 @@
-package com.example.astra.ui.adapter;
+package com.thresholdsoft.astra.ui.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,8 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.astra.R;
-import com.example.astra.databinding.PicklistLayoutAdapterBinding;
+
+import com.thresholdsoft.astra.R;
+import com.thresholdsoft.astra.databinding.PicklistLayoutAdapterBinding;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class PickListAdapter extends  RecyclerView.Adapter<PickListAdapter.ViewH
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        PicklistLayoutAdapterBinding  picklistLayoutAdapterBinding=DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.picklist_layout_adapter, parent, false);
+        PicklistLayoutAdapterBinding picklistLayoutAdapterBinding=DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.picklist_layout_adapter, parent, false);
         return new PickListAdapter.ViewHolder(picklistLayoutAdapterBinding);    }
 
     @Override

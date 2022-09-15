@@ -1,4 +1,4 @@
-package com.example.astra.ui.adapter;
+package com.thresholdsoft.astra.ui.adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -8,8 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.astra.R;
-import com.example.astra.databinding.DashboardAdapterBinding;
+
+import com.thresholdsoft.astra.R;
+import com.thresholdsoft.astra.databinding.DashboardAdapterBinding;
 
 import java.util.ArrayList;
 
@@ -33,7 +34,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ReportAdapter.ViewHolder holder, int position) {
         String pickListItems = pickList.get(position);
         if (position % 2==0){
-            holder.itemView.setBackgroundResource(R.color.silver);
+            holder.itemView.setBackgroundResource(R.color.pure_silver);
         }else {
             holder.itemView.setBackgroundResource(R.color.white);
 

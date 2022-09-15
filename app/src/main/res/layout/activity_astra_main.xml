@@ -941,6 +941,19 @@
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="6dp"
+                android:layout_height="86dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="212dp"
+                android:paddingStart="28dp"
+                android:paddingTop="26dp"
+                android:id="@+id/yellow_line"
+                android:visibility="gone"
+
+                android:background="@color/lite_yellow"
+                android:textSize="11sp" />
+
         </RelativeLayout>
     </RelativeLayout>
 </layout>

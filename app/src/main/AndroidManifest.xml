@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.astra">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.thresholdsoft.astra">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -11,14 +12,22 @@
         android:roundIcon="@mipmap/ic_launcher_round_apollo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Astra">
-        <activity android:name=".ui.main.AstraMainActivity"
+        <activity android:name="com.thresholdsoft.astra.ui.main.AstraMainActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
+            tools:ignore="MissingClass">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name="com.thresholdsoft.astra.ui.home.Home"
+            android:screenOrientation="landscape"
+           >
+
+
         </activity>
     </application>
 

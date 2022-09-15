@@ -1,4 +1,4 @@
-package com.example.astra.ui.main;
+package com.thresholdsoft.astra.ui.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -14,12 +14,12 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.astra.R;
-import com.example.astra.base.BaseActivity;
-import com.example.astra.databinding.ActivityAstraMainBinding;
-import com.example.astra.ui.adapter.ItemListAdapter;
-import com.example.astra.ui.adapter.PickListAdapter;
-import com.example.astra.ui.home.Home;
+import com.thresholdsoft.astra.R;
+import com.thresholdsoft.astra.base.BaseActivity;
+import com.thresholdsoft.astra.databinding.ActivityAstraMainBinding;
+import com.thresholdsoft.astra.ui.adapter.ItemListAdapter;
+import com.thresholdsoft.astra.ui.adapter.PickListAdapter;
+import com.thresholdsoft.astra.ui.home.Home;
 
 import java.util.ArrayList;
 
@@ -39,8 +39,8 @@ public class AstraMainActivity extends BaseActivity {
         activityAstraMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_astra_main);
 
         RelativeLayout pickListLayout = findViewById(R.id.myProfileLayout);
-        RelativeLayout dashboardLayout = findViewById(R.id.dashboard_layout);
-        TextView picklist = findViewById(R.id.picklist);
+        RelativeLayout dashboardLayout = findViewById(R.id.dashboard);
+        TextView picklist = findViewById(R.id.picklist_text);
         pickListAdapter = new PickListAdapter(this, pickList);
         RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         activityAstraMainBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
@@ -51,8 +51,8 @@ public class AstraMainActivity extends BaseActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         activityAstraMainBinding.listitemRecycleview.setLayoutManager(layoutManager);
         activityAstraMainBinding.listitemRecycleview.setAdapter(itemListAdapter);
-        pickListLayout.setBackgroundResource(R.color.dark_yellow);
-        activityAstraMainBinding.yellowline.setVisibility(View.VISIBLE);
+        pickListLayout.setBackgroundResource(R.color.lite_yellow);
+        activityAstraMainBinding.yellowLine.setVisibility(View.VISIBLE);
         picklist.setTextColor(R.color.black);
         dashboardLayout.setOnClickListener(new View.OnClickListener() {
             @Override

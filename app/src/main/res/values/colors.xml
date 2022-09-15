@@ -10,7 +10,11 @@
     <color name="imagebackgroundcolor">#125F6F</color>
     <color name="navy">#8FC3D0</color>
     <color name="silver">#AAA9AD</color>
+    <color name="pure_silver">#f5f5f5</color>
+    <color name="edit_view_green">#24cacb</color>
+
     <color name="material_amber_accent_700">#FFAB00</color>
+    <color name="lite_yellow">#feb711</color>
 
 
         <color name="colorPrimary">#027d9e</color>

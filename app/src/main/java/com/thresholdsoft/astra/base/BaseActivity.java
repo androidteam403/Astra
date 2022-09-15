@@ -1,4 +1,4 @@
-package com.example.astra.base;
+package com.thresholdsoft.astra.base;
 
 
 import androidx.appcompat.app.AppCompatActivity;
