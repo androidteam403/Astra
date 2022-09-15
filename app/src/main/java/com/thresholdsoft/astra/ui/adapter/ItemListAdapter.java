@@ -1,4 +1,4 @@
-package com.example.astra.ui.adapter;
+package com.thresholdsoft.astra.ui.adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -8,9 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.astra.R;
-import com.example.astra.databinding.ItemlistAdapterlayoutBinding;
-import com.example.astra.databinding.PicklistLayoutAdapterBinding;
+import com.thresholdsoft.astra.R;
+import com.thresholdsoft.astra.databinding.ItemlistAdapterlayoutBinding;
 
 import java.util.ArrayList;
 
@@ -27,7 +26,7 @@ public class ItemListAdapter  extends RecyclerView.Adapter<ItemListAdapter.ViewH
     @NonNull
     @Override
     public ItemListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemlistAdapterlayoutBinding  itemlistAdapterlayoutBinding=DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.itemlist_adapterlayout, parent, false);
+        ItemlistAdapterlayoutBinding itemlistAdapterlayoutBinding=DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.itemlist_adapterlayout, parent, false);
         return new ItemListAdapter.ViewHolder(itemlistAdapterlayoutBinding);      }
 
     @Override
