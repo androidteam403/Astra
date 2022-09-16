@@ -129,6 +129,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/picklist_history_layout"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:layout_marginStart="1dp"
@@ -176,7 +177,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/cartlayout"
+            android:id="@+id/requesthistory_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

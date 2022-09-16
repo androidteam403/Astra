@@ -1,4 +1,4 @@
-package com.example.astra.network;
+package com.thresholdsoft.astra.network;
 
 
 import com.thresholdsoft.astra.BuildConfig;

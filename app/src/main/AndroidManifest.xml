@@ -12,24 +12,33 @@
         android:roundIcon="@mipmap/ic_launcher_round_apollo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Astra">
-        <activity
-            android:name=".UserLoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.login.LoginActivity"
-            android:exported="false" />
+
         <activity
             android:name="com.thresholdsoft.astra.ui.main.AstraMainActivity"
             android:exported="true"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
             tools:ignore="MissingClass">
+
+        </activity>
+
+        <activity
+            android:name=".ui.login.userlogin.UserLoginActivity"
+            android:exported="false"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:screenOrientation="landscape"
+
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.thresholdsoft.astra.ui.home.Home"
             android:screenOrientation="landscape" />

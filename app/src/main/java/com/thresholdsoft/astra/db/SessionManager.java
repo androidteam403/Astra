@@ -1,4 +1,4 @@
-package com.example.astra.db;
+package com.thresholdsoft.astra.db;
 
 
 import android.content.Context;

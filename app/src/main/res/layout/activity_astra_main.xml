@@ -953,7 +953,7 @@
                 android:layout_width="10dp"
                 android:layout_height="86dp"
                 android:layout_marginStart="88dp"
-                android:layout_marginTop="197dp"
+                android:layout_marginTop="212dp"
                 android:paddingStart="28dp"
                 android:paddingTop="26dp"
                 android:id="@+id/yellow_line"
