@@ -13,7 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Astra">
         <activity
-            android:name=".UserLoginActivity"
+            android:name=".RequestHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.picklisthistory.PickListHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.login.userlogin.UserLoginActivity"
             android:exported="false" />
         <activity
             android:name=".ui.login.LoginActivity"
