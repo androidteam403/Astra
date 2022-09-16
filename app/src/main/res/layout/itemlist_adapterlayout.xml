@@ -47,12 +47,11 @@
                             android:layout_height="wrap_content"
                             android:text="Product Name "
                             android:textSize="12sp" />
-                        <!--<ImageView-->
-                        <!--    android:layout_width="25dp"-->
-                        <!--    android:layout_height="25dp"-->
-                        <!--    android:src="@drawable/open"-->
-                        <!--    android:background="@color/green"-->
-                        <!--    android:layout_marginStart="260dp"/>-->
+                        <ImageView
+                            android:layout_width="18sp"
+                            android:layout_height="18sp"
+                            android:src="@drawable/edit_view"
+                            android:layout_marginStart="170dp"/>
 
                     </LinearLayout>
                     <TextView

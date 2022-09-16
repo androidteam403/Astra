@@ -1,230 +1,231 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/imagebackgroundcolor">
 
-    <ImageView
-        android:id="@+id/apollo_logo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:contentDescription="@string/app_name"
-        android:padding="5dp"
-        android:src="@drawable/apollo_circle_logo" />
-
-    <LinearLayout
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/apollo_logo"
-        android:orientation="vertical">
+        android:background="@color/imagebackgroundcolor">
 
+        <ImageView
+            android:id="@+id/apollo_logo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="@string/app_name"
+            android:padding="5dp"
+            android:src="@drawable/apollo_circle_logo" />
 
-        <RelativeLayout
-            android:id="@+id/dashboard"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="1dp"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/apollo_logo"
+            android:orientation="vertical">
 
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="1dp"
-            android:gravity="center"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/dashboard"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="1dp"
 
-                <ImageView
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="1dp"
+                android:gravity="center"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp">
 
-                    android:layout_width="70dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:contentDescription="@string/app_name"
-                    app:srcCompat="@drawable/ic_baseline_analytics_24" />
-
-
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="7dp">
+                    android:layout_alignParentRight="true">
 
-                    <TextView
+                    <ImageView
+
+                        android:layout_width="70dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:contentDescription="@string/app_name"
+                        app:srcCompat="@drawable/ic_baseline_analytics_24" />
+
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/dashboardMyProfile"
-                        android:layout_marginTop="55dp"
-                        android:text="DashBoard"
-                        android:id="@+id/dashboard_text"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginEnd="8dp"
+                        >
+
+                        <TextView
+                            android:id="@+id/dashboard_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/dashboardMyProfile"
+                            android:layout_marginTop="55dp"
+                            android:text="DashBoard"
+                            android:textColor="@color/white"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </RelativeLayout>
             </RelativeLayout>
-        </RelativeLayout>
 
-
-        <RelativeLayout
-            android:id="@+id/myProfileLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="1dp"
-
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="1dp"
-            android:gravity="center"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/myProfileLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="1dp"
 
-                <ImageView
-                    android:id="@+id/dashboardMyProfileIcon"
-                    android:layout_width="70dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:contentDescription="@string/app_name"
-                    app:srcCompat="@drawable/ic_baseline_hail_24" />
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="1dp"
+                android:gravity="center"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp">
 
-
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="7dp">
+                    android:layout_alignParentRight="true">
 
-                    <TextView
+                    <ImageView
+                        android:id="@+id/dashboardMyProfileIcon"
+                        android:layout_width="70dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:contentDescription="@string/app_name"
+                        app:srcCompat="@drawable/ic_baseline_hail_24" />
+
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/dashboardMyProfile"
-                        android:layout_marginTop="55dp"
-                        android:text="PickList\nHistory"
-                        android:textColor="@color/white"
-                        android:id="@+id/picklist_text"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="7dp">
+
+                        <TextView
+                            android:id="@+id/picklist_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/dashboardMyProfile"
+                            android:layout_marginTop="55dp"
+                            android:text="PickList\nHistory"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </RelativeLayout>
             </RelativeLayout>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="1dp"
-
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="1dp"
-            android:gravity="center"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="1dp"
 
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="3dp"
-                    android:layout_alignParentRight="true"
-                    android:contentDescription="@string/app_name"
-                    app:srcCompat="@drawable/ic_baseline_receipt_long_24" />
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="1dp"
+                android:gravity="center"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp">
 
-
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="5dp">
+                    android:layout_alignParentRight="true">
 
-                    <TextView
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginEnd="3dp"
+                        android:contentDescription="@string/app_name"
+                        app:srcCompat="@drawable/ic_baseline_receipt_long_24" />
+
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/dashboardMyProfile"
-                        android:layout_marginTop="55dp"
-                        android:text="PickList\nHistory"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/dashboardMyProfile"
+                            android:layout_marginTop="55dp"
+                            android:text="PickList\nHistory"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </RelativeLayout>
             </RelativeLayout>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/cartlayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="1dp"
-
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="1dp"
-            android:gravity="center"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/cartlayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="1dp"
 
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginEnd="4dp"
-                    android:contentDescription="@string/app_name"
-                    app:srcCompat="@drawable/ic_baseline_feed_24" />
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="1dp"
+                android:gravity="center"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp">
 
-
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginEnd="13sp"
-                   >
+                    android:layout_alignParentRight="true">
 
-                    <TextView
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginEnd="4dp"
+                        android:contentDescription="@string/app_name"
+                        app:srcCompat="@drawable/ic_baseline_feed_24" />
+
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/dashboardMyProfile"
-                        android:layout_marginTop="55dp"
-                        android:text="Request\nHistory"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginEnd="13sp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/dashboardMyProfile"
+                            android:layout_marginTop="55dp"
+                            android:text="Request\nHistory"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </RelativeLayout>
             </RelativeLayout>
-        </RelativeLayout>
 
 
-    </LinearLayout>
-</RelativeLayout></layout>
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

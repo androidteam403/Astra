@@ -15,7 +15,7 @@
             android:layout_height="match_parent">
 
             <RelativeLayout
-                android:layout_width="85dp"
+                android:layout_width="95dp"
                 android:id="@+id/custom_layout"
                 android:layout_height="match_parent">
 
@@ -25,7 +25,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="85dp"
+                android:layout_marginLeft="95dp"
                 android:orientation="horizontal">
 
                 <RelativeLayout
@@ -506,7 +506,15 @@
                                 android:textSize="12sp" />
 
 
+
                         </LinearLayout>
+                        <ImageView
+                            android:layout_width="18sp"
+                            android:layout_height="18dp"
+                            android:layout_marginStart="7dp"
+                            android:layout_marginTop="12sp"
+                            android:src="@drawable/edit_view"/>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -889,7 +897,7 @@
                         android:layout_height="25dp"
                         android:layout_marginStart="10sp"
                         android:layout_marginTop="9dp"
-                        android:src="@drawable/check_mark_icon" />
+                        android:src="@drawable/ic_baseline_task_alt_24" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -942,10 +950,10 @@
             </LinearLayout>
 
             <TextView
-                android:layout_width="6dp"
+                android:layout_width="10dp"
                 android:layout_height="86dp"
-                android:layout_marginStart="80dp"
-                android:layout_marginTop="212dp"
+                android:layout_marginStart="88dp"
+                android:layout_marginTop="197dp"
                 android:paddingStart="28dp"
                 android:paddingTop="26dp"
                 android:id="@+id/yellow_line"

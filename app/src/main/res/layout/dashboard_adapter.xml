@@ -19,6 +19,7 @@
                 android:text="Picker 1"
                 android:textAlignment="center"
                 android:paddingTop="10sp"
+                android:paddingStart="8dp"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 
@@ -27,7 +28,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Area "
+                android:text="Area 1"
+                android:paddingStart="16dp"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 
@@ -37,7 +39,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Assigned "
+                android:text="2 "
+                android:paddingStart="18sp"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 
@@ -45,7 +48,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="In-Progressed"
+                android:text="0"
+                android:paddingStart="55dp"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 
@@ -53,14 +57,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Completed "
+                android:text="2 "
+                android:paddingStart="67dp"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Completed "
+                android:text="4 "
+                android:paddingStart="30dp"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 
