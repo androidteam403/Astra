@@ -1,4 +1,4 @@
-package com.example.astra;
+package com.thresholdsoft.astra;
 
 import android.content.Context;
 
