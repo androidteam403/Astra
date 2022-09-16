@@ -18,9 +18,9 @@ import java.util.List;
 
 public class PickListHistoryAdapter extends RecyclerView.Adapter<PickListHistoryAdapter.ViewHolder> {
     private Activity activity;
-    private List<PickListHistoryModel> pickListHistoryModels = new ArrayList<>();
+    private List<String> pickListHistoryModels = new ArrayList<>();
 
-    public PickListHistoryAdapter(Activity activity, List<PickListHistoryModel> pickListHistoryModels) {
+    public PickListHistoryAdapter(Activity activity, List<String> pickListHistoryModels) {
         this.activity = activity;
         this.pickListHistoryModels = pickListHistoryModels;
     }
@@ -28,19 +28,22 @@ public class PickListHistoryAdapter extends RecyclerView.Adapter<PickListHistory
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        PickListHistoryLayoutAdapterBinding pickListHistoryLayoutAdapterBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.picklist_layout_adapter, parent, false);
+        PickListHistoryLayoutAdapterBinding pickListHistoryLayoutAdapterBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.pick_list_history_layout_adapter, parent, false);
         return new ViewHolder(pickListHistoryLayoutAdapterBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.pickListHistoryLayoutAdapterBinding.purchaseRequisition.setText(pickListHistoryModels.get(position).getPurchaseRequisition());
-        holder.pickListHistoryLayoutAdapterBinding.allocationDateTime.setText(pickListHistoryModels.get(position).getAllocationDateTime());
-        holder.pickListHistoryLayoutAdapterBinding.areaName.setText(pickListHistoryModels.get(position).getAreaName());
-        holder.pickListHistoryLayoutAdapterBinding.route.setText(pickListHistoryModels.get(position).getRoute());
-        holder.pickListHistoryLayoutAdapterBinding.productName.setText(pickListHistoryModels.get(position).getProductName());
-        holder.pickListHistoryLayoutAdapterBinding.rackShelf.setText(pickListHistoryModels.get(position).getPurchaseRequisition());
-        holder.pickListHistoryLayoutAdapterBinding.status.setText(pickListHistoryModels.get(position).getStatus());
+        String pickListItems = pickListHistoryModels.get(position);
+
+
+//        holder.pickListHistoryLayoutAdapterBinding.purchaseRequisition.setText(pickListHistoryModels.get(position).getPurchaseRequisition());
+//        holder.pickListHistoryLayoutAdapterBinding.allocationDateTime.setText(pickListHistoryModels.get(position).getAllocationDateTime());
+//        holder.pickListHistoryLayoutAdapterBinding.areaName.setText(pickListHistoryModels.get(position).getAreaName());
+//        holder.pickListHistoryLayoutAdapterBinding.route.setText(pickListHistoryModels.get(position).getRoute());
+//        holder.pickListHistoryLayoutAdapterBinding.productName.setText(pickListHistoryModels.get(position).getProductName());
+//        holder.pickListHistoryLayoutAdapterBinding.rackShelf.setText(pickListHistoryModels.get(position).getPurchaseRequisition());
+//        holder.pickListHistoryLayoutAdapterBinding.status.setText(pickListHistoryModels.get(position).getStatus());
     }
 
     @Override

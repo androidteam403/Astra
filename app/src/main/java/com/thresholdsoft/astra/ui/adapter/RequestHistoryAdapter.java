@@ -17,9 +17,9 @@ import java.util.List;
 
 public class RequestHistoryAdapter extends RecyclerView.Adapter<RequestHistoryAdapter.ViewHolder> {
     private Activity activity;
-    private List<RequestHistoryModel> requestHistoryModels;
+    private List<String> requestHistoryModels;
 
-    public RequestHistoryAdapter(Activity activity, List<RequestHistoryModel> requestHistoryModels) {
+    public RequestHistoryAdapter(Activity activity, List<String> requestHistoryModels) {
         this.activity = activity;
         this.requestHistoryModels = requestHistoryModels;
     }
@@ -33,13 +33,15 @@ public class RequestHistoryAdapter extends RecyclerView.Adapter<RequestHistoryAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.requestHistoryLayoutAdapterBinding.purchaseRequisition.setText(requestHistoryModels.get(position).getPurchaseRequisition());
-        holder.requestHistoryLayoutAdapterBinding.allocationDateTime.setText(requestHistoryModels.get(position).getAllocationDateTime());
-        holder.requestHistoryLayoutAdapterBinding.areaName.setText(requestHistoryModels.get(position).getAreaName());
-        holder.requestHistoryLayoutAdapterBinding.route.setText(requestHistoryModels.get(position).getRoute());
-        holder.requestHistoryLayoutAdapterBinding.productName.setText(requestHistoryModels.get(position).getProductName());
-        holder.requestHistoryLayoutAdapterBinding.supervisor.setText(requestHistoryModels.get(position).getSupervisor());
-        holder.requestHistoryLayoutAdapterBinding.request.setText(requestHistoryModels.get(position).getRequest());
+        String pickListItems = requestHistoryModels.get(position);
+
+//        holder.requestHistoryLayoutAdapterBinding.purchaseRequisition.setText(requestHistoryModels.get(position).getPurchaseRequisition());
+//        holder.requestHistoryLayoutAdapterBinding.allocationDateTime.setText(requestHistoryModels.get(position).getAllocationDateTime());
+//        holder.requestHistoryLayoutAdapterBinding.areaName.setText(requestHistoryModels.get(position).getAreaName());
+//        holder.requestHistoryLayoutAdapterBinding.route.setText(requestHistoryModels.get(position).getRoute());
+//        holder.requestHistoryLayoutAdapterBinding.productName.setText(requestHistoryModels.get(position).getProductName());
+//        holder.requestHistoryLayoutAdapterBinding.supervisor.setText(requestHistoryModels.get(position).getSupervisor());
+//        holder.requestHistoryLayoutAdapterBinding.request.setText(requestHistoryModels.get(position).getRequest());
     }
 
     @Override

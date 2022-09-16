@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,19 +10,13 @@
         tools:context=".ui.picklisthistory.PickListHistoryActivity">
 
         <!-- Left side menu -->
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/left_side_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="#0d565b">
+            android:layout_width="95dp"
+            android:layout_height="match_parent">
+            <include layout="@layout/custom_menu_layout"/>
 
-            <ImageView
-                android:id="@+id/logo"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:padding="5dp"
-                android:src="@drawable/apollo_circle_logo" />
-        </LinearLayout>
+        </RelativeLayout>
 
         <!-- Pick List History -->
         <LinearLayout
@@ -37,6 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
+                android:layout_marginTop="7dp"
                 android:text="@string/pick_list_history"
                 android:textColor="#000000"
                 android:textStyle="bold" />
@@ -45,11 +40,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp">
 
                 <!-- search bar -->
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="700dp"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
@@ -62,9 +58,10 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
                             android:text="Purchase Requisition Number"
-                            android:textColor="@color/black"
-                            android:textSize="10sp" />
+                            android:textColor="@color/bluetooth_header_bg"
+                            android:textSize="11sp" />
 
                         <EditText
                             android:layout_width="match_parent"
@@ -75,8 +72,8 @@
                             android:paddingVertical="7dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="5dp"
-                            android:textColorHint="@color/black"
-                            android:textSize="12sp" />
+                            android:textColorHint="@color/bluetooth_header_bg"
+                            android:textSize="11sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -90,12 +87,15 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Area Name"
-                            android:textColor="@color/black"
-                            android:textSize="10sp" />
+                            android:layout_marginBottom="5dp"
+
+                            android:textColor="@color/bluetooth_header_bg"
+                            android:textSize="11sp" />
 
                         <Spinner
                             android:id="@+id/area_name"
                             style="@style/SpinnerTheme"
+
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:spinnerMode="dropdown" />
@@ -112,8 +112,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Route Number"
-                            android:textColor="@color/black"
-                            android:textSize="10sp" />
+                            android:layout_marginBottom="5dp"
+
+                            android:textColor="@color/bluetooth_header_bg"
+                            android:textSize="11sp" />
 
                         <Spinner
                             android:id="@+id/route_number"
@@ -134,8 +136,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Allocation Date"
-                            android:textColor="@color/black"
-                            android:textSize="10sp" />
+                            android:layout_marginBottom="5dp"
+
+                            android:textColor="@color/bluetooth_header_bg"
+                            android:textSize="11sp" />
 
                         <EditText
                             android:layout_width="match_parent"
@@ -174,6 +178,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -189,7 +194,7 @@
         <LinearLayout
             android:id="@+id/footer_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="65dp"
             android:layout_alignParentBottom="true"
             android:layout_toRightOf="@+id/left_side_menu"
             android:background="#ffffff"
@@ -273,5 +278,17 @@
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
+        <TextView
+            android:layout_width="10dp"
+            android:layout_height="85dp"
+            android:layout_marginStart="88dp"
+            android:layout_marginTop="290dp"
+            android:paddingStart="28dp"
+            android:paddingTop="26dp"
+            android:id="@+id/yellow_line"
+            android:visibility="gone"
+
+            android:background="@color/lite_yellow"
+            android:textSize="11sp" />
     </RelativeLayout>
 </layout>
