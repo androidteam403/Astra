@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        tools:context=".ui.main.AstraMainActivity">
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-            <ScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                tools:context=".ui.main.AstraMainActivity">
 
 
                 <RelativeLayout
                     android:layout_width="match_parent"
+
                     android:layout_height="match_parent">
 
                     <RelativeLayout
                         android:id="@+id/custom_layout"
                         android:layout_width="95dp"
-                        android:layout_height="525dp"
+                        android:layout_height="550dp"
 
                         android:background="@color/imagebackgroundcolor">
 
@@ -48,6 +48,7 @@
                                 android:id="@+id/close"
                                 android:layout_width="22dp"
                                 android:layout_height="22dp"
+
                                 android:layout_marginLeft="235dp"
                                 android:layout_marginTop="13dp"
                                 android:src="@drawable/close_orders_track" />
@@ -96,6 +97,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="225dp"
                                 android:layout_marginTop="45dp"
+
                                 android:contentDescription="@string/app_name"
                                 app:srcCompat="@drawable/ic_search" />
 
@@ -159,6 +161,7 @@
                                         android:gravity="center_horizontal"
                                         android:paddingTop="12dp"
                                         android:text="1"
+
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
                                         android:textSize="15dp" />
@@ -170,7 +173,6 @@
                                         android:gravity="center_horizontal"
                                         android:paddingTop="5dp"
                                         android:paddingBottom="12dp"
-
                                         android:stateListAnimator="@null"
                                         android:text="IN PROGRESS"
                                         android:textAlignment="center"
@@ -199,6 +201,7 @@
                                         android:gravity="center_horizontal"
                                         android:paddingTop="12dp"
                                         android:text="1"
+
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
                                         android:textSize="15dp" />
@@ -233,7 +236,7 @@
 
                         <TextView
                             android:layout_width="2dp"
-                            android:layout_height="515dp"
+                            android:layout_height="530dp"
                             android:layout_marginLeft="5dp"
                             android:background="#dcdeea" />
 
@@ -272,6 +275,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="3dp"
                                         android:paddingTop="5dp"
+
                                         android:text="AHLI22RPR-00712277"
                                         android:textColor="@color/black"
                                         android:textSize="12sp"
@@ -300,7 +304,6 @@
                                         android:layout_marginLeft="3dp"
                                         android:paddingTop="5dp"
                                         android:text="Area-2"
-
                                         android:textColor="@color/black"
                                         android:textSize="12sp"
                                         android:textStyle="bold" />
@@ -328,6 +331,7 @@
                                         android:layout_marginLeft="3dp"
                                         android:paddingTop="5dp"
                                         android:text="2"
+
                                         android:textColor="@color/black"
                                         android:textSize="12sp"
                                         android:textStyle="bold" />
@@ -465,14 +469,13 @@
                                         android:textSize="12sp" />
 
                                     <TextView
+                                        android:id="@+id/allocation_line"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:gravity="center_horizontal"
                                         android:text="6"
-                                        android:id="@+id/allocation_line"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
-
                                         android:textSize="12sp" />
 
 
@@ -497,11 +500,11 @@
                                         android:textSize="12sp" />
 
                                     <TextView
+                                        android:id="@+id/no_of_boxes"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:gravity="center_horizontal"
                                         android:text="0"
-                                        android:id="@+id/no_of_boxes"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
 
@@ -526,13 +529,12 @@
                                         android:textSize="12sp" />
 
                                     <TextView
+                                        android:id="@+id/order_id"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="5dp"
                                         android:gravity="center_horizontal"
                                         android:text="----"
-                                        android:id="@+id/order_id"
-
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
                                         android:textSize="12sp" />
@@ -541,9 +543,9 @@
                                 </LinearLayout>
 
                                 <ImageView
+                                    android:id="@+id/edit_view"
                                     android:layout_width="18sp"
                                     android:layout_height="18dp"
-                                    android:id="@+id/edit_view"
                                     android:layout_marginStart="7dp"
                                     android:layout_marginTop="12sp"
                                     android:layout_marginEnd="10sp"
@@ -566,6 +568,7 @@
 
 
                                     <TextView
+                                        android:id="@+id/no_of_items"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:gravity="center_horizontal"
@@ -582,7 +585,6 @@
                                         android:paddingBottom="5dp"
                                         android:stateListAnimator="@null"
                                         android:text="NO.OF ITEMS"
-                                        android:id="@+id/no_of_items"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
                                         android:textSize="10dp" />
@@ -599,12 +601,12 @@
 
 
                                     <TextView
+                                        android:id="@+id/picked_count"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:gravity="center_horizontal"
                                         android:paddingTop="5dp"
                                         android:text="0"
-                                        android:id="@+id/picked_count"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
                                         android:textSize="12sp" />
@@ -633,12 +635,12 @@
 
 
                                     <TextView
+                                        android:id="@+id/pendingcount"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:gravity="center_horizontal"
                                         android:paddingTop="5dp"
                                         android:text="0"
-                                        android:id="@+id/pendingcount"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
                                         android:textSize="12sp" />
@@ -666,12 +668,12 @@
 
 
                                     <TextView
+                                        android:id="@+id/completedcount"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:gravity="center_horizontal"
                                         android:paddingTop="5dp"
                                         android:text="0"
-                                        android:id="@+id/completedcount"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
                                         android:textSize="12sp" />
@@ -699,11 +701,11 @@
 
 
                                     <TextView
+                                        android:id="@+id/processdocument"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:gravity="center_horizontal"
                                         android:paddingTop="5dp"
-                                        android:id="@+id/processdocument"
                                         android:text="Process\nDocument"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
@@ -962,9 +964,9 @@
                         android:textSize="15sp" />
 
                     <LinearLayout
+                        android:id="@+id/scan"
                         android:layout_width="110dp"
                         android:layout_height="60dp"
-                        android:id="@+id/scan"
                         android:layout_marginLeft="765dp"
                         android:layout_marginTop="350dp"
                         android:background="@drawable/background_sacm"
@@ -994,7 +996,7 @@
                         android:layout_width="10dp"
                         android:layout_height="71dp"
                         android:layout_marginStart="88dp"
-                        android:layout_marginTop="209dp"
+                        android:layout_marginTop="210dp"
                         android:background="@color/lite_yellow"
                         android:paddingStart="28dp"
                         android:paddingTop="26dp"
@@ -1003,7 +1005,7 @@
                         android:visibility="gone" />
 
                 </RelativeLayout>
-            </ScrollView>
-        </HorizontalScrollView>
-    </RelativeLayout>
+            </RelativeLayout>
+        </ScrollView>
+    </HorizontalScrollView>
 </layout>

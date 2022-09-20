@@ -8,7 +8,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="7dp"
+            android:layout_marginBottom="5dp"
             android:background="@color/white"
             android:gravity="center_vertical"
             android:paddingHorizontal="5dp"
@@ -32,7 +32,6 @@
                     android:id="@+id/purchase_requisition"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:text="AHLi122RPR-00123R4"
                     android:textColor="@color/black"
                     android:textSize="10sp" />
@@ -56,8 +55,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="20/08/2022-17:20:00"
-                    android:layout_marginTop="5dp"
-
                     android:textColor="@color/black"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -80,8 +77,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="AREA-2"
-                    android:layout_marginTop="5dp"
-
                     android:textColor="@color/black"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -104,8 +99,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" 1"
-                    android:layout_marginTop="5dp"
-
                     android:textColor="@color/black"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -128,8 +121,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="RED BULL"
-                    android:layout_marginTop="5dp"
-
                     android:textColor="@color/black"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -143,17 +134,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rack Shelf"
+                    android:text="Supervisor"
                     android:textColor="@color/bluetooth_header_bg"
                     android:textSize="11sp" />
 
                 <TextView
-                    android:id="@+id/rackshelf"
+                    android:id="@+id/supervisor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="FO206 A07595"
-                    android:layout_marginTop="5dp"
-
+                    android:text="Anand"
                     android:textColor="@color/black"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -167,7 +156,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Status"
+                    android:text="Request"
                     android:textColor="@color/bluetooth_header_bg"
                     android:textSize="11sp" />
 
@@ -175,10 +164,8 @@
                     android:id="@+id/status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Completed"
-                    android:layout_marginTop="5dp"
-
-                    android:textColor="@color/green"
+                    android:text="Damage"
+                    android:textColor="@color/black"
                     android:textSize="11sp" />
             </LinearLayout>
 
@@ -187,11 +174,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="28dp"
-                android:orientation="vertical">
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/check_mark_icon" />
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_marginStart="20dp"
                     android:src="@drawable/edit_view" />
             </LinearLayout>
         </LinearLayout>

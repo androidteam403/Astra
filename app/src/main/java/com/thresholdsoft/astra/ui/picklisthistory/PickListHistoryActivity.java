@@ -1,9 +1,5 @@
 package com.thresholdsoft.astra.ui.picklisthistory;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,19 +12,22 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.thresholdsoft.astra.R;
+import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityPickListHistoryBinding;
 import com.thresholdsoft.astra.ui.adapter.PickListHistoryAdapter;
 import com.thresholdsoft.astra.ui.home.Home;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.main.AstraMainActivity;
-import com.thresholdsoft.astra.ui.picklisthistory.model.PickListHistoryModel;
 import com.thresholdsoft.astra.ui.requesthistory.RequestHistoryActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PickListHistoryActivity extends AppCompatActivity {
+public class PickListHistoryActivity extends BaseActivity {
     private ActivityPickListHistoryBinding activityPickListHistoryBinding;
     List<String> pickListHistoryModels=new ArrayList<>();
 
@@ -38,6 +37,7 @@ public class PickListHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         activityPickListHistoryBinding = DataBindingUtil.setContentView(this, R.layout.activity_pick_list_history);
         RelativeLayout pickListLayout = findViewById(R.id.myProfileLayout);
         RelativeLayout dashboardLayout = findViewById(R.id.dashboard);

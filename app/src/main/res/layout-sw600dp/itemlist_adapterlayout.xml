@@ -91,9 +91,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="F0206 A050D"
-                                android:id="@+id/rackshelf_no"
                                 android:textColor="@color/black"
                                 android:textSize="12sp"
+                                android:id="@+id/rackshelf_no"
                                 android:paddingStart="1dp"
                                 />
 
