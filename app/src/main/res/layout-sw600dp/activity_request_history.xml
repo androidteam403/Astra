@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="959dp"
+                android:layout_height="match_parent"
+                android:background="#dcdfe9"
+                tools:context=".ui.requesthistory.RequestHistoryActivity">
+
+                <!-- Left side menu -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:id="@+id/custom_layout"
+                        android:layout_width="95dp"
+                        android:layout_height="580dp">
+
+                        <include layout="@layout/custom_menu_layout" />
+
+                    </RelativeLayout>
+
+
+                </RelativeLayout>
+
+
+                <!--          <RelativeLayout-->
+                <!--            android:layout_width="match_parent"-->
+                <!--            android:layout_height="match_parent">-->
+
+                <!--            <RelativeLayout-->
+                <!--                android:layout_width="95dp"-->
+                <!--                android:id="@+id/custom_layout"-->
+                <!--                android:layout_height="match_parent">-->
+
+                <!--                <include layout="@layout/custom_menu_layout" />-->
+                <!--            </RelativeLayout>-->
+
+
+                <!-- Pick List History -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="100dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+
+                    android:layout_toRightOf="@+id/custom_layout"
+                    android:orientation="vertical"
+                    tools:ignore="NotSibling">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="13sp"
+                        android:layout_marginTop="14sp"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/request_history"
+                        android:textColor="#000000"
+                        android:textStyle="bold" />
+
+                    <!-- Search layout -->
+                    <LinearLayout
+                        android:layout_width="720dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10sp"
+                        android:layout_marginTop="10sp"
+                        android:layout_marginBottom="8dp">
+
+                        <!-- search bar -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="2"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+
+                                    android:text="Purchase Requisition Number"
+                                    android:textColor="@color/bluetooth_header_bg"
+                                    android:textSize="12sp" />
+
+                                <EditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/search_box_bg"
+                                    android:drawableRight="@drawable/search_icon"
+                                    android:hint="@string/all"
+                                    android:paddingVertical="7dp"
+                                    android:paddingLeft="10dp"
+                                    android:paddingRight="5dp"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:text="@string/supervisior_name"
+
+                                    android:textColor="@color/bluetooth_header_bg"
+                                    android:textSize="12sp" />
+
+                                <Spinner
+                                    android:id="@+id/area_name"
+                                    style="@style/SpinnerTheme"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:spinnerMode="dropdown" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:text="@string/status"
+
+                                    android:textColor="@color/bluetooth_header_bg"
+                                    android:textSize="11sp" />
+
+                                <Spinner
+                                    android:id="@+id/route_number"
+                                    style="@style/SpinnerTheme"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:spinnerMode="dropdown" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="2"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:text="@string/allocation_date"
+
+                                    android:textColor="@color/bluetooth_header_bg"
+                                    android:textSize="12sp" />
+
+                                <EditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/search_box_bg"
+                                    android:hint="@string/_20_08_2021_20_08_2022"
+                                    android:paddingLeft="10dp"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="8dp"
+                                android:gravity="bottom"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="bottom"
+                                    android:background="@drawable/rounded_corner_bg"
+                                    android:backgroundTint="#00aeef"
+                                    android:paddingHorizontal="5dp"
+                                    android:paddingVertical="6dp"
+                                    android:src="@drawable/search_icon"
+                                    app:tint="#FFFFFF" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Recyclerview -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10sp"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/request_history_rcv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:scrollbars="vertical" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Footer -->
+                <LinearLayout
+                    android:id="@+id/footer_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="96dp"
+                    android:layout_toRightOf="@+id/left_side_menu"
+                    android:background="#ffffff"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:paddingStart="20dp"
+                        android:text="@string/picker_nrequests"
+                        android:textColor="#000000" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="30dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/total_requests"
+                            android:textColor="#D1CBCB"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/_120"
+                            android:textColor="#C1BBBB"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/approved"
+                            android:textColor="#D1CBCB"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="100"
+                            android:textColor="#C1BBBB"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/pending"
+                            android:textColor="#D1CBCB"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="20"
+                            android:textColor="#C1BBBB"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/yellow_line"
+                    android:layout_width="10dp"
+                    android:layout_height="85.5dp"
+                    android:layout_marginStart="88dp"
+                    android:layout_marginTop="384dp"
+                    android:background="@color/lite_yellow"
+                    android:paddingStart="28dp"
+                    android:paddingTop="26dp"
+
+                    android:textSize="11sp"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+        </ScrollView>
+    </HorizontalScrollView>
+
+</layout>
