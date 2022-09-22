@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="13sp"
+                android:layout_marginTop="10sp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:background="@color/black"
+                    android:src="@drawable/ic_baseline_receipt_24" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10sp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="PICKING LIST"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginStart="245dp"
+                    android:id="@+id/close"
+                    android:src="@drawable/close_orders_track" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="39dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="20dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:padding="3dp"
+                        android:paddingStart="10dp"
+                        android:text="No of Boxes"
+                        android:textColor="@color/silver"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <RelativeLayout
+
+                        android:id="@+id/order_child_layout"
+                        android:layout_width="90dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="45dp"
+                        android:layout_marginTop="4dp"
+
+                        android:background="@drawable/square_stroke_bg"
+                        android:padding="5dp">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:padding="3dp"
+                            android:paddingStart="10dp"
+                            android:text="2"
+                            android:textColor="@color/black"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="39dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="20dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:padding="3dp"
+                        android:paddingStart="10dp"
+                        android:text="Mode Of Delivery"
+                        android:textColor="@color/silver"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <RelativeLayout
+
+                        android:layout_width="170dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="46dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/square_stroke_bg"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:padding="3dp"
+                            android:paddingStart="10dp"
+                            android:text="by DC Delv"
+                            android:textColor="@color/black"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/right_arrow"
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:layout_marginStart="113dp"
+                                android:contentDescription="@string/app_name"
+                                android:padding="5dp"
+                                android:rotation="90"
+                                android:src="@drawable/black_right_arroww"
+                                android:visibility="visible" />
+
+
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="39dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="20dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:padding="3dp"
+                        android:paddingStart="10dp"
+                        android:text="Weight"
+                        android:textColor="@color/silver"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <RelativeLayout
+
+                        android:layout_width="90dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="45dp"
+                        android:layout_marginTop="4dp"
+
+                        android:background="@drawable/square_stroke_bg"
+                        android:padding="5dp">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:padding="3dp"
+                            android:paddingStart="10dp"
+                            android:text="0.00"
+                            android:textColor="@color/black"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="39dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="20dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:padding="3dp"
+                        android:paddingStart="10dp"
+                        android:text="Transporter Code"
+                        android:textColor="@color/silver"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <RelativeLayout
+
+                        android:layout_width="170dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="46dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/square_stroke_bg"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:padding="3dp"
+                            android:paddingStart="10dp"
+                            android:text="BLR T003"
+                            android:textColor="@color/black"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:layout_marginStart="113dp"
+                                android:contentDescription="@string/app_name"
+                                android:padding="5dp"
+                                android:rotation="90"
+                                android:src="@drawable/black_right_arroww"
+                                android:visibility="visible" />
+
+
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Update"
+                android:layout_marginStart="140dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="8dp"
+                android:paddingStart="26dp"
+                android:paddingEnd="18sp"
+                android:paddingTop="8dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingBottom="6dp"
+                android:id="@+id/select"
+
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:background="@color/lite_yellow"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</layout>
