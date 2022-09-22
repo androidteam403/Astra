@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Product Name"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/bluetooth_header_bg"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/purchase_requisition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Red Bull"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/black"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rack Shelf"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/bluetooth_header_bg"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/rackshelf_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="F0206 A05D34"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:layout_marginTop="5dp"
+
+                    android:textColor="@color/black"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Allocated Qty."
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/bluetooth_header_bg"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/area_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3.00"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:layout_marginTop="5dp"
+
+                    android:textColor="@color/black"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Approved on"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/bluetooth_header_bg"
+                    android:textSize="11sp" />
+
+
+                <TextView
+                    android:id="@+id/allocation_date_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20/08/2022-17:20:00"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:layout_marginTop="5dp"
+
+                    android:textColor="@color/black"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Request"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/bluetooth_header_bg"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/product_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Out of Stock"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:layout_marginTop="5dp"
+
+                    android:textColor="@color/black"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="18sp"
+                    android:layout_marginTop="2dp"
+                    android:layout_height="18sp"
+                    android:src="@drawable/check_mark_icon"/>
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Approve"
+                    android:layout_marginStart="5dp"
+                    android:paddingStart="9sp"
+                    android:paddingEnd="10sp"
+                    android:background="@color/light_green"
+
+                    android:paddingTop="2dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/white"
+                    android:textSize="11sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="28dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/edit_view" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

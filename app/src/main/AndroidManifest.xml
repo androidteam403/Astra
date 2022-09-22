@@ -12,26 +12,25 @@
         android:roundIcon="@mipmap/ic_launcher_round_apollo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Astra">
+        <activity android:name=".ui.pickerrequests.PickerRequests"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" ></activity>
         <activity
             android:name=".ui.requesthistory.RequestHistoryActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
             android:screenOrientation="landscape"
-           />
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
             android:name=".ui.picklisthistory.PickListHistoryActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
             android:screenOrientation="landscape"
-            />
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
             android:name=".ui.login.userlogin.UserLoginActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
             android:screenOrientation="landscape"
-            />
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
             android:name=".ui.login.LoginActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
             android:screenOrientation="landscape"
-           >
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,16 +38,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.thresholdsoft.astra.ui.main.AstraMainActivity"
+            android:name=".ui.main.AstraMainActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
-            tools:ignore="MissingClass">
-
-        </activity>
+            tools:ignore="MissingClass"></activity>
         <activity
-            android:name="com.thresholdsoft.astra.ui.home.Home"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
-            android:screenOrientation="landscape" />
+            android:name=".ui.home.Home"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
     </application>
 
 </manifest>

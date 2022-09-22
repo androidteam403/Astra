@@ -7,6 +7,7 @@
     <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <ScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -19,7 +20,7 @@
 
                 <RelativeLayout
                     android:id="@+id/left_side_menu"
-                    android:layout_width="95dp"
+                    android:layout_width="80dp"
                     android:layout_height="555dp">
 
                     <include layout="@layout/custom_menu_layout" />
@@ -37,15 +38,15 @@
                     android:orientation="vertical">
 
 
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="7dp"
                         android:layout_marginBottom="5dp"
+                        android:fontFamily="@font/poppins_semibold"
                         android:text="@string/pick_list_history"
-                        android:textColor="#000000"
-                        android:textStyle="bold" />
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
 
                     <!-- Search layout -->
                     <LinearLayout
@@ -56,7 +57,7 @@
 
                         <!-- search bar -->
                         <LinearLayout
-                            android:layout_width="745dp"
+                            android:layout_width="762dp"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
@@ -70,6 +71,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="5dp"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:text="Purchase Requisition Number"
                                     android:textColor="@color/bluetooth_header_bg"
                                     android:textSize="11sp" />
@@ -79,6 +81,7 @@
                                     android:layout_height="match_parent"
                                     android:background="@drawable/search_box_bg"
                                     android:drawableRight="@drawable/search_icon"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:hint="@string/all"
                                     android:paddingVertical="7dp"
                                     android:paddingLeft="10dp"
@@ -98,6 +101,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="5dp"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:text="Area Name"
 
                                     android:textColor="@color/bluetooth_header_bg"
@@ -123,8 +127,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="5dp"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:text="Route Number"
-
                                     android:textColor="@color/bluetooth_header_bg"
                                     android:textSize="11sp" />
 
@@ -148,6 +152,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="5dp"
                                     android:text="Allocation Date"
+                                    android:fontFamily="@font/poppins_semibold"
 
                                     android:textColor="@color/bluetooth_header_bg"
                                     android:textSize="11sp" />
@@ -158,6 +163,7 @@
                                     android:background="@drawable/search_box_bg"
                                     android:hint="@string/_20_08_2021_20_08_2022"
                                     android:paddingLeft="10dp"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:textColorHint="@color/black"
                                     android:textSize="12sp" />
                             </LinearLayout>
@@ -165,7 +171,7 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_marginLeft="8dp"
+                                android:layout_marginLeft="10sp"
                                 android:gravity="bottom"
                                 android:orientation="vertical">
 
@@ -206,7 +212,7 @@
                 <!-- Footer -->
                 <LinearLayout
                     android:id="@+id/footer_layout"
-                    android:layout_width="865dp"
+                    android:layout_width="880dp"
                     android:layout_height="70dp"
 
                     android:layout_alignParentBottom="true"
@@ -215,12 +221,20 @@
                     android:gravity="center_horizontal"
                     android:orientation="horizontal"
                     android:paddingVertical="8dp">
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@color/black"
+                        android:layout_marginTop="7dp"
+                        android:src="@drawable/ic_baseline_receipt_24"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
+                        android:layout_marginStart="10sp"
                         android:text="@string/picker_nhistory"
+                        android:fontFamily="@font/poppins_semibold"
                         android:textColor="#000000" />
 
                     <LinearLayout
@@ -233,6 +247,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/total_assigned"
+                            android:fontFamily="@font/poppins_semibold"
                             android:textColor="#D1CBCB"
                             android:textSize="10sp"
                             android:textStyle="bold" />
@@ -242,6 +257,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/_120"
                             android:textColor="#C1BBBB"
+                            android:fontFamily="@font/poppins_semibold"
                             android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -257,6 +273,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/completed"
                             android:textColor="#D1CBCB"
+                            android:fontFamily="@font/poppins_semibold"
                             android:textSize="10sp"
                             android:textStyle="bold" />
 
@@ -266,6 +283,7 @@
                             android:text="100"
                             android:textColor="#C1BBBB"
                             android:textSize="16sp"
+                            android:fontFamily="@font/poppins_semibold"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -279,6 +297,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="PENDING"
+                            android:fontFamily="@font/poppins_semibold"
                             android:textColor="#D1CBCB"
                             android:textSize="10sp"
                             android:textStyle="bold" />
@@ -288,6 +307,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/_20"
                             android:textColor="#C1BBBB"
+                            android:fontFamily="@font/poppins_semibold"
                             android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -296,9 +316,9 @@
                 <TextView
                     android:id="@+id/yellow_line"
                     android:layout_width="10dp"
-                    android:layout_height="85.5dp"
-                    android:layout_marginStart="88dp"
-                    android:layout_marginTop="290dp"
+                    android:layout_height="69dp"
+                    android:layout_marginStart="76dp"
+                    android:layout_marginTop="150dp"
                     android:background="@color/lite_yellow"
                     android:paddingStart="28dp"
                     android:paddingTop="26dp"

@@ -43,6 +43,9 @@ public class PickListHistoryActivity extends BaseActivity {
         RelativeLayout dashboardLayout = findViewById(R.id.dashboard);
         RelativeLayout pickListHistoryLayout = findViewById(R.id.picklist_history_layout);
         RelativeLayout requestHistoryLayout = findViewById(R.id.requesthistory_layout);
+        RelativeLayout seconddashboard = findViewById(R.id.second_dashboard);
+        RelativeLayout secondpicklisthistory = findViewById(R.id.second_picklist_history_layout);
+        RelativeLayout secondpicklist = findViewById(R.id.second_picklist);
         ImageView apollologo=findViewById(R.id.apollo_logo);
 
         TextView picklist = findViewById(R.id.picklisthistory_text);

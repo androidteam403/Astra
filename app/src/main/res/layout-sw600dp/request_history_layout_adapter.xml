@@ -25,6 +25,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/purchase_requisition"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/bluetooth_header_bg"
                     android:textSize="11sp" />
 
@@ -33,6 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="AHLi122RPR-00123R4"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/black"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -47,6 +49,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/allocation_date_time"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/bluetooth_header_bg"
                     android:textSize="11sp" />
 
@@ -55,6 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="20/08/2022-17:20:00"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/black"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -69,6 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/area_name"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/bluetooth_header_bg"
                     android:textSize="11sp" />
 
@@ -77,6 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="AREA-2"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/black"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -91,6 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/route"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/bluetooth_header_bg"
                     android:textSize="11sp" />
 
@@ -99,6 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" 1"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/black"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -113,6 +121,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/product_name"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/bluetooth_header_bg"
                     android:textSize="11sp" />
 
@@ -121,6 +130,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="RED BULL"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/black"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -135,6 +145,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Supervisor"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/bluetooth_header_bg"
                     android:textSize="11sp" />
 
@@ -143,6 +154,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Anand"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/black"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -157,6 +169,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Request"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/bluetooth_header_bg"
                     android:textSize="11sp" />
 
@@ -165,6 +178,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Damage"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/black"
                     android:textSize="11sp" />
             </LinearLayout>

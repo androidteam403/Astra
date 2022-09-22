@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -10,8 +9,8 @@
         tools:context=".ui.main.AstraMainActivity">
 
         <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <HorizontalScrollView
                 android:layout_width="wrap_content"
@@ -20,10 +19,10 @@
 
                 <RelativeLayout
                     android:id="@+id/custom_layout"
-                    android:layout_width="85dp"
-                    android:layout_height="500dp">
+                    android:layout_width="80dp"
+                    android:layout_height="555dp">
 
-                    <include layout="@layout/custom_menu_layout" />
+                    <include layout="@layout/custom_layout" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -47,7 +46,8 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="900dp"
+                                    android:layout_marginStart="850dp"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:text="Chandra Mouli"
                                     android:textColor="@color/black"
                                     android:textSize="12sp"
@@ -56,7 +56,8 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="924dp"
+                                    android:layout_marginStart="870dp"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:text="Supervisor"
                                     android:textColor="@color/black"
                                     android:textSize="11sp"
@@ -88,7 +89,7 @@
                         <LinearLayout
                             android:layout_width="927dp"
                             android:layout_height="80dp"
-                            android:layout_marginStart="120dp"
+                            android:layout_marginStart="100dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="20dp"
                             android:background="@color/white"
@@ -114,6 +115,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginEnd="20dp"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:padding="3dp"
                                         android:paddingStart="10dp"
                                         android:text="Hyderabad"
@@ -154,6 +156,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="20dp"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:padding="3dp"
                                     android:paddingStart="10dp"
                                     android:text="All"
@@ -188,6 +191,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:paddingTop="6dp"
                                     android:text="Today"
                                     android:textColor="@color/black"
@@ -210,6 +214,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:paddingTop="6dp"
                                     android:text="Week"
                                     android:textColor="@color/black"
@@ -230,6 +235,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:paddingTop="6dp"
                                     android:text="Month"
                                     android:textColor="@color/black"
@@ -252,6 +258,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:paddingTop="6dp"
                                     android:text="DD/MM/YYYY"
                                     android:textColor="@color/black"
@@ -297,6 +304,7 @@
                                 android:layout_marginStart="15dp"
                                 android:layout_marginTop="30dp"
                                 android:background="@color/yellow"
+                                android:fontFamily="@font/poppins_semibold"
                                 android:paddingStart="13sp"
                                 android:paddingTop="10sp"
                                 android:paddingEnd="13sp"
@@ -318,13 +326,15 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/custom_layout"
+
                             android:orientation="vertical">
 
                             <LinearLayout
                                 android:layout_width="390dp"
                                 android:layout_height="25dp"
-                                android:layout_marginStart="120dp"
-                                android:layout_marginTop="10sp"
+                                android:layout_marginStart="100dp"
+                                android:layout_marginTop="18sp"
 
                                 android:background="@color/white"
                                 android:orientation="horizontal">
@@ -332,6 +342,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:paddingStart="7dp"
                                     android:text="Report"
                                     android:textColor="@color/black"
@@ -351,7 +362,7 @@
                             <LinearLayout
                                 android:layout_width="390dp"
                                 android:layout_height="25dp"
-                                android:layout_marginStart="120dp"
+                                android:layout_marginStart="100dp"
                                 android:background="@color/white"
                                 android:orientation="horizontal">
 
@@ -360,6 +371,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="5dp"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:paddingStart="7dp"
                                     android:paddingTop="4dp"
                                     android:text="Picker Name"
@@ -371,6 +383,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="5dp"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:paddingStart="7dp"
                                     android:paddingTop="4dp"
                                     android:text="Area"
@@ -382,6 +395,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="5dp"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:paddingStart="7dp"
                                     android:paddingTop="4dp"
                                     android:text="Assigned"
@@ -393,6 +407,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="5dp"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:paddingStart="7dp"
                                     android:paddingTop="4dp"
                                     android:text="In-Progressed"
@@ -404,6 +419,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="5dp"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:paddingStart="7dp"
                                     android:paddingTop="4dp"
                                     android:text="Completed"
@@ -415,6 +431,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="5dp"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:paddingStart="7dp"
                                     android:paddingTop="4dp"
                                     android:text="SKUS"
@@ -428,7 +445,7 @@
                                 android:id="@+id/listitem_recycleview"
                                 android:layout_width="390dp"
                                 android:layout_height="250dp"
-                                android:layout_marginStart="120dp" />
+                                android:layout_marginStart="100dp" />
                         </LinearLayout>
 
 
@@ -437,8 +454,8 @@
                     <RelativeLayout
                         android:layout_width="350dp"
                         android:layout_height="315dp"
-                        android:layout_marginStart="525dp"
-                        android:layout_marginTop="155dp"
+                        android:layout_marginStart="505dp"
+                        android:layout_marginTop="170dp"
                         android:layout_marginBottom="20dp"
                         android:background="@color/white">
 
@@ -448,6 +465,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="60dp"
                             android:layout_marginTop="10sp"
+                            android:fontFamily="@font/poppins_semibold"
                             android:text="ASSIGNED/IN-PROGRESS/COMPLETED"
                             android:textColor="@color/black"
                             android:textSize="12sp"
@@ -472,12 +490,14 @@
                                 android:layout_height="7dp"
                                 android:layout_marginStart="5dp"
                                 android:layout_marginTop="10sp"
-                                android:background="@color/purple_500" />
+                                android:background="@color/purple_500"
+                                android:fontFamily="@font/poppins_semibold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10sp"
+                                android:fontFamily="@font/poppins_semibold"
                                 android:paddingBottom="7dp"
                                 android:text="Assigned"
 
@@ -490,15 +510,16 @@
                                 android:layout_height="7dp"
                                 android:layout_marginStart="15dp"
                                 android:layout_marginTop="10sp"
-                                android:background="#FFFF33" />
+                                android:background="#FFFF33"
+                                android:fontFamily="@font/poppins_semibold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10sp"
+                                android:fontFamily="@font/poppins_semibold"
                                 android:paddingBottom="7dp"
                                 android:text="In-Progress"
-
                                 android:textColor="@color/purple_500"
                                 android:textSize="12sp"
                                 android:textStyle="bold" />
@@ -509,12 +530,14 @@
                                 android:layout_height="7dp"
                                 android:layout_marginStart="15dp"
                                 android:layout_marginTop="10sp"
-                                android:background="@color/green" />
+                                android:background="@color/green"
+                                android:fontFamily="@font/poppins_semibold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10sp"
+                                android:fontFamily="@font/poppins_semibold"
                                 android:paddingBottom="7dp"
                                 android:text="Completed"
                                 android:textColor="@color/purple_500"
@@ -529,8 +552,8 @@
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="885dp"
-                        android:layout_marginTop="155dp"
+                        android:layout_marginStart="865dp"
+                        android:layout_marginTop="168dp"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -559,12 +582,14 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:text="TOTAL"
                                     android:textColor="@color/silver" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:text="20"
                                     android:textColor="@color/black" />
 
@@ -600,12 +625,14 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:text="ASSIGNED"
                                     android:textColor="@color/silver" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:text="6"
                                     android:textColor="@color/black" />
 
@@ -640,12 +667,14 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:text="IN PROGRESS"
                                     android:textColor="@color/silver" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:text="2"
                                     android:textColor="@color/black" />
 
@@ -680,12 +709,14 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:text="COMPLETED"
                                     android:textColor="@color/silver" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:text="12"
                                     android:textColor="@color/black" />
 
@@ -697,8 +728,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="125dp"
+                        android:layout_marginStart="100dp"
                         android:layout_marginTop="33dp"
+                        android:fontFamily="@font/poppins_semibold"
                         android:text="DashBoard"
                         android:textColor="@color/black"
                         android:textSize="17sp"
@@ -709,6 +741,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="126dp"
                         android:layout_marginTop="49dp"
+                        android:fontFamily="@font/poppins_semibold"
                         android:paddingStart="28dp"
                         android:paddingTop="26dp"
                         android:text="DC ID"
@@ -720,9 +753,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="290dp"
                         android:layout_marginTop="49dp"
+                        android:fontFamily="@font/poppins_semibold"
                         android:paddingStart="29dp"
                         android:paddingTop="26dp"
-
                         android:text="Area Name"
                         android:textColor="@color/silver"
                         android:textSize="11sp" />
@@ -732,6 +765,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="455dp"
                         android:layout_marginTop="49dp"
+                        android:fontFamily="@font/poppins_semibold"
                         android:paddingStart="28dp"
                         android:paddingTop="26dp"
 
@@ -742,14 +776,13 @@
 
                     <TextView
                         android:id="@+id/yellow_line"
-                        android:layout_width="6dp"
-                        android:layout_height="69.5dp"
-                        android:layout_marginStart="102dp"
-                        android:layout_marginTop="118dp"
+                        android:layout_width="10dp"
+                        android:layout_height="56.5dp"
+                        android:layout_marginStart="78dp"
+                        android:layout_marginTop="296.3dp"
                         android:background="@color/lite_yellow"
                         android:paddingStart="28dp"
-                        android:paddingTop="23dp"
-                        android:paddingBottom="2dp"
+                        android:paddingTop="26dp"
 
                         android:textSize="11sp"
                         android:visibility="gone" />

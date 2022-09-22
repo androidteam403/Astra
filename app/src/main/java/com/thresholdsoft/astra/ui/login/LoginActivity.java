@@ -14,6 +14,7 @@ import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.ActivityLoginBinding;
 import com.thresholdsoft.astra.ui.home.Home;
 import com.thresholdsoft.astra.ui.login.userlogin.UserLoginActivity;
+import com.thresholdsoft.astra.ui.main.AstraMainActivity;
 
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding activityLoginBinding;
@@ -28,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         activityLoginBinding.login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(LoginActivity.this, Home.class);
+                Intent intent=new Intent(LoginActivity.this, AstraMainActivity.class);
                 startActivity(intent);
 
             }
@@ -43,6 +44,13 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+        activityLoginBinding.userId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(LoginActivity.this, Home.class);
+                startActivity(intent);
 
+            }
+        });
     }
 }

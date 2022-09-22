@@ -8,8 +8,8 @@
 
         <ImageView
             android:id="@+id/apollo_logo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
             android:contentDescription="@string/app_name"
@@ -23,56 +23,6 @@
             android:orientation="vertical">
 
 
-            <RelativeLayout
-                android:id="@+id/dashboard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="1dp"
-
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="1dp"
-                android:gravity="center"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true">
-
-                    <ImageView
-
-                        android:layout_width="70dp"
-                        android:layout_height="50dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:contentDescription="@string/app_name"
-                        app:srcCompat="@drawable/ic_baseline_analytics_24" />
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginRight="7dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/dashboardMyProfile"
-                            android:layout_marginTop="55dp"
-                            android:text="DashBoard"
-                            android:id="@+id/dashboard_text"
-                            android:textColor="@color/white"
-                            android:textSize="11sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </RelativeLayout>
-            </RelativeLayout>
 
 
             <RelativeLayout
@@ -83,7 +33,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginStart="1dp"
 
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="1dp"
                 android:gravity="center"
                 android:paddingStart="15dp"
@@ -96,8 +46,8 @@
 
                     <ImageView
                         android:id="@+id/dashboardMyProfileIcon"
-                        android:layout_width="70dp"
-                        android:layout_height="50dp"
+                        android:layout_width="50dp"
+                        android:layout_height="35dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:contentDescription="@string/app_name"
@@ -117,10 +67,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/dashboardMyProfile"
-                            android:layout_marginTop="55dp"
+                            android:layout_marginTop="38dp"
                             android:text="PickList"
+                            android:fontFamily="@font/poppins_semibold"
                             android:textColor="@color/white"
-                            android:textSize="12sp"
+                            android:textSize="10sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </RelativeLayout>
@@ -134,7 +85,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginStart="1dp"
 
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="1dp"
                 android:gravity="center"
                 android:paddingStart="15dp"
@@ -146,8 +97,8 @@
                     android:layout_alignParentRight="true">
 
                     <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="50dp"
+                        android:layout_width="50dp"
+                        android:layout_height="35dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_marginEnd="3dp"
@@ -167,11 +118,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/dashboardMyProfile"
-                            android:layout_marginTop="55dp"
+                            android:layout_marginTop="38dp"
                             android:text="PickList\nHistory"
+                            android:fontFamily="@font/poppins_semibold"
                             android:textColor="@color/white"
                             android:id="@+id/picklisthistory_text"
-                            android:textSize="12sp"
+                            android:textSize="10sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </RelativeLayout>
@@ -179,6 +131,59 @@
 
             <RelativeLayout
                 android:id="@+id/requesthistory_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="1dp"
+
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="1dp"
+                android:gravity="center"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="35dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginEnd="4dp"
+                        android:contentDescription="@string/app_name"
+                        app:srcCompat="@drawable/ic_baseline_feed_24" />
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginEnd="7dp"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/dashboardMyProfile"
+                            android:layout_marginTop="38dp"
+                            android:text="Request\nHistory"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:id="@+id/request_history_text"
+                            android:textColor="@color/white"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/dashboard"
+                android:visibility="invisible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -193,36 +198,36 @@
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true">
 
                     <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="50dp"
+
+                        android:layout_width="50dp"
+                        android:layout_height="35dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginEnd="4dp"
                         android:contentDescription="@string/app_name"
-                        app:srcCompat="@drawable/ic_baseline_feed_24" />
+                        app:srcCompat="@drawable/ic_baseline_analytics_24" />
 
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginEnd="13sp"
                         >
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/dashboardMyProfile"
-                            android:layout_marginTop="55dp"
-                            android:text="Request\nHistory"
-                            android:id="@+id/request_history_text"
+                            android:layout_marginTop="35dp"
+                            android:text="DashBoard"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:id="@+id/dashboard_text"
                             android:textColor="@color/white"
-                            android:textSize="12sp"
+                            android:textSize="10sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </RelativeLayout>

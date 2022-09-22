@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        tools:context=".ui.main.AstraMainActivity">
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-            <ScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                tools:context=".ui.main.AstraMainActivity">
 
 
                 <RelativeLayout
                     android:layout_width="match_parent"
+
                     android:layout_height="match_parent">
 
                     <RelativeLayout
                         android:id="@+id/custom_layout"
-                        android:layout_width="95dp"
-                        android:layout_height="525dp"
+                        android:layout_width="80dp"
+                        android:layout_height="550dp"
 
                         android:background="@color/imagebackgroundcolor">
 
@@ -35,12 +35,12 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="95dp"
+                        android:layout_marginLeft="80dp"
                         android:orientation="horizontal">
 
                         <RelativeLayout
                             android:id="@+id/picklist_layout"
-                            android:layout_width="260dp"
+                            android:layout_width="230dp"
                             android:layout_height="match_parent"
                             android:background="@color/white">
 
@@ -48,7 +48,8 @@
                                 android:id="@+id/close"
                                 android:layout_width="22dp"
                                 android:layout_height="22dp"
-                                android:layout_marginLeft="235dp"
+
+                                android:layout_marginLeft="200dp"
                                 android:layout_marginTop="13dp"
                                 android:src="@drawable/close_orders_track" />
 
@@ -57,10 +58,10 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="55dp"
                                 android:layout_marginTop="20dp"
+                                android:fontFamily="@font/poppins_semibold"
                                 android:text="PICK LIST"
                                 android:textColor="@color/black"
-                                android:textSize="16dp"
-                                android:textStyle="bold" />
+                                android:textSize="16dp" />
 
                             <LinearLayout
                                 android:id="@+id/search_edit_frame"
@@ -76,6 +77,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="10dp"
                                     android:layout_marginEnd="10dp"
+
                                     android:hint="Search  ">
 
                                     <com.google.android.material.textfield.TextInputEditText
@@ -94,8 +96,9 @@
                                 android:id="@+id/search"
                                 android:layout_width="20dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="225dp"
+                                android:layout_marginLeft="190dp"
                                 android:layout_marginTop="45dp"
+
                                 android:contentDescription="@string/app_name"
                                 app:srcCompat="@drawable/ic_search" />
 
@@ -103,7 +106,7 @@
                                 android:id="@+id/staticLayout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="105dp"
+                                android:layout_marginTop="115dp"
                                 android:orientation="horizontal">
 
                                 <LinearLayout
@@ -117,25 +120,26 @@
                                         android:id="@+id/assignedcount"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/poppins_bold"
                                         android:gravity="center_horizontal"
                                         android:paddingTop="12dp"
                                         android:text="5"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
-                                        android:textSize="15dp" />
+                                        android:textSize="14sp" />
 
                                     <TextView
                                         android:id="@+id/assignedtext"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:gravity="center_horizontal"
-                                        android:paddingTop="5dp"
                                         android:paddingBottom="12dp"
                                         android:stateListAnimator="@null"
                                         android:text="ASSIGNED"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
-                                        android:textSize="12sp" />
+                                        android:textSize="10sp" />
                                 </LinearLayout>
 
                                 <View
@@ -156,21 +160,21 @@
                                         android:id="@+id/progress_count"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/poppins_bold"
                                         android:gravity="center_horizontal"
                                         android:paddingTop="12dp"
                                         android:text="1"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
-                                        android:textSize="15dp" />
+                                        android:textSize="14sp" />
 
                                     <TextView
                                         android:id="@+id/progress_text"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:gravity="center_horizontal"
-                                        android:paddingTop="5dp"
                                         android:paddingBottom="12dp"
-
                                         android:stateListAnimator="@null"
                                         android:text="IN PROGRESS"
                                         android:textAlignment="center"
@@ -196,26 +200,27 @@
                                         android:id="@+id/completecount"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/poppins_bold"
                                         android:gravity="center_horizontal"
-                                        android:paddingTop="12dp"
+                                        android:paddingTop="14sp"
                                         android:text="1"
+
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
-                                        android:textSize="15dp" />
+                                        android:textSize="12sp" />
 
                                     <TextView
                                         android:id="@+id/completetext"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:gravity="center_horizontal"
-                                        android:paddingTop="5dp"
-
                                         android:paddingBottom="12dp"
                                         android:stateListAnimator="@null"
                                         android:text="COMPLETED"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
-                                        android:textSize="12sp" />
+                                        android:textSize="10sp" />
                                 </LinearLayout>
 
 
@@ -224,24 +229,49 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/picklistrecycleview"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="200dp"
                                 android:layout_below="@id/staticLayout"
                                 android:orientation="vertical" />
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/picklistrecycleview"
+                                android:id="@+id/complete_text"
 
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/completedlist"
+                                    android:text="COMPLETED LIST"
+                                    android:textSize="12sp"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginTop="10sp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    />
+
+                            </LinearLayout>
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/completlistrecycleview"
+                                android:layout_width="match_parent"
+                                android:layout_height="200dp"
+                                android:layout_below="@id/complete_text"
+                                android:orientation="vertical" />
 
                         </RelativeLayout>
 
                         <TextView
                             android:layout_width="2dp"
-                            android:layout_height="515dp"
+                            android:layout_height="538dp"
                             android:layout_marginLeft="5dp"
                             android:background="#dcdeea" />
 
                         <LinearLayout
-                            android:layout_width="605dp"
-                            android:layout_height="460dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
+                            android:layout_width="670dp"
+                            android:layout_height="490dp"
+                            android:layout_marginStart="5dp"
                             android:background="#dcdeea"
 
                             android:orientation="vertical">
@@ -262,6 +292,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="5dp"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:text="Purchase Requisition"
                                         android:textSize="12sp" />
 
@@ -271,7 +302,9 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="3dp"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:paddingTop="5dp"
+
                                         android:text="AHLI22RPR-00712277"
                                         android:textColor="@color/black"
                                         android:textSize="12sp"
@@ -289,6 +322,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="5dp"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:text="Area Name"
                                         android:textSize="12sp" />
 
@@ -298,12 +332,11 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="3dp"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:paddingTop="5dp"
                                         android:text="Area-2"
-
                                         android:textColor="@color/black"
-                                        android:textSize="12sp"
-                                        android:textStyle="bold" />
+                                        android:textSize="12sp" />
 
                                 </LinearLayout>
 
@@ -317,6 +350,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="5dp"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:text="Route"
                                         android:textSize="12sp" />
 
@@ -326,6 +360,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="3dp"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:paddingTop="5dp"
                                         android:text="2"
                                         android:textColor="@color/black"
@@ -341,10 +376,10 @@
                                     android:layout_marginStart="20dp"
                                     android:layout_marginTop="15dp"
                                     android:background="@drawable/background_button"
+                                    android:fontFamily="@font/poppins_semibold"
                                     android:paddingStart="5dp"
                                     android:paddingEnd="5dp"
                                     android:text="IN-PROGRESS"
-
                                     android:textColor="@color/white"
                                     android:textSize="12sp" />
 
@@ -371,17 +406,19 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:paddingTop="4dp"
                                         android:text="Customer"
-                                        android:textSize="12sp" />
+                                        android:textSize="10sp" />
 
                                     <TextView
                                         android:id="@+id/customerid"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:text="16001"
                                         android:textColor="@color/black"
-                                        android:textSize="12sp" />
+                                        android:textSize="10sp" />
 
 
                                 </LinearLayout>
@@ -389,8 +426,7 @@
                                 <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginStart="17sp"
 
                                     android:layout_marginTop="5dp"
                                     android:orientation="vertical">
@@ -398,21 +434,22 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:paddingTop="4dp"
-
                                         android:text="Customer-Name"
-                                        android:textSize="12sp" />
+                                        android:textSize="10sp" />
 
                                     <TextView
                                         android:id="@+id/customername"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:gravity="center_horizontal"
                                         android:text="Apollo"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
 
-                                        android:textSize="12sp" />
+                                        android:textSize="10sp" />
 
 
                                 </LinearLayout>
@@ -420,8 +457,7 @@
                                 <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginStart="17sp"
 
                                     android:layout_marginTop="5dp"
                                     android:orientation="vertical">
@@ -429,20 +465,21 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:paddingTop="4dp"
-
                                         android:text="Allocation Date Time"
-                                        android:textSize="12sp" />
+                                        android:textSize="10sp" />
 
                                     <TextView
                                         android:id="@+id/allocation_date_time"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:gravity="center_horizontal"
                                         android:text="20/08/2022-17:40:00"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
-                                        android:textSize="12sp" />
+                                        android:textSize="10sp" />
 
 
                                 </LinearLayout>
@@ -450,8 +487,7 @@
                                 <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginStart="17sp"
 
                                     android:layout_marginTop="5dp"
                                     android:orientation="vertical">
@@ -459,21 +495,21 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:paddingTop="4dp"
-
                                         android:text="Allocation Lines"
-                                        android:textSize="12sp" />
+                                        android:textSize="10sp" />
 
                                     <TextView
+                                        android:id="@+id/allocation_line"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:gravity="center_horizontal"
                                         android:text="6"
-                                        android:id="@+id/allocation_line"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
-
-                                        android:textSize="12sp" />
+                                        android:textSize="10sp" />
 
 
                                 </LinearLayout>
@@ -482,8 +518,7 @@
                                 <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginStart="17sp"
                                     android:layout_marginTop="5dp"
 
                                     android:orientation="vertical">
@@ -491,28 +526,28 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:paddingTop="4dp"
-
                                         android:text="No.of Boxes"
-                                        android:textSize="12sp" />
+                                        android:textSize="10sp" />
 
                                     <TextView
+                                        android:id="@+id/no_of_boxes"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:gravity="center_horizontal"
                                         android:text="0"
-                                        android:id="@+id/no_of_boxes"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
 
-                                        android:textSize="12sp" />
+                                        android:textSize="10sp" />
                                 </LinearLayout>
 
                                 <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginStart="17sp"
                                     android:layout_marginTop="5dp"
 
                                     android:orientation="vertical">
@@ -520,31 +555,31 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:paddingTop="4dp"
-
                                         android:text="Created Order ID"
-                                        android:textSize="12sp" />
+                                        android:textSize="10sp" />
 
                                     <TextView
+                                        android:id="@+id/order_id"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="5dp"
                                         android:gravity="center_horizontal"
                                         android:text="----"
-                                        android:id="@+id/order_id"
-
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
-                                        android:textSize="12sp" />
+                                        android:textSize="10sp" />
 
 
                                 </LinearLayout>
 
                                 <ImageView
+                                    android:id="@+id/edit_view"
                                     android:layout_width="18sp"
                                     android:layout_height="18dp"
-                                    android:id="@+id/edit_view"
-                                    android:layout_marginStart="7dp"
+                                    android:layout_marginStart="30dp"
                                     android:layout_marginTop="12sp"
                                     android:layout_marginEnd="10sp"
                                     android:src="@drawable/edit_view" />
@@ -566,11 +601,13 @@
 
 
                                     <TextView
+                                        android:id="@+id/no_of_items"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:gravity="center_horizontal"
                                         android:paddingTop="5dp"
                                         android:text="6"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
                                         android:textSize="12sp" />
@@ -582,7 +619,7 @@
                                         android:paddingBottom="5dp"
                                         android:stateListAnimator="@null"
                                         android:text="NO.OF ITEMS"
-                                        android:id="@+id/no_of_items"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
                                         android:textSize="10dp" />
@@ -599,12 +636,13 @@
 
 
                                     <TextView
+                                        android:id="@+id/picked_count"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:gravity="center_horizontal"
                                         android:paddingTop="5dp"
                                         android:text="0"
-                                        android:id="@+id/picked_count"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
                                         android:textSize="12sp" />
@@ -616,6 +654,7 @@
                                         android:paddingBottom="5dp"
                                         android:stateListAnimator="@null"
                                         android:text="PICKED"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
                                         android:textSize="10sp" />
@@ -633,12 +672,13 @@
 
 
                                     <TextView
+                                        android:id="@+id/pendingcount"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:gravity="center_horizontal"
                                         android:paddingTop="5dp"
                                         android:text="0"
-                                        android:id="@+id/pendingcount"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
                                         android:textSize="12sp" />
@@ -650,6 +690,7 @@
                                         android:paddingBottom="5dp"
                                         android:stateListAnimator="@null"
                                         android:text="PENDING"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
                                         android:textSize="10sp" />
@@ -666,13 +707,14 @@
 
 
                                     <TextView
+                                        android:id="@+id/completedcount"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:gravity="center_horizontal"
                                         android:paddingTop="5dp"
                                         android:text="0"
-                                        android:id="@+id/completedcount"
                                         android:textAlignment="center"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:textColor="@color/black"
                                         android:textSize="12sp" />
 
@@ -683,6 +725,7 @@
                                         android:paddingBottom="5dp"
                                         android:stateListAnimator="@null"
                                         android:text="COMPLETED"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
                                         android:textSize="10sp" />
@@ -691,19 +734,28 @@
                                 </LinearLayout>
 
                                 <LinearLayout
-                                    android:layout_width="75dp"
+                                    android:layout_width="100dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="6sp"
-                                    android:background="@color/yellow"
-                                    android:orientation="vertical">
+                                    android:id="@+id/processdocument_layout"
+                                    android:background="@color/light_yellow_color">                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
+                                        android:layout_marginStart="4dp"
+                                        android:layout_marginTop="12dp"
+                                        android:rotation="85"
+                                        android:src="@drawable/ic_baseline_streetview_24"/>
 
 
                                     <TextView
+                                        android:id="@+id/processdocument"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:gravity="center_horizontal"
                                         android:paddingTop="5dp"
-                                        android:id="@+id/processdocument"
+                                        android:fontFamily="@font/poppins_semibold"
                                         android:text="Process\nDocument"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
@@ -711,6 +763,37 @@
 
 
                                 </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/second_scan"
+                                    android:layout_width="88dp"
+                                    android:layout_height="42dp"
+                                    android:layout_marginLeft="115dp"
+
+                                    android:visibility="gone"
+                                    android:background="@drawable/background_sacm"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
+                                        android:layout_marginStart="13sp"
+                                        android:layout_marginTop="11dp"
+                                        android:src="@drawable/printer" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="5dp"
+                                        android:layout_marginTop="6dp"
+                                        android:text="Scan\nNow"
+                                        android:paddingStart="4dp"
+                                        android:fontFamily="@font/poppins_semibold"
+                                        android:textColor="@color/white"
+                                        android:textSize="10sp" />
+
+
+                                </LinearLayout>
+
 
                             </LinearLayout>
 
@@ -720,13 +803,14 @@
                                 android:layout_marginLeft="7dp"
                                 android:layout_marginTop="10dp"
                                 android:text="ITEMS LIST"
+                                android:fontFamily="@font/poppins_semibold"
                                 android:textColor="@color/black"
                                 android:textSize="11sp"
                                 android:textStyle="bold" />
 
                             <RelativeLayout
                                 android:id="@+id/search_view_layout"
-                                android:layout_width="300dp"
+                                android:layout_width="345dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="7dp"
                                 android:layout_marginTop="5dp"
@@ -735,7 +819,7 @@
                                 <RelativeLayout
 
                                     android:id="@+id/order_child_layout"
-                                    android:layout_width="245dp"
+                                    android:layout_width="270dp"
                                     android:layout_height="35dp"
                                     android:layout_marginTop="4dp"
                                     android:background="@drawable/square_stroke_bg"
@@ -763,7 +847,7 @@
                                             android:id="@+id/right_arrow"
                                             android:layout_width="27dp"
                                             android:layout_height="30dp"
-                                            android:layout_marginStart="195dp"
+                                            android:layout_marginStart="230dp"
                                             android:contentDescription="@string/app_name"
                                             android:padding="5dp"
                                             android:rotation="90"
@@ -778,7 +862,7 @@
                                     android:layout_width="35dp"
                                     android:layout_height="35dp"
                                     android:layout_centerVertical="true"
-                                    android:layout_marginStart="250dp"
+                                    android:layout_marginStart="277dp"
                                     android:layout_marginTop="10dp"
                                     android:layout_marginEnd="10dp"
                                     android:src="@drawable/ic_search_product" />
@@ -787,8 +871,8 @@
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/listitem_recycleview"
-                                android:layout_width="300dp"
-                                android:layout_height="wrap_content"
+                                android:layout_width="330dp"
+                                android:layout_height="220dp"
                                 android:orientation="vertical"
                                 android:scrollbars="vertical" />
 
@@ -801,14 +885,15 @@
                         android:layout_width="45dp"
                         android:layout_height="45dp"
                         android:layout_marginStart="365dp"
-                        android:layout_marginTop="475dp"
+                        android:layout_marginTop="497dp"
                         android:src="@drawable/ic_baseline_hail_24" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="44dp"
                         android:layout_marginLeft="415dp"
-                        android:layout_marginTop="475dp"
+                        android:layout_marginTop="497dp"
+                        android:layout_marginBottom="5dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -817,6 +902,7 @@
 
                             android:text="COMPLETE\nLINE ITEMS\nREPORT"
                             android:textColor="@color/black"
+                            android:fontFamily="@font/poppins_semibold"
                             android:textSize="11sp"
                             android:textStyle="bold" />
 
@@ -830,6 +916,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
+                                android:fontFamily="@font/poppins_semibold"
+
                                 android:text="TOTAL LIST ITEMS"
                                 android:textSize="13dp"
                                 android:textStyle="bold" />
@@ -838,8 +926,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="40dp"
-                                android:layout_marginTop="10dp"
                                 android:text="120"
+                                android:fontFamily="@font/poppins_semibold"
+
                                 android:textAlignment="center"
                                 android:textSize="13sp"
                                 android:textStyle="bold" />
@@ -857,6 +946,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:text="DONE"
+                                android:fontFamily="@font/poppins_semibold"
+
                                 android:textSize="13sp"
                                 android:textStyle="bold" />
 
@@ -864,8 +955,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="13sp"
-                                android:layout_marginTop="10dp"
                                 android:text="100"
+                                android:fontFamily="@font/poppins_semibold"
+
                                 android:textSize="13sp"
                                 android:textStyle="bold" />
 
@@ -882,6 +974,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:text="TODO"
+                                android:fontFamily="@font/poppins_semibold"
+
                                 android:textSize="13sp"
                                 android:textStyle="bold" />
 
@@ -889,8 +983,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="18sp"
-                                android:layout_marginTop="10dp"
                                 android:text="20"
+                                android:fontFamily="@font/poppins_semibold"
+
                                 android:textSize="13sp"
                                 android:textStyle="bold" />
 
@@ -907,6 +1002,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:text="TIME TAKEN"
+                                android:fontFamily="@font/poppins_semibold"
+
                                 android:textSize="13sp"
                                 android:textStyle="bold" />
 
@@ -914,8 +1011,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="18sp"
-                                android:layout_marginTop="10dp"
                                 android:text="00:25:30"
+                                android:fontFamily="@font/poppins_semibold"
+
                                 android:textSize="13sp"
                                 android:textStyle="bold" />
 
@@ -943,6 +1041,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="3dp"
                                 android:layout_marginTop="5dp"
+                                android:fontFamily="@font/poppins_semibold"
                                 android:text="STATUS\nCOMPLETED"
                                 android:textSize="13sp"
                                 android:textStyle="bold" />
@@ -955,46 +1054,415 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="750dp"
+                        android:layout_marginLeft="753dp"
                         android:layout_marginTop="300dp"
+                        android:id="@+id/click_to_scan"
                         android:text="Click the button below \n   to start Scanning"
                         android:textColor="@color/black"
-                        android:textSize="15sp" />
+                        android:textSize="12sp"
+                        android:visibility="visible"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textStyle="bold" />
 
                     <LinearLayout
-                        android:layout_width="110dp"
-                        android:layout_height="60dp"
                         android:id="@+id/scan"
-                        android:layout_marginLeft="765dp"
-                        android:layout_marginTop="350dp"
+                        android:layout_width="88dp"
+                        android:layout_height="42dp"
+                        android:visibility="visible"
+                        android:layout_marginLeft="769dp"
+                        android:layout_marginTop="340dp"
                         android:background="@drawable/background_sacm"
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:layout_marginStart="13sp"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="11dp"
                             android:src="@drawable/printer" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="3dp"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="6dp"
                             android:text="Scan\n Now"
+                            android:paddingStart="4dp"
+                            android:fontFamily="@font/poppins_semibold"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="10sp" />
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/productdetails"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="655dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="230dp"
+                        android:orientation="horizontal">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="3dp"
+                            android:visibility="visible"
+                            app:cardCornerRadius="2dp"
+                            app:cardElevation="2dp">
+
+                            <LinearLayout
+                                android:id="@+id/orderHead"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:id="@+id/pendingLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/white"
+                                    android:layout_marginStart="15sp"
+                                    android:layout_marginTop="15sp"
+                                    android:layout_marginEnd="5dp"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10sp"
+                                        android:layout_marginTop="5dp"
+                                        android:text="Barcode "
+                                        android:fontFamily="@font/poppins_semibold"
+
+                                        android:textColor="@color/silver"
+                                        android:textSize="10sp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10sp"
+                                        android:layout_marginTop="5dp"
+                                        android:fontFamily="@font/poppins_semibold"
+                                        android:text="AHLI22RR-007122 "
+                                        android:textColor="@color/black"
+                                        android:textSize="10sp" />
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginEnd="5dp"
+                                        android:layout_marginRight="5dp"
+                                        android:orientation="horizontal">
+
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="5dp"
+
+                                        android:layout_marginRight="5dp"
+                                        android:orientation="horizontal">
+
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Allocated Qty. "
+                                            android:fontFamily="@font/poppins_semibold"
+                                            android:textColor="@color/silver"
+                                            android:textSize="9sp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="40dp"
+                                            android:text="Item Number"
+                                            android:fontFamily="@font/poppins_semibold"
+                                            android:textColor="@color/silver"
+                                            android:textSize="9sp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="44dp"
+                                            android:text="Expiry date"
+                                            android:fontFamily="@font/poppins_semibold"
+                                            android:textColor="@color/silver"
+                                            android:textSize="9sp" />
+
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="4dp"
+                                        android:layout_marginEnd="5dp"
+                                        android:layout_marginRight="5dp"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="15sp"
+                                            android:text="3"
+                                            android:fontFamily="@font/poppins_semibold"
+
+
+                                            android:textColor="@color/black"
+                                            android:textSize="9sp"
+                                            android:textStyle="bold" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="84dp"
+                                            android:text="DET001"
+                                            android:fontFamily="@font/poppins_semibold"
+                                            android:textColor="@color/black"
+                                            android:textSize="9sp"
+                                            android:textStyle="bold" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="85dp"
+                                            android:text="2"
+                                            android:fontFamily="@font/poppins_semibold"
+                                            android:textColor="@color/black"
+                                            android:textSize="9sp"
+                                            android:textStyle="bold" />
+
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="7dp"
+                                        android:orientation="horizontal">
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="10sp"
+                                            android:layout_marginTop="8dp"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="Scanned \nQty."
+                                                android:textColor="@color/silver"
+                                                android:textSize="9sp"
+                                                android:fontFamily="@font/poppins_semibold"/>
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="5dp"
+                                                android:layout_marginTop="3dp"
+                                                android:text="1.00"
+                                                android:fontFamily="@font/poppins_semibold"
+                                                android:textColor="@color/black"
+                                                android:textSize="9sp"
+                                                android:textStyle="bold" />
+                                        </LinearLayout>
+
+                                        <View
+                                            android:layout_width="1dp"
+                                            android:layout_height="60dp"
+                                            android:layout_marginStart="15sp"
+                                            android:background="@color/silver" />
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="10sp"
+                                            android:layout_marginTop="8dp"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="Short Scan \nQty."
+                                                android:textColor="@color/silver"
+                                                android:textSize="9sp" />
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="5dp"
+                                                android:layout_marginTop="3dp"
+                                                android:text="299.00"
+                                                android:textColor="@color/black"
+                                                android:textSize="9sp"
+                                                android:fontFamily="@font/poppins_semibold" />
+                                        </LinearLayout>
+
+                                        <View
+                                            android:layout_width="1dp"
+                                            android:layout_height="60dp"
+                                            android:layout_marginStart="15sp"
+                                            android:background="@color/silver" />
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="10sp"
+                                            android:layout_marginTop="8dp"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="Scanned\nPacks"
+                                                android:fontFamily="@font/poppins_semibold"
+                                                android:textColor="@color/silver"
+                                                android:textSize="9sp" />
+
+                                            <EditText
+                                                android:layout_width="55dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="3dp"
+                                                android:background="@drawable/backgroundborder"
+                                                android:paddingStart="4dp"
+                                                android:paddingTop="2dp"
+                                                android:paddingBottom="3dp"
+                                                android:text="1.00"
+                                                android:textColor="@color/black"
+                                                android:textSize="9sp"
+                                                android:fontFamily="@font/poppins_semibold"
+                                                />
+                                        </LinearLayout>
+
+                                        <View
+                                            android:layout_width="1dp"
+                                            android:layout_height="60dp"
+                                            android:layout_marginStart="15sp"
+                                            android:background="@color/silver" />
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="6dp"
+                                            android:layout_marginTop="8dp"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="Maximum \nRetail Price"
+                                                android:textColor="@color/silver"
+                                                android:fontFamily="@font/poppins_semibold"
+                                                android:textSize="9sp" />
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="5dp"
+                                                android:layout_marginTop="3dp"
+                                                android:text="200.00"
+                                                android:fontFamily="@font/poppins_semibold"
+                                                android:textColor="@color/black"
+                                                android:textSize="9sp"
+                                                android:textStyle="bold" />
+                                        </LinearLayout>
+
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="10dp"
+                                                android:layout_marginTop="7dp"
+                                                android:text="Status"
+                                                android:fontFamily="@font/poppins_semibold"
+                                                android:textColor="@color/silver"
+                                                android:textSize="9sp" />
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="6dp"
+                                                android:layout_marginTop="7dp"
+                                                android:text="Pending"
+                                                android:fontFamily="@font/poppins_semibold"
+                                                android:textColor="@color/red"
+                                                android:textSize="9sp" />
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="40dp"
+                                                android:layout_marginTop="7dp"
+                                                android:text="Supervisor"
+                                                android:fontFamily="@font/poppins_semibold"
+                                                android:textColor="@color/silver"
+                                                android:textSize="9sp" />
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="42dp"
+                                                android:layout_marginTop="7dp"
+                                                android:background="@color/color_takeprint"
+                                                android:text="Request"
+                                                android:fontFamily="@font/poppins_semibold"
+                                                android:paddingTop="2dp"
+                                                android:paddingBottom="2dp"
+                                                android:paddingStart="3dp"
+                                                android:paddingEnd="2dp"
+                                                android:textColor="@color/white"
+                                                android:textSize="9sp" />
+                                        </LinearLayout>
+
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
+
 
 
                     </LinearLayout>
 
+
                     <TextView
                         android:id="@+id/yellow_line"
                         android:layout_width="10dp"
-                        android:layout_height="71dp"
-                        android:layout_marginStart="88dp"
-                        android:layout_marginTop="209dp"
+                        android:layout_height="52dp"
+                        android:layout_marginStart="76dp"
+                        android:layout_marginTop="79.5dp"
                         android:background="@color/lite_yellow"
                         android:paddingStart="28dp"
                         android:paddingTop="26dp"
@@ -1003,7 +1471,7 @@
                         android:visibility="gone" />
 
                 </RelativeLayout>
-            </ScrollView>
-        </HorizontalScrollView>
-    </RelativeLayout>
+            </RelativeLayout>
+        </ScrollView>
+    </HorizontalScrollView>
 </layout>

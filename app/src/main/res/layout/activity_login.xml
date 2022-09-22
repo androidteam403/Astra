@@ -43,7 +43,8 @@
                 android:background="@drawable/rounded_transparent_bg"
                 android:hint="@string/user_id_name"
                 android:textColorHint="@color/black"
-                android:inputType="text"
+                android:inputType="none"
+                android:editable="false"
                 android:paddingHorizontal="25dp"
                 android:paddingVertical="15dp"
                 android:textSize="14sp" />

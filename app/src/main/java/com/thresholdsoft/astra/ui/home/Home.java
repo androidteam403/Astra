@@ -23,6 +23,7 @@ import com.thresholdsoft.astra.databinding.ActivityHomeBinding;
 import com.thresholdsoft.astra.ui.adapter.ReportAdapter;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.main.AstraMainActivity;
+import com.thresholdsoft.astra.ui.pickerrequests.PickerRequests;
 import com.thresholdsoft.astra.ui.picklisthistory.PickListHistoryActivity;
 import com.thresholdsoft.astra.ui.requesthistory.RequestHistoryActivity;
 
@@ -55,11 +56,17 @@ public class Home extends BaseActivity {
 
         RelativeLayout pickListHistoryLayout = findViewById(R.id.picklist_history_layout);
         RelativeLayout requestHistoryLayout = findViewById(R.id.requesthistory_layout);
+
+        RelativeLayout seconddashboard = findViewById(R.id.dashboard);
+        RelativeLayout secondpicklisthistory = findViewById(R.id.second_picklist_history_layout);
+        RelativeLayout secondpicklist = findViewById(R.id.second_picklist);
 //        RelativeLayout dashboardLayout = findViewById(R.id.dashboard_layout);
         TextView dashBoard = findViewById(R.id.dashboard_text);
         dashBoard.setTextColor(R.color.black);
         activityHomeBinding.yellowLine.setVisibility(View.VISIBLE);
-        dashboardLayout.setBackgroundResource(R.color.lite_yellow);
+//        dashboardLayout.setBackgroundResource(R.color.lite_yellow);
+
+//        seconddashboard.setVisibility(View.VISIBLE);
 
         reportAdapter = new ReportAdapter(this, pickList);
         RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -84,35 +91,37 @@ public class Home extends BaseActivity {
                 startActivity(new Intent(Home.this, LoginActivity.class));
             }
         });
-        pickListLayout.setOnClickListener(new View.OnClickListener() {
+        secondpicklist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
 
-                startActivity(new Intent(Home.this, AstraMainActivity.class));
-            }
-        });
-
-        pickListHistoryLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Home.this, PickListHistoryActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
-
+                startActivity(new Intent(Home.this, PickerRequests.class));
             }
         });
 
 
-        requestHistoryLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Home.this, RequestHistoryActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
 
-            }
-        });
+//        pickListHistoryLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Home.this, PickListHistoryActivity.class);
+//                startActivity(intent);
+//                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+//
+//            }
+//        });
+
+
+//        requestHistoryLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Home.this, RequestHistoryActivity.class);
+//                startActivity(intent);
+//                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+//
+//            }
+//        });
 
 
 
