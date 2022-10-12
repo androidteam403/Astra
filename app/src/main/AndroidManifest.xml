@@ -12,9 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round_apollo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Astra">
-        <activity android:name=".ui.pickerrequests.PickerRequests"
+        <activity android:name=".ui.home.dashboard.DashBoard"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" ></activity>
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
+           />
+        <activity
+            android:name=".ui.pickerrequests.PickerRequests"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
             android:name=".ui.requesthistory.RequestHistoryActivity"
             android:screenOrientation="landscape"
@@ -41,7 +46,7 @@
             android:name=".ui.main.AstraMainActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
-            tools:ignore="MissingClass"></activity>
+            tools:ignore="MissingClass" />
         <activity
             android:name=".ui.home.Home"
             android:screenOrientation="landscape"

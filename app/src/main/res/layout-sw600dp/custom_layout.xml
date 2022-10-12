@@ -9,8 +9,8 @@
 
         <ImageView
             android:id="@+id/apollo_logo"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
             android:contentDescription="@string/app_name"
@@ -118,7 +118,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/dashboardMyProfile"
                             android:layout_marginTop="38dp"
-                            android:text="Picker\nRequests"
+                            android:text="  Picker\nRequests"
                             android:textColor="@color/white"
                             android:textSize="10sp"
                             android:textStyle="bold" />

@@ -21,6 +21,7 @@ import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityHomeBinding;
 import com.thresholdsoft.astra.ui.adapter.ReportAdapter;
+import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.main.AstraMainActivity;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequests;
@@ -50,23 +51,19 @@ public class Home extends BaseActivity {
 
 
         activityHomeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home);
-        RelativeLayout pickListLayout = findViewById(R.id.myProfileLayout);
-        RelativeLayout dashboardLayout = findViewById(R.id.dashboard);
+        RelativeLayout dashboardsupervisor = findViewById(R.id.dashboard_layout);
+        RelativeLayout dashboardadmin = findViewById(R.id.second_dashboard);
         ImageView apollologo=findViewById(R.id.apollo_logo);
-
+        RelativeLayout pickListLayout = findViewById(R.id.picklist_layout);
         RelativeLayout pickListHistoryLayout = findViewById(R.id.picklist_history_layout);
         RelativeLayout requestHistoryLayout = findViewById(R.id.requesthistory_layout);
-
-        RelativeLayout seconddashboard = findViewById(R.id.dashboard);
-        RelativeLayout secondpicklisthistory = findViewById(R.id.second_picklist_history_layout);
-        RelativeLayout secondpicklist = findViewById(R.id.second_picklist);
-//        RelativeLayout dashboardLayout = findViewById(R.id.dashboard_layout);
-        TextView dashBoard = findViewById(R.id.dashboard_text);
+        RelativeLayout pickerrequestlayout = findViewById(R.id.picker_request_layout);
+        RelativeLayout approvedhistoryLayout = findViewById(R.id.approved_history_layout);
+        TextView dashBoard = findViewById(R.id.dashobaord_text);
         dashBoard.setTextColor(R.color.black);
         activityHomeBinding.yellowLine.setVisibility(View.VISIBLE);
-//        dashboardLayout.setBackgroundResource(R.color.lite_yellow);
+        dashboardsupervisor.setBackgroundResource(R.color.lite_yellow);
 
-//        seconddashboard.setVisibility(View.VISIBLE);
 
         reportAdapter = new ReportAdapter(this, pickList);
         RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -74,6 +71,8 @@ public class Home extends BaseActivity {
         pickList.add("syed");
         pickList.add("1");
         pickList.add("syed");
+        pickList.add("syed");
+
         pickList.add("1");
         activityHomeBinding.listitemRecycleview.setAdapter(reportAdapter);
         pieData.add(new SliceValue(10, Color.BLUE));
@@ -82,46 +81,65 @@ public class Home extends BaseActivity {
         PieChartData pieChartData=new PieChartData(pieData);
         activityHomeBinding.piechart.setPieChartData(pieChartData);
 
+activityHomeBinding.admin.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        startActivity(new Intent(Home.this, DashBoard.class));
+        overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+
+    }
+});
 
         apollologo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
 
                 startActivity(new Intent(Home.this, LoginActivity.class));
-            }
-        });
-        secondpicklist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
 
+            }
+        });
+        pickerrequestlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
                 startActivity(new Intent(Home.this, PickerRequests.class));
+                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+
             }
         });
 
 
-
-//        pickListHistoryLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(Home.this, PickListHistoryActivity.class);
-//                startActivity(intent);
-//                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
-//
-//            }
-//        });
+        pickListLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home.this, AstraMainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+            }
+        });
 
 
-//        requestHistoryLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(Home.this, RequestHistoryActivity.class);
-//                startActivity(intent);
-//                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
-//
-//            }
-//        });
+        pickListHistoryLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home.this, PickListHistoryActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+
+            }
+        });
+
+
+        requestHistoryLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home.this, RequestHistoryActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+
+            }
+        });
 
 
 

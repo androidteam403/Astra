@@ -42,6 +42,7 @@
         <color name="cardview_shadow_color">#f4f4f8</color>
         <color name="cpb_yellow">#fdb813</color>
         <color name="transperancy">#00000000</color>
+    <color name="thick_black">#000000</color>
 
 
         <color name="yello_outlet">#FFB319</color>

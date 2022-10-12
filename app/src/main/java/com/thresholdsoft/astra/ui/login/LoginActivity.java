@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.ActivityLoginBinding;
 import com.thresholdsoft.astra.ui.home.Home;
+import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
 import com.thresholdsoft.astra.ui.login.userlogin.UserLoginActivity;
 import com.thresholdsoft.astra.ui.main.AstraMainActivity;
 
@@ -29,8 +30,9 @@ public class LoginActivity extends AppCompatActivity {
         activityLoginBinding.login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(LoginActivity.this, AstraMainActivity.class);
+                Intent intent=new Intent(LoginActivity.this, DashBoard.class);
                 startActivity(intent);
+                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
 
             }
         });
@@ -41,16 +43,18 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent=new Intent(LoginActivity.this, UserLoginActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
 
             }
         });
-        activityLoginBinding.userId.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(LoginActivity.this, Home.class);
-                startActivity(intent);
-
-            }
-        });
+//        activityLoginBinding.userId.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent=new Intent(LoginActivity.this, Home.class);
+//                startActivity(intent);
+//                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+//
+//            }
+//        });
     }
 }

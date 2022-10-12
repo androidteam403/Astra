@@ -16,67 +16,67 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Picker 1"
+                android:text="14599"
                 android:fontFamily="@font/poppins_semibold"
                 android:id="@+id/picker1"
                 android:textAlignment="center"
                 android:paddingTop="10sp"
                 android:paddingStart="8dp"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10sp"
-                android:text="Area 1"
-                android:id="@+id/area1"
-                android:fontFamily="@font/poppins_semibold"
-                android:paddingStart="16dp"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
+
 
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="2 "
+                android:layout_marginStart="15sp"
+                android:text="Jubileehills "
                 android:fontFamily="@font/poppins_semibold"
                 android:paddingStart="18sp"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10sp"
-                android:text="0"
+                android:layout_marginStart="23dp"
+                android:text="2"
                 android:fontFamily="@font/poppins_semibold"
                 android:paddingStart="55dp"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:text="0 "
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingStart="67dp"
+                android:textColor="@color/black"
+                android:textSize="11sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12sp"
+                android:layout_marginStart="55dp"
                 android:text="2 "
                 android:fontFamily="@font/poppins_semibold"
                 android:paddingStart="67dp"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="18sp"
+                android:layout_marginStart="66dp"
                 android:text="4 "
                 android:fontFamily="@font/poppins_semibold"
-                android:paddingStart="30dp"
+                android:paddingStart="33dp"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
 
         </LinearLayout>
 

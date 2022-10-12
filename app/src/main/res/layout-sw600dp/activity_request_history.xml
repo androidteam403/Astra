@@ -1,353 +1,683 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <HorizontalScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
 
+
+
+        <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#dcdfe9"
+            tools:context=".ui.requesthistory.RequestHistoryActivity">
+
+            <!-- Left side menu -->
             <RelativeLayout
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="959dp"
-                android:layout_height="match_parent"
-                android:background="#dcdfe9"
-                tools:context=".ui.requesthistory.RequestHistoryActivity">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-                <!-- Left side menu -->
                 <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:id="@+id/custom_layout"
+                    android:layout_width="105dp"
+                    android:layout_height="965dp">
+
+                    <include layout="@layout/custom_menu_layout" />
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:layout_marginEnd="25dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="13sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="750dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/request_history"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Chandra Mouli"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Supervisor"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"
+
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_marginStart="10sp"
+
+                    android:src="@drawable/apollo_circle_logo" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginTop="4dp"
+
+                    android:rotation="90"
+                    android:src="@drawable/black_right_arroww" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/header1"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_below="@+id/header"
+                android:layout_marginStart="115dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone"
+                android:layout_marginEnd="15sp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
 
                     <RelativeLayout
-                        android:id="@+id/custom_layout"
-                        android:layout_width="80dp"
-                        android:layout_height="580dp">
 
-                        <include layout="@layout/custom_menu_layout" />
+                        android:layout_width="200dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="28dp"
+                        android:background="@drawable/square_stroke_bg"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:padding="3dp"
+                            android:paddingStart="10dp"
+                            android:text="Hyderabad"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+
+                        <ImageView
+                            android:id="@+id/arrow"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginStart="150dp"
+                            android:contentDescription="@string/app_name"
+                            android:padding="5dp"
+                            android:rotation="90"
+                            android:src="@drawable/black_right_arroww"
+                            android:visibility="visible" />
+
 
                     </RelativeLayout>
+
+
+                </LinearLayout>
+
+
+                <RelativeLayout
+
+                    android:layout_width="189dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="18sp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/square_stroke_bg"
+                    android:padding="5dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:padding="3dp"
+                        android:paddingStart="10dp"
+                        android:text="All"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="141dp"
+                        android:contentDescription="@string/app_name"
+                        android:padding="5dp"
+                        android:rotation="90"
+                        android:src="@drawable/black_right_arroww"
+                        android:visibility="visible" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+
+                    android:layout_width="110dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/square_stroke_bg"
+                    android:padding="5dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:paddingTop="6dp"
+                        android:text="Today"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+
+                    android:layout_width="90dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/square_stroke_bg"
+                    android:padding="5dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:paddingTop="6dp"
+                        android:text="Week"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+
+                    android:layout_width="80dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/square_stroke_bg"
+                    android:padding="5dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:paddingTop="6dp"
+                        android:text="Month"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+
+                    android:layout_width="150dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/square_stroke_bg"
+                    android:padding="5dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:paddingTop="6dp"
+                        android:text="DD/MM/YYYY"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="90dp"
+                        android:contentDescription="@string/app_name"
+                        android:src="@drawable/calendar"
+                        android:visibility="visible" />
 
 
                 </RelativeLayout>
 
 
-                <!--          <RelativeLayout-->
-                <!--            android:layout_width="match_parent"-->
-                <!--            android:layout_height="match_parent">-->
+                <RelativeLayout
 
-                <!--            <RelativeLayout-->
-                <!--                android:layout_width="95dp"-->
-                <!--                android:id="@+id/custom_layout"-->
-                <!--                android:layout_height="match_parent">-->
-
-                <!--                <include layout="@layout/custom_menu_layout" />-->
-                <!--            </RelativeLayout>-->
+                    android:layout_width="50dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="28dp"
+                    android:background="@drawable/square_stroke_bg"
+                    android:padding="5dp">
 
 
-                <!-- Pick List History -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="100dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-
-                    android:layout_toRightOf="@+id/custom_layout"
-                    android:orientation="vertical"
-                    tools:ignore="NotSibling">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="13sp"
-                        android:layout_marginTop="14sp"
-                        android:layout_marginBottom="5dp"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:text="@string/request_history"
-                        android:textColor="#000000"
-                        android:textStyle="bold" />
-
-                    <!-- Search layout -->
-                    <LinearLayout
-                        android:layout_width="778dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10sp"
-                        android:layout_marginTop="10sp"
-                        android:layout_marginBottom="8dp">
-
-                        <!-- search bar -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="2"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="5dp"
-                                    android:fontFamily="@font/poppins_semibold"
-
-                                    android:text="Purchase Requisition Number"
-                                    android:textColor="@color/bluetooth_header_bg"
-                                    android:textSize="12sp" />
-
-                                <EditText
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:background="@drawable/search_box_bg"
-                                    android:drawableRight="@drawable/search_icon"
-                                    android:hint="@string/all"
-                                    android:paddingVertical="7dp"
-                                    android:fontFamily="@font/poppins_semibold"
-                                    android:paddingLeft="10dp"
-                                    android:paddingRight="5dp"
-                                    android:textColorHint="@color/black"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="5dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="5dp"
-                                    android:text="@string/supervisior_name"
-android:fontFamily="@font/poppins_semibold"
-                                    android:textColor="@color/bluetooth_header_bg"
-                                    android:textSize="12sp" />
-
-                                <Spinner
-                                    android:id="@+id/area_name"
-                                    style="@style/SpinnerTheme"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:spinnerMode="dropdown" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="5dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="5dp"
-                                    android:text="@string/status"
-android:fontFamily="@font/poppins_semibold"
-                                    android:textColor="@color/bluetooth_header_bg"
-                                    android:textSize="11sp" />
-
-                                <Spinner
-                                    android:id="@+id/route_number"
-                                    style="@style/SpinnerTheme"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:spinnerMode="dropdown" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="5dp"
-                                android:layout_weight="2"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="5dp"
-                                    android:text="@string/allocation_date"
-android:fontFamily="@font/poppins_semibold"
-                                    android:textColor="@color/bluetooth_header_bg"
-                                    android:textSize="12sp" />
-
-                                <EditText
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:background="@drawable/search_box_bg"
-                                    android:hint="@string/_20_08_2021_20_08_2022"
-                                    android:paddingLeft="10dp"
-                                    android:fontFamily="@font/poppins_semibold"
-                                    android:textColorHint="@color/black"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="8dp"
-                                android:gravity="bottom"
-                                android:orientation="vertical">
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="bottom"
-                                    android:background="@drawable/rounded_corner_bg"
-                                    android:backgroundTint="#00aeef"
-                                    android:paddingHorizontal="5dp"
-                                    android:paddingVertical="6dp"
-                                    android:src="@drawable/search_icon"
-                                    app:tint="#FFFFFF" />
-
-                            </LinearLayout>
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <!-- Recyclerview -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10sp"
-                        android:layout_marginTop="7dp"
-                        android:layout_marginBottom="8dp"
-                        android:orientation="horizontal">
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/request_history_rcv"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:scrollbars="vertical" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- Footer -->
-                <LinearLayout
-                    android:id="@+id/footer_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="75dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginStart="80dp"
-                    android:layout_toRightOf="@+id/left_side_menu"
-                    android:background="#ffffff"
-                    android:orientation="horizontal"
-                    android:paddingVertical="8dp">
                     <ImageView
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="8dp"
-                        android:background="@color/black"
-                        android:layout_marginStart="300dp"
-                        android:src="@drawable/ic_baseline_receipt_24"
-                        />
+                        android:layout_marginStart="6dp"
+                        android:contentDescription="@string/app_name"
+                        android:src="@drawable/ic_baseline_filter_list_24"
+                        android:visibility="visible" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="28dp"
+                    android:background="@color/yellow"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingStart="13sp"
+                    android:paddingTop="10sp"
+                    android:paddingEnd="13sp"
+                    android:text="Apply"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="15sp"
+                    android:layout_marginTop="28dp"
+                    android:background="@color/color_takeprint"
+                    android:src="@drawable/ic_baseline_file_upload_24" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/header1"
+                android:layout_marginStart="120dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_toEndOf="@+id/left_side_menu"
+
+                android:layout_toRightOf="@+id/custom_layout"
+                android:orientation="vertical"
+                tools:ignore="NotSibling">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="13sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="750dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/request_history"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <!-- Search layout -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="10sp"
+
+                    android:layout_marginBottom="8dp">
+
+                    <!-- search bar -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:paddingStart="10sp"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:text="@string/picker_nrequests"
-                        android:textColor="#000000" />
+                        android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="30dp"
-                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/total_requests"
-                            android:textColor="#D1CBCB"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:fontFamily="@font/poppins_semibold"
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/_120"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:textColor="#C1BBBB"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+                                android:text="Purchase Requisition Number"
+                                android:textColor="@color/bluetooth_header_bg"
+                                android:textSize="16sp" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
-                        android:orientation="vertical">
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/search_box_bg"
+                                android:drawableRight="@drawable/search_icon"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:hint="@string/all"
+                                android:paddingVertical="7dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="5dp"
+                                android:textColorHint="@color/black"
+                                android:textSize="14sp" />
+                        </LinearLayout>
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/approved"
-                            android:textColor="#D1CBCB"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="2"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="100"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:textColor="#C1BBBB"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@string/supervisior_name"
+                                android:textColor="@color/bluetooth_header_bg"
+                                android:textSize="16sp" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
-                        android:orientation="vertical">
+                            <Spinner
+                                android:id="@+id/area_name"
+                                style="@style/SpinnerTheme"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:spinnerMode="dropdown" />
+                        </LinearLayout>
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/pending"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:textColor="#D1CBCB"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="20"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:textColor="#C1BBBB"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@string/status"
+                                android:textColor="@color/bluetooth_header_bg"
+                                android:textSize="16sp" />
+
+                            <Spinner
+                                android:id="@+id/route_number"
+                                style="@style/SpinnerTheme"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:spinnerMode="dropdown" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="2"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@string/allocation_date"
+                                android:textColor="@color/bluetooth_header_bg"
+                                android:textSize="16sp" />
+
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/search_box_bg"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:hint="@string/_20_08_2021_20_08_2022"
+                                android:paddingLeft="10dp"
+                                android:textColorHint="@color/black"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="8dp"
+                            android:gravity="bottom"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="38dp"
+                                android:layout_gravity="bottom"
+                                android:background="@drawable/rounded_corner_bg"
+                                android:backgroundTint="#00aeef"
+                                android:paddingHorizontal="5dp"
+                                android:paddingVertical="6dp"
+                                android:src="@drawable/search_icon"
+                                app:tint="#FFFFFF" />
+
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
 
+                <!-- Recyclerview -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/request_history_rcv"
+                        android:layout_width="match_parent"
+                        android:layout_height="480dp"
+                        android:orientation="horizontal"
+                        android:scrollbars="vertical" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Footer -->
+            <LinearLayout
+                android:id="@+id/footer_layout"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="105dp"
+                android:layout_toRightOf="@+id/left_side_menu"
+                android:background="#ffffff"
+                android:orientation="horizontal"
+                android:paddingVertical="8dp">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="300dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/black"
+                    android:src="@drawable/ic_baseline_receipt_24" />
+
                 <TextView
-                    android:id="@+id/yellow_line"
-                    android:layout_width="10dp"
-                    android:layout_height="69.5dp"
-                    android:layout_marginStart="76dp"
-                    android:layout_marginTop="235dp"
-                    android:background="@color/lite_yellow"
-                    android:paddingStart="28dp"
-                    android:paddingTop="26dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingStart="24dp"
+                    android:text="@string/picker_nrequests"
+                    android:textColor="#000000"
+                    android:textSize="20dp" />
 
-                    android:textSize="11sp"
-                    android:visibility="gone" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="35dp"
+                    android:orientation="vertical">
 
-            </RelativeLayout>
-        </ScrollView>
-    </HorizontalScrollView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="@string/total_requests"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="@string/_120"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="35dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="@string/approved"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="100"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="35dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="@string/pending"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="20"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="126dp"
+                android:layout_marginTop="45dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingStart="28dp"
+                android:paddingTop="26dp"
+                android:text="DC ID"
+                android:visibility="gone"
+                android:textColor="@color/silver"
+                android:textSize="11sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="320dp"
+                android:layout_marginTop="45dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingStart="29dp"
+                android:paddingTop="26dp"
+                android:text="Area Name"
+                android:visibility="gone"
+                android:textColor="@color/silver"
+                android:textSize="11sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="520dp"
+                android:layout_marginTop="45dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingStart="28dp"
+                android:paddingTop="26dp"
+                android:visibility="gone"
+
+                android:text="Date &amp; Time"
+                android:textColor="@color/silver"
+                android:textSize="11sp" />
+            <TextView
+                android:id="@+id/yellow_line"
+                android:layout_width="12sp"
+                android:layout_height="73dp"
+                android:layout_marginStart="99dp"
+                android:layout_marginTop="272dp"
+                android:background="@color/lite_yellow"
+                android:paddingStart="28dp"
+                android:paddingTop="26dp"
+
+                android:textSize="11sp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
 
 </layout>

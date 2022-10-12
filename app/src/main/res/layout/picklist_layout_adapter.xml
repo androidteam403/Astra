@@ -7,7 +7,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardview"
-            android:layout_width="210dp"
+            android:layout_width="225dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
@@ -34,7 +34,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="20dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="5dp"
                         android:orientation="horizontal"
@@ -49,7 +49,7 @@
                             android:id="@+id/order_id"
                             android:fontFamily="@font/poppins_semibold"
                             android:textColor="@color/black"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
 
 
                     </LinearLayout>
@@ -57,11 +57,10 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="20dp"
                         android:layout_marginTop="4dp"
                         android:layout_marginEnd="5dp"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
                         android:layout_marginRight="5dp">
 
 
@@ -70,8 +69,7 @@
                             android:layout_height="wrap_content"
                             android:text="AREA: "
                             android:fontFamily="@font/poppins_semibold"
-                            android:textColor="@color/silver"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -80,26 +78,25 @@
                             android:id="@+id/area"
                             android:fontFamily="@font/poppins_semibold"
                             android:textColor="@color/black"
-                            android:textSize="10sp"
+                            android:textSize="12sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="49dp"
+                            android:layout_marginLeft="45dp"
                             android:text="REQUIRE: "
                             android:fontFamily="@font/poppins_semibold"
-                            android:textColor="@color/silver"
-                            android:textSize="10sp" />
+                            android:textSize="13sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="6"
+                            android:text="1"
                             android:fontFamily="@font/poppins_semibold"
                             android:id="@+id/require"
                             android:textColor="@color/black"
-                            android:textSize="10sp"
+                            android:textSize="12sp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -108,7 +105,7 @@
 
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="20dp"
                         android:layout_marginTop="4dp"
                         android:layout_marginEnd="5dp"
                         android:orientation="horizontal"
@@ -120,8 +117,7 @@
                             android:layout_height="wrap_content"
                             android:text="ROUTE: "
                             android:fontFamily="@font/poppins_semibold"
-                            android:textColor="@color/silver"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -130,17 +126,16 @@
                             android:fontFamily="@font/poppins_semibold"
                             android:id="@+id/route"
                             android:textColor="@color/black"
-                            android:textSize="10sp"
+                            android:textSize="12sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="40dp"
+                            android:layout_marginLeft="38dp"
                             android:text="COLLECTED: "
                             android:fontFamily="@font/poppins_semibold"
-                            android:textColor="@color/silver"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -149,7 +144,7 @@
                             android:fontFamily="@font/poppins_semibold"
                             android:id="@+id/collected"
                             android:textColor="@color/black"
-                            android:textSize="10sp"
+                            android:textSize="12sp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -158,12 +153,12 @@
 
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="4dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="3dp"
                         android:orientation="horizontal"
                         android:layout_marginRight="5dp"
-                        android:layout_marginLeft="10dp">
+                        >
 
 
                         <TextView
@@ -173,7 +168,7 @@
                             android:fontFamily="@font/poppins_semibold"
 
                             android:textAlignment="center"
-                            android:textSize="10sp"
+                            android:textSize="12sp"
                             android:gravity="center_horizontal" />
 
                         <TextView
@@ -185,7 +180,7 @@
                             android:id="@+id/status"
                             android:textAlignment="center"
                             android:textColor="@color/material_amber_accent_700"
-                            android:textSize="10sp"
+                            android:textSize="12sp"
                             android:gravity="center_horizontal"
                             android:layout_marginLeft="5dp" />
 
@@ -194,7 +189,7 @@
 
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="127dp"
+                        android:layout_marginStart="105dp"
                         android:layout_marginEnd="5dp"
                         android:orientation="horizontal"
                         android:layout_marginRight="5dp"
@@ -216,7 +211,7 @@
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:fontFamily="@font/poppins_semibold"
-                            android:textSize="10sp"
+                            android:textSize="13sp"
                             android:gravity="center_horizontal"
                             android:layout_marginLeft="5dp" />
 

@@ -21,8 +21,10 @@ import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityRequestHistoryBinding;
 import com.thresholdsoft.astra.ui.adapter.RequestHistoryAdapter;
 import com.thresholdsoft.astra.ui.home.Home;
+import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.main.AstraMainActivity;
+import com.thresholdsoft.astra.ui.pickerrequests.PickerRequests;
 import com.thresholdsoft.astra.ui.picklisthistory.PickListHistoryActivity;
 import com.thresholdsoft.astra.ui.requesthistory.model.RequestHistoryModel;
 
@@ -31,7 +33,7 @@ import java.util.List;
 
 public class RequestHistoryActivity extends BaseActivity {
     ActivityRequestHistoryBinding activityRequestHistoryBinding;
-    List<String> requestHistoryModels=new ArrayList<>();
+    List<String> requestHistoryModels = new ArrayList<>();
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -41,19 +43,22 @@ public class RequestHistoryActivity extends BaseActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         activityRequestHistoryBinding = DataBindingUtil.setContentView(this, R.layout.activity_request_history);
-        RelativeLayout pickListLayout = findViewById(R.id.myProfileLayout);
-        RelativeLayout dashboardLayout = findViewById(R.id.dashboard);
+        RelativeLayout dashboardsupervisor = findViewById(R.id.dashboard_layout);
+        RelativeLayout dashboardadmin = findViewById(R.id.second_dashboard);
+        ImageView apollologo = findViewById(R.id.apollo_logo);
+        RelativeLayout pickListLayout = findViewById(R.id.picklist_layout);
         RelativeLayout pickListHistoryLayout = findViewById(R.id.picklist_history_layout);
         RelativeLayout requestHistoryLayout = findViewById(R.id.requesthistory_layout);
-        RelativeLayout seconddashboard = findViewById(R.id.second_dashboard);
-        RelativeLayout secondpicklisthistory = findViewById(R.id.second_picklist_history_layout);
-        RelativeLayout secondpicklist = findViewById(R.id.second_picklist);
+        RelativeLayout pickerrequestlayout = findViewById(R.id.picker_request_layout);
+        RelativeLayout approvedhistoryLayout = findViewById(R.id.approved_history_layout);
         TextView picklist = findViewById(R.id.request_history_text);
-        ImageView apollologo=findViewById(R.id.apollo_logo);
-
-        requestHistoryLayout.setBackgroundResource(R.color.lite_yellow);
-        activityRequestHistoryBinding.yellowLine.setVisibility(View.VISIBLE);
+        TextView reqhistory = findViewById(R.id.history_req_text);
+        reqhistory.setTextColor(R.color.black);
         picklist.setTextColor(R.color.black);
+        activityRequestHistoryBinding.yellowLine.setVisibility(View.VISIBLE);
+        requestHistoryLayout.setBackgroundResource(R.color.lite_yellow);
+
+
         String[] supervisorName = new String[]{"All"};
         Spinner s = (Spinner) findViewById(R.id.area_name);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, supervisorName); // android.R.layout.simple_spinner_item
@@ -69,6 +74,10 @@ public class RequestHistoryActivity extends BaseActivity {
         requestHistoryModels.add("2");
         requestHistoryModels.add("3");
         requestHistoryModels.add("4");
+        requestHistoryModels.add("1");
+        requestHistoryModels.add("3");
+        requestHistoryModels.add("4");
+        requestHistoryModels.add("1");
 
 //        ArrayList<RequestHistoryModel> requestHistoryModels = new ArrayList<>();
 //
@@ -101,29 +110,40 @@ public class RequestHistoryActivity extends BaseActivity {
         apollologo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
 
                 startActivity(new Intent(RequestHistoryActivity.this, LoginActivity.class));
-            }
-        });
-
-        dashboardLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
 
-                startActivity(new Intent(RequestHistoryActivity.this, Home.class));
             }
         });
 
+        dashboardsupervisor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                startActivity(new Intent(RequestHistoryActivity.this, DashBoard.class));
+                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+
+            }
+        });
+
+        pickerrequestlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(RequestHistoryActivity.this, PickerRequests.class));
+                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+
+            }
+        });
 
         pickListLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
 
                 startActivity(new Intent(RequestHistoryActivity.this, AstraMainActivity.class));
+                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+
             }
         });
 
@@ -136,7 +156,6 @@ public class RequestHistoryActivity extends BaseActivity {
 
             }
         });
-
 
 
     }

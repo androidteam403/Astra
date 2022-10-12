@@ -27,7 +27,7 @@
                     android:text="Product Name"
                     android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/bluetooth_header_bg"
-                    android:textSize="11sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/purchase_requisition"
@@ -37,13 +37,13 @@
                     android:text="Red Bull"
                     android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/black"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="26dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -52,7 +52,7 @@
                     android:text="Rack Shelf"
                     android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/bluetooth_header_bg"
-                    android:textSize="11sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/rackshelf_num"
@@ -63,14 +63,14 @@
                     android:layout_marginTop="5dp"
 
                     android:textColor="@color/black"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="26dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -79,7 +79,7 @@
                     android:text="Allocated Qty."
                     android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/bluetooth_header_bg"
-                    android:textSize="11sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/area_name"
@@ -90,13 +90,13 @@
                     android:layout_marginTop="5dp"
 
                     android:textColor="@color/black"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="26dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -105,7 +105,7 @@
                     android:text="Approved on"
                     android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/bluetooth_header_bg"
-                    android:textSize="11sp" />
+                    android:textSize="14sp" />
 
 
                 <TextView
@@ -117,13 +117,13 @@
                     android:layout_marginTop="5dp"
 
                     android:textColor="@color/black"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="26dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -132,7 +132,7 @@
                     android:text="Request"
                     android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/bluetooth_header_bg"
-                    android:textSize="11sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/product_name"
@@ -143,7 +143,7 @@
                     android:layout_marginTop="5dp"
 
                     android:textColor="@color/black"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
 
@@ -151,12 +151,12 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="26dp"
                 android:orientation="horizontal">
                 <ImageView
-                    android:layout_width="18sp"
+                    android:layout_width="20dp"
                     android:layout_marginTop="2dp"
-                    android:layout_height="18sp"
+                    android:layout_height="20dp"
                     android:src="@drawable/check_mark_icon"/>
 
 
@@ -168,12 +168,12 @@
                     android:layout_marginStart="5dp"
                     android:paddingStart="9sp"
                     android:paddingEnd="10sp"
-                    android:background="@color/light_green"
+                    android:background="@color/green"
 
                     android:paddingTop="2dp"
                     android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/white"
-                    android:textSize="11sp" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -185,8 +185,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:src="@drawable/edit_view" />
             </LinearLayout>
         </LinearLayout>

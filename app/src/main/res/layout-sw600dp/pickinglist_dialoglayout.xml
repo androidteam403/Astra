@@ -40,7 +40,7 @@
                     android:layout_height="30dp"
                     android:id="@+id/close"
 
-                    android:layout_marginStart="255dp"
+                    android:layout_marginStart="200dp"
                     android:layout_marginEnd="5dp"
                     android:src="@drawable/ic_baseline_close_24" />
 
@@ -66,7 +66,6 @@
                         android:padding="3dp"
                         android:paddingStart="10dp"
                         android:text="No of Boxes"
-                        android:textColor="@color/silver"
                         android:textSize="11sp"
                         android:textStyle="bold" />
 
@@ -115,7 +114,6 @@
                         android:padding="3dp"
                         android:paddingStart="10dp"
                         android:text="Mode Of Delivery"
-                        android:textColor="@color/silver"
                         android:textSize="11sp"
                         android:textStyle="bold" />
 
@@ -185,7 +183,6 @@
                         android:padding="3dp"
                         android:paddingStart="10dp"
                         android:text="Weight"
-                        android:textColor="@color/silver"
                         android:textSize="11sp"
                         android:textStyle="bold" />
 
@@ -233,7 +230,6 @@
                         android:padding="3dp"
                         android:paddingStart="10dp"
                         android:text="Transporter Code"
-                        android:textColor="@color/silver"
                         android:textSize="11sp"
                         android:textStyle="bold" />
 

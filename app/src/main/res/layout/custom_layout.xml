@@ -118,7 +118,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/dashboardMyProfile"
                             android:layout_marginTop="38dp"
-                            android:text="Picker\nRequests"
+                            android:text="  Picker\nRequests"
                             android:textColor="@color/white"
                             android:textSize="10sp"
                             android:textStyle="bold" />

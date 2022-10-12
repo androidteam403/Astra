@@ -17,6 +17,12 @@ import java.util.List;
 
 public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.ViewHolder> {
     private Activity activity;
+
+    public PickerListAdapter(Activity activity, List<String> pickListHistoryModels) {
+        this.activity = activity;
+        this.pickListHistoryModels = pickListHistoryModels;
+    }
+
     private List<String> pickListHistoryModels = new ArrayList<>();
 
     @NonNull
