@@ -1,7 +1,7 @@
-package com.example.astra.network;
+package com.thresholdsoft.astra.network;
 
 
-import com.example.astra.BuildConfig;
+import com.thresholdsoft.astra.BuildConfig;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor;

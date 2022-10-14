@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">Astra</string>
+    <string name="warehouse_management">WAREHOUSE MANAGEMENT</string>
+    <string name="user_id_name">User ID/Name</string>
+    <string name="password">Password</string>
+    <string name="user_login">USER LOGIN</string>
+    <string name="phone">Phone</string>
+    <string name="send_otp">SEND OTP</string>
+    <string name="pick_list_history">PICK LIST HISTORY</string>
+    <string name="all">All</string>
+    <string name="_20_08_2021_20_08_2022">20/08/2021 - 20-08-2022</string>
+    <string name="picker_nhistory">PICKER\nHISTORY</string>
+    <string name="total_assigned">TOTAL ASSIGNED</string>
+    <string name="_120">120</string>
+    <string name="completed">COMPLETED</string>
+    <string name="_20">20</string>
+    <string name="purchase_requisition">Purchase Requisition</string>
+    <string name="allocation_date_time">Allocation Date Time</string>
+    <string name="area_name">Area Name</string>
+    <string name="route">Route</string>
+    <string name="product_name">Product Name</string>
+    <string name="rack_shelf">Rack Shelf</string>
+    <string name="status">Status</string>
+    <string name="request_history">REQUEST HISTORY</string>
+    <string name="supervisior_name">Supervisior Name</string>
+    <string name="allocation_date">Allocation Date</string>
+    <string name="picker_nrequests">PICKER\nREQUESTS</string>
+    <string name="total_requests">TOTAL REQUESTS</string>
+    <string name="approved">APPROVED</string>
+    <string name="pending">PENDING</string>
+    <string name="supervisor">Supervisor</string>
+    <string name="request">Request</string>
 </resources>
