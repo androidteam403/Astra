@@ -15,10 +15,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-//
+    //
 //    public static ApiInterface getApiService(String baseUrl) {
 //        return getRetrofitInstance(baseUrl).create(ApiInterface.class);
 //    }
+    private static Retrofit retrofit = null;
+    static String BASE_URL = "http://online.apollopharmacy.org:51/EPOS/";
 
     private static Retrofit getRetrofitInstance(String baseUrl) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -35,7 +37,7 @@ public class ApiClient {
                 .setLenient()
                 .create();
         return new Retrofit.Builder()
-                .baseUrl(baseUrl)
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(client)
                 .build();
@@ -44,4 +46,25 @@ public class ApiClient {
 //    public static ApiInterface getApiService2(String baseUrl) {
 //        return getRetrofitInstance(baseUrl).create(ApiInterface.class);
 //    }
+
+
+    public static Retrofit getClient() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (BuildConfig.DEBUG) {
+            builder.addInterceptor(new OkHttpProfilerInterceptor());
+        }
+        OkHttpClient client = builder
+                .connectTimeout(3, TimeUnit.MINUTES)
+                .writeTimeout(3, TimeUnit.MINUTES)
+                .readTimeout(3, TimeUnit.MINUTES)
+                .addInterceptor(interceptor).build();
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+        return retrofit;
+    }
 }
