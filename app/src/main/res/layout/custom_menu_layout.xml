@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@color/imagebackgroundcolor">
 
         <ImageView
             android:id="@+id/apollo_logo"
-            android:layout_width="85dp"
-            android:layout_height="85dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
             android:contentDescription="@string/app_name"
@@ -23,10 +23,8 @@
             android:orientation="vertical">
 
 
-
-
             <RelativeLayout
-                android:id="@+id/myProfileLayout"
+                android:id="@+id/picklist_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -46,10 +44,11 @@
 
                     <ImageView
                         android:id="@+id/dashboardMyProfileIcon"
-                        android:layout_width="75dp"
-                        android:layout_height="55dp"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
+                        android:layout_marginEnd="15sp"
                         android:contentDescription="@string/app_name"
                         app:srcCompat="@drawable/ic_baseline_hail_24" />
 
@@ -59,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginEnd="5dp"
                         android:layout_marginRight="7dp">
 
                         <TextView
@@ -67,20 +66,21 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/dashboardMyProfile"
-                            android:layout_marginTop="65dp"
-                            android:text="PickList"
+                            android:layout_marginTop="42dp"
+                            android:layout_marginEnd="12sp"
                             android:fontFamily="@font/poppins_semibold"
+                            android:text="Pick List"
                             android:textColor="@color/white"
-                            android:textSize="16sp"
+                            android:textSize="10sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </RelativeLayout>
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/picklist_history_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/picklist_history_layout"
                 android:layout_alignParentRight="true"
                 android:layout_centerInParent="true"
                 android:layout_marginStart="1dp"
@@ -97,11 +97,11 @@
                     android:layout_alignParentRight="true">
 
                     <ImageView
-                        android:layout_width="75dp"
-                        android:layout_height="55dp"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginEnd="3dp"
+                        android:layout_marginEnd="18sp"
                         android:contentDescription="@string/app_name"
                         app:srcCompat="@drawable/ic_baseline_receipt_long_24" />
 
@@ -111,21 +111,37 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginEnd="5dp"
                         android:layout_marginRight="5dp">
 
                         <TextView
+                            android:id="@+id/picklisthistory_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/dashboardMyProfile"
-                            android:layout_marginTop="65dp"
-                            android:text="PickList\nHistory"
+                            android:layout_marginTop="42dp"
+                            android:layout_marginEnd="14sp"
                             android:fontFamily="@font/poppins_semibold"
+                            android:text="Picklist"
                             android:textColor="@color/white"
-                            android:id="@+id/picklisthistory_text"
-                            android:textSize="16sp"
+                            android:textSize="10sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/dashboardMyProfile"
+                        android:layout_marginStart="4sp"
+                        android:layout_marginTop="54dp"
+                        android:layout_marginEnd="21dp"
+                        android:layout_alignParentRight="true"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="History"
+                        android:id="@+id/history_picklist_text"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -149,11 +165,11 @@
                     android:layout_alignParentRight="true">
 
                     <ImageView
-                        android:layout_width="75dp"
-                        android:layout_height="55dp"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginEnd="4dp"
+                        android:layout_marginEnd="15sp"
                         android:contentDescription="@string/app_name"
                         app:srcCompat="@drawable/ic_baseline_feed_24" />
 
@@ -163,28 +179,45 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginEnd="7dp"
-                        >
+                        android:layout_marginEnd="7dp">
 
                         <TextView
+                            android:id="@+id/request_history_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/dashboardMyProfile"
-                            android:layout_marginTop="65dp"
-                            android:text="Request\nHistory"
+                            android:layout_marginStart="9sp"
+                            android:layout_marginTop="42dp"
+                            android:layout_marginEnd="8dp"
                             android:fontFamily="@font/poppins_semibold"
-                            android:id="@+id/request_history_text"
+                            android:text="Request"
                             android:textColor="@color/white"
-                            android:textSize="16sp"
+                            android:textSize="10sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/dashboardMyProfile"
+                        android:layout_marginStart="4sp"
+                        android:layout_marginTop="54dp"
+                        android:layout_marginEnd="18sp"
+                        android:layout_alignParentRight="true"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="History"
+                        android:id="@+id/history_req_text"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
                 </RelativeLayout>
 
             </RelativeLayout>
+
             <RelativeLayout
+                android:id="@+id/dashboard_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/dashboard_layout"
                 android:layout_alignParentRight="true"
                 android:layout_centerInParent="true"
                 android:layout_marginStart="1dp"
@@ -201,11 +234,11 @@
                     android:layout_alignParentRight="true">
 
                     <ImageView
-                        android:layout_width="75dp"
-                        android:layout_height="55dp"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginEnd="3dp"
+                        android:layout_marginEnd="15sp"
                         android:contentDescription="@string/app_name"
                         app:srcCompat="@drawable/ic_baseline_analytics_24" />
 
@@ -215,27 +248,28 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginEnd="5dp"
                         android:layout_marginRight="5dp">
 
                         <TextView
+                            android:id="@+id/dashobaord_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/dashboardMyProfile"
-                            android:layout_marginTop="65dp"
-                            android:text="DashBoard"
+                            android:layout_marginTop="40dp"
                             android:fontFamily="@font/poppins_semibold"
+                            android:text="Dashboard"
                             android:textColor="@color/white"
-                            android:id="@+id/dashobaord_text"
-                            android:textSize="16sp"
+                            android:textSize="10sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </RelativeLayout>
             </RelativeLayout>
+
             <RelativeLayout
+                android:id="@+id/picker_request_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/picker_request_layout"
                 android:layout_alignParentRight="true"
                 android:layout_centerInParent="true"
                 android:layout_marginStart="1dp"
@@ -252,11 +286,11 @@
                     android:layout_alignParentRight="true">
 
                     <ImageView
-                        android:layout_width="75dp"
-                        android:layout_height="55dp"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginEnd="3dp"
+                        android:layout_marginEnd="15sp"
                         android:contentDescription="@string/app_name"
                         app:srcCompat="@drawable/ic_baseline_hail_24" />
 
@@ -266,28 +300,44 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginEnd="5dp"
                         android:layout_marginRight="5dp">
 
                         <TextView
+                            android:id="@+id/pickerrequest_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/dashboardMyProfile"
-                            android:layout_marginTop="65dp"
-                            android:text="  Picker\nRequests"
+                            android:layout_marginTop="43dp"
+                            android:layout_marginEnd="18sp"
                             android:fontFamily="@font/poppins_semibold"
+                            android:text="Picker"
                             android:textColor="@color/white"
-                            android:id="@+id/pickerrequest_text"
-                            android:textSize="16sp"
+                            android:textSize="10sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/dashboardMyProfile"
+                        android:layout_marginStart="4sp"
+                        android:layout_marginTop="54dp"
+                        android:layout_marginEnd="14sp"
+                        android:layout_alignParentRight="true"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Request"
+                        android:id="@+id/request_text"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
                 </RelativeLayout>
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/approved_history_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/approved_history_layout"
                 android:layout_alignParentRight="true"
                 android:layout_centerInParent="true"
                 android:layout_marginStart="1dp"
@@ -301,14 +351,15 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_alignParentRight="true">
 
                     <ImageView
-                        android:layout_width="75dp"
-                        android:layout_height="55dp"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginEnd="3dp"
+                        android:layout_marginEnd="15sp"
                         android:contentDescription="@string/app_name"
                         app:srcCompat="@drawable/ic_baseline_receipt_24" />
 
@@ -318,21 +369,37 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginEnd="5dp"
                         android:layout_marginRight="5dp">
 
                         <TextView
+                            android:id="@+id/approved_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/dashboardMyProfile"
-                            android:layout_marginTop="65dp"
-                            android:text="Approved\n    History"
+                            android:layout_marginTop="40dp"
+                            android:layout_marginEnd="8dp"
                             android:fontFamily="@font/poppins_semibold"
+                            android:text="Approved"
                             android:textColor="@color/white"
-                            android:id="@+id/approved_text"
-                            android:textSize="16sp"
+                            android:textSize="10sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/dashboardMyProfile"
+                        android:layout_marginStart="4sp"
+                        android:layout_marginTop="54dp"
+                        android:layout_marginEnd="21dp"
+                        android:layout_alignParentRight="true"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="History"
+                        android:id="@+id/history_approve_text"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
                 </RelativeLayout>
             </RelativeLayout>
 

@@ -8,14 +8,6 @@
         android:layout_height="match_parent"
         android:background="#dcdfe9"
         tools:context=".ui.picklisthistory.PickListHistoryActivity">
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-
-        <HorizontalScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
 
         <RelativeLayout
             android:id="@+id/left_side_menu"
@@ -675,8 +667,7 @@
 
             android:textSize="11sp"
             android:visibility="gone" />
-        </HorizontalScrollView>
-        </ScrollView>
+
     </RelativeLayout>
 
 </layout>
