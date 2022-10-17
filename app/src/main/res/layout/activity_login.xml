@@ -36,6 +36,7 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:text="AP5946"
                 android:id="@+id/user_id"
                 android:layout_width="380dp"
                 android:layout_height="wrap_content"
@@ -49,6 +50,7 @@
                 android:textSize="14sp" />
 
             <EditText
+                android:text="Apollo@123"
                 android:id="@+id/password"
                 android:layout_width="385dp"
                 android:layout_height="wrap_content"

@@ -48,6 +48,8 @@ public class AstraMainActivity extends BaseActivity {
     List<ItemsList> itemsLists = new ArrayList<>();
     ItemsList itemsList,itemsList1,itemsList2,itemsList3;
     boolean changecolor = false;
+    boolean isPicker=false;
+    String userId;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -69,6 +71,15 @@ public class AstraMainActivity extends BaseActivity {
         picklist.setTextColor(R.color.thick_black);
         activityAstraMainBinding.yellowLine.setVisibility(View.VISIBLE);
         pickListLayout.setBackgroundResource(R.color.lite_yellow);
+
+
+
+        if(getDataManager().getEmplRole()!=null && getDataManager().getEmplRole().equals("Picker")){
+            dashboardsupervisor.setVisibility(View.INVISIBLE);
+            pickerrequestlayout.setVisibility(View.INVISIBLE);
+
+        }
+
 
         String[] areaNames = new String[]{"All", "Allocated", "Not Allocated", "Pending"};
         Spinner s = (Spinner) findViewById(R.id.astramain);
@@ -155,6 +166,7 @@ public class AstraMainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AstraMainActivity.this, PickListHistoryActivity.class);
+                intent.putExtra("userId",userId );
                 startActivity(intent);
                 overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
 
@@ -229,6 +241,7 @@ public class AstraMainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AstraMainActivity.this, RequestHistoryActivity.class);
+                intent.putExtra("userId",userId );
                 startActivity(intent);
                 overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
 

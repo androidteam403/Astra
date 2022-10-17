@@ -47,11 +47,13 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:id="@+id/enterOtp"
                 android:layout_width="380dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/rounded_transparent_bg"
-                android:hint="@string/phone"
+                android:hint="Enter Otp"
+                android:maxLength="4"
                 android:paddingStart="45dp"
                 android:inputType="phone"
                 android:paddingHorizontal="25dp"
@@ -63,7 +65,7 @@
                 android:layout_width="380dp"
                 android:layout_height="wrap_content"
                 android:background="#fdb710"
-                android:text="@string/send_otp"
+                android:text="SUBMIT"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
         </LinearLayout>

@@ -20,9 +20,9 @@ public class ApiClient {
 //        return getRetrofitInstance(baseUrl).create(ApiInterface.class);
 //    }
     private static Retrofit retrofit = null;
-    static String BASE_URL = "http://online.apollopharmacy.org:51/EPOS/";
+    static String BASE_URL = "http://lms.apollopharmacy.org:8033/";
 
-    private static Retrofit getRetrofitInstance(String baseUrl) {
+    public static Retrofit getRetrofitInstance() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         if (BuildConfig.DEBUG) {
             builder.addInterceptor(new OkHttpProfilerInterceptor());

@@ -22,6 +22,7 @@ import java.io.Serializable;
 public class LoginActivity extends AppCompatActivity implements LoginActivityCallback {
     private ActivityLoginBinding activityLoginBinding;
     private LoginActivityController loginActivityController;
+    public String otp;
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,14 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityCal
         activityLoginBinding.login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginActivityController.validateUser( activityLoginBinding.userId.getText().toString(),  activityLoginBinding.password.getText().toString());
+
+                if(activityLoginBinding.userId.getText().toString().equals("") && activityLoginBinding.password.getText().toString().equals("")){
+                    Toast.makeText(getApplicationContext(), "Inputs should not be empty", Toast.LENGTH_SHORT).show();
+                }else{
+                    loginActivityController.validateUser( activityLoginBinding.userId.getText().toString(),  activityLoginBinding.password.getText().toString());
+
+                }
+
 
 //                Intent intent=new Intent(LoginActivity.this, DashBoard.class);
 //                startActivity(intent);
@@ -65,17 +73,23 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityCal
 
 
     @Override
-    public void onSucessfullValidateResponse(ValidateUserModelResponse body) {
-        if(body.getRequeststatus()==true && body.getOtp()!=""){
-            Intent intent=new Intent(LoginActivity.this, UserLoginActivity.class);
-            intent.putExtra(body.getOtp(), "getOtp");
-            intent.putExtra(body.getEmprole(), "getEmprole");
+    public void onSucessfullValidateResponse(ValidateUserModelResponse validateUserModelResponse) {
+        if(validateUserModelResponse.getRequeststatus()==true && validateUserModelResponse.getOtp()!=""){
+
+            Intent intent=new Intent(getApplicationContext(), UserLoginActivity.class);
+            intent.putExtra("getOtp", validateUserModelResponse.getOtp());
+            intent.putExtra("getEmprole", validateUserModelResponse.getEmprole());
             startActivity(intent);
             overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
-        }else if(body.getRequeststatus()==false && body.getRequestmessage()=="No Data Founds!!!"){
+        }else if(validateUserModelResponse.getRequeststatus()==false || validateUserModelResponse.getRequestmessage()=="No Data Founds!!!"){
             Toast.makeText(getApplicationContext(), "No Records Found.", Toast.LENGTH_SHORT).show();
         }
 
 
+    }
+
+    @Override
+    public void onFailureValidateResponse() {
+//        Toast.makeText(getApplicationContext(), "API NOT SUCCESSFULL", Toast.LENGTH_SHORT).show();
     }
 }

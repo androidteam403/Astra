@@ -1,6 +1,7 @@
 package com.thresholdsoft.astra.ui.login;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.thresholdsoft.astra.network.ApiClient;
 import com.thresholdsoft.astra.network.ApiInterface;
@@ -16,24 +17,24 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivityController {
-    Activity activity;
+    Context context;
     LoginActivityCallback loginActivityCallback;
 
 
-    public LoginActivityController(LoginActivityCallback loginActivityCallback, LoginActivity loginActivity) {
-        this.activity = loginActivity;
+    public LoginActivityController(LoginActivityCallback loginActivityCallback, Context context) {
+        this.context = context;
         this.loginActivityCallback = loginActivityCallback;
     }
 
     public void validateUser(String userId, String password) {
 
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-//            ApiInterface apiInterface = ApiClient.getClient(getDataManager().getEposURL());
+        ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
+
             ValidateUserModelRequest reqModel = new ValidateUserModelRequest();
             reqModel.setUserid(userId);
             reqModel.setPassword(password);
 
-            Call<ValidateUserModelResponse> call = apiInterface.VALIDATE_USER_API_CALL(reqModel);
+            Call<ValidateUserModelResponse> call = apiInterface.VALIDATE_USER_API_CALL("yvEoG+8MvYiOfhV2wb5jw", reqModel);
             call.enqueue(new Callback<ValidateUserModelResponse>() {
                 @Override
                 public void onResponse(Call<ValidateUserModelResponse> call, Response<ValidateUserModelResponse> response) {
@@ -44,7 +45,7 @@ public class LoginActivityController {
 
                 @Override
                 public void onFailure(Call<ValidateUserModelResponse> call, Throwable t) {
-
+                    loginActivityCallback.onFailureValidateResponse();
                 }
             });
 

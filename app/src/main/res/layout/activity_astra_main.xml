@@ -9,13 +9,13 @@
         android:background="@color/white"
         tools:context=".ui.main.AstraMainActivity">
         <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
         <HorizontalScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
         <RelativeLayout
@@ -37,7 +37,7 @@
             <LinearLayout
                 android:id="@+id/header"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="25dp"
