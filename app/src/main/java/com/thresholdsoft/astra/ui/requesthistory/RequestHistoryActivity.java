@@ -34,6 +34,7 @@ import java.util.List;
 public class RequestHistoryActivity extends BaseActivity {
     ActivityRequestHistoryBinding activityRequestHistoryBinding;
     List<String> requestHistoryModels = new ArrayList<>();
+    String userId;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -58,6 +59,11 @@ public class RequestHistoryActivity extends BaseActivity {
         activityRequestHistoryBinding.yellowLine.setVisibility(View.VISIBLE);
         requestHistoryLayout.setBackgroundResource(R.color.lite_yellow);
 
+        if(getDataManager().getEmplRole()!=null && getDataManager().getEmplRole().equals("Picker")){
+            dashboardsupervisor.setVisibility(View.GONE);
+            pickerrequestlayout.setVisibility(View.GONE);
+
+        }
 
         String[] supervisorName = new String[]{"All"};
         Spinner s = (Spinner) findViewById(R.id.area_name);

@@ -16,7 +16,7 @@ import retrofit2.http.POST;
 public interface ApiInterface {
 
     @POST("http://lms.apollopharmacy.org:8033/Digital/Apollo/AHL/ValidateUser")
-    Call<ValidateUserModelResponse> VALIDATE_USER_API_CALL(@Body ValidateUserModelRequest validateUserModelRequest);
+    Call<ValidateUserModelResponse> VALIDATE_USER_API_CALL(@Header("Auth-Token") String authToken, @Body ValidateUserModelRequest validateUserModelRequest);
 
     @POST("http://lms.apollopharmacy.org:8033/Digital/Apollo/AHL/GetAllocationData")
     Call<GetAllocationDataResponse> GET_ALLOCATION_DATA_API_CALL(@Header("Auth-Token") String authToken, @Body GetAllocationDataRequest getAllocationDataRequest);

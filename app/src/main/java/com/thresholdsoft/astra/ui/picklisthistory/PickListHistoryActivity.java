@@ -32,6 +32,7 @@ import java.util.List;
 public class PickListHistoryActivity extends BaseActivity {
     private ActivityPickListHistoryBinding activityPickListHistoryBinding;
     List<String> pickListHistoryModels = new ArrayList<>();
+    String userId;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -56,6 +57,11 @@ public class PickListHistoryActivity extends BaseActivity {
         picklistHist.setTextColor(R.color.black);
         activityPickListHistoryBinding.yellowLine.setVisibility(View.VISIBLE);
         pickListHistoryLayout.setBackgroundResource(R.color.lite_yellow);
+        if(getDataManager().getEmplRole()!=null && getDataManager().getEmplRole().equals("Picker")){
+            dashboardsupervisor.setVisibility(View.GONE);
+            pickerrequestlayout.setVisibility(View.GONE);
+
+        }
 
         String[] areaNames = new String[]{"Area-2", "Area-4", "Area-3", "Area-1"};
         Spinner s = (Spinner) findViewById(R.id.area_name);
