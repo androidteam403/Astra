@@ -1,9 +1,5 @@
 package com.thresholdsoft.astra.ui.pickerrequests;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,18 +12,20 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityPickerRequestsBinding;
 import com.thresholdsoft.astra.ui.adapter.ApproveRequestListAdapter;
 import com.thresholdsoft.astra.ui.adapter.CompleteListAdapter;
-import com.thresholdsoft.astra.ui.adapter.PickListAdapter;
-import com.thresholdsoft.astra.ui.adapter.PickListHistoryAdapter;
 import com.thresholdsoft.astra.ui.adapter.PickerListAdapter;
-import com.thresholdsoft.astra.ui.home.Home;
 import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.main.AstraMainActivity;
+import com.thresholdsoft.astra.ui.main.adapter.PickListAdapter;
+import com.thresholdsoft.astra.ui.main.model.GetAllocationDataResponse;
 import com.thresholdsoft.astra.ui.picklisthistory.PickListHistoryActivity;
 import com.thresholdsoft.astra.ui.requesthistory.RequestHistoryActivity;
 
@@ -37,6 +35,9 @@ import java.util.List;
 public class PickerRequests extends BaseActivity {
     private ActivityPickerRequestsBinding activityPickerRequestsBinding;
     ArrayList<String> names = new ArrayList<>();
+
+    //made changes by naveen
+    List<GetAllocationDataResponse.Allocationhddata> allocationhddataList = new ArrayList<>();
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -68,7 +69,7 @@ public class PickerRequests extends BaseActivity {
         s.setAdapter(adapter);
 
 
-        String[] status = new String[]{"Assign", "In-Progress", "Completed" };
+        String[] status = new String[]{"Assign", "In-Progress", "Completed"};
         Spinner s1 = (Spinner) findViewById(R.id.status_spinner);
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, R.layout.spinner_item, status);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -138,7 +139,7 @@ public class PickerRequests extends BaseActivity {
 
 
         LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(this);
-        PickListAdapter pickListAdapter = new PickListAdapter(this, names);
+        PickListAdapter pickListAdapter = new PickListAdapter(this, allocationhddataList, null);
 
         activityPickerRequestsBinding.pickerlistrecycleview.setLayoutManager(linearLayoutManager2);
         activityPickerRequestsBinding.pickerlistrecycleview.setAdapter(pickListAdapter);

@@ -12,6 +12,7 @@
     <string name="picker_nhistory">PICKER\nHISTORY</string>
     <string name="total_assigned">TOTAL ASSIGNED</string>
     <string name="_120">120</string>
+    <string name="price_format">%,.2f</string>
     <string name="completed">COMPLETED</string>
     <string name="_20">20</string>
     <string name="purchase_requisition">Purchase Requisition</string>
@@ -30,4 +31,19 @@
     <string name="pending">PENDING</string>
     <string name="supervisor">Supervisor</string>
     <string name="request">Request</string>
+    <string name="label_scan_barcode">Scan Barcode</string>
+    <string name="label_pick_list">Pick List</string>
+    <string name="label_pick_list_nhistory">Pick List\nHistory</string>
+    <string name="label_request_nhistory">Request\nHistory</string>
+    <string name="label_dashboard">Dashboard</string>
+    <string name="label_picker_nrequest">Picker\nRequest</string>
+    <string name="label_assigned">assigned</string>
+    <string name="label_in_pregress">in progress</string>
+    <string name="label_purchase_requisition">Purchase Requisition</string>
+    <string name="label_items_list">ITEMS LIST</string>
+    <string name="label_barcode">barcode</string>
+    <string name="label_item_number">item number</string>
+    <string name="label_max_retail_price">max. retail price</string>
+    <string name="label_select">Select</string>
+    <string name="label_barcode_scanner">BARCODE SCANNER</string>
 </resources>

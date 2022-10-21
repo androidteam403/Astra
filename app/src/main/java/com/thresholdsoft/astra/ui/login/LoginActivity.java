@@ -35,9 +35,9 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityCal
             public void onClick(View v) {
                 loginActivityController.validateUser( activityLoginBinding.userId.getText().toString(),  activityLoginBinding.password.getText().toString());
 
-//                Intent intent=new Intent(LoginActivity.this, DashBoard.class);
-//                startActivity(intent);
-//                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                Intent intent=new Intent(LoginActivity.this, DashBoard.class);
+                startActivity(intent);
+                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
 
             }
         });

@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <RelativeLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardview"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6sp"
             android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginBottom="3dp"
             android:visibility="visible"
             app:cardCornerRadius="6sp"
@@ -19,158 +17,61 @@
 
             <LinearLayout
                 android:id="@+id/orderHead"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/dimen5dp">
 
                 <LinearLayout
                     android:id="@+id/pendingLayout"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="5dp"
-                        android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="5dp">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Product Name "
                             android:fontFamily="@font/poppins_semibold"
-                            android:textSize="12sp" />
+                            android:text="Product Name "
+                            android:textSize="@dimen/dimen8sp" />
+
                         <ImageView
-                            android:layout_width="23dp"
-                            android:layout_height="23dp"
                             android:id="@+id/edit_view"
-                            android:layout_marginEnd="10sp"
+                            android:layout_width="@dimen/dimen15dp"
+                            android:layout_height="@dimen/dimen15dp"
+                            android:layout_alignParentEnd="true"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/edit_view" />
 
-                            android:src="@drawable/edit_view"
-                            android:layout_marginStart="190dp"/>
+                    </RelativeLayout>
 
-                    </LinearLayout>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="HIMALAYA DRYNESS DEFENSE PROTEIN SHA..."
-                        android:textColor="@color/black"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:layout_marginTop="4dp"
                         android:id="@+id/product_name"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="12sp" />
-                    <LinearLayout
-
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="5dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="@{allocationdetail.itemname}"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen8sp" />
+
+                    <LinearLayout
                         android:id="@+id/rackshelf_layout"
-                        android:orientation="horizontal"
-                        android:visibility="gone"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginLeft="10dp">
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Barcode "
-                                android:fontFamily="@font/poppins_semibold"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="9089999A050D"
-                                android:fontFamily="@font/poppins_semibold"
-                                android:textColor="@color/black"
-                                android:textSize="12sp"
-                                android:id="@+id/barcode"
-                                android:paddingStart="1dp"
-                                />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="20dp"
-                                android:text="Item Number "
-                                android:fontFamily="@font/poppins_semibold"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="DET001"
-                                android:id="@+id/itemnumber"
-                                android:textColor="@color/black"
-                                android:textSize="12sp"
-                                android:fontFamily="@font/poppins_semibold"
-                                android:layout_marginLeft="40dp"
-                                />
-
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="18sp"
-                                android:text="Expiry Date "
-                                android:fontFamily="@font/poppins_semibold"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="12/5/22"
-                                android:id="@+id/expiredate"
-                                android:textColor="@color/black"
-                                android:textSize="12sp"
-                                android:fontFamily="@font/poppins_semibold"
-                                android:layout_marginLeft="40dp"
-                                />
-
-
-                        </LinearLayout>
-
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="4dp"
                         android:layout_marginEnd="5dp"
-                        android:orientation="horizontal"
                         android:layout_marginRight="5dp"
-                        android:layout_marginLeft="10dp">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -179,46 +80,44 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Rack Shelf "
                                 android:fontFamily="@font/poppins_semibold"
-                                android:textSize="12sp" />
+                                android:text="Barcode "
+                                android:textSize="@dimen/dimen8sp" />
 
                             <TextView
+                                android:id="@+id/barcode"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="F0206 A050D"
                                 android:fontFamily="@font/poppins_semibold"
-                                android:textColor="@color/black"
-                                android:textSize="12sp"
-                                android:id="@+id/rackshelf_no"
                                 android:paddingStart="1dp"
-                                />
+                                android:text="@{allocationdetail.itembarcode}"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
                             android:orientation="vertical">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
-                                android:text="Allocated Qty "
                                 android:fontFamily="@font/poppins_semibold"
-                                android:textSize="12sp" />
+                                android:text="Item Number "
+                                android:textSize="@dimen/dimen8sp" />
 
                             <TextView
+                                android:id="@+id/itemnumber"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="3.00"
-                                android:id="@+id/allocation_qty"
-                                android:textColor="@color/black"
-                                android:textSize="12sp"
+                                android:layout_marginLeft="40dp"
                                 android:fontFamily="@font/poppins_semibold"
-                                android:layout_marginLeft="45dp"
-                                />
+                                android:text="-"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
 
 
                         </LinearLayout>
@@ -226,70 +125,159 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:visibility="gone"
                             android:orientation="vertical">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="18sp"
-                                android:text="Short Scan Qty "
                                 android:fontFamily="@font/poppins_semibold"
-                                android:textSize="12sp" />
-
+                                android:text="Expiry Date"
+                                android:textSize="@dimen/dimen8sp" />
 
                             <TextView
+                                android:id="@+id/expiredate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="2.00"
-                                android:id="@+id/scanqty"
-                                android:textColor="@color/black"
-                                android:textSize="12sp"
+                                android:layout_marginLeft="40dp"
                                 android:fontFamily="@font/poppins_semibold"
-                                android:layout_marginLeft="54dp"
-                                />
+                                android:text="-"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
 
 
                         </LinearLayout>
 
 
                     </LinearLayout>
+
+
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="Rack Shelf "
+                                android:textSize="@dimen/dimen8sp" />
+
+                            <TextView
+                                android:id="@+id/rackshelf_no"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@{allocationdetail.rackshelf}"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="Allocated Qty "
+                                android:textSize="@dimen/dimen8sp" />
+
+                            <TextView
+                                android:id="@+id/allocation_qty"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@{String.valueOf(allocationdetail.allocatedqty)}"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="18sp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="Short Scan Qty "
+                                android:textSize="@dimen/dimen8sp" />
+
+
+                            <TextView
+                                android:id="@+id/scanqty"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="54dp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@{String.valueOf(allocationdetail.shortqty)}"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/statuslayout"
-                        android:visibility="gone"
-                        android:layout_height="wrap_content">
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="10sp"
-                                android:text="Status"
-                                android:fontFamily="@font/poppins_semibold"
-                                android:textSize="12sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="SUCESSFULL"
-                                android:id="@+id/status"
-                                android:textColor="@color/Light_green"
-                                android:textSize="12sp"
-                                android:fontFamily="@font/poppins_semibold"
                                 android:layout_marginLeft="10sp"
-                                />
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="Status"
+                                android:textSize="@dimen/dimen8sp" />
+
+                            <TextView
+                                android:id="@+id/status"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10sp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="SUCESSFULL"
+                                android:textColor="@color/Light_green"
+                                android:textSize="@dimen/dimen8sp" />
 
 
                         </LinearLayout>
+
                         <ImageView
-                            android:layout_width="23dp"
-                            android:layout_marginTop="8dp"
+                            android:layout_width="@dimen/dimen15dp"
+                            android:layout_height="@dimen/dimen15dp"
                             android:layout_marginStart="200dp"
-                            android:layout_height="22dp"
-                            android:src="@drawable/ic_baseline_delete_24"/>
+                            android:layout_marginTop="8dp"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_baseline_delete_24" />
                     </LinearLayout>
 
 
@@ -298,4 +286,10 @@
         </androidx.cardview.widget.CardView>
     </RelativeLayout>
 
+    <data>
+
+        <variable
+            name="allocationdetail"
+            type="com.thresholdsoft.astra.ui.main.model.GetAllocationLineResponse.Allocationdetail" />
+    </data>
 </layout>

@@ -1,10 +1,10 @@
 package com.thresholdsoft.astra.network;
 
 
-import com.thresholdsoft.astra.BuildConfig;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor;
+import com.thresholdsoft.astra.BuildConfig;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,7 +22,7 @@ public class ApiClient {
     private static Retrofit retrofit = null;
     static String BASE_URL = "http://online.apollopharmacy.org:51/EPOS/";
 
-    private static Retrofit getRetrofitInstance(String baseUrl) {
+    public static Retrofit getRetrofitInstance() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         if (BuildConfig.DEBUG) {
             builder.addInterceptor(new OkHttpProfilerInterceptor());

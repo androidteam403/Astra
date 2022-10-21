@@ -71,7 +71,10 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
 
     //Modules
+    implementation project(path: ':cusotmloader')
 
+    //Add QR Library Here
+    implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
 }
 
 

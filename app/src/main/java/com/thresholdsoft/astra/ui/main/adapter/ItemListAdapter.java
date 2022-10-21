@@ -1,8 +1,7 @@
-package com.thresholdsoft.astra.ui.adapter;
+package com.thresholdsoft.astra.ui.main.adapter;
 
-import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,44 +10,43 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.ItemlistAdapterlayoutBinding;
-import com.thresholdsoft.astra.ui.main.model.ItemsList;
+import com.thresholdsoft.astra.ui.main.model.GetAllocationLineResponse;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHolder> {
 
-    private Activity activity;
-    private List<ItemsList> pickList;
+    private Context mContext;
+    private List<GetAllocationLineResponse.Allocationdetail> allocationdetailList;
 
-    ItemlistAdapterlayoutBinding itemlistAdapterlayoutBinding;
-
-    public ItemListAdapter(Activity activity, List<ItemsList> pickList) {
-        this.activity = activity;
-        this.pickList = pickList;
+    public ItemListAdapter(Context mContext, List<GetAllocationLineResponse.Allocationdetail> allocationdetailList) {
+        this.mContext = mContext;
+        this.allocationdetailList = allocationdetailList;
     }
-
 
     @NonNull
     @Override
     public ItemListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        itemlistAdapterlayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.itemlist_adapterlayout, parent, false);
+        ItemlistAdapterlayoutBinding itemlistAdapterlayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.itemlist_adapterlayout, parent, false);
         return new ItemListAdapter.ViewHolder(itemlistAdapterlayoutBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ItemListAdapter.ViewHolder holder, int position) {
-        ItemsList pickListItems = pickList.get(position);
-        if (pickListItems.isIsscan() == true) {
-            itemlistAdapterlayoutBinding.rackshelfLayout.setVisibility(View.VISIBLE);
-            itemlistAdapterlayoutBinding.statuslayout.setVisibility(View.VISIBLE);
-        }
+        GetAllocationLineResponse.Allocationdetail allocationdetail = allocationdetailList.get(position);
+        holder.itemlistAdapterlayoutBinding.setAllocationdetail(allocationdetail);
+
+
+//        if (pickListItems.isIsscan() == true) {
+//            holder.itemlistAdapterlayoutBinding.rackshelfLayout.setVisibility(View.VISIBLE);
+//            holder.itemlistAdapterlayoutBinding.statuslayout.setVisibility(View.VISIBLE);
+//        }
 
     }
 
     @Override
     public int getItemCount() {
-        return pickList.size();
+        return allocationdetailList.size();
     }
 
 

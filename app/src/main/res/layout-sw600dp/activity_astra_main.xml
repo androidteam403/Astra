@@ -355,11 +355,11 @@
                         android:id="@+id/close"
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        android:visibility="gone"
-
                         android:layout_marginLeft="205dp"
+
                         android:layout_marginTop="13dp"
-                        android:src="@drawable/close_orders_track" />
+                        android:src="@drawable/close_orders_track"
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -613,8 +613,7 @@
                                 android:layout_marginLeft="3dp"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:paddingTop="5dp"
-
-                                android:text="AHLI22RPR-00712277"
+                                android:text="@{allocationData.purchreqid}"
                                 android:textColor="@color/black"
                                 android:textSize="13sp"
                                 android:textStyle="bold" />
@@ -643,7 +642,7 @@
                                 android:layout_marginLeft="3dp"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:paddingTop="5dp"
-                                android:text="Area-2"
+                                android:text="@{allocationData.areaname}"
                                 android:textColor="@color/black"
                                 android:textSize="13sp" />
 
@@ -671,7 +670,7 @@
                                 android:layout_marginLeft="3dp"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:paddingTop="5dp"
-                                android:text="2"
+                                android:text="@{allocationData.routecode}"
                                 android:textColor="@color/black"
                                 android:textSize="13sp"
                                 android:textStyle="bold" />
@@ -723,10 +722,10 @@
 
                             <TextView
                                 android:id="@+id/customerid"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="20dp"
+                                android:layout_height="7dp"
                                 android:fontFamily="@font/poppins_semibold"
-                                android:text="16001"
+                                android:text="@{allocationData.custaccount}"
                                 android:textColor="@color/black"
                                 android:textSize="11sp" />
 
@@ -755,7 +754,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:gravity="center_horizontal"
-                                android:text="Apollo"
+                                android:text="@{allocationData.custname}"
                                 android:textAlignment="center"
                                 android:textColor="@color/black"
 
@@ -786,7 +785,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:gravity="center_horizontal"
-                                android:text="20/08/2022-17:40:00"
+                                android:text="@{allocationData.transdate}"
                                 android:textAlignment="center"
                                 android:textColor="@color/black"
                                 android:textSize="11sp" />
@@ -816,7 +815,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:gravity="center_horizontal"
-                                android:text="6"
+                                android:text="@{String.valueOf(allocationData.allocatedlines)}"
                                 android:textAlignment="center"
                                 android:textColor="@color/black"
                                 android:textSize="11sp" />
@@ -847,10 +846,9 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:gravity="center_horizontal"
-                                android:text="0"
+                                android:text="@{String.valueOf(allocationData.noofboxes)}"
                                 android:textAlignment="center"
                                 android:textColor="@color/black"
-
                                 android:textSize="11sp" />
                         </LinearLayout>
 
@@ -877,7 +875,7 @@
                                 android:layout_marginLeft="5dp"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:gravity="center_horizontal"
-                                android:text="----"
+                                android:text="@{String.valueOf(allocationData.id)}"
                                 android:textAlignment="center"
                                 android:textColor="@color/black"
                                 android:textSize="11sp" />
@@ -887,11 +885,12 @@
 
                         <ImageView
                             android:id="@+id/edit_view"
-                            android:layout_width="24sp"
+                            android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="40dp"
                             android:layout_marginTop="12sp"
                             android:layout_marginEnd="10sp"
+                            android:contentDescription="@string/app_name"
                             android:src="@drawable/edit_view" />
 
                     </LinearLayout>
@@ -1113,8 +1112,8 @@
                             android:layout_width="120dp"
                             android:layout_height="55dp"
                             android:layout_marginLeft="70dp"
-
                             android:background="@drawable/background_sacm"
+                            android:onClick="@{()-> callback.onClickScanNow()}"
                             android:orientation="horizontal"
                             android:visibility="visible">
 
@@ -1171,8 +1170,6 @@
                             android:padding="5dp">
 
 
-
-
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -1183,11 +1180,11 @@
                                     android:id="@+id/astramain"
                                     style="@style/SpinnerTheme"
 
-                                    android:textSize="12sp"
-
                                     android:layout_width="match_parent"
+
                                     android:layout_height="match_parent"
-                                    android:spinnerMode="dropdown" />
+                                    android:spinnerMode="dropdown"
+                                    android:textSize="12sp" />
 
 
                             </LinearLayout>
@@ -1386,48 +1383,56 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/click_to_scan"
+            <LinearLayout
+                android:id="@+id/scan_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="860dp"
-                android:layout_marginTop="450dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="Click the button below \n   to start Scanning"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:visibility="visible" />
-
-            <LinearLayout
-                android:id="@+id/scan"
-                android:layout_width="110dp"
-                android:layout_height="55dp"
-                android:layout_marginLeft="890dp"
-                android:layout_marginTop="500dp"
-                android:background="@drawable/background_sacm"
-                android:orientation="horizontal"
-                android:visibility="visible">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="16sp"
-                    android:layout_marginTop="16sp"
-                    android:src="@drawable/printer" />
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/click_to_scan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4sp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="860dp"
+                    android:layout_marginTop="450dp"
                     android:fontFamily="@font/poppins_semibold"
-                    android:paddingStart="4dp"
-                    android:text="Scan\nNow"
-                    android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    android:text="Click the button below \n   to start Scanning"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
+                <LinearLayout
+                    android:id="@+id/scan"
+                    android:layout_width="110dp"
+                    android:layout_height="55dp"
+                    android:layout_marginLeft="890dp"
+                    android:layout_marginTop="500dp"
+                    android:background="@drawable/background_sacm"
+                    android:onClick="@{()-> callback.onClickScanNow()}"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="16sp"
+                        android:layout_marginTop="16sp"
+                        android:src="@drawable/printer" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4sp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:paddingStart="4dp"
+                        android:text="Scan\nNow"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
 
 
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -1836,4 +1841,12 @@
 
         </RelativeLayout>
     </RelativeLayout>
+
+    <data>
+
+        <variable
+            name="allocationData"
+            type="com.thresholdsoft.astra.ui.main.model.GetAllocationDataResponse.Allocationhddata" />
+    </data>
+
 </layout>

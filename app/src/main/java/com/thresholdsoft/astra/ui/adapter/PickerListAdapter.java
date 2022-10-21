@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thresholdsoft.astra.R;
-import com.thresholdsoft.astra.databinding.PickListHistoryLayoutAdapterBinding;
 import com.thresholdsoft.astra.databinding.PickerrequestAdapterlayoutBinding;
 
 import java.util.ArrayList;
