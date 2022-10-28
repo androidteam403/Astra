@@ -24,4 +24,7 @@
     <dimen name="dimen400dp">400dp</dimen>
     <dimen name="dimen8dp">8dp</dimen>
     <dimen name="dimen500dp">500dp</dimen>
+    <dimen name="dimen16sp">16sp</dimen>
+    <dimen name="dimen18sp">18sp</dimen>
+    <dimen name="dimen385dp">385dp</dimen>
 </resources>

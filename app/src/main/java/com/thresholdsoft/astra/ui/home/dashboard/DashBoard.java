@@ -152,7 +152,7 @@ public class DashBoard extends BaseActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(DashBoard.this, Home.class));
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
             }
         });
 
@@ -171,7 +171,7 @@ public class DashBoard extends BaseActivity {
             public void onClick(View v) {
 
                 startActivity(new Intent(DashBoard.this, PickerRequests.class));
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
         });
@@ -180,7 +180,7 @@ public class DashBoard extends BaseActivity {
             public void onClick(View v) {
 
                 startActivity(new Intent(DashBoard.this, AstraMainActivity.class));
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
         });
@@ -189,7 +189,7 @@ public class DashBoard extends BaseActivity {
             public void onClick(View v) {
 
                 startActivity(new Intent(DashBoard.this, PickListHistoryActivity.class));
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
         });
@@ -198,7 +198,7 @@ public class DashBoard extends BaseActivity {
             public void onClick(View v) {
 
                 startActivity(new Intent(DashBoard.this, RequestHistoryActivity.class));
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
         });
@@ -207,7 +207,7 @@ public class DashBoard extends BaseActivity {
             public void onClick(View v) {
 
                 startActivity(new Intent(DashBoard.this, LoginActivity.class));
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
         });

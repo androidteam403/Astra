@@ -5,8 +5,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.main.AstraMainActivity">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,7 +20,11 @@
                 android:layout_weight=".1"
                 android:background="@color/white">
 
-                <include layout="@layout/custom_menu" />
+                <include
+                    android:id="@+id/custom_menu_layout"
+                    layout="@layout/custom_menu"
+                    app:customMenuCallback="@{customMenuCallback}"
+                    app:selectedMenu="@{selectedMenu}" />
 
             </RelativeLayout>
 
@@ -50,12 +53,14 @@
                     android:textSize="@dimen/dimen14sp" />
 
                 <EditText
+                    android:id="@+id/search_by_text"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen40dp"
                     android:drawableEnd="@drawable/search_icon"
                     android:hint="Search"
                     android:importantForAutofill="no"
                     android:inputType="text"
+                    android:text=""
                     android:textSize="@dimen/dimen10sp" />
 
                 <LinearLayout
@@ -151,12 +156,28 @@
 
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/picklistrecycleview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
+<!--                <RelativeLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content">-->
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/picklistrecycleview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="@{pickListCount == 0 ? view.GONE : view.VISIBLE}" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="No list found."
+                        android:visibility="@{pickListCount != 0 ? view.GONE : view.VISIBLE}"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen14sp" />
+
+<!--                </RelativeLayout>-->
             </LinearLayout>
 
             <RelativeLayout
@@ -261,7 +282,7 @@
                             android:layout_marginStart="50dp"
                             android:layout_marginTop="22dp"
                             android:background="@drawable/background_button"
-                            android:backgroundTint="@{orderStatusModel.status.equals(`IN-PROGRESS`) ? @color/inprogress_color : orderStatusModel.status.equals(`Assigned`) ? @color/color_takeprint : @color/green}"
+                            android:backgroundTint="@{orderStatusModel.status.equals(`INPROGRESS`) ? @color/inprogress_color : orderStatusModel.status.equals(`Assigned`) ? @color/color_takeprint : @color/green}"
                             android:fontFamily="@font/poppins_semibold"
                             android:paddingStart="5dp"
                             android:paddingTop="4dp"
@@ -3207,6 +3228,10 @@
             type="com.thresholdsoft.astra.ui.main.AstraMainActivityCallback" />
 
         <variable
+            name="customMenuCallback"
+            type="com.thresholdsoft.astra.ui.CustomMenuCallback" />
+
+        <variable
             name="barcodeScannedItem"
             type="com.thresholdsoft.astra.ui.main.model.GetAllocationLineResponse.Allocationdetail" />
 
@@ -3214,5 +3239,16 @@
             name="orderStatusModel"
             type="com.thresholdsoft.astra.ui.main.AstraMainActivity.OrdersStatusModel" />
 
+        <variable
+            name="selectedMenu"
+            type="Integer" />
+
+        <variable
+            name="pickListCount"
+            type="Integer" />
+
+        <variable
+            name="view"
+            type="android.view.View" />
     </data>
 </layout>

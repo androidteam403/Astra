@@ -118,7 +118,7 @@ public class RequestHistoryActivity extends BaseActivity {
             public void onClick(View v) {
 
                 startActivity(new Intent(RequestHistoryActivity.this, LoginActivity.class));
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
         });
@@ -128,7 +128,7 @@ public class RequestHistoryActivity extends BaseActivity {
             public void onClick(View v) {
 
                 startActivity(new Intent(RequestHistoryActivity.this, DashBoard.class));
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
         });
@@ -138,7 +138,7 @@ public class RequestHistoryActivity extends BaseActivity {
             public void onClick(View v) {
 
                 startActivity(new Intent(RequestHistoryActivity.this, PickerRequests.class));
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
         });
@@ -148,7 +148,7 @@ public class RequestHistoryActivity extends BaseActivity {
             public void onClick(View v) {
 
                 startActivity(new Intent(RequestHistoryActivity.this, AstraMainActivity.class));
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
         });
@@ -158,7 +158,7 @@ public class RequestHistoryActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(RequestHistoryActivity.this, PickListHistoryActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
         });

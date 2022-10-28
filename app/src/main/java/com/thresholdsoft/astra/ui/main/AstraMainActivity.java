@@ -2,10 +2,13 @@ package com.thresholdsoft.astra.ui.main;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -30,6 +33,7 @@ import com.thresholdsoft.astra.databinding.ActivityAstraMainBinding;
 import com.thresholdsoft.astra.databinding.DialogScannedBarcodeItemListBinding;
 import com.thresholdsoft.astra.databinding.PickinglistDialoglayoutBinding;
 import com.thresholdsoft.astra.databinding.ProcessdocumentDialogLayoutBinding;
+import com.thresholdsoft.astra.ui.CustomMenuCallback;
 import com.thresholdsoft.astra.ui.adapter.CompleteListAdapter;
 import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
@@ -48,7 +52,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AstraMainActivity extends BaseActivity implements AstraMainActivityCallback {
+public class AstraMainActivity extends BaseActivity implements AstraMainActivityCallback, CustomMenuCallback {
     private ActivityAstraMainBinding activityAstraMainBinding;
     private PickListAdapter pickListAdapter;
     private ItemListAdapter itemListAdapter;
@@ -57,15 +61,22 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
     List<ItemsList> itemsLists = new ArrayList<>();
     ItemsList itemsList, itemsList1, itemsList2, itemsList3;
     boolean changecolor = false;
-    boolean isPicker=false;
+    boolean isPicker = false;
     String userId;
 
 
     // made changes by naveen
     private List<GetAllocationDataResponse.Allocationhddata> allocationhddataList;
+    private GetAllocationDataResponse.Allocationhddata allocationhddata;
     private List<GetAllocationLineResponse.Allocationdetail> allocationdetailList;
     private List<GetAllocationLineResponse.Allocationdetail> barcodeAllocationDetailList;
     private ScannedBacodeItemsAdapter scannedBacodeItemsAdapter;
+
+    public static Intent getStartActivity(Context mContext) {
+        Intent intent = new Intent(mContext, AstraMainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        return intent;
+    }
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -75,6 +86,8 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         activityAstraMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_astra_main);
         activityAstraMainBinding.setCallback(this);
+        activityAstraMainBinding.setCustomMenuCallback(this);
+        activityAstraMainBinding.setSelectedMenu(1);
         RelativeLayout dashboardsupervisor = findViewById(R.id.dashboard_layout);
         RelativeLayout dashboardadmin = findViewById(R.id.second_dashboard);
         ImageView apollologo = findViewById(R.id.apollo_logo);
@@ -89,8 +102,7 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
 //        pickListLayout.setBackgroundResource(R.color.lite_yellow);
 
 
-
-        if(getDataManager().getEmplRole()!=null && getDataManager().getEmplRole().equals("Picker")){
+        if (getDataManager().getEmplRole() != null && getDataManager().getEmplRole().equals("Picker")) {
             dashboardsupervisor.setVisibility(View.INVISIBLE);
             pickerrequestlayout.setVisibility(View.INVISIBLE);
 
@@ -163,7 +175,7 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
             public void onClick(View v) {
                 Intent intent = new Intent(AstraMainActivity.this, LoginActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
             }
         });
 
@@ -172,7 +184,7 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
             public void onClick(View v) {
                 Intent intent = new Intent(AstraMainActivity.this, DashBoard.class);
                 startActivity(intent);
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
         });
@@ -182,9 +194,9 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AstraMainActivity.this, PickListHistoryActivity.class);
-                intent.putExtra("userId",userId );
+                intent.putExtra("userId", userId);
                 startActivity(intent);
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
         });
@@ -257,9 +269,9 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AstraMainActivity.this, RequestHistoryActivity.class);
-                intent.putExtra("userId",userId );
+                intent.putExtra("userId", userId);
                 startActivity(intent);
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
         });
@@ -269,7 +281,7 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
             public void onClick(View v) {
                 Intent intent = new Intent(AstraMainActivity.this, PickerRequests.class);
                 startActivity(intent);
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
         });
@@ -277,7 +289,41 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
     }
 
     private void setUp() {
+        searchByPurchReqId();
         getController().getAllocationDataApiCall();
+    }
+
+    private void searchByPurchReqId() {
+
+        activityAstraMainBinding.searchByText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() >= 2) {
+                    if (pickListAdapter != null) {
+                        pickListAdapter.getFilter().filter(editable);
+
+                    }
+                } else if (activityAstraMainBinding.searchByText.getText().toString().equals("")) {
+                    if (pickListAdapter != null) {
+                        pickListAdapter.getFilter().filter("");
+                    }
+                } else {
+                    if (pickListAdapter != null) {
+                        pickListAdapter.getFilter().filter("");
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -306,6 +352,9 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
             RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             activityAstraMainBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
             activityAstraMainBinding.picklistrecycleview.setAdapter(pickListAdapter);
+            noPickListFound(allocationhddataList.size());
+        } else {
+            noPickListFound(0);
         }
 
     }
@@ -343,9 +392,20 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
             ordersStatusModel.setPicked(shortScanQtyAllocationDetailList.size());
             ordersStatusModel.setPending(allocationPacksAllocationDetailList.size());
             ordersStatusModel.setCompleted(shortScanQtyAllocationDetailList.size());
-            ordersStatusModel.setStatus(shortScanQtyAllocationDetailList.size() == allocationdetailList.size() ? "COMPLETED" : allocationPacksAllocationDetailList.size() == allocationdetailList.size() ? "Assigned" : "IN-PROGRESS");
+            ordersStatusModel.setStatus(shortScanQtyAllocationDetailList.size() == allocationdetailList.size() ? "COMPLETED" : allocationPacksAllocationDetailList.size() == allocationdetailList.size() ? "Assigned" : "INPROCESS");
             activityAstraMainBinding.setOrderStatusModel(ordersStatusModel);
 
+
+            if (allocationhddataList != null && allocationhddataList.size() > 0) {
+                for (int i = 0; i < allocationhddataList.size(); i++) {
+                    if (allocationhddataList.get(i).getPurchreqid().equals(activityAstraMainBinding.getAllocationData().getPurchreqid())) {
+                        allocationhddataList.get(i).setScanstatus(shortScanQtyAllocationDetailList.size() == allocationdetailList.size() ? "COMPLETED" : allocationPacksAllocationDetailList.size() == allocationdetailList.size() ? "Assigned" : "INPROCESS");
+                        activityAstraMainBinding.getAllocationData().setScanstatus(shortScanQtyAllocationDetailList.size() == allocationdetailList.size() ? "COMPLETED" : allocationPacksAllocationDetailList.size() == allocationdetailList.size() ? "Assigned" : "INPROCESS");
+                        break;
+                    }
+                }
+            }
+            pickListAdapter.notifyDataSetChanged();
 
             itemListAdapter = new ItemListAdapter(this, getAllocationLineResponse.getAllocationdetails());
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -375,6 +435,11 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
             }
             scannedBacodeItemsAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void noPickListFound(int count) {
+        activityAstraMainBinding.setPickListCount(count);
     }
 
     private AstraMainActivityController getController() {
@@ -437,6 +502,41 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
             scannedBarcodeItemListdialog.dismiss();
         });
         scannedBarcodeItemListdialog.show();
+    }
+
+    @Override
+    public void onClickPickList() {
+
+    }
+
+    @Override
+    public void onClickPickListHistory() {
+        Intent intent = new Intent(AstraMainActivity.this, PickListHistoryActivity.class);
+        intent.putExtra("userId", userId);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+    }
+
+    @Override
+    public void onClickRequestHistory() {
+        Intent intent = new Intent(AstraMainActivity.this, RequestHistoryActivity.class);
+        intent.putExtra("userId", userId);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+    }
+
+    @Override
+    public void onClickDashboard() {
+        Intent intent = new Intent(AstraMainActivity.this, DashBoard.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+    }
+
+    @Override
+    public void onClickPickerRequest() {
+        Intent intent = new Intent(AstraMainActivity.this, PickerRequests.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }
 
     public class OrdersStatusModel {

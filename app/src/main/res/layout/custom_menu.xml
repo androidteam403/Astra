@@ -45,16 +45,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight=".2"
+                        android:background="@{selectedMenu == 1 ? @color/yellow : @color/transperancy}"
                         android:gravity="center"
-                        android:background="@color/yellow"
+                        android:onClick="@{()-> customMenuCallback.onClickPickList()}"
                         android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="@dimen/dimen30dp"
                             android:layout_height="@dimen/dimen30dp"
                             android:contentDescription="@string/app_name"
-                            android:tint="@color/black"
-                            android:src="@drawable/ic_baseline_hail_24" />
+                            android:src="@drawable/ic_baseline_hail_24"
+                            android:tint="@{selectedMenu == 1 ? @color/black : @color/white}" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -62,7 +63,7 @@
                             android:fontFamily="@font/poppins_bold"
                             android:gravity="center"
                             android:text="@string/label_pick_list"
-                            android:textColor="@color/black"
+                            android:textColor="@{selectedMenu == 1 ? @color/black : @color/white}"
                             android:textSize="@dimen/dimen10sp" />
                     </LinearLayout>
 
@@ -70,14 +71,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight=".2"
+                        android:background="@{selectedMenu == 2 ? @color/yellow : @color/transperancy}"
                         android:gravity="center"
+                        android:onClick="@{()-> customMenuCallback.onClickPickListHistory()}"
                         android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="@dimen/dimen30dp"
                             android:layout_height="@dimen/dimen30dp"
                             android:contentDescription="@string/app_name"
-                            android:src="@drawable/ic_baseline_receipt_long_24" />
+                            android:src="@drawable/ic_baseline_receipt_long_24"
+                            android:tint="@{selectedMenu == 2 ? @color/black : @color/white}" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -85,7 +89,7 @@
                             android:fontFamily="@font/poppins_bold"
                             android:gravity="center"
                             android:text="@string/label_pick_list_nhistory"
-                            android:textColor="@color/white"
+                            android:textColor="@{selectedMenu == 2 ? @color/black : @color/white}"
                             android:textSize="@dimen/dimen10sp" />
                     </LinearLayout>
 
@@ -93,14 +97,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight=".2"
+                        android:background="@{selectedMenu == 3 ? @color/yellow : @color/transperancy}"
                         android:gravity="center"
+                        android:onClick="@{()-> customMenuCallback.onClickRequestHistory()}"
                         android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="@dimen/dimen30dp"
                             android:layout_height="@dimen/dimen30dp"
                             android:contentDescription="@string/app_name"
-                            android:src="@drawable/ic_baseline_feed_24" />
+                            android:src="@drawable/ic_baseline_feed_24"
+                            android:tint="@{selectedMenu == 3 ? @color/black : @color/white}" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -108,7 +115,7 @@
                             android:fontFamily="@font/poppins_bold"
                             android:gravity="center"
                             android:text="@string/label_request_nhistory"
-                            android:textColor="@color/white"
+                            android:textColor="@{selectedMenu == 3 ? @color/black : @color/white}"
                             android:textSize="@dimen/dimen10sp" />
                     </LinearLayout>
 
@@ -116,14 +123,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight=".2"
+                        android:background="@{selectedMenu == 4 ? @color/yellow : @color/transperancy}"
                         android:gravity="center"
+                        android:onClick="@{()-> customMenuCallback.onClickDashboard()}"
                         android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="@dimen/dimen30dp"
                             android:layout_height="@dimen/dimen30dp"
                             android:contentDescription="@string/app_name"
-                            android:src="@drawable/ic_baseline_analytics_24" />
+                            android:src="@drawable/ic_baseline_analytics_24"
+                            android:tint="@{selectedMenu == 4 ? @color/black : @color/white}" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -131,7 +141,7 @@
                             android:fontFamily="@font/poppins_bold"
                             android:gravity="center"
                             android:text="@string/label_dashboard"
-                            android:textColor="@color/white"
+                            android:textColor="@{selectedMenu == 4 ? @color/black : @color/white}"
                             android:textSize="@dimen/dimen10sp" />
                     </LinearLayout>
 
@@ -139,14 +149,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight=".2"
+                        android:background="@{selectedMenu == 5 ? @color/yellow : @color/transperancy}"
                         android:gravity="center"
+                        android:onClick="@{()-> customMenuCallback.onClickPickerRequest()}"
                         android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="@dimen/dimen30dp"
                             android:layout_height="@dimen/dimen30dp"
                             android:contentDescription="@string/app_name"
-                            android:src="@drawable/ic_baseline_hail_24" />
+                            android:src="@drawable/ic_baseline_hail_24"
+                            android:tint="@{selectedMenu == 5 ? @color/black : @color/white}" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -154,7 +167,7 @@
                             android:fontFamily="@font/poppins_bold"
                             android:gravity="center"
                             android:text="@string/label_picker_nrequest"
-                            android:textColor="@color/white"
+                            android:textColor="@{selectedMenu == 5 ? @color/black : @color/white}"
                             android:textSize="@dimen/dimen10sp" />
                     </LinearLayout>
 
@@ -165,41 +178,51 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".05"
-                android:weightSum="1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:weightSum="1">
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight=".2" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight=".8"
-                    android:weightSum="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
                     <View
                         android:id="@+id/pick_list_menu_stroke"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:background="@color/yellow"
-                        android:layout_weight=".2" />
+                        android:layout_weight=".2"
+                        android:background="@{selectedMenu == 1 ? @color/yellow : @color/transperancy}" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight=".2" />
+                        android:layout_weight=".2"
+                        android:background="@{selectedMenu == 2 ? @color/yellow : @color/transperancy}" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight=".2" />
+                        android:layout_weight=".2"
+                        android:background="@{selectedMenu == 3 ? @color/yellow : @color/transperancy}" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight=".2" />
+                        android:layout_weight=".2"
+                        android:background="@{selectedMenu == 4 ? @color/yellow : @color/transperancy}" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight=".2" />
+                        android:layout_weight=".2"
+                        android:background="@{selectedMenu == 5 ? @color/yellow : @color/transperancy}" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -207,4 +230,15 @@
 
         </LinearLayout>
     </RelativeLayout>
+
+    <data>
+
+        <variable
+            name="customMenuCallback"
+            type="com.thresholdsoft.astra.ui.CustomMenuCallback" />
+
+        <variable
+            name="selectedMenu"
+            type="Integer" />
+    </data>
 </layout>

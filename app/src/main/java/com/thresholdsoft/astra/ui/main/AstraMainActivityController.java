@@ -42,6 +42,7 @@ public class AstraMainActivityController {
                     if (response.code() == 200 && response.body() != null && response.body().getRequeststatus()) {
                         mCallback.onSuccessGetAllocationDataApi(response.body());
                     } else {
+                        mCallback.noPickListFound(0);
                         mCallback.onFailureMessage("No data found.");
                     }
                 }
@@ -49,6 +50,7 @@ public class AstraMainActivityController {
                 @Override
                 public void onFailure(@NotNull Call<GetAllocationDataResponse> call, @NotNull Throwable t) {
                     ActivityUtils.hideDialog();
+                    mCallback.noPickListFound(0);
                     mCallback.onFailureMessage(t.getMessage());
                 }
             });

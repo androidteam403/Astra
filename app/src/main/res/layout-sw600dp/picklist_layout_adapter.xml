@@ -4,7 +4,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{()-> callback.onClickPickListItem(model)}">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardview"
@@ -181,7 +182,7 @@
                             android:gravity="center_horizontal"
                             android:text="@{model.scanstatus}"
                             android:textAlignment="center"
-                            android:textColor="@{model.scanstatus.equalsIgnoreCase(`INPROCESS`) ? @color/material_amber_accent_700 : model.scanstatus.equalsIgnoreCase(`INPROCESS`) ? @color/black : @color/Light_green}"
+                            android:textColor="@{model.scanstatus.equalsIgnoreCase(`INPROCESS`) ? @color/material_amber_accent_700 : model.scanstatus.equalsIgnoreCase(`Assigned`) ? @color/black : @color/green}"
                             android:textSize="12sp" />
 
                     </LinearLayout>
@@ -229,6 +230,10 @@
         <variable
             name="model"
             type="com.thresholdsoft.astra.ui.main.model.GetAllocationDataResponse.Allocationhddata" />
+
+        <variable
+            name="callback"
+            type="com.thresholdsoft.astra.ui.main.AstraMainActivityCallback" />
     </data>
 
 </layout>

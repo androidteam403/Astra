@@ -4,7 +4,13 @@ import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
 
 public interface LoginActivityCallback {
 
-   void onSucessfullValidateResponse(ValidateUserModelResponse body);
+    void onSucessfullValidateResponse(ValidateUserModelResponse body);
 
-   void onFailureValidateResponse();
+    void onFailureValidateResponse();
+
+    void onFailureMessage(String message);
+
+    void onClickLogin();
+
+    void onClickSubmit();
 }

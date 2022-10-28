@@ -4,7 +4,8 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{()-> callback.onClickPickListItem(model)}">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardview"
@@ -22,8 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:padding="@dimen/dimen5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/dimen5dp">
 
                 <LinearLayout
                     android:id="@+id/pendingLayout"
@@ -91,7 +92,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:text="REQUIRE : "
-                                android:textSize="@dimen/dimen8sp"  />
+                                android:textSize="@dimen/dimen8sp" />
 
                             <TextView
                                 android:id="@+id/require"
@@ -123,7 +124,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:text="ROUTE : "
-                                android:textSize="@dimen/dimen8sp"  />
+                                android:textSize="@dimen/dimen8sp" />
 
                             <TextView
                                 android:id="@+id/route"
@@ -145,7 +146,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:text="COLLECTED : "
-                                android:textSize="@dimen/dimen8sp"  />
+                                android:textSize="@dimen/dimen8sp" />
 
                             <TextView
                                 android:id="@+id/collected"
@@ -172,7 +173,7 @@
                             android:gravity="center_horizontal"
                             android:text="Status : "
                             android:textAlignment="center"
-                            android:textSize="@dimen/dimen8sp"  />
+                            android:textSize="@dimen/dimen8sp" />
 
                         <TextView
                             android:id="@+id/status"
@@ -183,7 +184,7 @@
                             android:gravity="center_horizontal"
                             android:text="@{model.scanstatus}"
                             android:textAlignment="center"
-                            android:textColor="@{model.scanstatus.equalsIgnoreCase(`INPROCESS`) ? @color/material_amber_accent_700 : model.scanstatus.equalsIgnoreCase(`INPROCESS`) ? @color/black : @color/Light_green}"
+                            android:textColor="@{model.scanstatus.equalsIgnoreCase(`INPROCESS`) ? @color/material_amber_accent_700 : model.scanstatus.equalsIgnoreCase(`Assigned`) ? @color/black : @color/green}"
                             android:textSize="@dimen/dimen8sp" />
 
                     </LinearLayout>
@@ -214,7 +215,7 @@
                             android:text="@{model.transdate}"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/dimen8sp"  />
+                            android:textSize="@dimen/dimen8sp" />
 
                     </LinearLayout>
 
@@ -228,5 +229,9 @@
         <variable
             name="model"
             type="com.thresholdsoft.astra.ui.main.model.GetAllocationDataResponse.Allocationhddata" />
+
+        <variable
+            name="callback"
+            type="com.thresholdsoft.astra.ui.main.AstraMainActivityCallback" />
     </data>
 </layout>

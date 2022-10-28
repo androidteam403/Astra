@@ -17,4 +17,6 @@ public interface AstraMainActivityCallback {
 
     void onClickScannedBarcodeItem(GetAllocationLineResponse.Allocationdetail allocationdetail);
 
+    void noPickListFound(int count);
+
 }

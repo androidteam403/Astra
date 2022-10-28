@@ -46,7 +46,7 @@ public class UserLoginActivity extends BaseActivity {
                         intents.putExtra("userId", userId);
                         intents.putExtra("isPicker", isPicker);
                         startActivity(intents);
-                        overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                     }
 
                 }else if(activityUserLoginBinding.enterOtp.getText().toString().equals("")){

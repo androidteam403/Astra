@@ -85,7 +85,7 @@ activityHomeBinding.admin.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
         startActivity(new Intent(Home.this, DashBoard.class));
-        overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
     }
 });
@@ -95,7 +95,7 @@ activityHomeBinding.admin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
                 startActivity(new Intent(Home.this, LoginActivity.class));
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
         });
@@ -104,7 +104,7 @@ activityHomeBinding.admin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
                 startActivity(new Intent(Home.this, PickerRequests.class));
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
         });
@@ -115,7 +115,7 @@ activityHomeBinding.admin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Home.this, AstraMainActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
             }
         });
 
@@ -125,7 +125,7 @@ activityHomeBinding.admin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Home.this, PickListHistoryActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
         });
@@ -136,7 +136,7 @@ activityHomeBinding.admin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Home.this, RequestHistoryActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
         });

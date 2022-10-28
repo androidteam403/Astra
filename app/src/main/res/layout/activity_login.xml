@@ -1,88 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/login_bg_img"
-        tools:context=".ui.login.LoginActivity">
+        android:gravity="center">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="180dp"
-            android:layout_marginBottom="40dp"
-            android:gravity="center_vertical|center_horizontal"
-            android:orientation="vertical">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="@{isOtpScreen ? view.GONE : view.VISIBLE}">
 
             <ImageView
-                android:layout_width="110dp"
-                android:layout_height="110dp"
-                android:paddingEnd="30dp"
+                android:layout_width="@dimen/dimen100dp"
+                android:layout_height="@dimen/dimen100dp"
+                android:contentDescription="@string/app_name"
                 android:src="@drawable/apollo_circle_logo" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:layout_marginEnd="10sp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginTop="@dimen/dimen5dp"
                 android:text="@string/warehouse_management"
-                android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="@dimen/dimen16sp"
                 android:textStyle="bold" />
 
             <EditText
-                android:text="AP5946"
                 android:id="@+id/user_id"
-                android:layout_width="380dp"
+                android:layout_width="@dimen/dimen385dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="@dimen/dimen5dp"
                 android:background="@drawable/rounded_transparent_bg"
                 android:hint="@string/user_id_name"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:paddingHorizontal="@dimen/dimen25dp"
+                android:paddingVertical="@dimen/dimen15dp"
                 android:textColorHint="@color/black"
-                android:inputType="none"
-                android:paddingHorizontal="25dp"
-                android:paddingVertical="15dp"
                 android:textSize="14sp" />
 
             <EditText
-                android:text="Apollo@123"
                 android:id="@+id/password"
-                android:layout_width="385dp"
+                android:layout_width="@dimen/dimen385dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="@dimen/dimen10dp"
                 android:background="@drawable/rounded_transparent_bg"
                 android:hint="@string/password"
-                android:textColorHint="@color/black"
+                android:importantForAutofill="no"
                 android:inputType="textPassword"
-                android:paddingHorizontal="25dp"
-                android:paddingVertical="15dp"
-                android:textSize="14sp" />
+                android:paddingHorizontal="@dimen/dimen25dp"
+                android:paddingVertical="@dimen/dimen15dp"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/dimen14sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/login"
-                android:layout_width="380dp"
+                android:layout_width="@dimen/dimen385dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen10dp"
                 android:background="#fdb710"
-                android:text="Login"
+                android:onClick="@{()-> callback.onClickLogin()}"
+                android:text="@string/label_login"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="@dimen/dimen18sp" />
         </LinearLayout>
-        <TextView
+
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:id="@+id/login_2"
-            android:layout_marginBottom="25dp"
-            android:layout_marginEnd="30dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:text="LOGIN 2"/>
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="@{isOtpScreen ? view.VISIBLE : view.GONE}">
+
+            <ImageView
+                android:layout_width="@dimen/dimen100dp"
+                android:layout_height="@dimen/dimen100dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/apollo_circle_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen5dp"
+                android:text="@string/warehouse_management"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen5dp"
+                android:text="@string/user_login"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen18sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/otp"
+                android:layout_width="@dimen/dimen385dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen5dp"
+                android:background="@drawable/rounded_transparent_bg"
+                android:hint="@string/label_enter_otp"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLength="4"
+                android:paddingHorizontal="@dimen/dimen25dp"
+                android:paddingVertical="@dimen/dimen15dp"
+                android:textSize="@dimen/dimen14sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/user_login"
+                android:layout_width="@dimen/dimen385dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen10dp"
+                android:background="#fdb710"
+                android:onClick="@{()-> callback.onClickSubmit()}"
+                android:text="@string/label_submit"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen18sp" />
+        </LinearLayout>
     </RelativeLayout>
+
+    <data>
+
+        <variable
+            name="isOtpScreen"
+            type="Boolean" />
+
+        <variable
+            name="view"
+            type="android.view.View" />
+
+        <variable
+            name="callback"
+            type="com.thresholdsoft.astra.ui.login.LoginActivityCallback" />
+    </data>
 </layout>

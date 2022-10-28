@@ -46,4 +46,7 @@
     <string name="label_max_retail_price">max. retail price</string>
     <string name="label_select">Select</string>
     <string name="label_barcode_scanner">BARCODE SCANNER</string>
+    <string name="label_login">Login</string>
+    <string name="label_submit">submit</string>
+    <string name="label_enter_otp">Enter Otp</string>
 </resources>
