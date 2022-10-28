@@ -6,8 +6,6 @@ public interface LoginActivityCallback {
 
     void onSucessfullValidateResponse(ValidateUserModelResponse body);
 
-    void onFailureValidateResponse();
-
     void onFailureMessage(String message);
 
     void onClickLogin();

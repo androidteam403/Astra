@@ -11,13 +11,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -31,43 +24,36 @@ import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityAstraMainBinding;
 import com.thresholdsoft.astra.databinding.DialogScannedBarcodeItemListBinding;
-import com.thresholdsoft.astra.databinding.PickinglistDialoglayoutBinding;
-import com.thresholdsoft.astra.databinding.ProcessdocumentDialogLayoutBinding;
 import com.thresholdsoft.astra.ui.CustomMenuCallback;
-import com.thresholdsoft.astra.ui.adapter.CompleteListAdapter;
 import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
-import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.main.adapter.ItemListAdapter;
 import com.thresholdsoft.astra.ui.main.adapter.PickListAdapter;
 import com.thresholdsoft.astra.ui.main.adapter.ScannedBacodeItemsAdapter;
 import com.thresholdsoft.astra.ui.main.model.GetAllocationDataResponse;
 import com.thresholdsoft.astra.ui.main.model.GetAllocationLineResponse;
-import com.thresholdsoft.astra.ui.main.model.ItemsList;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequests;
 import com.thresholdsoft.astra.ui.picklisthistory.PickListHistoryActivity;
 import com.thresholdsoft.astra.ui.requesthistory.RequestHistoryActivity;
 import com.thresholdsoft.astra.ui.scanner.ScannerActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class AstraMainActivity extends BaseActivity implements AstraMainActivityCallback, CustomMenuCallback {
     private ActivityAstraMainBinding activityAstraMainBinding;
     private PickListAdapter pickListAdapter;
-    private ItemListAdapter itemListAdapter;
-    private CompleteListAdapter completeListAdapter;
-    ArrayList<String> pickList = new ArrayList<>();
-    List<ItemsList> itemsLists = new ArrayList<>();
-    ItemsList itemsList, itemsList1, itemsList2, itemsList3;
-    boolean changecolor = false;
-    boolean isPicker = false;
-    String userId;
+//    private CompleteListAdapter completeListAdapter;
+//    ArrayList<String> pickList = new ArrayList<>();
+//    List<ItemsList> itemsLists = new ArrayList<>();
+//    ItemsList itemsList, itemsList1, itemsList2, itemsList3;
+//    boolean changecolor = false;
+//    boolean isPicker = false;
+//    String userId;
 
 
     // made changes by naveen
     private List<GetAllocationDataResponse.Allocationhddata> allocationhddataList;
-    private GetAllocationDataResponse.Allocationhddata allocationhddata;
+    //    private GetAllocationDataResponse.Allocationhddata allocationhddata;
     private List<GetAllocationLineResponse.Allocationdetail> allocationdetailList;
     private List<GetAllocationLineResponse.Allocationdetail> barcodeAllocationDetailList;
     private ScannedBacodeItemsAdapter scannedBacodeItemsAdapter;
@@ -82,219 +68,217 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         activityAstraMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_astra_main);
-        activityAstraMainBinding.setCallback(this);
-        activityAstraMainBinding.setCustomMenuCallback(this);
-        activityAstraMainBinding.setSelectedMenu(1);
-        RelativeLayout dashboardsupervisor = findViewById(R.id.dashboard_layout);
-        RelativeLayout dashboardadmin = findViewById(R.id.second_dashboard);
-        ImageView apollologo = findViewById(R.id.apollo_logo);
-//        RelativeLayout pickListLayout = findViewById(R.id.picklist_layout);
-        RelativeLayout pickListHistoryLayout = findViewById(R.id.picklist_history_layout);
-        RelativeLayout requestHistoryLayout = findViewById(R.id.requesthistory_layout);
-        RelativeLayout pickerrequestlayout = findViewById(R.id.picker_request_layout);
-        RelativeLayout approvedhistoryLayout = findViewById(R.id.approved_history_layout);
-        TextView picklist = findViewById(R.id.picklist_text);
-        picklist.setTextColor(R.color.thick_black);
-        activityAstraMainBinding.yellowLine.setVisibility(View.VISIBLE);
-//        pickListLayout.setBackgroundResource(R.color.lite_yellow);
 
-
-        if (getDataManager().getEmplRole() != null && getDataManager().getEmplRole().equals("Picker")) {
-            dashboardsupervisor.setVisibility(View.INVISIBLE);
-            pickerrequestlayout.setVisibility(View.INVISIBLE);
-
-        }
-
-
-        String[] areaNames = new String[]{"All", "Allocated", "Not Allocated", "Pending"};
-        Spinner s = (Spinner) findViewById(R.id.astramain);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, areaNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        s.setAdapter(adapter);
-        pickList.add("syed");
-        pickList.add("syed");
-        pickList.add("syed");
-
-        itemsList1 = new ItemsList("", "", "", "", "", "true", false, "");
-        itemsList2 = new ItemsList("", "", "", "", "", "true", false, "");
-        itemsList3 = new ItemsList("", "", "", "", "", "true", false, "");
-
-        itemsList = new ItemsList("", "", "", "", "", "true", false, "");
-        itemsLists.add(itemsList);
-        itemsLists.add(itemsList1);
-        itemsLists.add(itemsList2);
-        itemsLists.add(itemsList3);
-
-
-//        pickListAdapter = new PickListAdapter(this, pickList);
-//        RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-//        activityAstraMainBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
-//        activityAstraMainBinding.picklistrecycleview.setAdapter(pickListAdapter);
-
-
-//        completeListAdapter = new CompleteListAdapter(this, pickList);
-//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-//        activityAstraMainBinding.completlistrecycleview.setLayoutManager(mLayoutManager);
-//        activityAstraMainBinding.completlistrecycleview.setAdapter(completeListAdapter);
-
-//        itemListAdapter = new ItemListAdapter(this, itemsLists);
-//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-//        activityAstraMainBinding.listitemRecycleview.setLayoutManager(layoutManager);
-//        activityAstraMainBinding.listitemRecycleview.setAdapter(itemListAdapter);
-//        pickListLayout.setBackgroundResource(R.color.lite_yellow);
-        activityAstraMainBinding.yellowLine.setVisibility(View.VISIBLE);
-        picklist.setTextColor(R.color.black);
-
-
-        activityAstraMainBinding.scan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                activityAstraMainBinding.scan.setVisibility(View.INVISIBLE);
-                activityAstraMainBinding.clickToScan.setVisibility(View.INVISIBLE);
-                activityAstraMainBinding.productdetails.setVisibility(View.VISIBLE);
-                activityAstraMainBinding.secondScan.setVisibility(View.VISIBLE);
-
-//                ProductDialogLayoutBinding productDialogLayoutBinding;
-//                Dialog dialog=new Dialog(AstraMainActivity.this);
-//                productDialogLayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(getApplicationContext()), R.layout.product_dialog_layout, null, false);
+//        RelativeLayout dashboardsupervisor = findViewById(R.id.dashboard_layout);
+//        RelativeLayout dashboardadmin = findViewById(R.id.second_dashboard);
+//        ImageView apollologo = findViewById(R.id.apollo_logo);
+////        RelativeLayout pickListLayout = findViewById(R.id.picklist_layout);
+//        RelativeLayout pickListHistoryLayout = findViewById(R.id.picklist_history_layout);
+//        RelativeLayout requestHistoryLayout = findViewById(R.id.requesthistory_layout);
+//        RelativeLayout pickerrequestlayout = findViewById(R.id.picker_request_layout);
+//        RelativeLayout approvedhistoryLayout = findViewById(R.id.approved_history_layout);
+//        TextView picklist = findViewById(R.id.picklist_text);
+//        picklist.setTextColor(R.color.thick_black);
+//        activityAstraMainBinding.yellowLine.setVisibility(View.VISIBLE);
+////        pickListLayout.setBackgroundResource(R.color.lite_yellow);
+//
+//
+//        if (getDataManager().getEmplRole() != null && getDataManager().getEmplRole().equals("Picker")) {
+//            dashboardsupervisor.setVisibility(View.INVISIBLE);
+//            pickerrequestlayout.setVisibility(View.INVISIBLE);
+//
+//        }
+//
+//
+//        String[] areaNames = new String[]{"All", "Allocated", "Not Allocated", "Pending"};
+//        Spinner s = (Spinner) findViewById(R.id.astramain);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, areaNames);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        s.setAdapter(adapter);
+//        pickList.add("syed");
+//        pickList.add("syed");
+//        pickList.add("syed");
+//
+//        itemsList1 = new ItemsList("", "", "", "", "", "true", false, "");
+//        itemsList2 = new ItemsList("", "", "", "", "", "true", false, "");
+//        itemsList3 = new ItemsList("", "", "", "", "", "true", false, "");
+//
+//        itemsList = new ItemsList("", "", "", "", "", "true", false, "");
+//        itemsLists.add(itemsList);
+//        itemsLists.add(itemsList1);
+//        itemsLists.add(itemsList2);
+//        itemsLists.add(itemsList3);
+//
+//
+////        pickListAdapter = new PickListAdapter(this, pickList);
+////        RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+////        activityAstraMainBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
+////        activityAstraMainBinding.picklistrecycleview.setAdapter(pickListAdapter);
+//
+//
+////        completeListAdapter = new CompleteListAdapter(this, pickList);
+////        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+////        activityAstraMainBinding.completlistrecycleview.setLayoutManager(mLayoutManager);
+////        activityAstraMainBinding.completlistrecycleview.setAdapter(completeListAdapter);
+//
+////        itemListAdapter = new ItemListAdapter(this, itemsLists);
+////        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+////        activityAstraMainBinding.listitemRecycleview.setLayoutManager(layoutManager);
+////        activityAstraMainBinding.listitemRecycleview.setAdapter(itemListAdapter);
+////        pickListLayout.setBackgroundResource(R.color.lite_yellow);
+//        activityAstraMainBinding.yellowLine.setVisibility(View.VISIBLE);
+//        picklist.setTextColor(R.color.black);
+//
+//
+//        activityAstraMainBinding.scan.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                activityAstraMainBinding.scan.setVisibility(View.INVISIBLE);
+//                activityAstraMainBinding.clickToScan.setVisibility(View.INVISIBLE);
+//                activityAstraMainBinding.productdetails.setVisibility(View.VISIBLE);
+//                activityAstraMainBinding.secondScan.setVisibility(View.VISIBLE);
+//
+////                ProductDialogLayoutBinding productDialogLayoutBinding;
+////                Dialog dialog=new Dialog(AstraMainActivity.this);
+////                productDialogLayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(getApplicationContext()), R.layout.product_dialog_layout, null, false);
+////                dialog.setCancelable(false);
+////                dialog.setContentView(productDialogLayoutBinding.getRoot());
+////                dialog.show();
+//
+//
+//            }
+//        });
+//
+//
+//        apollologo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(AstraMainActivity.this, LoginActivity.class);
+//                startActivity(intent);
+//                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+//            }
+//        });
+//
+//        dashboardsupervisor.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(AstraMainActivity.this, DashBoard.class);
+//                startActivity(intent);
+//                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+//
+//            }
+//        });
+//
+//
+//        pickListHistoryLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(AstraMainActivity.this, PickListHistoryActivity.class);
+//                intent.putExtra("userId", userId);
+//                startActivity(intent);
+//                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+//
+//            }
+//        });
+//
+//
+//        activityAstraMainBinding.secondScan.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                changecolor = true;
+//
+//
+//                ProcessdocumentDialogLayoutBinding productDialogLayoutBinding;
+//                Dialog dialog = new Dialog(AstraMainActivity.this);
+//                productDialogLayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(getApplicationContext()), R.layout.processdocument_dialog_layout, null, false);
 //                dialog.setCancelable(false);
 //                dialog.setContentView(productDialogLayoutBinding.getRoot());
 //                dialog.show();
-
-
-            }
-        });
-
-
-        apollologo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AstraMainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-            }
-        });
-
-        dashboardsupervisor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AstraMainActivity.this, DashBoard.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-
-            }
-        });
-
-
-        pickListHistoryLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AstraMainActivity.this, PickListHistoryActivity.class);
-                intent.putExtra("userId", userId);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-
-            }
-        });
-
-
-        activityAstraMainBinding.secondScan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changecolor = true;
-
-
-                ProcessdocumentDialogLayoutBinding productDialogLayoutBinding;
-                Dialog dialog = new Dialog(AstraMainActivity.this);
-                productDialogLayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(getApplicationContext()), R.layout.processdocument_dialog_layout, null, false);
-                dialog.setCancelable(false);
-                dialog.setContentView(productDialogLayoutBinding.getRoot());
-                dialog.show();
-                productDialogLayoutBinding.select.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        itemsLists.remove(0);
-                        itemsList = new ItemsList("", "", "", "", "", "true", true, "");
-                        itemsLists.add(itemsList);
-                        itemListAdapter.notifyDataSetChanged();
-
-                        if (changecolor == true) {
-                            activityAstraMainBinding.processdocumentLayout.setBackgroundResource(R.color.lite_yellow);
-                        }
-                        dialog.dismiss();
-                    }
-                });
-                productDialogLayoutBinding.close.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-            }
-        });
-
-
-        activityAstraMainBinding.processdocumentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PickinglistDialoglayoutBinding pickinglistDialoglayoutBinding;
-                Dialog dialog = new Dialog(AstraMainActivity.this);
-                pickinglistDialoglayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(getApplicationContext()), R.layout.pickinglist_dialoglayout, null, false);
-                dialog.setCancelable(false);
-                dialog.setContentView(pickinglistDialoglayoutBinding.getRoot());
-                dialog.show();
-                pickinglistDialoglayoutBinding.select.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-                pickinglistDialoglayoutBinding.close.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-            }
-        });
-
-        requestHistoryLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AstraMainActivity.this, RequestHistoryActivity.class);
-                intent.putExtra("userId", userId);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-
-            }
-        });
-
-        pickerrequestlayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AstraMainActivity.this, PickerRequests.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-
-            }
-        });
+//                productDialogLayoutBinding.select.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        itemsLists.remove(0);
+//                        itemsList = new ItemsList("", "", "", "", "", "true", true, "");
+//                        itemsLists.add(itemsList);
+//                        itemListAdapter.notifyDataSetChanged();
+//
+//                        if (changecolor == true) {
+//                            activityAstraMainBinding.processdocumentLayout.setBackgroundResource(R.color.lite_yellow);
+//                        }
+//                        dialog.dismiss();
+//                    }
+//                });
+//                productDialogLayoutBinding.close.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//
+//            }
+//        });
+//
+//
+//        activityAstraMainBinding.processdocumentLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                PickinglistDialoglayoutBinding pickinglistDialoglayoutBinding;
+//                Dialog dialog = new Dialog(AstraMainActivity.this);
+//                pickinglistDialoglayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(getApplicationContext()), R.layout.pickinglist_dialoglayout, null, false);
+//                dialog.setCancelable(false);
+//                dialog.setContentView(pickinglistDialoglayoutBinding.getRoot());
+//                dialog.show();
+//                pickinglistDialoglayoutBinding.select.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//                pickinglistDialoglayoutBinding.close.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//
+//            }
+//        });
+//
+//        requestHistoryLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(AstraMainActivity.this, RequestHistoryActivity.class);
+//                intent.putExtra("userId", userId);
+//                startActivity(intent);
+//                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+//
+//            }
+//        });
+//
+//        pickerrequestlayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(AstraMainActivity.this, PickerRequests.class);
+//                startActivity(intent);
+//                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+//
+//            }
+//        });
         setUp();
     }
 
     private void setUp() {
+        activityAstraMainBinding.setCallback(this);
+        activityAstraMainBinding.setCustomMenuCallback(this);
+        activityAstraMainBinding.setSelectedMenu(1);
         searchByPurchReqId();
         getController().getAllocationDataApiCall();
     }
 
     private void searchByPurchReqId() {
-
         activityAstraMainBinding.searchByText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -407,12 +391,10 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
             }
             pickListAdapter.notifyDataSetChanged();
 
-            itemListAdapter = new ItemListAdapter(this, getAllocationLineResponse.getAllocationdetails());
+            ItemListAdapter itemListAdapter = new ItemListAdapter(this, getAllocationLineResponse.getAllocationdetails());
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             activityAstraMainBinding.listitemRecycleview.setLayoutManager(layoutManager);
             activityAstraMainBinding.listitemRecycleview.setAdapter(itemListAdapter);
-        } else {
-
         }
 
 
@@ -426,13 +408,8 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
     @Override
     public void onClickScannedBarcodeItem(GetAllocationLineResponse.Allocationdetail allocationdetail) {
         if (barcodeAllocationDetailList != null && barcodeAllocationDetailList.size() > 0) {
-            for (GetAllocationLineResponse.Allocationdetail allocationdetailforItem : barcodeAllocationDetailList) {
-                if (allocationdetailforItem.equals(allocationdetail)) {
-                    allocationdetailforItem.setScannedBarcodeItemSelected(true);
-                } else {
-                    allocationdetailforItem.setScannedBarcodeItemSelected(false);
-                }
-            }
+            for (GetAllocationLineResponse.Allocationdetail allocationdetailforItem : barcodeAllocationDetailList)
+                allocationdetailforItem.setScannedBarcodeItemSelected(allocationdetailforItem.equals(allocationdetail));
             scannedBacodeItemsAdapter.notifyDataSetChanged();
         }
     }
@@ -456,7 +433,7 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
                             .filter(e -> e.getItembarcode().equalsIgnoreCase(Result.getContents()) && e.getShortqty() != 0)
                             .collect(Collectors.toList());
 
-                    if (barcodeAllocationDetailList != null && barcodeAllocationDetailList.size() > 0) {
+                    if (barcodeAllocationDetailList.size() > 0) {
                         if (barcodeAllocationDetailList.size() > 1) {
                             scannedBarcodeItemListDialog(barcodeAllocationDetailList);
                         } else {
@@ -512,7 +489,7 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
     @Override
     public void onClickPickListHistory() {
         Intent intent = new Intent(AstraMainActivity.this, PickListHistoryActivity.class);
-        intent.putExtra("userId", userId);
+        intent.putExtra("userId", getDataManager().getEmplId());
         startActivity(intent);
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }
@@ -520,7 +497,7 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
     @Override
     public void onClickRequestHistory() {
         Intent intent = new Intent(AstraMainActivity.this, RequestHistoryActivity.class);
-        intent.putExtra("userId", userId);
+        intent.putExtra("userId", getDataManager().getEmplId());
         startActivity(intent);
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }
@@ -539,7 +516,7 @@ public class AstraMainActivity extends BaseActivity implements AstraMainActivity
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }
 
-    public class OrdersStatusModel {
+    public static class OrdersStatusModel {
         private int noOfBoxItems;
         private int picked;
         private int pending;

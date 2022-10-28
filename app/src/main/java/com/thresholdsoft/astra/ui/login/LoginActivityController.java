@@ -9,6 +9,8 @@ import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.NetworkUtils;
 
+import org.jetbrains.annotations.NotNull;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,7 +37,7 @@ public class LoginActivityController {
             Call<ValidateUserModelResponse> call = apiInterface.VALIDATE_USER_API_CALL("yvEoG+8MvYiOfhV2wb5jw", reqModel);
             call.enqueue(new Callback<ValidateUserModelResponse>() {
                 @Override
-                public void onResponse(Call<ValidateUserModelResponse> call, Response<ValidateUserModelResponse> response) {
+                public void onResponse(@NotNull Call<ValidateUserModelResponse> call, @NotNull Response<ValidateUserModelResponse> response) {
                     ActivityUtils.hideDialog();
                     if (response.isSuccessful() && response.body() != null) {
                         if (response.body().getRequeststatus()) {
@@ -48,7 +50,7 @@ public class LoginActivityController {
                 }
 
                 @Override
-                public void onFailure(Call<ValidateUserModelResponse> call, Throwable t) {
+                public void onFailure(@NotNull Call<ValidateUserModelResponse> call, @NotNull Throwable t) {
                     ActivityUtils.hideDialog();
                     loginActivityCallback.onFailureMessage(t.getMessage());
                 }

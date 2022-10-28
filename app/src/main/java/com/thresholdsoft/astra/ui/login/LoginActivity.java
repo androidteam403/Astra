@@ -1,5 +1,6 @@
 package com.thresholdsoft.astra.ui.login;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
 
     private void setUp() {
         activityLoginBinding.setCallback(this);
+        parentLayoutTouchListener();
     }
 
     @Override
@@ -41,11 +43,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
                 Toast.makeText(getApplicationContext(), validateUserModelResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    @Override
-    public void onFailureValidateResponse() {
-        Toast.makeText(getApplicationContext(), "API NOT SUCCESSFULL", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -66,8 +63,9 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
             getDataManager().setEmplRole(empRole);
             if (empRole.equals("Picker")) {
                 startActivity(AstraMainActivity.getStartActivity(this));
-                finish();
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                finish();
+
             }
         }
     }
@@ -107,5 +105,13 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
             return false;
         }
         return true;
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void parentLayoutTouchListener() {
+        Objects.requireNonNull(activityLoginBinding.parentLayout).setOnTouchListener((view, motionEvent) -> {
+            hideKeyboard();
+            return false;
+        });
     }
 }

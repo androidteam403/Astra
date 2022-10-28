@@ -2,6 +2,7 @@ package com.thresholdsoft.astra.ui.main;
 
 import android.content.Context;
 
+import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.network.ApiClient;
 import com.thresholdsoft.astra.network.ApiInterface;
 import com.thresholdsoft.astra.ui.main.model.GetAllocationDataRequest;
@@ -31,7 +32,7 @@ public class AstraMainActivityController {
             ActivityUtils.showDialog(mContext, "Please wait.");
 
             GetAllocationDataRequest getAllocationDataRequest = new GetAllocationDataRequest();
-            getAllocationDataRequest.setUserId("AP5946");
+            getAllocationDataRequest.setUserId(getDataManager().getEmplId());
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
             Call<GetAllocationDataResponse> call = apiInterface.GET_ALLOCATION_DATA_API_CALL("yvEoG+8MvYiOfhV2wb5jw", getAllocationDataRequest);
@@ -90,5 +91,9 @@ public class AstraMainActivityController {
         } else {
             mCallback.onFailureMessage("Something went wrong.");
         }
+    }
+
+    private SessionManager getDataManager() {
+        return new SessionManager(mContext);
     }
 }
