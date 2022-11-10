@@ -1,11 +1,10 @@
 package com.thresholdsoft.astra.ui.picklisthistory;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -18,33 +17,37 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityPickListHistoryBinding;
+import com.thresholdsoft.astra.ui.CustomMenuCallback;
 import com.thresholdsoft.astra.ui.adapter.PickListHistoryAdapter;
-import com.thresholdsoft.astra.ui.home.Home;
 import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
-import com.thresholdsoft.astra.ui.main.AstraMainActivity;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequests;
+import com.thresholdsoft.astra.ui.picklist.PickListActivity;
 import com.thresholdsoft.astra.ui.requesthistory.RequestHistoryActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PickListHistoryActivity extends BaseActivity {
+public class PickListHistoryActivity extends BaseActivity implements CustomMenuCallback {
     private ActivityPickListHistoryBinding activityPickListHistoryBinding;
     List<String> pickListHistoryModels = new ArrayList<>();
     String userId;
+
+    public static Intent getStartActivity(Context mContext) {
+        Intent intent = new Intent(mContext, PickListHistoryActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        return intent;
+    }
+
 
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         activityPickListHistoryBinding = DataBindingUtil.setContentView(this, R.layout.activity_pick_list_history);
         RelativeLayout dashboardsupervisor = findViewById(R.id.dashboard_layout);
         RelativeLayout dashboardadmin = findViewById(R.id.second_dashboard);
-        ImageView apollologo=findViewById(R.id.apollo_logo);
+        ImageView apollologo = findViewById(R.id.apollo_logo);
         RelativeLayout pickListLayout = findViewById(R.id.picklist_layout);
         RelativeLayout pickListHistoryLayout = findViewById(R.id.picklist_history_layout);
         RelativeLayout requestHistoryLayout = findViewById(R.id.requesthistory_layout);
@@ -57,7 +60,7 @@ public class PickListHistoryActivity extends BaseActivity {
         picklistHist.setTextColor(R.color.black);
         activityPickListHistoryBinding.yellowLine.setVisibility(View.VISIBLE);
         pickListHistoryLayout.setBackgroundResource(R.color.lite_yellow);
-        if(getDataManager().getEmplRole()!=null && getDataManager().getEmplRole().equals("Picker")){
+        if (getDataManager().getEmplRole() != null && getDataManager().getEmplRole().equals("Picker")) {
             dashboardsupervisor.setVisibility(View.GONE);
             pickerrequestlayout.setVisibility(View.GONE);
 
@@ -154,7 +157,7 @@ public class PickListHistoryActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(PickListHistoryActivity.this, AstraMainActivity.class));
+                startActivity(new Intent(PickListHistoryActivity.this, PickListActivity.class));
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
             }
         });
@@ -168,5 +171,48 @@ public class PickListHistoryActivity extends BaseActivity {
 
             }
         });
+        setUp();
     }
+
+    private void setUp() {
+
+//        activityPickListBinding.setCallback(this);
+        activityPickListHistoryBinding.setCustomMenuCallback(this);
+        activityPickListHistoryBinding.setSelectedMenu(2);
+    }
+
+    @Override
+    public void onClickPickList() {
+        startActivity(PickListActivity.getStartActivity(this));
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+        finish();
+    }
+
+    @Override
+    public void onClickPickListHistory() {
+
+    }
+
+    @Override
+    public void onClickRequestHistory() {
+        Intent intent = new Intent(PickListHistoryActivity.this, RequestHistoryActivity.class);
+        intent.putExtra("userId", getDataManager().getEmplId());
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+    }
+
+    @Override
+    public void onClickDashboard() {
+        Intent intent = new Intent(PickListHistoryActivity.this, DashBoard.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+    }
+
+    @Override
+    public void onClickPickerRequest() {
+        Intent intent = new Intent(PickListHistoryActivity.this, PickerRequests.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+    }
+
 }

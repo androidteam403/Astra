@@ -10,7 +10,7 @@ import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityLoginBinding;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
-import com.thresholdsoft.astra.ui.main.AstraMainActivity;
+import com.thresholdsoft.astra.ui.picklist.PickListActivity;
 
 import java.util.Objects;
 
@@ -62,7 +62,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
         if (isOtpValidate()) {
             getDataManager().setEmplRole(empRole);
             if (empRole.equals("Picker")) {
-                startActivity(AstraMainActivity.getStartActivity(this));
+                startActivity(PickListActivity.getStartActivity(this));
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 finish();
 
@@ -96,11 +96,11 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
             activityLoginBinding.otp.requestFocus();
             return false;
         } else if (otp.length() < 4) {
-            activityLoginBinding.otp.setError("Enater 4 digits valid OTP.");
+            activityLoginBinding.otp.setError("Enter 4 digits valid OTP.");
             activityLoginBinding.otp.requestFocus();
             return false;
         } else if (!otp.equals(loginOtp)) {
-            activityLoginBinding.otp.setError("Enater valid OTP.");
+            activityLoginBinding.otp.setError("Enter valid OTP.");
             activityLoginBinding.otp.requestFocus();
             return false;
         }

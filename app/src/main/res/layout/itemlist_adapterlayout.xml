@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{()-> callback.onClickItemListItem(allocationdetail)}">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardview"
@@ -19,6 +21,7 @@
                 android:id="@+id/orderHead"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@{allocationdetail.isSelected ? @drawable/bg_itemlist_adapter_selected : @drawable/bg_itemlist_adapter_unselected}"
                 android:orientation="vertical"
                 android:padding="@dimen/dimen5dp">
 
@@ -26,7 +29,6 @@
                     android:id="@+id/pendingLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
                     android:orientation="vertical">
 
                     <RelativeLayout
@@ -47,7 +49,8 @@
                             android:layout_height="@dimen/dimen15dp"
                             android:layout_alignParentEnd="true"
                             android:contentDescription="@string/app_name"
-                            android:src="@drawable/edit_view" />
+                            android:src="@drawable/edit_view"
+                            android:visibility="gone" />
 
                     </RelativeLayout>
 
@@ -156,12 +159,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="1">
+                        android:weightSum="3">
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".5"
+                            android:layout_weight="1"
                             android:orientation="vertical">
 
                             <TextView
@@ -185,7 +188,7 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".5"
+                            android:layout_weight="1"
                             android:orientation="vertical">
 
                             <TextView
@@ -201,6 +204,31 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:text="@{String.valueOf(allocationdetail.allocatedqty)}"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="Allocated Packs"
+                                android:textSize="@dimen/dimen8sp" />
+
+                            <TextView
+                                android:id="@+id/allocation_packs"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@{String.valueOf(allocationdetail.allocatedpacks)}"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/dimen8sp" />
 
@@ -239,21 +267,20 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/statuslayout"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:visibility="gone">
+                        android:weightSum="1">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight=".7"
                             android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="10sp"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:text="Status"
                                 android:textSize="@dimen/dimen8sp" />
@@ -262,22 +289,29 @@
                                 android:id="@+id/status"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="10sp"
                                 android:fontFamily="@font/poppins_semibold"
-                                android:text="SUCESSFULL"
-                                android:textColor="@color/Light_green"
+                                android:text="@{allocationdetail.allocatedPackscompleted == 0 ? `completed` : `pending`}"
+                                android:textAllCaps="true"
+                                android:textColor="@{allocationdetail.allocatedPackscompleted == 0 ? @color/green : @color/colorPrimaryDarker}"
                                 android:textSize="@dimen/dimen8sp" />
 
 
                         </LinearLayout>
 
-                        <ImageView
-                            android:layout_width="@dimen/dimen15dp"
-                            android:layout_height="@dimen/dimen15dp"
-                            android:layout_marginStart="200dp"
-                            android:layout_marginTop="8dp"
-                            android:contentDescription="@string/app_name"
-                            android:src="@drawable/ic_baseline_delete_24" />
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight=".3"
+                            android:gravity="end|center_vertical"
+                            android:visibility="@{isOrderCompleted ? view.GONE : allocationdetail.allocatedPackscompleted == 0 ? view.VISIBLE : view.GONE}">
+
+                            <ImageView
+                                android:layout_width="@dimen/dimen15dp"
+                                android:layout_height="@dimen/dimen15dp"
+                                android:contentDescription="@string/app_name"
+                                android:onClick="@{()-> callback.onClickResetItemDetails(allocationdetail)}"
+                                android:src="@drawable/ic_baseline_delete_24" />
+                        </RelativeLayout>
                     </LinearLayout>
 
 
@@ -290,6 +324,18 @@
 
         <variable
             name="allocationdetail"
-            type="com.thresholdsoft.astra.ui.main.model.GetAllocationLineResponse.Allocationdetail" />
+            type="com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse.Allocationdetail" />
+
+        <variable
+            name="callback"
+            type="com.thresholdsoft.astra.ui.picklist.PickListActivityCallback" />
+
+        <variable
+            name="isOrderCompleted"
+            type="Boolean" />
+
+        <variable
+            name="view"
+            type="android.view.View" />
     </data>
 </layout>

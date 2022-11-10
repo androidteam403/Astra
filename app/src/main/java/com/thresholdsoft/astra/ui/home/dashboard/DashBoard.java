@@ -1,6 +1,5 @@
 package com.thresholdsoft.astra.ui.home.dashboard;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,21 +15,19 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.DashboardareawiseBinding;
 import com.thresholdsoft.astra.ui.adapter.ReportAdapter;
 import com.thresholdsoft.astra.ui.home.Home;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
-import com.thresholdsoft.astra.ui.main.AstraMainActivity;
+import com.thresholdsoft.astra.ui.picklist.PickListActivity;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequests;
 import com.thresholdsoft.astra.ui.picklisthistory.PickListHistoryActivity;
 import com.thresholdsoft.astra.ui.requesthistory.RequestHistoryActivity;
@@ -179,7 +176,7 @@ public class DashBoard extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(DashBoard.this, AstraMainActivity.class));
+                startActivity(new Intent(DashBoard.this, PickListActivity.class));
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }

@@ -17,7 +17,7 @@
     <color name="lite_yellow">#feb711</color>
 
     <color name="inprogress_color">#FF8C00</color>
-
+    <color name="inprogress_overallstatus_color">#ff5a00</color>
 
     <color name="colorPrimary">#027d9e</color>
     <color name="colorPrimaryDark">#027d9e</color>
@@ -137,5 +137,9 @@
     <color name="partial_color">#ffc12f</color>
     <color name="orange">#f7941d</color>
     <color name="color_takeprint">#00adef</color>
+    <color name="inprocess_color">#FF8C00</color>
+    <color name="bottom_strip_color">#1A03b3b3</color>
+
+    FF8C00
 </resources>
 

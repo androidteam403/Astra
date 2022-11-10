@@ -75,6 +75,10 @@ dependencies {
 
     //Add QR Library Here
     implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
+
+    // Room
+    implementation 'androidx.room:room-runtime:2.2.5'
+    annotationProcessor 'androidx.room:room-compiler:2.2.5'
 }
 
 

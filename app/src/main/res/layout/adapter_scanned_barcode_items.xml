@@ -56,10 +56,10 @@
 
         <variable
             name="allocationDetails"
-            type="com.thresholdsoft.astra.ui.main.model.GetAllocationLineResponse.Allocationdetail" />
+            type="com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse.Allocationdetail" />
 
         <variable
             name="callback"
-            type="com.thresholdsoft.astra.ui.main.AstraMainActivityCallback" />
+            type="com.thresholdsoft.astra.ui.picklist.PickListActivityCallback" />
     </data>
 </layout>

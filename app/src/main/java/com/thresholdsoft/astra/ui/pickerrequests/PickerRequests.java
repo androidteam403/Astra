@@ -23,9 +23,9 @@ import com.thresholdsoft.astra.ui.adapter.CompleteListAdapter;
 import com.thresholdsoft.astra.ui.adapter.PickerListAdapter;
 import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
-import com.thresholdsoft.astra.ui.main.AstraMainActivity;
-import com.thresholdsoft.astra.ui.main.adapter.PickListAdapter;
-import com.thresholdsoft.astra.ui.main.model.GetAllocationDataResponse;
+import com.thresholdsoft.astra.ui.picklist.PickListActivity;
+import com.thresholdsoft.astra.ui.picklist.adapter.PickListAdapter;
+import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
 import com.thresholdsoft.astra.ui.picklisthistory.PickListHistoryActivity;
 import com.thresholdsoft.astra.ui.requesthistory.RequestHistoryActivity;
 
@@ -96,7 +96,7 @@ public class PickerRequests extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(PickerRequests.this, AstraMainActivity.class));
+                startActivity(new Intent(PickerRequests.this, PickListActivity.class));
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }

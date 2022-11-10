@@ -1,6 +1,5 @@
 package com.thresholdsoft.astra.ui.login.userlogin;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
@@ -13,10 +12,7 @@ import android.widget.Toast;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityUserLoginBinding;
-import com.thresholdsoft.astra.db.SessionManager;
-import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
-import com.thresholdsoft.astra.ui.login.LoginActivity;
-import com.thresholdsoft.astra.ui.main.AstraMainActivity;
+import com.thresholdsoft.astra.ui.picklist.PickListActivity;
 
 public class UserLoginActivity extends BaseActivity {
     private ActivityUserLoginBinding activityUserLoginBinding;
@@ -42,7 +38,7 @@ public class UserLoginActivity extends BaseActivity {
                     getDataManager().setEmplRole(userId);
                     if(userId.equals("Picker")){
                         isPicker=true;
-                        Intent intents = new Intent(UserLoginActivity.this, AstraMainActivity.class);
+                        Intent intents = new Intent(UserLoginActivity.this, PickListActivity.class);
                         intents.putExtra("userId", userId);
                         intents.putExtra("isPicker", isPicker);
                         startActivity(intents);

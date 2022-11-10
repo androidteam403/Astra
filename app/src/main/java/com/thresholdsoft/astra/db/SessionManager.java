@@ -4,7 +4,10 @@ package com.thresholdsoft.astra.db;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
+/**
+ * Created on : Nov 1, 2022
+ * Author     : NAVEEN.M
+ */
 public class SessionManager {
     private final SharedPreferences preferences;
 

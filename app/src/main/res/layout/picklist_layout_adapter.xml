@@ -5,6 +5,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:alpha="@{model.scanstatus.equalsIgnoreCase(`Completed`) ? .5f : 1f}"
         android:onClick="@{()-> callback.onClickPickListItem(model)}">
 
         <androidx.cardview.widget.CardView
@@ -14,6 +15,7 @@
             android:layout_marginStart="@dimen/dimen5dp"
             android:layout_marginTop="@dimen/dimen5dp"
             android:layout_marginEnd="@dimen/dimen5dp"
+            android:layout_marginBottom="5dp"
             android:visibility="visible"
             app:cardCornerRadius="6dp"
             app:cardElevation="7dp">
@@ -22,7 +24,7 @@
                 android:id="@+id/orderHead"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
+                android:background="@{model.isSelected ? @drawable/bg_order_selected : model.scanstatus.equalsIgnoreCase(`INPROCESS`) ? @drawable/bg_inprogress_order : model.scanstatus.equalsIgnoreCase(`Assigned`) ? @drawable/bg_assigned_order : @drawable/bg_completed_order}"
                 android:orientation="vertical"
                 android:padding="@dimen/dimen5dp">
 
@@ -30,7 +32,6 @@
                     android:id="@+id/pendingLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -153,7 +154,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_semibold"
-                                android:text="-"
+                                android:text="@{String.valueOf(model.collected)}"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/dimen8sp" />
                         </LinearLayout>
@@ -212,7 +213,7 @@
                             android:layout_marginStart="5dp"
                             android:fontFamily="@font/poppins_semibold"
                             android:gravity="center_horizontal"
-                            android:text="@{model.transdate}"
+                            android:text="@{statusDateTime}"
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:textSize="@dimen/dimen8sp" />
@@ -228,10 +229,16 @@
 
         <variable
             name="model"
-            type="com.thresholdsoft.astra.ui.main.model.GetAllocationDataResponse.Allocationhddata" />
+            type="com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse.Allocationhddata" />
 
         <variable
             name="callback"
-            type="com.thresholdsoft.astra.ui.main.AstraMainActivityCallback" />
+            type="com.thresholdsoft.astra.ui.picklist.PickListActivityCallback" />
+
+        <variable
+            name="statusDateTime"
+            type="String" />
+
+        <import type="com.thresholdsoft.astra.utils.CommonUtils" />
     </data>
 </layout>

@@ -1,6 +1,5 @@
 package com.thresholdsoft.astra.ui.requesthistory;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -20,13 +19,11 @@ import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityRequestHistoryBinding;
 import com.thresholdsoft.astra.ui.adapter.RequestHistoryAdapter;
-import com.thresholdsoft.astra.ui.home.Home;
 import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
-import com.thresholdsoft.astra.ui.main.AstraMainActivity;
+import com.thresholdsoft.astra.ui.picklist.PickListActivity;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequests;
 import com.thresholdsoft.astra.ui.picklisthistory.PickListHistoryActivity;
-import com.thresholdsoft.astra.ui.requesthistory.model.RequestHistoryModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,7 +144,7 @@ public class RequestHistoryActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(RequestHistoryActivity.this, AstraMainActivity.class));
+                startActivity(new Intent(RequestHistoryActivity.this, PickListActivity.class));
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
