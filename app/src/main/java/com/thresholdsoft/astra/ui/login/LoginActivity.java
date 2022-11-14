@@ -38,7 +38,12 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
                 this.loginOtp = validateUserModelResponse.getOtp();
                 this.empRole = validateUserModelResponse.getEmprole();
                 getDataManager().setEmpId(activityLoginBinding.userId.getText().toString().trim());
-                activityLoginBinding.setIsOtpScreen(true);
+                if (validateUserModelResponse.getIsotpvalidate()){
+                    activityLoginBinding.setIsOtpScreen(true);
+                }else {
+
+                }
+
             } else {
                 Toast.makeText(getApplicationContext(), validateUserModelResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
             }
@@ -65,6 +70,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
                 startActivity(PickListActivity.getStartActivity(this));
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 finish();
+            }else {
 
             }
         }
