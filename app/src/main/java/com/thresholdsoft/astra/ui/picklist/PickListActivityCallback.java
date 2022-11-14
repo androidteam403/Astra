@@ -62,4 +62,6 @@ public interface PickListActivityCallback {
 
     void onClickUpdateEditScannedPack(int editedScannedPack);
 
+    void onClickSubmitBarcodeorId();
+
 }

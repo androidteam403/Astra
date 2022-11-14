@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
+        android:id="@+id/parent_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -190,6 +191,14 @@
                 android:layout_weight=".7"
                 android:background="#dcdeea"
                 android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/barcode_scan_edittext"
+                    android:layout_width="0.1dp"
+                    android:layout_height="0.1dp"
+                    android:background="@color/white"
+                    android:importantForAutofill="no"
+                    android:inputType="text" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -811,10 +820,45 @@
                                 android:visibility="@{itemListCount == 0 ? view.VISIBLE : view.GONE}" />
                         </LinearLayout>
 
-                        <RelativeLayout
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight=".6">
+                            android:layout_weight=".6"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dimen10dp"
+                                android:layout_marginTop="@dimen/dimen23dp"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    android:id="@+id/search_by_barcode_orid"
+                                    android:layout_width="@dimen/dimen300dp"
+                                    android:layout_height="@dimen/dimen40dp"
+                                    android:hint="Search"
+                                    android:importantForAutofill="no"
+                                    android:inputType="text"
+                                    android:text=""
+                                    android:textSize="@dimen/dimen12sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="@dimen/dimen30dp"
+                                    android:layout_marginStart="@dimen/dimen5dp"
+                                    android:background="@drawable/rounded_corner_bg"
+                                    android:backgroundTint="@color/lite_yellow"
+                                    android:gravity="center"
+                                    android:paddingStart="@dimen/dimen5dp"
+                                    android:paddingEnd="@dimen/dimen5dp"
+                                    android:onClick="@{()-> callback.onClickSubmitBarcodeorId()}"
+                                    android:text="@string/label_submit"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/dimen12sp" />
+                            </LinearLayout>
 
                             <LinearLayout
                                 android:id="@+id/scan_layout"
@@ -874,7 +918,7 @@
                                 android:id="@+id/productdetails"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/dimen23dp"
+                                android:layout_marginTop="@dimen/dimen5dp"
                                 android:orientation="vertical"
                                 android:visibility="@{isBarcodeDetailsAvailavble ? view.VISIBLE : view.GONE}">
 
@@ -1301,7 +1345,7 @@
                                 </LinearLayout>
 
                             </LinearLayout>
-                        </RelativeLayout>
+                        </LinearLayout>
 
                     </LinearLayout>
 

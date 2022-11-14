@@ -41,7 +41,7 @@
         <activity
             android:name=".ui.picklist.PickListActivity"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".ui.home.Home"
             android:screenOrientation="landscape" />
