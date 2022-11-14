@@ -110,54 +110,39 @@ public class RequestHistoryActivity extends BaseActivity {
 
         activityRequestHistoryBinding.requestHistoryRcv.setLayoutManager(linearLayoutManager);
         activityRequestHistoryBinding.requestHistoryRcv.setAdapter(requestHistoryAdapter);
-        apollologo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        apollologo.setOnClickListener(v -> {
 
-                startActivity(new Intent(RequestHistoryActivity.this, LoginActivity.class));
-                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+            startActivity(new Intent(RequestHistoryActivity.this, LoginActivity.class));
+            overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
-            }
         });
 
-        dashboardsupervisor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        dashboardsupervisor.setOnClickListener(v -> {
 
-                startActivity(new Intent(RequestHistoryActivity.this, DashBoard.class));
-                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+            startActivity(new Intent(RequestHistoryActivity.this, DashBoard.class));
+            overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
-            }
         });
 
-        pickerrequestlayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        pickerrequestlayout.setOnClickListener(v -> {
 
-                startActivity(new Intent(RequestHistoryActivity.this, PickerRequests.class));
-                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+            startActivity(new Intent(RequestHistoryActivity.this, PickerRequests.class));
+            overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
-            }
         });
 
-        pickListLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        pickListLayout.setOnClickListener(v -> {
 
-                startActivity(new Intent(RequestHistoryActivity.this, PickListActivity.class));
-                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+            startActivity(new Intent(RequestHistoryActivity.this, PickListActivity.class));
+            overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
-            }
         });
 
-        pickListHistoryLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RequestHistoryActivity.this, PickListHistoryActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+        pickListHistoryLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(RequestHistoryActivity.this, PickListHistoryActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
-            }
         });
 
 
