@@ -1,6 +1,7 @@
 package com.thresholdsoft.astra.ui.login;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -10,6 +11,7 @@ import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityLoginBinding;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
+import com.thresholdsoft.astra.ui.pickerrequests.PickerRequests;
 import com.thresholdsoft.astra.ui.picklist.PickListActivity;
 
 import java.util.Objects;
@@ -38,10 +40,21 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
                 this.loginOtp = validateUserModelResponse.getOtp();
                 this.empRole = validateUserModelResponse.getEmprole();
                 getDataManager().setEmpId(activityLoginBinding.userId.getText().toString().trim());
-                if (validateUserModelResponse.getIsotpvalidate()){
+                if (validateUserModelResponse.getIsotpvalidate()) {
                     activityLoginBinding.setIsOtpScreen(true);
-                }else {
+                } else {
+                    getDataManager().setEmplRole(empRole);
+                    if (empRole.equals("Supervisor")) {
+                        Intent intent = new Intent(this, PickerRequests.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                        finish();
+                    } else {
+                        startActivity(PickListActivity.getStartActivity(this));
+                        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                        finish();
 
+                    }
                 }
 
             } else {
@@ -66,11 +79,15 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     public void onClickSubmit() {
         if (isOtpValidate()) {
             getDataManager().setEmplRole(empRole);
-            if (empRole.equals("Picker")) {
+            if (empRole.equals("Supervisor")) {
+                Intent intent = new Intent(this, PickerRequests.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                finish();
+            } else {
                 startActivity(PickListActivity.getStartActivity(this));
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 finish();
-            }else {
 
             }
         }
