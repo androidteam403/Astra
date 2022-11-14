@@ -1,10 +1,10 @@
-package com.example.astra.network;
+package com.thresholdsoft.astra.network;
 
 
-import com.example.astra.BuildConfig;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor;
+import com.thresholdsoft.astra.BuildConfig;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,12 +15,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-//
+    //
 //    public static ApiInterface getApiService(String baseUrl) {
 //        return getRetrofitInstance(baseUrl).create(ApiInterface.class);
 //    }
+    private static Retrofit retrofit = null;
+    static String BASE_URL = "http://lms.apollopharmacy.org:8033/";
 
-    private static Retrofit getRetrofitInstance(String baseUrl) {
+    public static Retrofit getRetrofitInstance() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         if (BuildConfig.DEBUG) {
             builder.addInterceptor(new OkHttpProfilerInterceptor());
@@ -35,7 +37,7 @@ public class ApiClient {
                 .setLenient()
                 .create();
         return new Retrofit.Builder()
-                .baseUrl(baseUrl)
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(client)
                 .build();
@@ -44,4 +46,25 @@ public class ApiClient {
 //    public static ApiInterface getApiService2(String baseUrl) {
 //        return getRetrofitInstance(baseUrl).create(ApiInterface.class);
 //    }
+
+
+    public static Retrofit getClient() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (BuildConfig.DEBUG) {
+            builder.addInterceptor(new OkHttpProfilerInterceptor());
+        }
+        OkHttpClient client = builder
+                .connectTimeout(3, TimeUnit.MINUTES)
+                .writeTimeout(3, TimeUnit.MINUTES)
+                .readTimeout(3, TimeUnit.MINUTES)
+                .addInterceptor(interceptor).build();
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+        return retrofit;
+    }
 }
