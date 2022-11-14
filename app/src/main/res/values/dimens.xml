@@ -36,4 +36,5 @@
     <dimen name="dimen6dp">6dp</dimen>
     <dimen name="dimen22dp">22dp</dimen>
     <dimen name="dimen23dp">23dp</dimen>
+    <dimen name="dimen300dp">300dp</dimen>
 </resources>

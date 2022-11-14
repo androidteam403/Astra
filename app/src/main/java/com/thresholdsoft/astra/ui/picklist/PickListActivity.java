@@ -6,8 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -302,67 +305,78 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         activityPickListBinding.setCallback(this);
         activityPickListBinding.setCustomMenuCallback(this);
         activityPickListBinding.setSelectedMenu(1);
+        if (Build.VERSION.SDK_INT >= 21) {
+            activityPickListBinding.barcodeScanEdittext.setShowSoftInputOnFocus(false);
+        } else if (Build.VERSION.SDK_INT >= 11) {
+            activityPickListBinding.barcodeScanEdittext.setRawInputType(InputType.TYPE_CLASS_TEXT);
+            activityPickListBinding.barcodeScanEdittext.setTextIsSelectable(true);
+        } else {
+            activityPickListBinding.barcodeScanEdittext.setRawInputType(InputType.TYPE_NULL);
+            activityPickListBinding.barcodeScanEdittext.setFocusable(true);
+        }
+
+
+        activityPickListBinding.barcodeScanEdittext.requestFocus();
+        //search_by_text
+        activityPickListBinding.searchByText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    activityPickListBinding.barcodeScanEdittext.requestFocus();
+                }
+            }
+        });
         searchByPurchReqId();
         getController().getAllocationDataApiCall();
-//        scannedPacksEditTextWatcher();
+        barcodeCodeScanEdittextTextWatcher();
+        parentLayoutTouchListener();
     }
 
-//    private void scannedPacksEditTextWatcher() {
-//        activityPickListBinding.scannedPacksEdittext.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//                if (editable.toString() != null) {
-//                    String charString = editable.toString();
-//                    if (charString.isEmpty()) {
-//
-//                    } else {
-//                        if (barcodeAllocationDetailList != null && barcodeAllocationDetailList.size() > 0) {
-//                            if (activityPickListBinding.getOrderStatusModel().getStatus().equals("Assigned")) {
-//                                StatusUpdateRequest statusUpdateRequest = new StatusUpdateRequest();
-//                                statusUpdateRequest.setRequesttype("INPROCESS");
-//                                statusUpdateRequest.setPurchreqid(activityPickListBinding.getAllocationData().getPurchreqid());
-//                                statusUpdateRequest.setUserid(activityPickListBinding.getAllocationData().getUserid());
-//                                statusUpdateRequest.setNoofboxes(activityPickListBinding.getAllocationData().getNoofboxes());
-//                                statusUpdateRequest.setModeofdelivery("");
-//                                statusUpdateRequest.setScanstatus("INPROCESS");
-//                                statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
-//                                statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
-//                                getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS");
-//                            } else {
-//                                PickListActivity.this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
-//                                PickListActivity.this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
-//                                barcodeAllocationDetailList.get(0).setAllocatedqtycompleted(barcodeAllocationDetailList.get(0).getAllocatedqtycompleted() - 1);
-//                                barcodeAllocationDetailList.get(0).setAllocatedPackscompleted(barcodeAllocationDetailList.get(0).getAllocatedPackscompleted() - 1);
-//                                int scannedQty = (barcodeAllocationDetailList.get(0).getAllocatedqty() / barcodeAllocationDetailList.get(0).getAllocatedpacks()) * (barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted());
-//                                barcodeAllocationDetailList.get(0).setScannedqty(scannedQty);//barcodeAllocationDetailList.get(0).getScannedqty() + 1
-//                                int shortScannedQty = barcodeAllocationDetailList.get(0).getAllocatedqty() - (barcodeAllocationDetailList.get(0).getAllocatedqty() / barcodeAllocationDetailList.get(0).getAllocatedpacks()) * (barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted());// barcodeAllocationDetailList.get(0).getAllocatedPackscompleted();
-//                                barcodeAllocationDetailList.get(0).setShortqty(shortScannedQty);
-//                                barcodeAllocationDetailList.get(0).setScannedDateTime(PickListActivity.this.scanStartDateTime);
-//                                activityPickListBinding.setBarcodeScannedItem(barcodeAllocationDetailList.get(0));
-//                                activityPickListBinding.setIsBarcodeDetailsAvailavble(true);
-//                                itemListAdapter.notifyDataSetChanged();
-//
-//                                insertOrUpdateAllocationLineList();
-//                                insertOrUpdateOrderStatusTimeDateEntity();
-//                                setOrderCompletedPending(activityPickListBinding.getOrderStatusModel().getStatus());
-//                                pickListAdapter.notifyDataSetChanged();
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        });
-//    }
+    @SuppressLint("ClickableViewAccessibility")
+    private void parentLayoutTouchListener() {
+        activityPickListBinding.parentLayout.setOnTouchListener((view, motionEvent) -> {
+            hideKeyboard();
+            activityPickListBinding.barcodeScanEdittext.requestFocus();
+            return false;
+        });
+    }
+
+    Handler barcodeScanHandler = new Handler();
+    Runnable barcodeScanRunnable = new Runnable() {
+        @Override
+        public void run() {
+            barcodeScanDetailFun(activityPickListBinding.barcodeScanEdittext.getText().toString());
+            activityPickListBinding.barcodeScanEdittext.setText("");
+            activityPickListBinding.barcodeScanEdittext.requestFocus();
+        }
+    };
+
+    private void barcodeCodeScanEdittextTextWatcher() {
+        activityPickListBinding.barcodeScanEdittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                hideKeyboard();
+//                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(activityPickListBinding.barcodeScanEdittext.getWindowToken(), 0);
+                if (s.toString() != null && !s.toString().isEmpty()) {
+                    barcodeScanHandler.removeCallbacks(barcodeScanRunnable);
+                    barcodeScanHandler.postDelayed(barcodeScanRunnable, 250);
+                }
+            }
+        });
+
+    }
+
 
     private void searchByPurchReqId() {
         activityPickListBinding.searchByText.addTextChangedListener(new TextWatcher() {
@@ -975,6 +989,74 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         }
     }
 
+    @Override
+    public void onClickSubmitBarcodeorId() {
+        String barcodeOrId = activityPickListBinding.searchByBarcodeOrid.getText().toString().trim();
+        if (barcodeOrId != null && !barcodeOrId.isEmpty()) {
+            if (allocationdetailList != null && allocationdetailList.size() > 0) {
+                List<GetAllocationLineResponse.Allocationdetail> isIdAvailable = allocationdetailList.stream()
+                        .filter(e -> e.getId() == Integer.parseInt(barcodeOrId))
+                        .collect(Collectors.toList());
+                if (isIdAvailable != null && isIdAvailable.size() > 0) {
+
+                    this.barcodeAllocationDetailList = allocationdetailList.stream()
+                            .filter(e -> e.getId() == Integer.parseInt(barcodeOrId) && e.getAllocatedPackscompleted() != 0)
+                            .collect(Collectors.toList());
+
+                    if (barcodeAllocationDetailList.size() > 0) {
+                        if (barcodeAllocationDetailList.size() > 1) {
+                            scannedBarcodeItemListDialog(barcodeAllocationDetailList);
+                        } else {
+                            if (activityPickListBinding.getOrderStatusModel().getStatus().equals("Assigned")) {
+                                StatusUpdateRequest statusUpdateRequest = new StatusUpdateRequest();
+                                statusUpdateRequest.setRequesttype("INPROCESS");
+                                statusUpdateRequest.setPurchreqid(activityPickListBinding.getAllocationData().getPurchreqid());
+                                statusUpdateRequest.setUserid(activityPickListBinding.getAllocationData().getUserid());
+                                statusUpdateRequest.setNoofboxes(activityPickListBinding.getAllocationData().getNoofboxes());
+                                statusUpdateRequest.setModeofdelivery("");
+                                statusUpdateRequest.setScanstatus("INPROCESS");
+                                statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
+                                statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
+                                getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", false);
+                            } else {
+                                this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
+                                this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
+                                barcodeAllocationDetailList.get(0).setAllocatedqtycompleted(barcodeAllocationDetailList.get(0).getAllocatedqtycompleted() - 1);
+                                barcodeAllocationDetailList.get(0).setAllocatedPackscompleted(barcodeAllocationDetailList.get(0).getAllocatedPackscompleted() - 1);
+                                int scannedQty = (barcodeAllocationDetailList.get(0).getAllocatedqty() / barcodeAllocationDetailList.get(0).getAllocatedpacks()) * (barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted());
+                                barcodeAllocationDetailList.get(0).setScannedqty(scannedQty);//barcodeAllocationDetailList.get(0).getScannedqty() + 1
+                                int shortScannedQty = barcodeAllocationDetailList.get(0).getAllocatedqty() - (barcodeAllocationDetailList.get(0).getAllocatedqty() / barcodeAllocationDetailList.get(0).getAllocatedpacks()) * (barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted());// barcodeAllocationDetailList.get(0).getAllocatedPackscompleted();
+                                barcodeAllocationDetailList.get(0).setShortqty(shortScannedQty);
+                                barcodeAllocationDetailList.get(0).setScannedDateTime(this.scanStartDateTime);
+                                activityPickListBinding.setBarcodeScannedItem(barcodeAllocationDetailList.get(0));
+                                activityPickListBinding.setIsBarcodeDetailsAvailavble(true);
+                                itemListAdapter.notifyDataSetChanged();
+
+                                insertOrUpdateAllocationLineList();
+                                insertOrUpdateOrderStatusTimeDateEntity();
+                                setOrderCompletedPending(activityPickListBinding.getOrderStatusModel().getStatus());
+                                pickListAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    } else {
+//                            activityPickListBinding.setIsBarcodeDetailsAvailavble(false);
+//                        activityPickListBinding.productdetails.setVisibility(View.GONE);
+//                        activityPickListBinding.scanLayout.setVisibility(View.VISIBLE);
+                        showCustomDialog("You cannot scan more than allocated quantity");
+                    }
+                }else {
+                    barcodeScanDetailFun(barcodeOrId);
+                }
+
+            } else {
+                barcodeScanDetailFun(barcodeOrId);
+            }
+        } else {
+            activityPickListBinding.searchByBarcodeOrid.requestFocus();
+            activityPickListBinding.searchByBarcodeOrid.setText("Please enter barcode or Id");
+        }
+    }
+
     private PickListActivityController getController() {
         return new PickListActivityController(this, this);
     }
@@ -984,65 +1066,70 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         IntentResult Result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (Result != null) {
             if (Result.getContents() != null) {
-                if (allocationdetailList != null && allocationdetailList.size() > 0) {
-                    List<GetAllocationLineResponse.Allocationdetail> isBarcodeAvailable = allocationdetailList.stream()
-                            .filter(e -> e.getItembarcode().equalsIgnoreCase(Result.getContents()))
-                            .collect(Collectors.toList());
-                    if (isBarcodeAvailable != null && isBarcodeAvailable.size() > 0) {
-
-                        this.barcodeAllocationDetailList = allocationdetailList.stream()
-                                .filter(e -> e.getItembarcode().equalsIgnoreCase(Result.getContents()) && e.getAllocatedPackscompleted() != 0)
-                                .collect(Collectors.toList());
-
-                        if (barcodeAllocationDetailList.size() > 0) {
-                            if (barcodeAllocationDetailList.size() > 1) {
-                                scannedBarcodeItemListDialog(barcodeAllocationDetailList);
-                            } else {
-                                if (activityPickListBinding.getOrderStatusModel().getStatus().equals("Assigned")) {
-                                    StatusUpdateRequest statusUpdateRequest = new StatusUpdateRequest();
-                                    statusUpdateRequest.setRequesttype("INPROCESS");
-                                    statusUpdateRequest.setPurchreqid(activityPickListBinding.getAllocationData().getPurchreqid());
-                                    statusUpdateRequest.setUserid(activityPickListBinding.getAllocationData().getUserid());
-                                    statusUpdateRequest.setNoofboxes(activityPickListBinding.getAllocationData().getNoofboxes());
-                                    statusUpdateRequest.setModeofdelivery("");
-                                    statusUpdateRequest.setScanstatus("INPROCESS");
-                                    statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
-                                    statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
-                                    getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", false);
-                                } else {
-                                    this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
-                                    this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
-                                    barcodeAllocationDetailList.get(0).setAllocatedqtycompleted(barcodeAllocationDetailList.get(0).getAllocatedqtycompleted() - 1);
-                                    barcodeAllocationDetailList.get(0).setAllocatedPackscompleted(barcodeAllocationDetailList.get(0).getAllocatedPackscompleted() - 1);
-                                    int scannedQty = (barcodeAllocationDetailList.get(0).getAllocatedqty() / barcodeAllocationDetailList.get(0).getAllocatedpacks()) * (barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted());
-                                    barcodeAllocationDetailList.get(0).setScannedqty(scannedQty);//barcodeAllocationDetailList.get(0).getScannedqty() + 1
-                                    int shortScannedQty = barcodeAllocationDetailList.get(0).getAllocatedqty() - (barcodeAllocationDetailList.get(0).getAllocatedqty() / barcodeAllocationDetailList.get(0).getAllocatedpacks()) * (barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted());// barcodeAllocationDetailList.get(0).getAllocatedPackscompleted();
-                                    barcodeAllocationDetailList.get(0).setShortqty(shortScannedQty);
-                                    barcodeAllocationDetailList.get(0).setScannedDateTime(this.scanStartDateTime);
-                                    activityPickListBinding.setBarcodeScannedItem(barcodeAllocationDetailList.get(0));
-                                    activityPickListBinding.setIsBarcodeDetailsAvailavble(true);
-                                    itemListAdapter.notifyDataSetChanged();
-
-                                    insertOrUpdateAllocationLineList();
-                                    insertOrUpdateOrderStatusTimeDateEntity();
-                                    setOrderCompletedPending(activityPickListBinding.getOrderStatusModel().getStatus());
-                                    pickListAdapter.notifyDataSetChanged();
-                                }
-                            }
-                        } else {
-//                            activityPickListBinding.setIsBarcodeDetailsAvailavble(false);
-//                        activityPickListBinding.productdetails.setVisibility(View.GONE);
-//                        activityPickListBinding.scanLayout.setVisibility(View.VISIBLE);
-                            showCustomDialog("You cannot scan more than allocated quantity");
-                        }
-                    } else {
-                        showCustomDialog("Item is not allocated for this Order.");
-                    }
-                }
+                barcodeScanDetailFun(Result.getContents());
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private void barcodeScanDetailFun(String barcode) {
+        if (allocationdetailList != null && allocationdetailList.size() > 0) {
+            List<GetAllocationLineResponse.Allocationdetail> isBarcodeAvailable = allocationdetailList.stream()
+                    .filter(e -> e.getItembarcode().equalsIgnoreCase(barcode))
+                    .collect(Collectors.toList());
+            if (isBarcodeAvailable != null && isBarcodeAvailable.size() > 0) {
+
+                this.barcodeAllocationDetailList = allocationdetailList.stream()
+                        .filter(e -> e.getItembarcode().equalsIgnoreCase(barcode) && e.getAllocatedPackscompleted() != 0)
+                        .collect(Collectors.toList());
+
+                if (barcodeAllocationDetailList.size() > 0) {
+                    if (barcodeAllocationDetailList.size() > 1) {
+                        scannedBarcodeItemListDialog(barcodeAllocationDetailList);
+                    } else {
+                        if (activityPickListBinding.getOrderStatusModel().getStatus().equals("Assigned")) {
+                            StatusUpdateRequest statusUpdateRequest = new StatusUpdateRequest();
+                            statusUpdateRequest.setRequesttype("INPROCESS");
+                            statusUpdateRequest.setPurchreqid(activityPickListBinding.getAllocationData().getPurchreqid());
+                            statusUpdateRequest.setUserid(activityPickListBinding.getAllocationData().getUserid());
+                            statusUpdateRequest.setNoofboxes(activityPickListBinding.getAllocationData().getNoofboxes());
+                            statusUpdateRequest.setModeofdelivery("");
+                            statusUpdateRequest.setScanstatus("INPROCESS");
+                            statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
+                            statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
+                            getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", false);
+                        } else {
+                            this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
+                            this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
+                            barcodeAllocationDetailList.get(0).setAllocatedqtycompleted(barcodeAllocationDetailList.get(0).getAllocatedqtycompleted() - 1);
+                            barcodeAllocationDetailList.get(0).setAllocatedPackscompleted(barcodeAllocationDetailList.get(0).getAllocatedPackscompleted() - 1);
+                            int scannedQty = (barcodeAllocationDetailList.get(0).getAllocatedqty() / barcodeAllocationDetailList.get(0).getAllocatedpacks()) * (barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted());
+                            barcodeAllocationDetailList.get(0).setScannedqty(scannedQty);//barcodeAllocationDetailList.get(0).getScannedqty() + 1
+                            int shortScannedQty = barcodeAllocationDetailList.get(0).getAllocatedqty() - (barcodeAllocationDetailList.get(0).getAllocatedqty() / barcodeAllocationDetailList.get(0).getAllocatedpacks()) * (barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted());// barcodeAllocationDetailList.get(0).getAllocatedPackscompleted();
+                            barcodeAllocationDetailList.get(0).setShortqty(shortScannedQty);
+                            barcodeAllocationDetailList.get(0).setScannedDateTime(this.scanStartDateTime);
+                            activityPickListBinding.setBarcodeScannedItem(barcodeAllocationDetailList.get(0));
+                            activityPickListBinding.setIsBarcodeDetailsAvailavble(true);
+                            itemListAdapter.notifyDataSetChanged();
+
+                            insertOrUpdateAllocationLineList();
+                            insertOrUpdateOrderStatusTimeDateEntity();
+                            setOrderCompletedPending(activityPickListBinding.getOrderStatusModel().getStatus());
+                            pickListAdapter.notifyDataSetChanged();
+                        }
+                    }
+                } else {
+//                            activityPickListBinding.setIsBarcodeDetailsAvailavble(false);
+//                        activityPickListBinding.productdetails.setVisibility(View.GONE);
+//                        activityPickListBinding.scanLayout.setVisibility(View.VISIBLE);
+                    showCustomDialog("You cannot scan more than allocated quantity");
+                }
+            } else {
+                showCustomDialog("Item is not allocated for this Order.");
+            }
+        }
+
     }
 
     private void showCustomDialog(String message) {
@@ -1172,6 +1259,13 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         Intent intent = new Intent(PickListActivity.this, PickerRequests.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+    }
+
+    @Override
+    protected void onPause() {
+        barcodeScanHandler.removeCallbacks(barcodeScanRunnable);
+        activityPickListBinding.barcodeScanEdittext.setText("");
+        super.onPause();
     }
 
     public static class OrdersStatusModel {
