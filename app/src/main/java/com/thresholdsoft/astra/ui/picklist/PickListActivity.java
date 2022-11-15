@@ -54,6 +54,7 @@ import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
 import com.thresholdsoft.astra.ui.picklisthistory.PickListHistoryActivity;
 import com.thresholdsoft.astra.ui.requesthistory.RequestHistoryActivity;
 import com.thresholdsoft.astra.ui.scanner.ScannerActivity;
+import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.CommonUtils;
 
 import java.util.ArrayList;
@@ -420,19 +421,13 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         if (getAllocationDataResponse != null && getAllocationDataResponse.getAllocationhddatas() != null && getAllocationDataResponse.getAllocationhddatas().size() > 0) {
             this.allocationhddataList = new ArrayList<>();
 
-            List<GetAllocationDataResponse.Allocationhddata> assignedAllocationData = getAllocationDataResponse.getAllocationhddatas().stream()
-                    .filter(e -> e.getScanstatus().equalsIgnoreCase("Assigned"))
-                    .collect(Collectors.toList());
+            List<GetAllocationDataResponse.Allocationhddata> assignedAllocationData = getAllocationDataResponse.getAllocationhddatas().stream().filter(e -> e.getScanstatus().equalsIgnoreCase("Assigned")).collect(Collectors.toList());
             this.allocationhddataList.addAll(assignedAllocationData);
 
-            List<GetAllocationDataResponse.Allocationhddata> inProgressAllocationData = getAllocationDataResponse.getAllocationhddatas().stream()
-                    .filter(e -> e.getScanstatus().equalsIgnoreCase("INPROCESS"))
-                    .collect(Collectors.toList());
+            List<GetAllocationDataResponse.Allocationhddata> inProgressAllocationData = getAllocationDataResponse.getAllocationhddatas().stream().filter(e -> e.getScanstatus().equalsIgnoreCase("INPROCESS")).collect(Collectors.toList());
             this.allocationhddataList.addAll(inProgressAllocationData);
 
-            List<GetAllocationDataResponse.Allocationhddata> completedAllocationData = getAllocationDataResponse.getAllocationhddatas().stream()
-                    .filter(e -> e.getScanstatus().equalsIgnoreCase("Completed"))
-                    .collect(Collectors.toList());
+            List<GetAllocationDataResponse.Allocationhddata> completedAllocationData = getAllocationDataResponse.getAllocationhddatas().stream().filter(e -> e.getScanstatus().equalsIgnoreCase("Completed")).collect(Collectors.toList());
             this.allocationhddataList.addAll(completedAllocationData);
 
             activityPickListBinding.assignedcount.setText(String.valueOf(assignedAllocationData.size()));
@@ -672,7 +667,8 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     @Override
     public void onClickProcessDocument() {
         if (activityPickListBinding.getOrderStatusModel().getToDoQty() == 0) {
-            getController().getDeliveryofModeApiCall();
+            onSuccessGetModeofDeliveryApi(AppConstants.getModeofDeliveryResponse);
+//            getController().getDeliveryofModeApiCall();
         }
     }
 
@@ -683,8 +679,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
             a.setSelected((a.getItembarcode().equalsIgnoreCase(allocationdetail.getItembarcode()) && a.getId() == allocationdetail.getId()));
         }
         itemListAdapter.notifyDataSetChanged();
-        this.barcodeAllocationDetailList = allocationdetailList.stream()
-                .filter(e -> e.getItembarcode().equalsIgnoreCase(allocationdetail.getItembarcode()) && e.getId() == allocationdetail.getId())// && e.getAllocatedPackscompleted() != 0
+        this.barcodeAllocationDetailList = allocationdetailList.stream().filter(e -> e.getItembarcode().equalsIgnoreCase(allocationdetail.getItembarcode()) && e.getId() == allocationdetail.getId())// && e.getAllocatedPackscompleted() != 0
                 .collect(Collectors.toList());
         activityPickListBinding.setIsBarcodeDetailsAvailavble(true);
 //        activityPickListBinding.productdetails.setVisibility(View.VISIBLE);
@@ -766,7 +761,8 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
 
     @Override
     public void onClickRequesttoHoldResoan() {
-        getController().getWithHoldRemarksApiCall();
+//        getController().getWithHoldRemarksApiCall();
+        onSuccessGetWithHoldRemarksApi(AppConstants.getWithHoldRemarksResponse);
     }
 
     @Override
@@ -774,8 +770,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         if (getWithHoldRemarksResponse.getRemarksdetails() != null && getWithHoldRemarksResponse.getRemarksdetails().size() > 0) {
             this.supervisorHoldRemarksdetailsList = getWithHoldRemarksResponse.getRemarksdetails();
             supervisorRequestRemarksDialog = new Dialog(this);
-            DialogSupervisorRequestRemarksBinding supervisorRequestRemarksBinding = DataBindingUtil.inflate(LayoutInflater.from(this),
-                    R.layout.dialog_supervisor_request_remarks, null, false);
+            DialogSupervisorRequestRemarksBinding supervisorRequestRemarksBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_supervisor_request_remarks, null, false);
             supervisorRequestRemarksDialog.setContentView(supervisorRequestRemarksBinding.getRoot());
             supervisorRequestRemarksBinding.setCallback(this);
 //            supervisorRequestRemarksAdapter = new SupervisorRequestRemarksAdapter(this, supervisorHoldRemarksdetailsList, this);
@@ -873,8 +868,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     @Override
     public void onClickResetItemDetails(GetAllocationLineResponse.Allocationdetail allocationdetails) {
         itemResetDialog = new Dialog(this);
-        DialogItemResetBinding dialogItemResetBinding = DataBindingUtil.inflate(LayoutInflater.from(this),
-                R.layout.dialog_item_reset, null, false);
+        DialogItemResetBinding dialogItemResetBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_item_reset, null, false);
         itemResetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         itemResetDialog.setContentView(dialogItemResetBinding.getRoot());
         dialogItemResetBinding.setAllocationdetail(allocationdetails);
@@ -887,9 +881,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         if (itemResetDialog != null && itemResetDialog.isShowing()) {
             itemResetDialog.dismiss();
         }
-        this.barcodeAllocationDetailList = allocationdetailList.stream()
-                .filter(e -> e.getItembarcode().equalsIgnoreCase(allocationdetails.getItembarcode()) && e.getId() == allocationdetails.getId())
-                .collect(Collectors.toList());
+        this.barcodeAllocationDetailList = allocationdetailList.stream().filter(e -> e.getItembarcode().equalsIgnoreCase(allocationdetails.getItembarcode()) && e.getId() == allocationdetails.getId()).collect(Collectors.toList());
         barcodeAllocationDetailList.get(0).setAllocatedqtycompleted(barcodeAllocationDetailList.get(0).getAllocatedqty());
         barcodeAllocationDetailList.get(0).setScannedqty(0);
 
@@ -912,8 +904,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     @Override
     public void onClickEditScannedPack() {
         editScanPackDialog = new Dialog(this);
-        dialogEditScannedPacksBinding = DataBindingUtil.inflate(LayoutInflater.from(this),
-                R.layout.dialog_edit_scanned_packs, null, false);
+        dialogEditScannedPacksBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_edit_scanned_packs, null, false);
         editScanPackDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         editScanPackDialog.setCancelable(false);
         editScanPackDialog.setContentView(dialogEditScannedPacksBinding.getRoot());
@@ -994,14 +985,10 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         String barcodeOrId = activityPickListBinding.searchByBarcodeOrid.getText().toString().trim();
         if (barcodeOrId != null && !barcodeOrId.isEmpty()) {
             if (allocationdetailList != null && allocationdetailList.size() > 0) {
-                List<GetAllocationLineResponse.Allocationdetail> isIdAvailable = allocationdetailList.stream()
-                        .filter(e -> e.getId() == Integer.parseInt(barcodeOrId))
-                        .collect(Collectors.toList());
+                List<GetAllocationLineResponse.Allocationdetail> isIdAvailable = allocationdetailList.stream().filter(e -> e.getId() == Integer.parseInt(barcodeOrId)).collect(Collectors.toList());
                 if (isIdAvailable != null && isIdAvailable.size() > 0) {
 
-                    this.barcodeAllocationDetailList = allocationdetailList.stream()
-                            .filter(e -> e.getId() == Integer.parseInt(barcodeOrId) && e.getAllocatedPackscompleted() != 0)
-                            .collect(Collectors.toList());
+                    this.barcodeAllocationDetailList = allocationdetailList.stream().filter(e -> e.getId() == Integer.parseInt(barcodeOrId) && e.getAllocatedPackscompleted() != 0).collect(Collectors.toList());
 
                     if (barcodeAllocationDetailList.size() > 0) {
                         if (barcodeAllocationDetailList.size() > 1) {
@@ -1044,7 +1031,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
 //                        activityPickListBinding.scanLayout.setVisibility(View.VISIBLE);
                         showCustomDialog("You cannot scan more than allocated quantity");
                     }
-                }else {
+                } else {
                     barcodeScanDetailFun(barcodeOrId);
                 }
 
@@ -1075,14 +1062,10 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
 
     private void barcodeScanDetailFun(String barcode) {
         if (allocationdetailList != null && allocationdetailList.size() > 0) {
-            List<GetAllocationLineResponse.Allocationdetail> isBarcodeAvailable = allocationdetailList.stream()
-                    .filter(e -> e.getItembarcode().equalsIgnoreCase(barcode))
-                    .collect(Collectors.toList());
+            List<GetAllocationLineResponse.Allocationdetail> isBarcodeAvailable = allocationdetailList.stream().filter(e -> e.getItembarcode().equalsIgnoreCase(barcode)).collect(Collectors.toList());
             if (isBarcodeAvailable != null && isBarcodeAvailable.size() > 0) {
 
-                this.barcodeAllocationDetailList = allocationdetailList.stream()
-                        .filter(e -> e.getItembarcode().equalsIgnoreCase(barcode) && e.getAllocatedPackscompleted() != 0)
-                        .collect(Collectors.toList());
+                this.barcodeAllocationDetailList = allocationdetailList.stream().filter(e -> e.getItembarcode().equalsIgnoreCase(barcode) && e.getAllocatedPackscompleted() != 0).collect(Collectors.toList());
 
                 if (barcodeAllocationDetailList.size() > 0) {
                     if (barcodeAllocationDetailList.size() > 1) {
@@ -1134,8 +1117,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
 
     private void showCustomDialog(String message) {
         Dialog customDialog = new Dialog(this);
-        DialogCustomAlertBinding dialogCustomAlertBinding = DataBindingUtil.inflate(LayoutInflater.from(this),
-                R.layout.dialog_custom_alert, null, false);
+        DialogCustomAlertBinding dialogCustomAlertBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_custom_alert, null, false);
         customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         customDialog.setContentView(dialogCustomAlertBinding.getRoot());
         customDialog.setCancelable(false);
@@ -1149,13 +1131,9 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     }
 
     private void setOrderCompletedPending(String orderStatus) {
-        List<GetAllocationLineResponse.Allocationdetail> allocatedQtyAllocationDetailList = allocationdetailList.stream()
-                .filter(e -> e.getAllocatedPackscompleted() == 0)
-                .collect(Collectors.toList());
+        List<GetAllocationLineResponse.Allocationdetail> allocatedQtyAllocationDetailList = allocationdetailList.stream().filter(e -> e.getAllocatedPackscompleted() == 0).collect(Collectors.toList());
 
-        List<GetAllocationLineResponse.Allocationdetail> pendingAllocationDetailList = allocationdetailList.stream()
-                .filter(e -> e.getAllocatedPackscompleted() != 0)
-                .collect(Collectors.toList());
+        List<GetAllocationLineResponse.Allocationdetail> pendingAllocationDetailList = allocationdetailList.stream().filter(e -> e.getAllocatedPackscompleted() != 0).collect(Collectors.toList());
 
         int doneQty = 0;
         int toDoQty = 0;
@@ -1177,8 +1155,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         activityPickListBinding.setOrderStatusModel(ordersStatusModel);
     }
 
-    private void scannedBarcodeItemListDialog
-            (List<GetAllocationLineResponse.Allocationdetail> barcodeAllocationDetailList) {
+    private void scannedBarcodeItemListDialog(List<GetAllocationLineResponse.Allocationdetail> barcodeAllocationDetailList) {
         Dialog scannedBarcodeItemListdialog = new Dialog(PickListActivity.this);
         DialogScannedBarcodeItemListBinding dialogScannedBarcodeItemListBinding = DataBindingUtil.inflate(LayoutInflater.from(getApplicationContext()), R.layout.dialog_scanned_barcode_item_list, null, false);
         scannedBarcodeItemListdialog.setCancelable(false);
@@ -1193,9 +1170,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         dialogScannedBarcodeItemListBinding.select.setOnClickListener(v -> scannedBarcodeItemListdialog.dismiss());
         dialogScannedBarcodeItemListBinding.close.setOnClickListener(v -> scannedBarcodeItemListdialog.dismiss());
         dialogScannedBarcodeItemListBinding.select.setOnClickListener(view -> {
-            PickListActivity.this.barcodeAllocationDetailList = PickListActivity.this.barcodeAllocationDetailList.stream()
-                    .filter(GetAllocationLineResponse.Allocationdetail::getScannedBarcodeItemSelected)
-                    .collect(Collectors.toList());
+            PickListActivity.this.barcodeAllocationDetailList = PickListActivity.this.barcodeAllocationDetailList.stream().filter(GetAllocationLineResponse.Allocationdetail::getScannedBarcodeItemSelected).collect(Collectors.toList());
 //            barcodeAllocationDetailList.get(0).setShortqty(barcodeAllocationDetailList.get(0).getShortqty() - 1);
 //            barcodeAllocationDetailList.get(0).setAllocatedpacks(barcodeAllocationDetailList.get(0).getAllocatedqty() + 1);
 //            activityPickListBinding.setBarcodeScannedItem(PickListActivity.this.barcodeAllocationDetailList.get(0));

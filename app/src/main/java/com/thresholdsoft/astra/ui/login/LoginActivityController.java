@@ -6,7 +6,10 @@ import com.thresholdsoft.astra.network.ApiClient;
 import com.thresholdsoft.astra.network.ApiInterface;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelRequest;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
+import com.thresholdsoft.astra.ui.picklist.model.GetModeofDeliveryResponse;
+import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
+import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.NetworkUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -56,6 +59,73 @@ public class LoginActivityController {
                 }
             });
 
+        } else {
+            loginActivityCallback.onFailureMessage("Something went wrong.");
+        }
+    }
+
+    public void getDeliveryofModeApiCall() {
+        if (NetworkUtils.isNetworkConnected(mContext)) {
+            ActivityUtils.showDialog(mContext, "Please wait.");
+
+            ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
+            Call<GetModeofDeliveryResponse> call = apiInterface.GET_MODEOF_DELIVERY_API_CALL("yvEoG+8MvYiOfhV2wb5jw");
+            call.enqueue(new Callback<GetModeofDeliveryResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<GetModeofDeliveryResponse> call, @NotNull Response<GetModeofDeliveryResponse> response) {
+                    ActivityUtils.hideDialog();
+                    if (response.code() == 200 && response.body() != null) {
+                        if (response.body().getRequeststatus()) {
+                            AppConstants.getModeofDeliveryResponse = response.body();
+                            getWithHoldRemarksApiCall();
+//                            mCallback.onSuccessGetModeofDeliveryApi(response.body());
+                        } else {
+                            loginActivityCallback.onFailureMessage(response.body().getRequestmessage());
+                        }
+                    } else {
+                        loginActivityCallback.onFailureMessage("Something went wrong.");
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<GetModeofDeliveryResponse> call, @NotNull Throwable t) {
+                    ActivityUtils.hideDialog();
+                    loginActivityCallback.onFailureMessage(t.getMessage());
+                }
+            });
+        } else {
+            loginActivityCallback.onFailureMessage("Something went wrong.");
+        }
+    }
+
+    public void getWithHoldRemarksApiCall() {
+        if (NetworkUtils.isNetworkConnected(mContext)) {
+            ActivityUtils.showDialog(mContext, "Please wait.");
+
+            ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
+            Call<GetWithHoldRemarksResponse> call = apiInterface.GET_WITH_HOLD_REMARKS_RESPONSE_CALL("yvEoG+8MvYiOfhV2wb5jw");
+            call.enqueue(new Callback<GetWithHoldRemarksResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<GetWithHoldRemarksResponse> call, @NotNull Response<GetWithHoldRemarksResponse> response) {
+                    ActivityUtils.hideDialog();
+                    if (response.code() == 200 && response.body() != null) {
+                        if (response.body().getRequeststatus()) {
+                            AppConstants.getWithHoldRemarksResponse = response.body();
+//                            mCallback.onSuccessGetWithHoldRemarksApi(response.body());
+                        } else {
+                            loginActivityCallback.onFailureMessage(response.body().getRequestmessage());
+                        }
+                    } else {
+                        loginActivityCallback.onFailureMessage("Something went wrong.");
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<GetWithHoldRemarksResponse> call, @NotNull Throwable t) {
+                    ActivityUtils.hideDialog();
+                    loginActivityCallback.onFailureMessage(t.getMessage());
+                }
+            });
         } else {
             loginActivityCallback.onFailureMessage("Something went wrong.");
         }

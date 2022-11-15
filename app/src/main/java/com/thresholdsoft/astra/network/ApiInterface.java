@@ -20,22 +20,22 @@ import retrofit2.http.POST;
 
 public interface ApiInterface {
 
-    @POST("http://lms.apollopharmacy.org:8033/Digital/Apollo/AHL/ValidateUser")
+    @POST("ValidateUser")
     Call<ValidateUserModelResponse> VALIDATE_USER_API_CALL(@Header("Auth-Token") String authToken, @Body ValidateUserModelRequest validateUserModelRequest);
 
-    @POST("http://lms.apollopharmacy.org:8033/Digital/Apollo/AHL/GetAllocationData")
+    @POST("GetAllocationData")
     Call<GetAllocationDataResponse> GET_ALLOCATION_DATA_API_CALL(@Header("Auth-Token") String authToken, @Body GetAllocationDataRequest getAllocationDataRequest);
 
-    @POST("http://lms.apollopharmacy.org:8033/Digital/Apollo/AHL/GetAllocationLine")
+    @POST("GetAllocationLine")
     Call<GetAllocationLineResponse> GET_ALLOCATION_LINE_API_CALL(@Header("Auth-Token") String authToken, @Body GetAllocationLineRequest getAllocationLineRequest);
 
-    @POST("http://lms.apollopharmacy.org:8033/Digital/Apollo/AHL/StatusUpdate")
+    @POST("StatusUpdate")
     Call<StatusUpdateResponse> STATUS_UPDATE_API_CALL(@Header("Auth-Token") String authToken, @Body StatusUpdateRequest statusUpdateRequest);
 
-    @GET("http://lms.apollopharmacy.org:8033/Digital/Apollo/AHL/GetModeofDelivery")
+    @GET("GetModeofDelivery")
     Call<GetModeofDeliveryResponse> GET_MODEOF_DELIVERY_API_CALL(@Header("Auth-Token") String authToken);
 
-    @GET("http://lms.apollopharmacy.org:8033/Digital/Apollo/AHL/GetWithHoldRemarks")
+    @GET("GetWithHoldRemarks")
     Call<GetWithHoldRemarksResponse> GET_WITH_HOLD_REMARKS_RESPONSE_CALL(@Header("Auth-Token") String authToken);
 
 }

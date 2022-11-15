@@ -30,6 +30,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
 
     private void setUp() {
         activityLoginBinding.setCallback(this);
+        getController().getDeliveryofModeApiCall();
         parentLayoutTouchListener();
     }
 
@@ -53,7 +54,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
                         startActivity(PickListActivity.getStartActivity(this));
                         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                         finish();
-
                     }
                 }
 
