@@ -1,10 +1,4 @@
-package com.example.astra.ui.home;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.thresholdsoft.astra.ui.home;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -13,22 +7,32 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.astra.R;
-import com.example.astra.base.BaseActivity;
-import com.example.astra.databinding.ActivityHomeBinding;
-import com.example.astra.ui.adapter.ItemListAdapter;
-import com.example.astra.ui.adapter.PickListAdapter;
-import com.example.astra.ui.adapter.ReportAdapter;
-import com.example.astra.ui.main.AstraMainActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+
+import com.thresholdsoft.astra.R;
+import com.thresholdsoft.astra.base.BaseActivity;
+import com.thresholdsoft.astra.databinding.ActivityHomeBinding;
+import com.thresholdsoft.astra.ui.adapter.ReportAdapter;
+import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
+import com.thresholdsoft.astra.ui.login.LoginActivity;
+import com.thresholdsoft.astra.ui.picklist.PickListActivity;
+import com.thresholdsoft.astra.ui.pickerrequests.PickerRequests;
+import com.thresholdsoft.astra.ui.picklisthistory.PickListHistoryActivity;
+import com.thresholdsoft.astra.ui.requesthistory.RequestHistoryActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import lecho.lib.hellocharts.model.PieChartData;
 import lecho.lib.hellocharts.model.SliceValue;
+
 
 public class Home extends BaseActivity {
     private ActivityHomeBinding activityHomeBinding;
@@ -43,40 +47,100 @@ public class Home extends BaseActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        ActionBar actionBar=getSupportActionBar();
-        actionBar.hide();
+
 
         activityHomeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home);
-        RelativeLayout pickListLayout = findViewById(R.id.myProfileLayout);
-        RelativeLayout dashboardLayout = findViewById(R.id.dashboard_layout);
-        TextView dashBoard = findViewById(R.id.dashboard);
+        RelativeLayout dashboardsupervisor = findViewById(R.id.dashboard_layout);
+        RelativeLayout dashboardadmin = findViewById(R.id.second_dashboard);
+        ImageView apollologo=findViewById(R.id.apollo_logo);
+        RelativeLayout pickListLayout = findViewById(R.id.picklist_layout);
+        RelativeLayout pickListHistoryLayout = findViewById(R.id.picklist_history_layout);
+        RelativeLayout requestHistoryLayout = findViewById(R.id.requesthistory_layout);
+        RelativeLayout pickerrequestlayout = findViewById(R.id.picker_request_layout);
+        RelativeLayout approvedhistoryLayout = findViewById(R.id.approved_history_layout);
+        TextView dashBoard = findViewById(R.id.dashobaord_text);
         dashBoard.setTextColor(R.color.black);
-        activityHomeBinding.yellowline.setVisibility(View.VISIBLE);
-        dashboardLayout.setBackgroundResource(R.color.dark_yellow);
+        activityHomeBinding.yellowLine.setVisibility(View.VISIBLE);
+        dashboardsupervisor.setBackgroundResource(R.color.lite_yellow);
+
 
         reportAdapter = new ReportAdapter(this, pickList);
         RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        activityHomeBinding.dashboardRecycleview.setLayoutManager(mLayoutManager2);
+        activityHomeBinding.listitemRecycleview.setLayoutManager(mLayoutManager2);
         pickList.add("syed");
         pickList.add("1");
         pickList.add("syed");
+        pickList.add("syed");
+
         pickList.add("1");
-        activityHomeBinding.dashboardRecycleview.setAdapter(reportAdapter);
+        activityHomeBinding.listitemRecycleview.setAdapter(reportAdapter);
         pieData.add(new SliceValue(10, Color.BLUE));
         pieData.add(new SliceValue(20,Color.YELLOW));
-        pieData.add(new SliceValue(70,Color.GREEN));
+        pieData.add(new SliceValue(70, Color.GREEN));
         PieChartData pieChartData=new PieChartData(pieData);
-        activityHomeBinding.chart.setPieChartData(pieChartData);
+        activityHomeBinding.piechart.setPieChartData(pieChartData);
 
+activityHomeBinding.admin.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        startActivity(new Intent(Home.this, DashBoard.class));
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+
+    }
+});
+
+        apollologo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(Home.this, LoginActivity.class));
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+
+            }
+        });
+        pickerrequestlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(Home.this, PickerRequests.class));
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+
+            }
+        });
 
 
         pickListLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
-
-                startActivity(new Intent(Home.this, AstraMainActivity.class));
+                Intent intent = new Intent(Home.this, PickListActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
             }
         });
+
+
+        pickListHistoryLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home.this, PickListHistoryActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+
+            }
+        });
+
+
+        requestHistoryLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home.this, RequestHistoryActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+
+            }
+        });
+
+
+
     }
 }

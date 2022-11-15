@@ -1,0 +1,1597 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:id="@+id/parent_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#dcdeea"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".1"
+                android:background="@color/white">
+
+                <include
+                    android:id="@+id/custom_menu_layout"
+                    layout="@layout/custom_menu"
+                    app:customMenuCallback="@{customMenuCallback}"
+                    app:selectedMenu="@{selectedMenu}" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen15dp"
+                    android:layout_height="@dimen/dimen15dp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/dimen5dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/close_orders_track"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/label_pick_list"
+                    android:textAllCaps="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen14sp" />
+
+                <EditText
+                    android:id="@+id/search_by_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen40dp"
+                    android:drawableEnd="@drawable/search_icon"
+                    android:hint="Search"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:text=""
+                    android:textSize="@dimen/dimen10sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".326666667"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/assignedcount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_bold"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="@string/label_assigned"
+                            android:textAllCaps="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen7sp" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".01"
+                        android:background="@color/grey" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".326666667"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/progress_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_bold"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="@string/label_in_pregress"
+                            android:textAllCaps="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen7sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".01"
+                        android:background="@color/grey" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".326666667"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/completecount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_bold"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="@string/completed"
+                            android:textAllCaps="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen7sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!--                <RelativeLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content">-->
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/picklistrecycleview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="@{pickListCount == 0 ? view.GONE : view.VISIBLE}" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center"
+                    android:text="No list found."
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen14sp"
+                    android:visibility="@{pickListCount != 0 ? view.GONE : view.VISIBLE}" />
+
+                <!--                </RelativeLayout>-->
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_picklist"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".7"
+                android:background="#dcdeea"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/barcode_scan_edittext"
+                    android:layout_width="0.1dp"
+                    android:layout_height="0.1dp"
+                    android:background="@color/white"
+                    android:importantForAutofill="no"
+                    android:inputType="text" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/dimen10dp"
+                    android:layout_marginBottom="@dimen/dimen50dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen5dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@string/label_purchase_requisition"
+                                android:textSize="@dimen/dimen10sp" />
+
+
+                            <TextView
+                                android:id="@+id/purchase_requisition"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@{allocationData.purchreqid}"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen10sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen30dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="Area Name"
+                                android:textSize="@dimen/dimen10sp" />
+
+
+                            <TextView
+                                android:id="@+id/area_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@{allocationData.areaname}"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen10sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen30dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="Route"
+                                android:textSize="@dimen/dimen10sp" />
+
+
+                            <TextView
+                                android:id="@+id/route"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@{allocationData.routecode}"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen10sp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="50dp"
+                            android:layout_marginTop="22dp"
+                            android:background="@drawable/background_button"
+                            android:backgroundTint="@{orderStatusModel.status.equals(`INPROCESS`) ? @color/inprogress_overallstatus_color : orderStatusModel.status.equals(`Assigned`) ? @color/color_takeprint : @color/green}"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:paddingStart="5dp"
+                            android:paddingTop="4dp"
+                            android:paddingEnd="5dp"
+                            android:text="@{orderStatusModel.status}"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dimen10sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen3dp"
+                        android:background="@color/white"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/dimen5dp"
+                        android:paddingEnd="@dimen/dimen5dp"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".12"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="Customer"
+                                android:textSize="@dimen/dimen8sp" />
+
+                            <TextView
+                                android:id="@+id/customerid"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@{allocationData.custaccount}"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".18"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="Customer-Name"
+                                android:textSize="@dimen/dimen8sp" />
+
+                            <TextView
+                                android:id="@+id/customername"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center_horizontal"
+                                android:text="@{allocationData.custname}"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".19"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="Allocation Date Time"
+                                android:textSize="@dimen/dimen8sp" />
+
+                            <TextView
+                                android:id="@+id/allocation_date_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center_horizontal"
+                                android:text="@{CommonUtils.parseDateToddMMyyyy(allocationData.transdate)}"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".17"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="Allocation Lines"
+                                android:textSize="@dimen/dimen8sp" />
+
+                            <TextView
+                                android:id="@+id/allocation_line"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center_horizontal"
+                                android:text="@{String.valueOf(allocationData.allocatedlines)}"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".15"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="No.of Boxes"
+                                android:textSize="@dimen/dimen8sp" />
+
+                            <TextView
+                                android:id="@+id/no_of_boxes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center_horizontal"
+                                android:text="@{String.valueOf(allocationData.noofboxes)}"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".17"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="Created Order ID"
+                                android:textSize="@dimen/dimen8sp" />
+
+                            <TextView
+                                android:id="@+id/order_id"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center_horizontal"
+                                android:text="@{String.valueOf(allocationData.id)}"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/edit_view"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".02"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/edit_view" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen3dp"
+                        android:orientation="horizontal"
+                        android:weightSum="6">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="@dimen/dimen10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/decider_back"
+                            android:orientation="vertical">
+
+
+                            <TextView
+                                android:id="@+id/no_of_items"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center_horizontal"
+                                android:text="@{String.valueOf(orderStatusModel.noOfBoxItems)}"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center_horizontal"
+                                android:stateListAnimator="@null"
+                                android:text="NO.OF ITEMS"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="@dimen/dimen10dp"
+                            android:layout_weight="1"
+                            android:background="@color/grey"
+                            android:orientation="vertical">
+
+
+                            <TextView
+                                android:id="@+id/picked_count"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center_horizontal"
+                                android:text="@{String.valueOf(orderStatusModel.picked)}"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center_horizontal"
+                                android:stateListAnimator="@null"
+                                android:text="PICKED"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="@dimen/dimen10dp"
+                            android:layout_weight="1"
+                            android:background="@color/grey"
+                            android:orientation="vertical">
+
+
+                            <TextView
+                                android:id="@+id/pendingcount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center_horizontal"
+                                android:text="@{String.valueOf(orderStatusModel.pending)}"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center_horizontal"
+                                android:stateListAnimator="@null"
+                                android:text="PENDING"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="@dimen/dimen10dp"
+                            android:layout_weight="1"
+                            android:background="@color/grey"
+                            android:orientation="vertical">
+
+
+                            <TextView
+                                android:id="@+id/completedcount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center_horizontal"
+                                android:text="@{String.valueOf(orderStatusModel.completed)}"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center_horizontal"
+                                android:paddingBottom="5dp"
+                                android:stateListAnimator="@null"
+                                android:text="COMPLETED"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/processdocument_layout"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="@dimen/dimen10dp"
+                            android:layout_weight="1"
+                            android:background="@{orderStatusModel.toDoQty == 0 ? @color/continue_select_color : @color/light_yellow_color}"
+                            android:gravity="center"
+                            android:onClick="@{()-> callback.onClickProcessDocument()}"
+                            android:orientation="horizontal"
+                            android:visibility="@{orderStatusModel.status.equalsIgnoreCase(`Completed`) ? view.GONE : view.VISIBLE}">
+
+                            <ImageView
+                                android:layout_width="@dimen/dimen15dp"
+                                android:layout_height="@dimen/dimen15dp"
+                                android:contentDescription="@string/app_name"
+                                android:rotation="85"
+                                android:src="@drawable/ic_baseline_streetview_24" />
+
+
+                            <TextView
+                                android:id="@+id/processdocument"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/printlabel"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="@dimen/dimen10dp"
+                            android:layout_weight="1"
+                            android:background="@color/lite_yellow"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:layout_width="@dimen/dimen15dp"
+                                android:layout_height="@dimen/dimen15dp"
+                                android:contentDescription="@string/app_name"
+                                android:rotation="90"
+                                android:src="@drawable/ic_baseline_view_headline_24" />
+
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dimen5dp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:stateListAnimator="@null"
+                                android:text="Print\nLabel"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/second_scan"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="@dimen/dimen10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_sacm"
+                            android:gravity="center"
+                            android:onClick="@{()-> callback.onClickScanNow()}"
+                            android:orientation="horizontal"
+                            android:visibility="@{orderStatusModel.status.equalsIgnoreCase(`Completed`) ? view.GONE : view.VISIBLE}">
+
+                            <ImageView
+                                android:layout_width="@dimen/dimen15dp"
+                                android:layout_height="@dimen/dimen15dp"
+                                android:contentDescription="@string/app_name"
+                                android:src="@drawable/printer" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dimen5dp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="Scan\nNow"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/dimen8sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight=".4"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dimen5dp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@string/label_items_list"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen10sp" />
+
+                            <LinearLayout
+                                android:id="@+id/search_view_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <RelativeLayout
+                                    android:id="@+id/order_child_layout"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".89"
+                                    android:background="@drawable/square_stroke_bg">
+
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerInParent="true"
+                                        android:orientation="vertical">
+
+                                        <Spinner
+                                            android:id="@+id/astramain"
+                                            style="@style/spinner_style"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:spinnerMode="dropdown" />
+                                    </LinearLayout>
+                                </RelativeLayout>
+
+                                <View
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight=".01" />
+
+                                <RelativeLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight=".1"
+                                    android:background="@drawable/square_stroke_bg"
+                                    android:gravity="center">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/dimen10dp"
+                                        android:layout_height="@dimen/dimen10dp"
+                                        android:layout_centerVertical="true"
+                                        android:contentDescription="@string/app_name"
+                                        android:src="@drawable/ic_search_product" />
+
+                                </RelativeLayout>
+                            </LinearLayout>
+
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/listitem_recycleview"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:scrollbars="vertical"
+                                android:visibility="@{itemListCount != 0 ? view.VISIBLE : view.GONE}" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center"
+                                android:text="@string/label_no_allocation_line_found"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen10sp"
+                                android:visibility="@{itemListCount == 0 ? view.VISIBLE : view.GONE}" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight=".6"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dimen10dp"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    android:id="@+id/search_by_barcode_orid"
+                                    android:layout_width="@dimen/dimen200dp"
+                                    android:layout_height="@dimen/dimen40dp"
+                                    android:hint="Search"
+                                    android:importantForAutofill="no"
+                                    android:inputType="number"
+                                    android:text=""
+                                    android:textSize="@dimen/dimen8sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="@dimen/dimen20dp"
+                                    android:layout_marginStart="@dimen/dimen5dp"
+                                    android:background="@drawable/rounded_corner_bg"
+                                    android:backgroundTint="@color/lite_yellow"
+                                    android:gravity="center"
+                                    android:onClick="@{()-> callback.onClickSubmitBarcodeorId()}"
+                                    android:paddingStart="@dimen/dimen5dp"
+                                    android:paddingEnd="@dimen/dimen5dp"
+                                    android:text="@string/label_submit"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/dimen8sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/scan_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:visibility="@{orderStatusModel.status.equalsIgnoreCase(`Completed`) ? view.GONE : isBarcodeDetailsAvailavble ? view.GONE : view.VISIBLE}">
+
+                                <TextView
+                                    android:id="@+id/click_to_scan"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="Click the button below \n   to start Scanning"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/dimen8sp"
+                                    android:textStyle="bold"
+                                    android:visibility="visible" />
+
+                                <LinearLayout
+                                    android:id="@+id/scan"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/background_sacm"
+                                    android:onClick="@{()-> callback.onClickScanNow()}"
+                                    android:orientation="horizontal"
+                                    android:paddingStart="@dimen/dimen10dp"
+                                    android:paddingTop="@dimen/dimen5dp"
+                                    android:paddingEnd="@dimen/dimen10dp"
+                                    android:paddingBottom="@dimen/dimen5dp"
+                                    android:visibility="visible">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/dimen15dp"
+                                        android:layout_height="@dimen/dimen15dp"
+                                        android:layout_gravity="center_vertical"
+                                        android:contentDescription="@string/app_name"
+                                        android:src="@drawable/printer" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginStart="@dimen/dimen5dp"
+                                        android:fontFamily="@font/poppins_semibold"
+                                        android:text="Scan\nNow"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/dimen8sp" />
+
+
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/productdetails"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="@{isBarcodeDetailsAvailavble ? view.VISIBLE : view.GONE}">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen15dp"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/poppins_semibold"
+                                        android:text="Product Name"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/dimen8sp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/poppins_semibold"
+                                        android:text="@{barcodeScannedItem.itemname}"
+                                        android:textAllCaps="true"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/dimen8sp" />
+
+                                </LinearLayout>
+
+                                <ScrollView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
+                                        <androidx.cardview.widget.CardView
+                                            android:id="@+id/cardview"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="@dimen/dimen10dp"
+                                            android:visibility="visible"
+                                            app:cardCornerRadius="2dp"
+                                            app:cardElevation="2dp">
+
+                                            <LinearLayout
+                                                android:id="@+id/orderHead"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:orientation="vertical">
+
+                                                <LinearLayout
+                                                    android:id="@+id/pendingLayout"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_margin="@dimen/dimen5dp"
+                                                    android:background="@color/white"
+                                                    android:orientation="vertical">
+
+                                                    <TextView
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:fontFamily="@font/poppins_semibold"
+                                                        android:text="Barcode "
+                                                        android:textSize="@dimen/dimen8sp" />
+
+                                                    <TextView
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:fontFamily="@font/poppins_semibold"
+                                                        android:text="@{barcodeScannedItem.itembarcode}"
+                                                        android:textColor="@color/black"
+                                                        android:textSize="@dimen/dimen8sp" />
+
+
+                                                    <LinearLayout
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content"
+                                                        android:orientation="horizontal"
+                                                        android:weightSum="4">
+
+
+                                                        <TextView
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_weight="1"
+                                                            android:fontFamily="@font/poppins_semibold"
+                                                            android:text="Allocated Qty. "
+                                                            android:textSize="@dimen/dimen8sp" />
+
+                                                        <TextView
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_weight="1"
+                                                            android:fontFamily="@font/poppins_semibold"
+                                                            android:text="Allocated Packs. "
+                                                            android:textSize="@dimen/dimen8sp" />
+
+                                                        <TextView
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_weight="1"
+                                                            android:fontFamily="@font/poppins_semibold"
+                                                            android:text="Item Number"
+                                                            android:textSize="@dimen/dimen8sp" />
+
+                                                        <TextView
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_weight="1"
+                                                            android:fontFamily="@font/poppins_semibold"
+                                                            android:text="Expiry date"
+                                                            android:textSize="@dimen/dimen8sp" />
+
+
+                                                    </LinearLayout>
+
+                                                    <LinearLayout
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content"
+                                                        android:orientation="horizontal"
+                                                        android:weightSum="4">
+
+                                                        <TextView
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_weight="1"
+                                                            android:fontFamily="@font/poppins_semibold"
+                                                            android:text="@{String.valueOf(Math.round(barcodeScannedItem.allocatedqty))}"
+                                                            android:textColor="@color/black"
+                                                            android:textSize="@dimen/dimen8sp"
+                                                            android:textStyle="bold" />
+
+                                                        <TextView
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_weight="1"
+                                                            android:fontFamily="@font/poppins_semibold"
+                                                            android:text="@{String.valueOf(Math.round(barcodeScannedItem.allocatedpacks))}"
+                                                            android:textColor="@color/black"
+                                                            android:textSize="@dimen/dimen8sp"
+                                                            android:textStyle="bold" />
+
+
+                                                        <TextView
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_weight="1"
+                                                            android:fontFamily="@font/poppins_semibold"
+                                                            android:text="@{barcodeScannedItem.itemid}"
+                                                            android:textColor="@color/black"
+                                                            android:textSize="@dimen/dimen8sp"
+                                                            android:textStyle="bold" />
+
+                                                        <TextView
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_weight="1"
+                                                            android:fontFamily="@font/poppins_semibold"
+                                                            android:text="@{`-`}"
+                                                            android:textColor="@color/black"
+                                                            android:textSize="@dimen/dimen8sp"
+                                                            android:textStyle="bold" />
+
+
+                                                    </LinearLayout>
+
+                                                    <LinearLayout
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content"
+                                                        android:orientation="horizontal"
+                                                        android:weightSum="4.03">
+
+                                                        <LinearLayout
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_weight="1"
+                                                            android:orientation="vertical">
+
+                                                            <TextView
+                                                                android:layout_width="wrap_content"
+                                                                android:layout_height="wrap_content"
+                                                                android:fontFamily="@font/poppins_semibold"
+                                                                android:text="Scanned \nQty."
+                                                                android:textSize="@dimen/dimen8sp" />
+
+                                                            <TextView
+                                                                android:layout_width="wrap_content"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_marginStart="5dp"
+                                                                android:layout_marginTop="3dp"
+                                                                android:fontFamily="@font/poppins_semibold"
+                                                                android:text="@{String.valueOf(Math.round(barcodeScannedItem.scannedqty))}"
+                                                                android:textColor="@color/black"
+                                                                android:textSize="@dimen/dimen8sp"
+                                                                android:textStyle="bold" />
+                                                        </LinearLayout>
+
+                                                        <View
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="match_parent"
+                                                            android:layout_weight=".01"
+                                                            android:background="@color/silver" />
+
+
+                                                        <LinearLayout
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_marginStart="@dimen/dimen5dp"
+                                                            android:layout_weight="1"
+                                                            android:orientation="vertical">
+
+                                                            <TextView
+                                                                android:layout_width="wrap_content"
+                                                                android:layout_height="wrap_content"
+                                                                android:fontFamily="@font/poppins_semibold"
+                                                                android:text="Scanned\nPacks"
+                                                                android:textSize="@dimen/dimen8sp" />
+
+                                                            <LinearLayout
+                                                                android:layout_width="wrap_content"
+                                                                android:layout_height="wrap_content"
+                                                                android:gravity="center_vertical"
+                                                                android:orientation="horizontal">
+
+                                                                <TextView
+                                                                    android:layout_width="55dp"
+                                                                    android:layout_height="wrap_content"
+                                                                    android:layout_marginTop="3dp"
+                                                                    android:background="@drawable/backgroundborder"
+                                                                    android:fontFamily="@font/poppins_semibold"
+                                                                    android:paddingStart="4dp"
+                                                                    android:paddingTop="2dp"
+                                                                    android:paddingBottom="3dp"
+                                                                    android:text="@{String.valueOf(Math.round(barcodeScannedItem.allocatedpacks - barcodeScannedItem.allocatedPackscompleted))}"
+                                                                    android:textColor="@color/black"
+                                                                    android:textSize="@dimen/dimen8sp" />
+
+                                                                <ImageView
+                                                                    android:layout_width="@dimen/dimen15dp"
+                                                                    android:layout_height="@dimen/dimen15dp"
+                                                                    android:contentDescription="@string/app_name"
+                                                                    android:onClick="@{()-> callback.onClickEditScannedPack()}"
+                                                                    android:src="@drawable/ic_edit"
+                                                                    android:visibility="@{barcodeScannedItem.selectedSupervisorRemarksdetail != null ? view.GONE : barcodeScannedItem.isbulkscanenable ? view.VISIBLE : view.GONE}" />
+                                                            </LinearLayout>
+                                                        </LinearLayout>
+
+                                                        <View
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="match_parent"
+                                                            android:layout_weight=".01"
+                                                            android:background="@color/silver" />
+
+                                                        <LinearLayout
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_marginStart="@dimen/dimen5dp"
+                                                            android:layout_weight="1"
+                                                            android:orientation="vertical">
+
+                                                            <TextView
+                                                                android:layout_width="wrap_content"
+                                                                android:layout_height="wrap_content"
+                                                                android:fontFamily="@font/poppins_semibold"
+                                                                android:text="Short Scan \nPacks."
+                                                                android:textSize="@dimen/dimen8sp" />
+
+                                                            <TextView
+                                                                android:layout_width="wrap_content"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_marginStart="5dp"
+                                                                android:layout_marginTop="3dp"
+                                                                android:fontFamily="@font/poppins_semibold"
+                                                                android:text="@{String.valueOf(Math.round(barcodeScannedItem.shortqty))}"
+                                                                android:textColor="@color/black"
+                                                                android:textSize="@dimen/dimen8sp" />
+                                                        </LinearLayout>
+
+                                                        <View
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="match_parent"
+                                                            android:layout_weight=".01"
+                                                            android:background="@color/silver" />
+
+                                                        <LinearLayout
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_marginStart="@dimen/dimen5dp"
+                                                            android:layout_weight="1"
+                                                            android:orientation="vertical">
+
+                                                            <TextView
+                                                                android:layout_width="wrap_content"
+                                                                android:layout_height="wrap_content"
+                                                                android:fontFamily="@font/poppins_semibold"
+                                                                android:text="Maximum \nRetail Price"
+                                                                android:textSize="@dimen/dimen8sp" />
+
+                                                            <TextView
+                                                                android:layout_width="wrap_content"
+                                                                android:layout_height="wrap_content"
+                                                                android:fontFamily="@font/poppins_semibold"
+                                                                android:text="@{@string/price_format(barcodeScannedItem.mrp)}"
+                                                                android:textColor="@color/black"
+                                                                android:textSize="@dimen/dimen8sp"
+                                                                android:textStyle="bold" />
+                                                        </LinearLayout>
+
+
+                                                    </LinearLayout>
+
+                                                    <LinearLayout
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content"
+                                                        android:orientation="horizontal"
+                                                        android:weightSum="4">
+
+                                                        <LinearLayout
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="match_parent"
+                                                            android:layout_weight="1"
+                                                            android:gravity="start"
+                                                            android:orientation="vertical">
+
+                                                            <TextView
+                                                                android:layout_width="wrap_content"
+                                                                android:layout_height="wrap_content"
+                                                                android:fontFamily="@font/poppins_semibold"
+                                                                android:text="Status"
+                                                                android:textSize="@dimen/dimen8sp" />
+
+                                                            <TextView
+                                                                android:layout_width="wrap_content"
+                                                                android:layout_height="wrap_content"
+                                                                android:fontFamily="@font/poppins_semibold"
+                                                                android:text="@{barcodeScannedItem.selectedSupervisorRemarksdetail != null ? `Pending` : barcodeScannedItem.allocatedPackscompleted == 0 ? `Completed` : `inProcess`}"
+                                                                android:textColor="@{barcodeScannedItem.selectedSupervisorRemarksdetail != null ? @color/colorPrimaryDarker : barcodeScannedItem.allocatedPackscompleted == 0 ? @color/green : @color/inprocess_color}"
+                                                                android:textSize="@dimen/dimen8sp" />
+                                                        </LinearLayout>
+
+                                                        <LinearLayout
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="match_parent"
+                                                            android:layout_weight="1"
+                                                            android:orientation="vertical"
+                                                            android:visibility="@{barcodeScannedItem.allocatedPackscompleted == 0 ? view.GONE : barcodeScannedItem.selectedSupervisorRemarksdetail != null ? view.GONE : view.VISIBLE}">
+
+                                                            <TextView
+                                                                android:layout_width="wrap_content"
+                                                                android:layout_height="wrap_content"
+                                                                android:fontFamily="@font/poppins_semibold"
+                                                                android:text="@string/label_supervisor"
+                                                                android:textSize="@dimen/dimen8sp" />
+
+                                                            <TextView
+                                                                android:layout_width="wrap_content"
+                                                                android:layout_height="wrap_content"
+                                                                android:background="@color/color_takeprint"
+                                                                android:fontFamily="@font/poppins_semibold"
+                                                                android:onClick="@{()-> callback.onClickRequesttoHoldResoan()}"
+                                                                android:paddingStart="@dimen/dimen3dp"
+                                                                android:paddingEnd="@dimen/dimen3dp"
+                                                                android:text="@string/label_request"
+                                                                android:textColor="@color/white"
+                                                                android:textSize="@dimen/dimen8sp" />
+                                                        </LinearLayout>
+
+                                                        <LinearLayout
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_weight="2"
+                                                            android:gravity="center_vertical"
+                                                            android:orientation="horizontal"
+                                                            android:visibility="@{barcodeScannedItem.allocatedPackscompleted == 0 ? view.GONE : barcodeScannedItem.selectedSupervisorRemarksdetail != null ? view.VISIBLE : view.GONE}">
+
+                                                            <ImageView
+                                                                android:layout_width="@dimen/dimen20dp"
+                                                                android:layout_height="@dimen/dimen20dp"
+                                                                android:background="@drawable/circle_bg"
+                                                                android:backgroundTint="@color/inprocess_color"
+                                                                android:contentDescription="@string/app_name"
+                                                                android:padding="@dimen/dimen5dp"
+                                                                android:src="@drawable/time_pass_icon" />
+
+                                                            <LinearLayout
+                                                                android:layout_width="wrap_content"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_marginStart="@dimen/dimen5dp"
+                                                                android:orientation="vertical">
+
+                                                                <TextView
+                                                                    android:layout_width="wrap_content"
+                                                                    android:layout_height="wrap_content"
+                                                                    android:fontFamily="@font/poppins_semibold"
+                                                                    android:text="@string/label_supervisor"
+                                                                    android:textSize="@dimen/dimen8sp" />
+
+                                                                <LinearLayout
+                                                                    android:layout_width="wrap_content"
+                                                                    android:layout_height="wrap_content"
+                                                                    android:orientation="horizontal">
+
+                                                                    <TextView
+                                                                        android:layout_width="wrap_content"
+                                                                        android:layout_height="wrap_content"
+                                                                        android:fontFamily="@font/poppins_semibold"
+                                                                        android:text="@string/label_requestwithcolon"
+                                                                        android:textSize="@dimen/dimen8sp" />
+
+                                                                    <TextView
+                                                                        android:layout_width="wrap_content"
+                                                                        android:layout_height="wrap_content"
+                                                                        android:fontFamily="@font/poppins_semibold"
+                                                                        android:text="@{barcodeScannedItem.selectedSupervisorRemarksdetail.remarksdesc}"
+                                                                        android:textSize="@dimen/dimen8sp" />
+
+                                                                </LinearLayout>
+
+                                                            </LinearLayout>
+                                                        </LinearLayout>
+
+
+                                                    </LinearLayout>
+                                                </LinearLayout>
+                                            </LinearLayout>
+                                        </androidx.cardview.widget.CardView>
+                                    </LinearLayout>
+                                </ScrollView>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen50dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/bottom_strip_color"
+                    android:orientation="horizontal">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="6">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/dimen15dp"
+                                android:layout_height="@dimen/dimen15dp"
+                                android:contentDescription="@string/app_name"
+                                android:src="@drawable/ic_baseline_settings_accessibility_24" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="COMPLETE\nLINE ITEMS\nREPORT"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="TOTAL LIST ITEMS"
+                                android:textSize="@dimen/dimen8sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="40dp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@{String.valueOf(orderStatusModel.doneQty + orderStatusModel.toDoQty)}"
+                                android:textAlignment="center"
+                                android:textSize="@dimen/dimen8sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="DONE"
+                                android:textSize="@dimen/dimen8sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@{String.valueOf(orderStatusModel.doneQty)}"
+                                android:textSize="@dimen/dimen8sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="To do"
+                                android:textSize="@dimen/dimen8sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@{String.valueOf(orderStatusModel.toDoQty)}"
+                                android:textSize="@dimen/dimen8sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="TIME TAKEN"
+                                android:textSize="@dimen/dimen8sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="18sp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@{orderStatusModel.timeTaken}"
+                                android:textSize="@dimen/dimen8sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/background"
+                                android:backgroundTint="@{orderStatusModel.toDoQty != 0 ? @color/grey : @color/green}"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/dimen5dp">
+
+                                <ImageView
+                                    android:layout_width="@dimen/dimen15dp"
+                                    android:layout_height="@dimen/dimen15dp"
+                                    android:contentDescription="@string/app_name"
+                                    android:src="@drawable/ic_baseline_task_alt_24" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="STATUS\nCOMPLETED"
+                                    android:textColor="@{orderStatusModel.toDoQty != 0 ? @color/bluetooth_header_bg : @color/white}"
+                                    android:textSize="@dimen/dimen8sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/click_order_to_scan"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".7"
+                android:background="#dcdeea"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center"
+                    android:text="Click the order\nto start Scanning"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen8sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <data>
+
+        <variable
+            name="allocationData"
+            type="com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse.Allocationhddata" />
+
+        <variable
+            name="callback"
+            type="com.thresholdsoft.astra.ui.picklist.PickListActivityCallback" />
+
+        <variable
+            name="customMenuCallback"
+            type="com.thresholdsoft.astra.ui.CustomMenuCallback" />
+
+        <variable
+            name="barcodeScannedItem"
+            type="com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse.Allocationdetail" />
+
+        <variable
+            name="orderStatusModel"
+            type="com.thresholdsoft.astra.ui.picklist.PickListActivity.OrdersStatusModel" />
+
+        <variable
+            name="selectedMenu"
+            type="Integer" />
+
+        <variable
+            name="pickListCount"
+            type="Integer" />
+
+        <variable
+            name="itemListCount"
+            type="Integer" />
+
+        <variable
+            name="view"
+            type="android.view.View" />
+
+        <variable
+            name="isBarcodeDetailsAvailavble"
+            type="Boolean" />
+
+        <import type="com.thresholdsoft.astra.utils.CommonUtils" />
+    </data>
+</layout>
