@@ -28,6 +28,7 @@
 
                     <ImageView
                         android:layout_width="@dimen/dimen40dp"
+                        android:id="@+id/image"
                         android:layout_height="@dimen/dimen40dp"
                         android:contentDescription="@string/app_name"
                         android:src="@drawable/apollo_circle_logo" />

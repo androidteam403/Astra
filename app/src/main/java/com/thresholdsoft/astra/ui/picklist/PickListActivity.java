@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -102,7 +103,15 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityPickListBinding = DataBindingUtil.setContentView(this, R.layout.activity_pick_list);
-
+activityPickListBinding.customMenuLayout.image.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Intent intent=new Intent(PickListActivity.this,PickerRequests.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+        finish();
+    }
+});
 //        RelativeLayout dashboardsupervisor = findViewById(R.id.dashboard_layout);
 //        RelativeLayout dashboardadmin = findViewById(R.id.second_dashboard);
 //        ImageView apollologo = findViewById(R.id.apollo_logo);
@@ -376,6 +385,9 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         });
 
     }
+
+
+
 
 
     private void searchByPurchReqId() {
@@ -882,6 +894,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         itemResetDialog.show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClickAllowResetItem(GetAllocationLineResponse.Allocationdetail allocationdetails) {
         if (itemResetDialog != null && itemResetDialog.isShowing()) {
@@ -989,6 +1002,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClickSubmitBarcodeorId() {
         String barcodeOrId = activityPickListBinding.searchByBarcodeOrid.getText().toString().trim();
@@ -1073,6 +1087,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void barcodeScanDetailFun(String barcode) {
         if (allocationdetailList != null && allocationdetailList.size() > 0) {
             List<GetAllocationLineResponse.Allocationdetail> isBarcodeAvailable = allocationdetailList.stream()
@@ -1148,6 +1163,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         customDialog.show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void setOrderCompletedPending(String orderStatus) {
         List<GetAllocationLineResponse.Allocationdetail> allocatedQtyAllocationDetailList = allocationdetailList.stream()
                 .filter(e -> e.getAllocatedPackscompleted() == 0)
@@ -1177,6 +1193,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         activityPickListBinding.setOrderStatusModel(ordersStatusModel);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void scannedBarcodeItemListDialog
             (List<GetAllocationLineResponse.Allocationdetail> barcodeAllocationDetailList) {
         Dialog scannedBarcodeItemListdialog = new Dialog(PickListActivity.this);

@@ -3,6 +3,10 @@ package com.thresholdsoft.astra.network;
 
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelRequest;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
+import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalRequest;
+import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalResponse;
+import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataRequest;
+import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataRequest;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineRequest;
@@ -37,5 +41,12 @@ public interface ApiInterface {
 
     @GET("http://lms.apollopharmacy.org:8033/Digital/Apollo/AHL/GetWithHoldRemarks")
     Call<GetWithHoldRemarksResponse> GET_WITH_HOLD_REMARKS_RESPONSE_CALL(@Header("Auth-Token") String authToken);
+
+
+    @GET("https://jsonblob.com/api/jsonBlob/1041677549033504768")
+    Call<WithHoldDataResponse> WITH_HOLD_DATA_RESPONSE_CALL(@Header("Auth-Token") String authToken);
+    @POST("https://XXXXX/Apollo/AHL/WithHoldApproval")
+    Call<WithHoldApprovalResponse> WITH_HOLD_APPROVAL_API_CALL(@Header("Auth-Token") String authToken, @Body WithHoldApprovalRequest withHoldApprovalRequest);
+
 
 }

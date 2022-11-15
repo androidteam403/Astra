@@ -1,6 +1,7 @@
 package com.thresholdsoft.astra.ui.login;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -10,6 +11,7 @@ import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityLoginBinding;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
+import com.thresholdsoft.astra.ui.pickerrequests.PickerRequests;
 import com.thresholdsoft.astra.ui.picklist.PickListActivity;
 
 import java.util.Objects;
@@ -52,9 +54,14 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
 
     @Override
     public void onClickLogin() {
-        if (isLoginValidate()) {
-            getController().validateUser(activityLoginBinding.userId.getText().toString(), activityLoginBinding.password.getText().toString());
-        }
+        Intent intent=new Intent(LoginActivity.this,PickerRequests.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+        finish();
+//        if (isLoginValidate()) {
+//
+//            getController().validateUser(activityLoginBinding.userId.getText().toString(), activityLoginBinding.password.getText().toString());
+//        }
     }
 
     @Override

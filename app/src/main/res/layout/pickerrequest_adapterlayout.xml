@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
@@ -8,9 +8,9 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="7dp"
             android:background="@color/white"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingHorizontal="5dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp">
@@ -18,168 +18,234 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Product Name"
                     android:fontFamily="@font/poppins_semibold"
+                    android:text="Purchase Id"
                     android:textColor="@color/bluetooth_header_bg"
-                    android:textSize="14sp" />
+                    android:textSize="11sp" />
 
                 <TextView
-                    android:id="@+id/purchase_requisition"
+                    android:id="@+id/purchase_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="Red Bull"
                     android:fontFamily="@font/poppins_semibold"
+                    android:text="Red Bull"
                     android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    android:textSize="9sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="26dp"
+                android:layout_marginStart="@dimen/dimen3dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rack Shelf"
                     android:fontFamily="@font/poppins_semibold"
+                    android:text="Rack Shelf"
                     android:textColor="@color/bluetooth_header_bg"
-                    android:textSize="14sp" />
+                    android:textSize="11sp" />
 
                 <TextView
                     android:id="@+id/rackshelf_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="F0206 A05D34"
-                    android:fontFamily="@font/poppins_semibold"
                     android:layout_marginTop="5dp"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="-"
+                    android:layout_marginStart="@dimen/dimen3dp"
 
                     android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/dimen10sp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="26dp"
+                android:layout_marginStart="@dimen/dimen3dp"
+
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
                     android:text="Allocated Qty."
-                    android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/bluetooth_header_bg"
-                    android:textSize="14sp" />
+                    android:textSize="11sp" />
 
                 <TextView
-                    android:id="@+id/area_name"
+                    android:id="@+id/allocation_qty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/poppins_semibold"
                     android:text="3.00"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="@dimen/dimen10sp"
+
+                    android:textAlignment="center"
 
                     android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/dimen10sp" />
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="26dp"
+                android:layout_marginStart="@dimen/dimen3dp"
+
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Requested on"
                     android:fontFamily="@font/poppins_semibold"
+                    android:text="Item id"
                     android:textColor="@color/bluetooth_header_bg"
-                    android:textSize="14sp" />
-
+                    android:textSize="11sp" />
 
                 <TextView
-                    android:id="@+id/allocation_date_time"
+                    android:id="@+id/item_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="20/08/2022-17:20:00"
-                    android:fontFamily="@font/poppins_semibold"
                     android:layout_marginTop="5dp"
+                    android:fontFamily="@font/poppins_semibold"
+
+                    android:text="3.00"
+                    android:textAlignment="center"
 
                     android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/dimen10sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="26dp"
+                android:layout_marginStart="@dimen/dimen3dp"
+
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Short Qty "
+                    android:textColor="@color/bluetooth_header_bg"
+                    android:textSize="11sp" />
+
+
+                <TextView
+                    android:id="@+id/shortqty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="2"
+                    android:layout_marginStart="@dimen/dimen10sp"
+
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="@dimen/dimen3dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Short Scan Qty "
+                    android:textColor="@color/bluetooth_header_bg"
+                    android:textSize="11sp" />
+
+
+                <TextView
+                    android:id="@+id/shortscanqty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="1"
+                    android:layout_marginStart="@dimen/dimen10sp"
+
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen3dp"
+
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
                     android:text="Request"
-                    android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/bluetooth_header_bg"
-                    android:textSize="14sp" />
+                    android:textSize="11sp" />
 
                 <TextView
-                    android:id="@+id/product_name"
+                    android:id="@+id/request"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Out of Stock"
-                    android:fontFamily="@font/poppins_semibold"
                     android:layout_marginTop="5dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Out of Stock"
 
                     android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/dimen10sp" />
             </LinearLayout>
 
 
-
             <LinearLayout
+                android:id="@+id/approvelayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="35dp"
-                android:background="@color/red"
-                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Approve"
-                    android:paddingStart="9sp"
-                    android:paddingEnd="10sp"
-                    android:paddingTop="2dp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="28dp"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    android:src="@drawable/edit_view" />
+                    android:layout_width="@dimen/dimen40dp"
+                    android:layout_height="@dimen/dimen50dp"
+                    android:id="@+id/approve_image"
+                    android:visibility="invisible"
+                    android:src="@drawable/apollo_circleright" />
+
+                <TextView
+                    android:id="@+id/approvebutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen15dp"
+                    android:background="@color/red"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingStart="6sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="6sp"
+                    android:paddingBottom="2dp"
+                    android:text="Approve"
+                    android:textColor="@color/white"
+                    android:textSize="9sp" />
+
             </LinearLayout>
+
+
         </LinearLayout>
     </RelativeLayout>
 </layout>
