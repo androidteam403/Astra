@@ -9,14 +9,9 @@ import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalRequest;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataRequest;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
-import com.thresholdsoft.astra.ui.picklist.PickListActivityCallback;
-import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
-import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineRequest;
-import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
+import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.NetworkUtils;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -38,28 +33,21 @@ public class PickerRequestController {
             ActivityUtils.showDialog(mContext, "Please wait.");
 
             WithHoldDataRequest withHoldDataRequest = new WithHoldDataRequest();
-            withHoldDataRequest.setUserid("APHSC201");
+            withHoldDataRequest.setUserid(AppConstants.userId);
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<WithHoldDataResponse> call = apiInterface.WITH_HOLD_DATA_RESPONSE_CALL("yvEoG+8MvYiOfhV2wb5jw",withHoldDataRequest);
+            Call<WithHoldDataResponse> call = apiInterface.WITH_HOLD_DATA_RESPONSE_CALL("yvEoG+8MvYiOfhV2wb5jw", withHoldDataRequest);
 
             call.enqueue(new Callback<WithHoldDataResponse>() {
                 @Override
                 public void onResponse(Call<WithHoldDataResponse> call, Response<WithHoldDataResponse> response) {
+                    ActivityUtils.hideDialog();
                     if (response.code() == 200 && response.body() != null) {
-                        if (response.body().getRequeststatus()) {
-                            ActivityUtils.hideDialog();
-
-                            mCallback.onSuccessWithHoldApi(response.body());
-                        }
-                        else {
-                            mCallback.onFailureMessage(response.body().getRequestmessage());
-                        }
+                        mCallback.onSuccessWithHoldApi(response.body());
                     } else {
                         mCallback.onFailureMessage("Something went wrong.");
                     }
-                    }
-
+                }
 
                 @Override
                 public void onFailure(Call<WithHoldDataResponse> call, Throwable t) {
@@ -72,12 +60,12 @@ public class PickerRequestController {
 
     }
 
-    public void getWithHoldApprovalApi(ArrayList<WithHoldDataResponse.Withholddetail> withholddetailArrayList,int pos) {
+    public void getWithHoldApprovalApi(ArrayList<WithHoldDataResponse.Withholddetail> withholddetailArrayList, int pos) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
-            ArrayList<WithHoldApprovalRequest> withHoldApprovalRequestList=new ArrayList<>();
+            ArrayList<WithHoldApprovalRequest> withHoldApprovalRequestList = new ArrayList<>();
             ActivityUtils.showDialog(mContext, "Please wait.");
-       WithHoldApprovalRequest withholddetail=new WithHoldApprovalRequest();
-         withholddetail.setPurchreqid(withholddetailArrayList.get(pos).getPurchreqid());
+            WithHoldApprovalRequest withholddetail = new WithHoldApprovalRequest();
+            withholddetail.setPurchreqid(withholddetailArrayList.get(pos).getPurchreqid());
             withholddetail.setUserid((withholddetailArrayList.get(pos).getUserid()));
             withholddetail.setUsername((withholddetailArrayList.get(pos).getUsername()));
             withholddetail.setManagerid((withholddetailArrayList.get(pos).getManagerid()));
@@ -122,9 +110,8 @@ public class PickerRequestController {
                     if (response.code() == 200 && response.body() != null) {
                         if (response.body().getRequeststatus()) {
                             ActivityUtils.hideDialog();
-
                             mCallback.onSuccessWithHoldApprovalApi(response.body());
-                        }else {
+                        } else {
                             mCallback.onFailureMessage(response.body().getRequestmessage());
                         }
                     } else {
@@ -133,7 +120,7 @@ public class PickerRequestController {
 
                     }
 
-                    }
+                }
 
 
                 @Override

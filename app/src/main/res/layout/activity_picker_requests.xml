@@ -1,26 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-<!--    <data>-->
-
-<!--        <variable-->
-<!--            name="callback"-->
-<!--            type="com.thresholdsoft.astra.ui.pickerrequests.model.PickerRequestCallback" />-->
-
-<!--        <variable-->
-<!--            name="customMenuCallback"-->
-<!--            type="com.thresholdsoft.astra.ui.CustomMenuCallback" />-->
-
-
-<!--        <variable-->
-<!--            name="selectedMenu"-->
-<!--            type="Integer" />-->
-
-
-<!--    </data>-->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -41,55 +21,58 @@
 
                 <include
                     android:id="@+id/custom_menu_layout"
-                    layout="@layout/custom_menu_layout_updated"/>
-<!--                    app:customMenuCallback="@{customMenuCallback}"-->
-<!--                    app:selectedMenu="@{selectedMenu}" />-->
+                    layout="@layout/custom_menu_layout_updated" />
+                <!--                    app:customMenuCallback="@{customMenuCallback}"-->
+                <!--                    app:selectedMenu="@{selectedMenu}" />-->
 
             </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/dimen5dp"
+                android:layout_weight=".9"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="PICKER REQUEST"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen16sp" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/pickerrequestRecycleview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:scrollbars="vertical" />
+
+                    <TextView
+                        android:id="@+id/no_picker_requests_found_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="@string/label_no_picker_requests_found"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen12sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
 
 
         </LinearLayout>
 
 
         <!-- Pick List History -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginStart="86dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="@dimen/dimen10sp"
-            android:orientation="vertical"
-            tools:ignore="NotSibling">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="PICKER REQUEST"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen16sp" />
-
-            <!-- Search layout -->
-
-            <!-- Recyclerview -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:orientation="horizontal">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/pickerrequestRecycleview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:scrollbars="vertical" />
-            </LinearLayout>
-
-        </LinearLayout>
         <!-- Footer -->
 
 

@@ -61,10 +61,10 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
-                holder.pickerrequestAdapterlayoutBinding.approveImage.setVisibility(View.VISIBLE);
-
-                holder.pickerrequestAdapterlayoutBinding.approvebutton.setBackgroundColor(Color.parseColor("#29AB87"));
-                holder.pickerrequestAdapterlayoutBinding.approvebutton.setText("Approved");
+//                holder.pickerrequestAdapterlayoutBinding.approveImage.setVisibility(View.VISIBLE);
+//
+//                holder.pickerrequestAdapterlayoutBinding.approvebutton.setBackgroundColor(Color.parseColor("#29AB87"));
+//                holder.pickerrequestAdapterlayoutBinding.approvebutton.setText("Approved");
                 pickerRequestCallback.onClickApprove(position,pickListItems.getItemid(),pickListItems.getItemname(),withholddetailList);
 
             }

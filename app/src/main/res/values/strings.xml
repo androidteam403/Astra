@@ -64,4 +64,5 @@
     <string name="label_ok">Ok</string>
     <string name="label_do_you_want_to_reset_the_item">Do you want to reset the item?</string>
     <string name="label_check_status">Check Status</string>
+    <string name="label_no_picker_requests_found">No picker requests found</string>
 </resources>

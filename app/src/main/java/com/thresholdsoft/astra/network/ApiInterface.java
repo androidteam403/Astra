@@ -44,15 +44,14 @@ public interface ApiInterface {
     Call<GetModeofDeliveryResponse> GET_MODEOF_DELIVERY_API_CALL(@Header("Auth-Token") String authToken);
 
     @GET("GetWithHoldRemarks")
-    Call<GetWithHoldRemarksResponse> GET_WITH_HOLD_REMARKS_RESPONSE_CALL(@Header("Auth-Token") String authToken);
+    Call<GetWithHoldRemarksResponse> GET_WITH_HOLD_REMARKS_API_CALL(@Header("Auth-Token") String authToken);
 
     @POST("GetWithHoldStatus")
     Call<GetWithHoldStatusResponse> GET_WITH_HOLD_STATUS_API_CALL(@Header("Auth-Token") String authToken, @Body GetWithHoldStatusRequest getWithHoldStatusRequest);
 
-
-
     @POST("GetWithHoldData")
-    Call<WithHoldDataResponse> WITH_HOLD_DATA_RESPONSE_CALL(@Header("Auth-Token") String authToken,@Body WithHoldDataRequest withHoldDataRequest);
+    Call<WithHoldDataResponse> WITH_HOLD_DATA_RESPONSE_CALL(@Header("Auth-Token") String authToken, @Body WithHoldDataRequest withHoldDataRequest);
+
     @POST("WithHoldApproval")
     Call<WithHoldApprovalResponse> WITH_HOLD_APPROVAL_API_CALL(@Header("Auth-Token") String authToken, @Body ArrayList<WithHoldApprovalRequest> withHoldApprovalRequest);
 

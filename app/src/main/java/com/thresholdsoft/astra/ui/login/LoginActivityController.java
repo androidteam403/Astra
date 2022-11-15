@@ -103,7 +103,7 @@ public class LoginActivityController {
             ActivityUtils.showDialog(mContext, "Please wait.");
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<GetWithHoldRemarksResponse> call = apiInterface.GET_WITH_HOLD_REMARKS_RESPONSE_CALL("yvEoG+8MvYiOfhV2wb5jw");
+            Call<GetWithHoldRemarksResponse> call = apiInterface.GET_WITH_HOLD_REMARKS_API_CALL("yvEoG+8MvYiOfhV2wb5jw");
             call.enqueue(new Callback<GetWithHoldRemarksResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetWithHoldRemarksResponse> call, @NotNull Response<GetWithHoldRemarksResponse> response) {
