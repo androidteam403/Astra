@@ -72,7 +72,9 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
 
     @Override
     public void onClickLogin() {
+
         if (isLoginValidate()) {
+
             getController().validateUser(activityLoginBinding.userId.getText().toString(), activityLoginBinding.password.getText().toString());
         }
     }
