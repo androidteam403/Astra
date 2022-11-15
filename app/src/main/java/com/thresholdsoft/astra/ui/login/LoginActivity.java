@@ -30,6 +30,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
 
     private void setUp() {
         activityLoginBinding.setCallback(this);
+        getController().getDeliveryofModeApiCall();
         parentLayoutTouchListener();
     }
 
@@ -40,7 +41,22 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
                 this.loginOtp = validateUserModelResponse.getOtp();
                 this.empRole = validateUserModelResponse.getEmprole();
                 getDataManager().setEmpId(activityLoginBinding.userId.getText().toString().trim());
-                activityLoginBinding.setIsOtpScreen(true);
+                if (validateUserModelResponse.getIsotpvalidate()) {
+                    activityLoginBinding.setIsOtpScreen(true);
+                } else {
+                    getDataManager().setEmplRole(empRole);
+                    if (empRole.equals("Supervisor")) {
+                        Intent intent = new Intent(this, PickerRequests.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                        finish();
+                    } else {
+                        startActivity(PickListActivity.getStartActivity(this));
+                        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                        finish();
+                    }
+                }
+
             } else {
                 Toast.makeText(getApplicationContext(), validateUserModelResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
             }
@@ -68,7 +84,12 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     public void onClickSubmit() {
         if (isOtpValidate()) {
             getDataManager().setEmplRole(empRole);
-            if (empRole.equals("Picker")) {
+            if (empRole.equals("Supervisor")) {
+                Intent intent = new Intent(this, PickerRequests.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                finish();
+            } else {
                 startActivity(PickListActivity.getStartActivity(this));
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 finish();
