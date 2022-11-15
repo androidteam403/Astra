@@ -22,9 +22,9 @@ import java.util.List;
 public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.ViewHolder> {
     private Activity activity;
     private PickerRequestCallback pickerRequestCallback;
-    private List<WithHoldDataResponse.Withholddetail> withholddetailList=new ArrayList<>();
+    private ArrayList<WithHoldDataResponse.Withholddetail> withholddetailList=new ArrayList<>();
 
-    public PickerListAdapter(Activity activity, List<WithHoldDataResponse.Withholddetail> withholddetailList, PickerRequestCallback pickerRequestCallback) {
+    public PickerListAdapter(Activity activity, ArrayList<WithHoldDataResponse.Withholddetail> withholddetailList, PickerRequestCallback pickerRequestCallback) {
         this.activity = activity;
         this.withholddetailList = withholddetailList;
         this.pickerRequestCallback=pickerRequestCallback;
@@ -65,7 +65,7 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
 
                 holder.pickerrequestAdapterlayoutBinding.approvebutton.setBackgroundColor(Color.parseColor("#29AB87"));
                 holder.pickerrequestAdapterlayoutBinding.approvebutton.setText("Approved");
-                pickerRequestCallback.onClickApprove(position,pickListItems.getItemid(),pickListItems.getItemname());
+                pickerRequestCallback.onClickApprove(position,pickListItems.getItemid(),pickListItems.getItemname(),withholddetailList);
 
             }
         });

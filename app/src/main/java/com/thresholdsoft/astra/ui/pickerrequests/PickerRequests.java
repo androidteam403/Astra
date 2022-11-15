@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -43,7 +44,7 @@ import java.util.List;
 public class PickerRequests extends BaseActivity implements PickerRequestCallback, CustomMenuCallback {
     ArrayList<String> names = new ArrayList<>();
     AlertBox alertBox;
-    private List<WithHoldDataResponse.Withholddetail> withholddetailList=new ArrayList<>();
+    private ArrayList<WithHoldDataResponse.Withholddetail> withholddetailList=new ArrayList<>();
 
     ActivityPickerRequestsBinding activityPickerRequestsBinding;
 //    RelativeLayout dashboardsupervisor = findViewById(R.id.dashboard_layout);
@@ -141,7 +142,7 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
     }
 
     @Override
-    public void onClickApprove(int position, String purchaseId, String itemName) {
+    public void onClickApprove(int position, String purchaseId, String itemName,ArrayList<WithHoldDataResponse.Withholddetail> withholddetailArrayList) {
         alertBox = new AlertBox(PickerRequests.this,itemName,purchaseId);
         if (!isFinishing())
             alertBox.show();
@@ -151,7 +152,7 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
 
         alertBox.setPositiveListener(v -> {
             ActivityUtils.showDialog(getApplicationContext(),"");
-            getController().getWithHoldApprovalApi();
+            getController().getWithHoldApprovalApi(withholddetailArrayList,position);
             alertBox.dismiss();
         });
 
@@ -193,7 +194,8 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
 
     @Override
     public void onSuccessWithHoldApi(WithHoldDataResponse withHoldDataResponse) {
-      withholddetailList=  withHoldDataResponse.getWithholddetails();
+      withholddetailList= (ArrayList<WithHoldDataResponse.Withholddetail>) withHoldDataResponse.getWithholddetails();
+
 
 
 if (withholddetailList!=null) {
@@ -203,6 +205,12 @@ if (withholddetailList!=null) {
     activityPickerRequestsBinding.pickerrequestRecycleview.setLayoutManager(linearLayoutManager);
     activityPickerRequestsBinding.pickerrequestRecycleview.setAdapter(pickListHistoryAdapter);
 }
+    }
+
+    @Override
+    public void onFailureMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+
     }
 
     @Override

@@ -70,14 +70,11 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
 
     @Override
     public void onClickLogin() {
-        Intent intent=new Intent(LoginActivity.this,PickerRequests.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-        finish();
-//        if (isLoginValidate()) {
-//
-//            getController().validateUser(activityLoginBinding.userId.getText().toString(), activityLoginBinding.password.getText().toString());
-//        }
+
+        if (isLoginValidate()) {
+
+            getController().validateUser(activityLoginBinding.userId.getText().toString(), activityLoginBinding.password.getText().toString());
+        }
     }
 
     @Override

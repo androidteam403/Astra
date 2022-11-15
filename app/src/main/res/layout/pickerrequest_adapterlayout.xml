@@ -239,7 +239,7 @@
                     android:paddingTop="2dp"
                     android:paddingEnd="6sp"
                     android:paddingBottom="2dp"
-                    android:text="Approve"
+                    android:text="   Approve"
                     android:textColor="@color/white"
                     android:textSize="9sp" />
 

@@ -60,7 +60,7 @@ public class WithHoldDataResponse  implements Serializable {
 
 
 
-    public class Withholddetail {
+    public static class Withholddetail {
 
         @SerializedName("purchreqid")
         @Expose
