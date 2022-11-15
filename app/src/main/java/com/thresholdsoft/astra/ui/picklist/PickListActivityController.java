@@ -11,6 +11,8 @@ import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineRequest;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetModeofDeliveryResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
+import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldStatusRequest;
+import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldStatusResponse;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateRequest;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
@@ -203,6 +205,38 @@ public class PickListActivityController {
 
                 @Override
                 public void onFailure(@NotNull Call<GetWithHoldRemarksResponse> call, @NotNull Throwable t) {
+                    ActivityUtils.hideDialog();
+                    mCallback.onFailureMessage(t.getMessage());
+                }
+            });
+        } else {
+            mCallback.onFailureMessage("Something went wrong.");
+        }
+    }
+
+    public void getWithHoldStatusApiCAll(GetWithHoldStatusRequest getWithHoldStatusRequest) {
+        if (NetworkUtils.isNetworkConnected(mContext)) {
+            ActivityUtils.showDialog(mContext, "Please wait.");
+
+            ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
+            Call<GetWithHoldStatusResponse> call = apiInterface.GET_WITH_HOLD_STATUS_API_CALL("yvEoG+8MvYiOfhV2wb5jw", getWithHoldStatusRequest);
+            call.enqueue(new Callback<GetWithHoldStatusResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<GetWithHoldStatusResponse> call, @NotNull Response<GetWithHoldStatusResponse> response) {
+                    ActivityUtils.hideDialog();
+                    if (response.code() == 200 && response.body() != null) {
+                        if (response.body().getRequeststatus()) {
+                            mCallback.onSuccessGetWithHoldStatusApi(response.body());
+                        } else {
+                            mCallback.onFailureMessage(response.body().getRequestmessage());
+                        }
+                    } else {
+                        mCallback.onFailureMessage("Something went wrong.");
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<GetWithHoldStatusResponse> call, @NotNull Throwable t) {
                     ActivityUtils.hideDialog();
                     mCallback.onFailureMessage(t.getMessage());
                 }

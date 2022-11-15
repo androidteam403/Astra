@@ -8,6 +8,8 @@ public class AppConstants {
 
     public static final String DB_NAME = "ASTRA";
 
+    public static String userId = "";
+
     public static GetModeofDeliveryResponse getModeofDeliveryResponse = null;
 
     public static GetWithHoldRemarksResponse getWithHoldRemarksResponse = null;

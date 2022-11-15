@@ -9,6 +9,8 @@ import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineRequest;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetModeofDeliveryResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
+import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldStatusRequest;
+import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldStatusResponse;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateRequest;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
 
@@ -37,5 +39,9 @@ public interface ApiInterface {
 
     @GET("GetWithHoldRemarks")
     Call<GetWithHoldRemarksResponse> GET_WITH_HOLD_REMARKS_RESPONSE_CALL(@Header("Auth-Token") String authToken);
+
+    @POST("GetWithHoldStatus")
+    Call<GetWithHoldStatusResponse> GET_WITH_HOLD_STATUS_API_CALL(@Header("Auth-Token") String authToken, @Body GetWithHoldStatusRequest getWithHoldStatusRequest);
+
 
 }

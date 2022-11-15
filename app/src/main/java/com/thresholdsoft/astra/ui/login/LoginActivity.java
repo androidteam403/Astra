@@ -13,6 +13,7 @@ import com.thresholdsoft.astra.databinding.ActivityLoginBinding;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequests;
 import com.thresholdsoft.astra.ui.picklist.PickListActivity;
+import com.thresholdsoft.astra.utils.AppConstants;
 
 import java.util.Objects;
 
@@ -40,6 +41,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
             if (validateUserModelResponse.getRequeststatus()) {
                 this.loginOtp = validateUserModelResponse.getOtp();
                 this.empRole = validateUserModelResponse.getEmprole();
+                AppConstants.userId = activityLoginBinding.userId.getText().toString().trim();
                 getDataManager().setEmpId(activityLoginBinding.userId.getText().toString().trim());
                 if (validateUserModelResponse.getIsotpvalidate()) {
                     activityLoginBinding.setIsOtpScreen(true);

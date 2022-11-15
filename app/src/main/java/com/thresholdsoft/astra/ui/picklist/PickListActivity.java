@@ -48,6 +48,8 @@ import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetModeofDeliveryResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
+import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldStatusRequest;
+import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldStatusResponse;
 import com.thresholdsoft.astra.ui.picklist.model.OrderStatusTimeDateEntity;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateRequest;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
@@ -1041,6 +1043,29 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         } else {
             activityPickListBinding.searchByBarcodeOrid.requestFocus();
             activityPickListBinding.searchByBarcodeOrid.setText("Please enter barcode or Id");
+        }
+    }
+
+    @Override
+    public void onClickCheckStatus(GetAllocationLineResponse.Allocationdetail allocationdetail) {
+        GetWithHoldStatusRequest getWithHoldStatusRequest = new GetWithHoldStatusRequest();
+        getWithHoldStatusRequest.setId(allocationdetail.getId());
+        getWithHoldStatusRequest.setItemid(allocationdetail.getItemid());
+        getWithHoldStatusRequest.setPurchreqid(activityPickListBinding.getAllocationData().getPurchreqid());
+        getWithHoldStatusRequest.setUserid(AppConstants.userId);
+        getController().getWithHoldStatusApiCAll(getWithHoldStatusRequest);
+    }
+
+    @Override
+    public void onSuccessGetWithHoldStatusApi(GetWithHoldStatusResponse getWithHoldStatusResponse) {
+        if (getWithHoldStatusResponse != null && getWithHoldStatusResponse.getRequeststatus()) {
+            this.barcodeAllocationDetailList.get(0).setSelectedSupervisorRemarksdetail(null);
+            activityPickListBinding.setBarcodeScannedItem(this.barcodeAllocationDetailList.get(0));
+            insertOrUpdateAllocationLineList();
+            pickListAdapter.notifyDataSetChanged();
+        } else {
+            assert getWithHoldStatusResponse != null;
+            Toast.makeText(this, getWithHoldStatusResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -1337,6 +1337,28 @@
                                                         </LinearLayout>
                                                     </LinearLayout>
 
+                                                    <LinearLayout
+                                                        android:layout_width="0dp"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_weight="1"
+                                                        android:gravity="center_vertical"
+                                                        android:orientation="horizontal"
+                                                        android:visibility="@{barcodeScannedItem.allocatedPackscompleted == 0 ? view.GONE : barcodeScannedItem.selectedSupervisorRemarksdetail != null ? view.VISIBLE : view.GONE}">
+
+                                                        <TextView
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            android:background="@color/color_takeprint"
+                                                            android:backgroundTint="@color/yellow"
+                                                            android:fontFamily="@font/poppins_semibold"
+                                                            android:onClick="@{()-> callback.onClickCheckStatus(barcodeScannedItem)}"
+                                                            android:paddingStart="@dimen/dimen3dp"
+                                                            android:paddingEnd="@dimen/dimen3dp"
+                                                            android:text="@string/label_check_status"
+                                                            android:textColor="@color/white"
+                                                            android:textSize="@dimen/dimen8sp" />
+
+                                                    </LinearLayout>
 
                                                 </LinearLayout>
                                             </LinearLayout>
