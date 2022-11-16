@@ -37,6 +37,7 @@ import com.thresholdsoft.astra.databinding.DialogSupervisorRequestRemarksBinding
 import com.thresholdsoft.astra.db.room.AppDatabase;
 import com.thresholdsoft.astra.ui.CustomMenuCallback;
 import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
+import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequests;
 import com.thresholdsoft.astra.ui.picklist.adapter.ItemListAdapter;
 import com.thresholdsoft.astra.ui.picklist.adapter.ModeofDeliveryCustomeSpinnerAdapter;
@@ -109,7 +110,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         activityPickListBinding.customMenuLayout.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(PickListActivity.this,PickerRequests.class);
+                Intent i = new Intent(PickListActivity.this, PickerRequests.class);
                 startActivity(i);
 
             }
@@ -677,7 +678,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
 
     @Override
     public void onClickProcessDocument() {
-        if (activityPickListBinding.getOrderStatusModel().getToDoQty() == 0) {
+        if ((activityPickListBinding.getOrderStatusModel().getToDoQty() - activityPickListBinding.getOrderStatusModel().getPickerRequestApprovedQty()) == 0) {
             onSuccessGetModeofDeliveryApi(AppConstants.getModeofDeliveryResponse);
 //            getController().getDeliveryofModeApiCall();
         }
@@ -995,44 +996,56 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         String barcodeOrId = activityPickListBinding.searchByBarcodeOrid.getText().toString().trim();
         if (barcodeOrId != null && !barcodeOrId.isEmpty()) {
             if (allocationdetailList != null && allocationdetailList.size() > 0) {
-                List<GetAllocationLineResponse.Allocationdetail> isIdAvailable = allocationdetailList.stream().filter(e -> e.getId() == Integer.parseInt(barcodeOrId)).collect(Collectors.toList());
+                List<GetAllocationLineResponse.Allocationdetail> isIdAvailable = allocationdetailList.stream().filter(e -> String.valueOf(e.getId()).equals(barcodeOrId)).collect(Collectors.toList());
                 if (isIdAvailable != null && isIdAvailable.size() > 0) {
 
-                    this.barcodeAllocationDetailList = allocationdetailList.stream().filter(e -> e.getId() == Integer.parseInt(barcodeOrId) && e.getAllocatedPackscompleted() != 0).collect(Collectors.toList());
+                    this.barcodeAllocationDetailList = allocationdetailList.stream().filter(e -> String.valueOf(e.getId()).equals(barcodeOrId) && e.getAllocatedPackscompleted() != 0).collect(Collectors.toList());
 
                     if (barcodeAllocationDetailList.size() > 0) {
                         if (barcodeAllocationDetailList.size() > 1) {
                             scannedBarcodeItemListDialog(barcodeAllocationDetailList);
                         } else {
                             if (activityPickListBinding.getOrderStatusModel().getStatus().equals("Assigned")) {
-                                StatusUpdateRequest statusUpdateRequest = new StatusUpdateRequest();
-                                statusUpdateRequest.setRequesttype("INPROCESS");
-                                statusUpdateRequest.setPurchreqid(activityPickListBinding.getAllocationData().getPurchreqid());
-                                statusUpdateRequest.setUserid(activityPickListBinding.getAllocationData().getUserid());
-                                statusUpdateRequest.setNoofboxes(activityPickListBinding.getAllocationData().getNoofboxes());
-                                statusUpdateRequest.setModeofdelivery("");
-                                statusUpdateRequest.setScanstatus("INPROCESS");
-                                statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
-                                statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
-                                getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", false);
+                                if (barcodeAllocationDetailList.get(0).isRequestAccepted()) {
+                                    showCustomDialog("Request is accepted by supervisor, no scan required");
+                                } else if (barcodeAllocationDetailList.get(0).getSelectedSupervisorRemarksdetail() != null) {
+                                    showCustomDialog("This item request is pending with supervisor");
+                                } else {
+                                    StatusUpdateRequest statusUpdateRequest = new StatusUpdateRequest();
+                                    statusUpdateRequest.setRequesttype("INPROCESS");
+                                    statusUpdateRequest.setPurchreqid(activityPickListBinding.getAllocationData().getPurchreqid());
+                                    statusUpdateRequest.setUserid(activityPickListBinding.getAllocationData().getUserid());
+                                    statusUpdateRequest.setNoofboxes(activityPickListBinding.getAllocationData().getNoofboxes());
+                                    statusUpdateRequest.setModeofdelivery("");
+                                    statusUpdateRequest.setScanstatus("INPROCESS");
+                                    statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
+                                    statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
+                                    getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", false);
+                                }
                             } else {
-                                this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
-                                this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
-                                barcodeAllocationDetailList.get(0).setAllocatedqtycompleted(barcodeAllocationDetailList.get(0).getAllocatedqtycompleted() - 1);
-                                barcodeAllocationDetailList.get(0).setAllocatedPackscompleted(barcodeAllocationDetailList.get(0).getAllocatedPackscompleted() - 1);
-                                int scannedQty = (barcodeAllocationDetailList.get(0).getAllocatedqty() / barcodeAllocationDetailList.get(0).getAllocatedpacks()) * (barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted());
-                                barcodeAllocationDetailList.get(0).setScannedqty(scannedQty);//barcodeAllocationDetailList.get(0).getScannedqty() + 1
-                                int shortScannedQty = barcodeAllocationDetailList.get(0).getAllocatedqty() - (barcodeAllocationDetailList.get(0).getAllocatedqty() / barcodeAllocationDetailList.get(0).getAllocatedpacks()) * (barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted());// barcodeAllocationDetailList.get(0).getAllocatedPackscompleted();
-                                barcodeAllocationDetailList.get(0).setShortqty(shortScannedQty);
-                                barcodeAllocationDetailList.get(0).setScannedDateTime(this.scanStartDateTime);
-                                activityPickListBinding.setBarcodeScannedItem(barcodeAllocationDetailList.get(0));
-                                activityPickListBinding.setIsBarcodeDetailsAvailavble(true);
-                                itemListAdapter.notifyDataSetChanged();
+                                if (barcodeAllocationDetailList.get(0).isRequestAccepted()) {
+                                    showCustomDialog("Request is accepted by supervisor, no scan required");
+                                } else if (barcodeAllocationDetailList.get(0).getSelectedSupervisorRemarksdetail() != null) {
+                                    showCustomDialog("This item request is pending with supervisor");
+                                } else {
+                                    this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
+                                    this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
+                                    barcodeAllocationDetailList.get(0).setAllocatedqtycompleted(barcodeAllocationDetailList.get(0).getAllocatedqtycompleted() - 1);
+                                    barcodeAllocationDetailList.get(0).setAllocatedPackscompleted(barcodeAllocationDetailList.get(0).getAllocatedPackscompleted() - 1);
+                                    int scannedQty = (barcodeAllocationDetailList.get(0).getAllocatedqty() / barcodeAllocationDetailList.get(0).getAllocatedpacks()) * (barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted());
+                                    barcodeAllocationDetailList.get(0).setScannedqty(scannedQty);//barcodeAllocationDetailList.get(0).getScannedqty() + 1
+                                    int shortScannedQty = barcodeAllocationDetailList.get(0).getAllocatedqty() - (barcodeAllocationDetailList.get(0).getAllocatedqty() / barcodeAllocationDetailList.get(0).getAllocatedpacks()) * (barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted());// barcodeAllocationDetailList.get(0).getAllocatedPackscompleted();
+                                    barcodeAllocationDetailList.get(0).setShortqty(shortScannedQty);
+                                    barcodeAllocationDetailList.get(0).setScannedDateTime(this.scanStartDateTime);
+                                    activityPickListBinding.setBarcodeScannedItem(barcodeAllocationDetailList.get(0));
+                                    activityPickListBinding.setIsBarcodeDetailsAvailavble(true);
+                                    itemListAdapter.notifyDataSetChanged();
 
-                                insertOrUpdateAllocationLineList();
-                                insertOrUpdateOrderStatusTimeDateEntity();
-                                setOrderCompletedPending(activityPickListBinding.getOrderStatusModel().getStatus());
-                                pickListAdapter.notifyDataSetChanged();
+                                    insertOrUpdateAllocationLineList();
+                                    insertOrUpdateOrderStatusTimeDateEntity();
+                                    setOrderCompletedPending(activityPickListBinding.getOrderStatusModel().getStatus());
+                                    pickListAdapter.notifyDataSetChanged();
+                                }
                             }
                         }
                     } else {
@@ -1067,12 +1080,14 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     @Override
     public void onSuccessGetWithHoldStatusApi(GetWithHoldStatusResponse getWithHoldStatusResponse, boolean isItemClick) {
         if (getWithHoldStatusResponse != null && getWithHoldStatusResponse.getRequeststatus()) {
-            if (!isItemClick){
+            if (!isItemClick) {
                 requestApprovalPopup(true);
-            }else {
+            } else {
+                this.barcodeAllocationDetailList.get(0).setRequestAccepted(true);
                 this.barcodeAllocationDetailList.get(0).setSelectedSupervisorRemarksdetail(null);
                 activityPickListBinding.setBarcodeScannedItem(this.barcodeAllocationDetailList.get(0));
                 insertOrUpdateAllocationLineList();
+                setOrderCompletedPending(activityPickListBinding.getAllocationData().getScanstatus());
                 pickListAdapter.notifyDataSetChanged();
             }
 
@@ -1081,6 +1096,11 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
 //            assert getWithHoldStatusResponse != null;
 //            Toast.makeText(this, getWithHoldStatusResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onClickClearSearchByBarcodeorItemId() {
+        activityPickListBinding.searchByBarcodeOrid.setText("");
     }
 
     private void requestApprovalPopup(boolean isApproved) {
@@ -1092,9 +1112,11 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         dialogRequestApprovalBinding.message.setText(isApproved ? "Request approved for this item" : "Request is pending for this order");
         dialogRequestApprovalBinding.okBtn.setOnClickListener(view -> {
             if (isApproved) {
+                this.barcodeAllocationDetailList.get(0).setRequestAccepted(true);
                 this.barcodeAllocationDetailList.get(0).setSelectedSupervisorRemarksdetail(null);
                 activityPickListBinding.setBarcodeScannedItem(this.barcodeAllocationDetailList.get(0));
                 insertOrUpdateAllocationLineList();
+                setOrderCompletedPending(activityPickListBinding.getAllocationData().getScanstatus());
                 pickListAdapter.notifyDataSetChanged();
                 requestApprovalPopup.dismiss();
             } else {
@@ -1132,35 +1154,50 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
                     if (barcodeAllocationDetailList.size() > 1) {
                         scannedBarcodeItemListDialog(barcodeAllocationDetailList);
                     } else {
-                        if (activityPickListBinding.getOrderStatusModel().getStatus().equals("Assigned")) {
-                            StatusUpdateRequest statusUpdateRequest = new StatusUpdateRequest();
-                            statusUpdateRequest.setRequesttype("INPROCESS");
-                            statusUpdateRequest.setPurchreqid(activityPickListBinding.getAllocationData().getPurchreqid());
-                            statusUpdateRequest.setUserid(activityPickListBinding.getAllocationData().getUserid());
-                            statusUpdateRequest.setNoofboxes(activityPickListBinding.getAllocationData().getNoofboxes());
-                            statusUpdateRequest.setModeofdelivery("");
-                            statusUpdateRequest.setScanstatus("INPROCESS");
-                            statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
-                            statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
-                            getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", false);
-                        } else {
-                            this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
-                            this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
-                            barcodeAllocationDetailList.get(0).setAllocatedqtycompleted(barcodeAllocationDetailList.get(0).getAllocatedqtycompleted() - 1);
-                            barcodeAllocationDetailList.get(0).setAllocatedPackscompleted(barcodeAllocationDetailList.get(0).getAllocatedPackscompleted() - 1);
-                            int scannedQty = (barcodeAllocationDetailList.get(0).getAllocatedqty() / barcodeAllocationDetailList.get(0).getAllocatedpacks()) * (barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted());
-                            barcodeAllocationDetailList.get(0).setScannedqty(scannedQty);//barcodeAllocationDetailList.get(0).getScannedqty() + 1
-                            int shortScannedQty = barcodeAllocationDetailList.get(0).getAllocatedqty() - (barcodeAllocationDetailList.get(0).getAllocatedqty() / barcodeAllocationDetailList.get(0).getAllocatedpacks()) * (barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted());// barcodeAllocationDetailList.get(0).getAllocatedPackscompleted();
-                            barcodeAllocationDetailList.get(0).setShortqty(shortScannedQty);
-                            barcodeAllocationDetailList.get(0).setScannedDateTime(this.scanStartDateTime);
-                            activityPickListBinding.setBarcodeScannedItem(barcodeAllocationDetailList.get(0));
-                            activityPickListBinding.setIsBarcodeDetailsAvailavble(true);
-                            itemListAdapter.notifyDataSetChanged();
 
-                            insertOrUpdateAllocationLineList();
-                            insertOrUpdateOrderStatusTimeDateEntity();
-                            setOrderCompletedPending(activityPickListBinding.getOrderStatusModel().getStatus());
-                            pickListAdapter.notifyDataSetChanged();
+                        if (activityPickListBinding.getOrderStatusModel().getStatus().equals("Assigned")) {
+                            if (barcodeAllocationDetailList.get(0).isRequestAccepted()) {
+                                showCustomDialog("Request is accepted by supervisor, no scan required");
+                            } else if (barcodeAllocationDetailList.get(0).getSelectedSupervisorRemarksdetail() != null) {
+                                showCustomDialog("This item request is pending with supervisor");
+                            } else {
+                                StatusUpdateRequest statusUpdateRequest = new StatusUpdateRequest();
+                                statusUpdateRequest.setRequesttype("INPROCESS");
+                                statusUpdateRequest.setPurchreqid(activityPickListBinding.getAllocationData().getPurchreqid());
+                                statusUpdateRequest.setUserid(activityPickListBinding.getAllocationData().getUserid());
+                                statusUpdateRequest.setNoofboxes(activityPickListBinding.getAllocationData().getNoofboxes());
+                                statusUpdateRequest.setModeofdelivery("");
+                                statusUpdateRequest.setScanstatus("INPROCESS");
+                                statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
+                                statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
+                                getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", false);
+                            }
+
+                        } else {
+                            if (barcodeAllocationDetailList.get(0).isRequestAccepted()) {
+                                showCustomDialog("Request is accepted by supervisor, no scan required");
+                            } else if (barcodeAllocationDetailList.get(0).getSelectedSupervisorRemarksdetail() != null) {
+                                showCustomDialog("This item request is pending with supervisor");
+                            } else {
+                                this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
+                                this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
+                                barcodeAllocationDetailList.get(0).setAllocatedqtycompleted(barcodeAllocationDetailList.get(0).getAllocatedqtycompleted() - 1);
+                                barcodeAllocationDetailList.get(0).setAllocatedPackscompleted(barcodeAllocationDetailList.get(0).getAllocatedPackscompleted() - 1);
+                                int scannedQty = (barcodeAllocationDetailList.get(0).getAllocatedqty() / barcodeAllocationDetailList.get(0).getAllocatedpacks()) * (barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted());
+                                barcodeAllocationDetailList.get(0).setScannedqty(scannedQty);//barcodeAllocationDetailList.get(0).getScannedqty() + 1
+                                int shortScannedQty = barcodeAllocationDetailList.get(0).getAllocatedqty() - (barcodeAllocationDetailList.get(0).getAllocatedqty() / barcodeAllocationDetailList.get(0).getAllocatedpacks()) * (barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted());// barcodeAllocationDetailList.get(0).getAllocatedPackscompleted();
+                                barcodeAllocationDetailList.get(0).setShortqty(shortScannedQty);
+                                barcodeAllocationDetailList.get(0).setScannedDateTime(this.scanStartDateTime);
+                                activityPickListBinding.setBarcodeScannedItem(barcodeAllocationDetailList.get(0));
+                                activityPickListBinding.setIsBarcodeDetailsAvailavble(true);
+                                itemListAdapter.notifyDataSetChanged();
+
+                                insertOrUpdateAllocationLineList();
+                                insertOrUpdateOrderStatusTimeDateEntity();
+                                setOrderCompletedPending(activityPickListBinding.getOrderStatusModel().getStatus());
+                                pickListAdapter.notifyDataSetChanged();
+                            }
+
                         }
                     }
                 } else {
@@ -1198,9 +1235,13 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
 
         int doneQty = 0;
         int toDoQty = 0;
+        int pickerRequestApprovedQty = 0;
         for (GetAllocationLineResponse.Allocationdetail allocationdetail : allocationdetailList) {
             doneQty = doneQty + allocationdetail.getAllocatedpacks() - allocationdetail.getAllocatedPackscompleted();
             toDoQty = toDoQty + allocationdetail.getAllocatedPackscompleted();
+            if (allocationdetail.isRequestAccepted()) {
+                pickerRequestApprovedQty = pickerRequestApprovedQty + allocationdetail.getAllocatedpacks();
+            }
         }
 
         OrdersStatusModel ordersStatusModel = new OrdersStatusModel();
@@ -1212,6 +1253,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         ordersStatusModel.setDoneQty(doneQty);
         ordersStatusModel.setToDoQty(toDoQty);
         ordersStatusModel.setTotalItemsQty(doneQty + toDoQty);
+        ordersStatusModel.setPickerRequestApprovedQty(pickerRequestApprovedQty);
         ordersStatusModel.setTimeTaken(CommonUtils.differenceBetweenTwoTimes(getLatestScanDateTime(), getLastScanDateTime()));
         activityPickListBinding.setOrderStatusModel(ordersStatusModel);
     }
@@ -1298,6 +1340,32 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     }
 
     @Override
+    public void onClickLogout() {
+        Dialog customDialog = new Dialog(this);
+        DialogCustomAlertBinding dialogCustomAlertBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_custom_alert, null, false);
+        customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        customDialog.setContentView(dialogCustomAlertBinding.getRoot());
+        customDialog.setCancelable(false);
+        dialogCustomAlertBinding.message.setText("Do you want to logout?");
+        dialogCustomAlertBinding.okBtn.setVisibility(View.GONE);
+        dialogCustomAlertBinding.ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDialog.dismiss();
+                startActivity(LoginActivity.getStartIntent(PickListActivity.this));
+            }
+        });
+        dialogCustomAlertBinding.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDialog.dismiss();
+            }
+        });
+        customDialog.show();
+
+    }
+
+    @Override
     protected void onPause() {
         barcodeScanHandler.removeCallbacks(barcodeScanRunnable);
         activityPickListBinding.barcodeScanEdittext.setText("");
@@ -1314,6 +1382,15 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         private int toDoQty;
         private int totalItemsQty;
         private String timeTaken;
+        private int pickerRequestApprovedQty;
+
+        public int getPickerRequestApprovedQty() {
+            return pickerRequestApprovedQty;
+        }
+
+        public void setPickerRequestApprovedQty(int pickerRequestApprovedQty) {
+            this.pickerRequestApprovedQty = pickerRequestApprovedQty;
+        }
 
         public int getNoOfBoxItems() {
             return noOfBoxItems;

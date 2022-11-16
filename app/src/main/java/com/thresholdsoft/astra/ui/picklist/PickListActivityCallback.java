@@ -69,4 +69,6 @@ public interface PickListActivityCallback {
 
     void onSuccessGetWithHoldStatusApi(GetWithHoldStatusResponse getWithHoldStatusResponse, boolean isItemClick);
 
+    void onClickClearSearchByBarcodeorItemId();
+
 }

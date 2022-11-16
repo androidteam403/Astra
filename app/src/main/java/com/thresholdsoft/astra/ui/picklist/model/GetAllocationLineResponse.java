@@ -113,6 +113,16 @@ public class GetAllocationLineResponse implements Serializable {
 
         private boolean isSelected;
 
+        private boolean isRequestAccepted;
+
+        public boolean isRequestAccepted() {
+            return isRequestAccepted;
+        }
+
+        public void setRequestAccepted(boolean requestAccepted) {
+            isRequestAccepted = requestAccepted;
+        }
+
         @SerializedName("scannedqty")
         @Expose
         private int scannedqty;

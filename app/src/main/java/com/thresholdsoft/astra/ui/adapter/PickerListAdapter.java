@@ -68,7 +68,7 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
 //
 //                holder.pickerrequestAdapterlayoutBinding.approvebutton.setBackgroundColor(Color.parseColor("#29AB87"));
 //                holder.pickerrequestAdapterlayoutBinding.approvebutton.setText("Approved");
-                pickerRequestCallback.onClickApprove(position,pickListItems.getItemid(),pickListItems.getItemname(),withholddetailList);
+                pickerRequestCallback.onClickApprove(pickListItems, position,pickListItems.getItemid(),pickListItems.getItemname(),withholddetailList);
 
             }
         });

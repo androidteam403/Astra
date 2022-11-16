@@ -634,7 +634,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginEnd="@dimen/dimen10dp"
                             android:layout_weight="1"
-                            android:background="@{orderStatusModel.toDoQty == 0 ? @color/continue_select_color : @color/light_yellow_color}"
+                            android:background="@{(orderStatusModel.toDoQty - orderStatusModel.pickerRequestApprovedQty) == 0 ? @color/continue_select_color : @color/light_yellow_color}"
                             android:gravity="center"
                             android:onClick="@{()-> callback.onClickProcessDocument()}"
                             android:orientation="horizontal"
@@ -837,33 +837,47 @@
                                     android:id="@+id/search_by_barcode_orid"
                                     android:layout_width="@dimen/dimen300dp"
                                     android:layout_height="@dimen/dimen40dp"
-                                    android:hint="Search"
+                                    android:hint="Search by Barcode or Item ID"
                                     android:importantForAutofill="no"
                                     android:inputType="text"
                                     android:text=""
                                     android:textSize="@dimen/dimen12sp" />
 
-                                <TextView
+                                <LinearLayout
                                     android:layout_width="wrap_content"
-                                    android:layout_height="@dimen/dimen30dp"
-                                    android:layout_marginStart="@dimen/dimen5dp"
-                                    android:background="@drawable/rounded_corner_bg"
-                                    android:backgroundTint="@color/lite_yellow"
-                                    android:gravity="center"
-                                    android:paddingStart="@dimen/dimen5dp"
-                                    android:paddingEnd="@dimen/dimen5dp"
-                                    android:onClick="@{()-> callback.onClickSubmitBarcodeorId()}"
-                                    android:text="@string/label_submit"
-                                    android:textAllCaps="true"
-                                    android:textColor="@color/black"
-                                    android:textSize="@dimen/dimen12sp" />
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/dimen5dp"
+                                        android:contentDescription="@string/app_name"
+                                        android:onClick="@{()-> callback.onClickClearSearchByBarcodeorItemId()}"
+                                        android:src="@drawable/close_new" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="@dimen/dimen30dp"
+                                        android:layout_marginStart="@dimen/dimen5dp"
+                                        android:background="@drawable/rounded_corner_bg"
+                                        android:backgroundTint="@color/lite_yellow"
+                                        android:gravity="center"
+                                        android:onClick="@{()-> callback.onClickSubmitBarcodeorId()}"
+                                        android:paddingStart="@dimen/dimen5dp"
+                                        android:paddingEnd="@dimen/dimen5dp"
+                                        android:text="@string/label_search"
+                                        android:textAllCaps="true"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/dimen12sp" />
+                                </LinearLayout>
                             </LinearLayout>
 
                             <LinearLayout
                                 android:id="@+id/scan_layout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:gravity="center"
                                 android:orientation="vertical"
                                 android:visibility="@{orderStatusModel.status.equalsIgnoreCase(`Completed`) ? view.GONE : isBarcodeDetailsAvailavble ? view.GONE : view.VISIBLE}">
@@ -1243,7 +1257,7 @@
                                                             android:layout_width="wrap_content"
                                                             android:layout_height="wrap_content"
                                                             android:fontFamily="@font/poppins_semibold"
-                                                            android:text="Status"
+                                                            android:text="Picking Status"
                                                             android:textSize="@dimen/dimen12sp" />
 
                                                         <TextView
@@ -1260,7 +1274,7 @@
                                                         android:layout_height="match_parent"
                                                         android:layout_weight="1"
                                                         android:orientation="vertical"
-                                                        android:visibility="@{barcodeScannedItem.allocatedPackscompleted == 0 ? view.GONE : barcodeScannedItem.selectedSupervisorRemarksdetail != null ? view.GONE : view.VISIBLE}">
+                                                        android:visibility="@{barcodeScannedItem.isRequestAccepted ? view.GONE : barcodeScannedItem.allocatedPackscompleted == 0 ? view.GONE : barcodeScannedItem.selectedSupervisorRemarksdetail != null ? view.GONE : view.VISIBLE}">
 
                                                         <TextView
                                                             android:layout_width="wrap_content"
@@ -1339,11 +1353,11 @@
                                                     <LinearLayout
                                                         android:layout_width="0dp"
                                                         android:layout_height="match_parent"
+                                                        android:layout_gravity="center"
                                                         android:layout_weight="1"
                                                         android:gravity="center_vertical"
-                                                        android:layout_gravity="center"
-                                                        android:orientation="horizontal"
-                                                        android:visibility="@{barcodeScannedItem.allocatedPackscompleted == 0 ? view.GONE : barcodeScannedItem.selectedSupervisorRemarksdetail != null ? view.VISIBLE : view.GONE}">
+                                                        android:orientation="vertical"
+                                                        android:visibility="@{barcodeScannedItem.isRequestAccepted ? view.GONE : barcodeScannedItem.allocatedPackscompleted == 0 ? view.GONE : barcodeScannedItem.selectedSupervisorRemarksdetail != null ? view.VISIBLE : view.GONE}">
 
                                                         <TextView
                                                             android:layout_width="wrap_content"
@@ -1356,6 +1370,33 @@
                                                             android:paddingEnd="@dimen/dimen3dp"
                                                             android:text="@string/label_check_status"
                                                             android:textColor="@color/white"
+                                                            android:textSize="@dimen/dimen12sp" />
+
+                                                    </LinearLayout>
+
+                                                    <LinearLayout
+                                                        android:layout_width="0dp"
+                                                        android:layout_height="match_parent"
+                                                        android:layout_weight="1"
+                                                        android:gravity="center_vertical"
+                                                        android:orientation="vertical"
+                                                        android:visibility="@{barcodeScannedItem.isRequestAccepted ? view.VISIBLE : view.GONE}">
+
+                                                        <TextView
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            android:fontFamily="@font/poppins_semibold"
+                                                            android:text="Approval Status"
+                                                            android:textSize="@dimen/dimen12sp" />
+
+                                                        <TextView
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            android:fontFamily="@font/poppins_semibold"
+                                                            android:paddingStart="@dimen/dimen3dp"
+                                                            android:paddingEnd="@dimen/dimen3dp"
+                                                            android:text="Approved"
+                                                            android:textColor="@color/green"
                                                             android:textSize="@dimen/dimen12sp" />
 
                                                     </LinearLayout>
@@ -1523,7 +1564,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/background"
-                                android:backgroundTint="@{orderStatusModel.toDoQty != 0 ? @color/grey : @color/green}"
+                                android:backgroundTint="@{(orderStatusModel.toDoQty - orderStatusModel.pickerRequestApprovedQty) != 0 ? @color/grey : @color/green}"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
                                 android:padding="@dimen/dimen5dp">
@@ -1539,7 +1580,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/poppins_semibold"
                                     android:text="STATUS\nCOMPLETED"
-                                    android:textColor="@{orderStatusModel.toDoQty != 0 ? @color/bluetooth_header_bg : @color/white}"
+                                    android:textColor="@{(orderStatusModel.toDoQty - orderStatusModel.pickerRequestApprovedQty)!= 0 ? @color/bluetooth_header_bg : @color/white}"
                                     android:textSize="@dimen/dimen10sp"
                                     android:textStyle="bold" />
                             </LinearLayout>

@@ -215,4 +215,9 @@ public class PickListHistoryActivity extends BaseActivity implements CustomMenuC
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }
 
+    @Override
+    public void onClickLogout() {
+
+    }
+
 }

@@ -65,4 +65,9 @@
     <string name="label_do_you_want_to_reset_the_item">Do you want to reset the item?</string>
     <string name="label_check_status">Check Status</string>
     <string name="label_no_picker_requests_found">No picker requests found</string>
+    <string name="label_enter_login_details">enter login details</string>
+    <string name="label_user_id">User ID</string>
+    <string name="label_login_otp">login otp</string>
+    <string name="label_enter_4_digit_otp">Enter 4 digit otp</string>
+    <string name="label_search">search</string>
 </resources>

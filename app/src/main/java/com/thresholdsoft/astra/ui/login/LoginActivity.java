@@ -1,6 +1,7 @@
 package com.thresholdsoft.astra.ui.login;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -21,6 +22,12 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     private ActivityLoginBinding activityLoginBinding;
     private String loginOtp;
     private String empRole;
+
+    public static Intent getStartIntent(Context mContext) {
+        Intent intent = new Intent(mContext, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

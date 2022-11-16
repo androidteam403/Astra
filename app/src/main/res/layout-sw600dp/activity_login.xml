@@ -29,6 +29,16 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/dimen16sp"
                 android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen5dp"
+                android:text="@string/label_enter_login_details"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen18sp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/user_id"
@@ -36,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen5dp"
                 android:background="@drawable/rounded_transparent_bg"
-                android:hint="@string/user_id_name"
+                android:hint="@string/label_user_id"
                 android:importantForAutofill="no"
                 android:inputType="text"
                 android:paddingHorizontal="@dimen/dimen25dp"
@@ -98,8 +108,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen5dp"
-                android:text="@string/user_login"
+                android:text="@string/label_login_otp"
                 android:textAlignment="center"
+                android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/dimen18sp"
                 android:textStyle="bold" />
@@ -110,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen5dp"
                 android:background="@drawable/rounded_transparent_bg"
-                android:hint="@string/label_enter_otp"
+                android:hint="@string/label_enter_4_digit_otp"
                 android:importantForAutofill="no"
                 android:inputType="number"
                 android:maxLength="4"

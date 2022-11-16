@@ -140,6 +140,7 @@
     <color name="color_takeprint">#00adef</color>
     <color name="inprocess_color">#FF8C00</color>
     <color name="bottom_strip_color">#1A03b3b3</color>
+    <color name="hash_color">#dcdeea</color>
 
     FF8C00
 </resources>

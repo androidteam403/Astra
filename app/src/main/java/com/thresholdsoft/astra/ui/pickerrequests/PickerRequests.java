@@ -1,7 +1,11 @@
 package com.thresholdsoft.astra.ui.pickerrequests;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -11,15 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityPickerRequestsBinding;
-import com.thresholdsoft.astra.ui.adapter.ApproveRequestListAdapter;
-import com.thresholdsoft.astra.ui.adapter.CompleteListAdapter;
+import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
 import com.thresholdsoft.astra.ui.adapter.PickerListAdapter;
 import com.thresholdsoft.astra.ui.alertdialogs.AlertBox;
+import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.menucallbacks.CustomMenuSupervisorCallback;
 import com.thresholdsoft.astra.ui.pickerrequests.model.PickerRequestCallback;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
-import com.thresholdsoft.astra.ui.picklist.adapter.PickListAdapter;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 
@@ -123,8 +126,8 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
     }
 
     @Override
-    public void onClickApprove(int position, String purchaseId, String itemName, ArrayList<WithHoldDataResponse.Withholddetail> withholddetailArrayList) {
-        alertBox = new AlertBox(PickerRequests.this, itemName, purchaseId,PickerRequests.this);
+    public void onClickApprove(WithHoldDataResponse.Withholddetail pickListItems, int position, String purchaseId, String itemName, ArrayList<WithHoldDataResponse.Withholddetail> withholddetailArrayList) {
+        alertBox = new AlertBox(PickerRequests.this, itemName, purchaseId, PickerRequests.this, pickListItems);
         if (!isFinishing()) alertBox.show();
 //        alertDialog.setTitle("Do yo want to Continue Shopping or LogOut?");
 
@@ -147,6 +150,7 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
         //        activityPickerRequestsBinding.setCustomMenuCallback(this);
 //        activityPickerRequestsBinding.setSelectedMenu(5);
         activityPickerRequestsBinding.setSelectedMenu(1);
+        activityPickerRequestsBinding.setCustomMenuSupervisorCallback(this);
         getController().getWithHoldApi();
 
         names.add("a");
@@ -220,5 +224,30 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
     @Override
     public void onClickPickerRequests() {
 
+    }
+
+    @Override
+    public void onClickLogout() {
+        Dialog customDialog = new Dialog(this);
+        DialogCustomAlertBinding dialogCustomAlertBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_custom_alert, null, false);
+        customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        customDialog.setContentView(dialogCustomAlertBinding.getRoot());
+        customDialog.setCancelable(false);
+        dialogCustomAlertBinding.message.setText("Do you want to logout?");
+        dialogCustomAlertBinding.okBtn.setVisibility(View.GONE);
+        dialogCustomAlertBinding.ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDialog.dismiss();
+                startActivity(LoginActivity.getStartIntent(PickerRequests.this));
+            }
+        });
+        dialogCustomAlertBinding.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDialog.dismiss();
+            }
+        });
+        customDialog.show();
     }
 }

@@ -10,4 +10,6 @@ public interface CustomMenuCallback {
     void onClickDashboard();
 
     void onClickPickerRequest();
+
+    void onClickLogout();
 }

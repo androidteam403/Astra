@@ -1,27 +1,21 @@
 package com.thresholdsoft.astra.ui.alertdialogs;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
 import androidx.databinding.DataBindingUtil;
-
 
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.AlertDialogBinding;
 import com.thresholdsoft.astra.ui.adapter.PickerRequestSpinnerAdapter;
+import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
 
 import java.util.ArrayList;
 
@@ -29,34 +23,32 @@ public class AlertBox {
 
     private Dialog dialog;
     private AlertDialogBinding alertDialogBoxBinding;
-    CountDownTimer yourOtpVarifyTimer=null;
+    CountDownTimer yourOtpVarifyTimer = null;
     private boolean negativeExist = false;
     private Context context;
     Intent intent;
-    public AlertBox(Context context,String itemname,String id,Activity activity) {
+
+    public AlertBox(Context context, String itemname, String id, Activity activity, WithHoldDataResponse.Withholddetail pickListItems) {
         dialog = new Dialog(context);
         alertDialogBoxBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.alert_dialog, null, false);
         dialog.setCancelable(false);
         dialog.setContentView(alertDialogBoxBinding.getRoot());
-
+        alertDialogBoxBinding.setModel(pickListItems);
         if (dialog.getWindow() != null)
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         String[] areaNames = new String[]{"Approval", "Reject"};
-        ArrayList<String> arrayList=new ArrayList<>();
+        ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("Approval");
         arrayList.add("Reject");
 
-        if (dialog!=null) {
+        if (dialog != null) {
             alertDialogBoxBinding.itemname.setText(itemname + " - " + id);
             PickerRequestSpinnerAdapter adapter = new PickerRequestSpinnerAdapter(activity, arrayList);
             alertDialogBoxBinding.areaName.setAdapter(adapter);
 
 
-            }
         }
-
-
-
+    }
 
 
     public void setPositiveListener(View.OnClickListener okListener) {
@@ -73,14 +65,11 @@ public class AlertBox {
 
 
             dialog.show();
-        }else {
+        } else {
             dialog.cancel();
         }
 
     }
-
-
-
 
 
     public void dismiss() {
