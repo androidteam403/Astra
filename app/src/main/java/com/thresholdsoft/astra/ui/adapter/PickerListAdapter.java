@@ -44,17 +44,20 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
     public void onBindViewHolder(@NonNull PickerListAdapter.ViewHolder holder, int position) {
         WithHoldDataResponse.Withholddetail pickListItems = withholddetailList.get(position);
         String holdres=pickListItems.getHoldreasoncode();
+
+//        var reqDate = approvedOrders.requesteddate.toString()!!
+//                .substring(0,
+//                Math.min(approvedOrders.requesteddate.toString()!!.length, 10))
         String allocqty=pickListItems.getAllocatedqty().toString();
         holder.pickerrequestAdapterlayoutBinding.purchaseId.setText(pickListItems.getPurchreqid());
-        holder.pickerrequestAdapterlayoutBinding.itemId.setText(pickListItems.getItemid());
+        holder.pickerrequestAdapterlayoutBinding.productName.setText(pickListItems.getItemname()+ " ("+pickListItems.getItemid()+" )");
         if (allocqty!=null) {
             holder.pickerrequestAdapterlayoutBinding.allocationQty.setText(allocqty);
         }
         holder.pickerrequestAdapterlayoutBinding.shortqty.setText(pickListItems.getShortqty().toString());
-        holder.pickerrequestAdapterlayoutBinding.shortscanqty.setText(pickListItems.getScannedqty().toString());
-        if (holdres!=null) {
-            holder.pickerrequestAdapterlayoutBinding.request.setText(holdres);
-        }
+        holder.pickerrequestAdapterlayoutBinding.scannedQty.setText(pickListItems.getScannedqty().toString());
+            holder.pickerrequestAdapterlayoutBinding.requestedby.setText(pickListItems.getUsername() +" ("+pickListItems.getUserid()+" )");
+
 
 
         holder.pickerrequestAdapterlayoutBinding.approvebutton.setOnClickListener(new View.OnClickListener() {

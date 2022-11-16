@@ -12,12 +12,12 @@ import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.NetworkUtils;
-
-import java.util.ArrayList;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import java.util.ArrayList;
+
 
 public class PickerRequestController {
     private Context mContext;
@@ -59,7 +59,6 @@ public class PickerRequestController {
         }
 
     }
-
     public void getWithHoldApprovalApi(ArrayList<WithHoldDataResponse.Withholddetail> withholddetailArrayList, int pos) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ArrayList<WithHoldApprovalRequest> withHoldApprovalRequestList = new ArrayList<>();
@@ -76,7 +75,7 @@ public class PickerRequestController {
             withholddetail.setAllocatedqty((withholddetailArrayList.get(pos).getAllocatedqty()));
             withholddetail.setScannedqty((withholddetailArrayList.get(pos).getScannedqty()));
             withholddetail.setShortqty((withholddetailArrayList.get(pos).getShortqty()));
-            withholddetail.setMrp((withholddetailArrayList.get(pos).getMrp()));
+            withholddetail.setMrp(Double.parseDouble(withholddetailArrayList.get(pos).getMrp()));
             withholddetail.setHoldreasoncode((withholddetailArrayList.get(pos).getHoldreasoncode()));
             withholddetail.setApprovalreasoncode("AHLR0007");
             withholddetail.setId((withholddetailArrayList.get(pos).getId()));

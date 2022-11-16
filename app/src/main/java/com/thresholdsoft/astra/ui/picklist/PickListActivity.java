@@ -105,6 +105,14 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityPickListBinding = DataBindingUtil.setContentView(this, R.layout.activity_pick_list);
+        activityPickListBinding.customMenuLayout.image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(PickListActivity.this,PickerRequests.class);
+                startActivity(i);
+
+            }
+        });
 
 //        RelativeLayout dashboardsupervisor = findViewById(R.id.dashboard_layout);
 //        RelativeLayout dashboardadmin = findViewById(R.id.second_dashboard);

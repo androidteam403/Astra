@@ -130,11 +130,12 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
 
     @Override
     public void onClickApprove(int position, String purchaseId, String itemName, ArrayList<WithHoldDataResponse.Withholddetail> withholddetailArrayList) {
-        alertBox = new AlertBox(PickerRequests.this, itemName, purchaseId);
+        alertBox = new AlertBox(PickerRequests.this, itemName, purchaseId,PickerRequests.this);
         if (!isFinishing()) alertBox.show();
 //        alertDialog.setTitle("Do yo want to Continue Shopping or LogOut?");
 
         alertBox.setNegativeListener(v -> alertBox.dismiss());
+        alertBox.cancel(v -> alertBox.dismiss());
 
         alertBox.setPositiveListener(v -> {
             ActivityUtils.showDialog(getApplicationContext(), "");
@@ -152,27 +153,28 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
         //        activityPickerRequestsBinding.setCustomMenuCallback(this);
 //        activityPickerRequestsBinding.setSelectedMenu(5);
         getController().getWithHoldApi();
+
         names.add("a");
         names.add("a");
 
-
-        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this);
-        CompleteListAdapter completeListAdapter = new CompleteListAdapter(this, names);
 //
-//        activityPickerRequestsBinding.completlistrecycleview.setLayoutManager(linearLayoutManager1);
-//        activityPickerRequestsBinding.completlistrecycleview.setAdapter(completeListAdapter);
-
-
-        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(this);
-        PickListAdapter pickListAdapter = new PickListAdapter(this, allocationhddataList, null);
+//        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this);
+//        CompleteListAdapter completeListAdapter = new CompleteListAdapter(this, names);
+////
+////        activityPickerRequestsBinding.completlistrecycleview.setLayoutManager(linearLayoutManager1);
+////        activityPickerRequestsBinding.completlistrecycleview.setAdapter(completeListAdapter);
 //
+//
+//        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(this);
+//        PickListAdapter pickListAdapter = new PickListAdapter(this, allocationhddataList, null);
+////
 //        activityPickerRequestsBinding.pickerlistrecycleview.setLayoutManager(linearLayoutManager2);
 //        activityPickerRequestsBinding.pickerlistrecycleview.setAdapter(pickListAdapter);
 
 //
-        LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(this);
-
-        ApproveRequestListAdapter approveRequestListAdapter = new ApproveRequestListAdapter(this, names);
+//        LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(this);
+//
+//        ApproveRequestListAdapter approveRequestListAdapter = new ApproveRequestListAdapter(this, names);
 
 
     }
@@ -184,8 +186,8 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
             if (withholddetailList != null && withholddetailList.size() > 0) {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
                 PickerListAdapter pickListHistoryAdapter = new PickerListAdapter(this, withholddetailList, this);
-                activityPickerRequestsBinding.pickerrequestRecycleview.setLayoutManager(linearLayoutManager);
-                activityPickerRequestsBinding.pickerrequestRecycleview.setAdapter(pickListHistoryAdapter);
+                activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
+                activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
 
                 noPickerRequestsFound(withholddetailList.size());
             } else {
@@ -200,10 +202,10 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
 
     private void noPickerRequestsFound(int count) {
         if (count == 0) {
-            activityPickerRequestsBinding.pickerrequestRecycleview.setVisibility(View.GONE);
+            activityPickerRequestsBinding.pickerRequestRecycleview.setVisibility(View.GONE);
             activityPickerRequestsBinding.noPickerRequestsFoundText.setVisibility(View.VISIBLE);
         } else {
-            activityPickerRequestsBinding.pickerrequestRecycleview.setVisibility(View.VISIBLE);
+            activityPickerRequestsBinding.pickerRequestRecycleview.setVisibility(View.VISIBLE);
             activityPickerRequestsBinding.noPickerRequestsFoundText.setVisibility(View.GONE);
         }
     }

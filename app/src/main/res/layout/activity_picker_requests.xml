@@ -49,11 +49,13 @@
                     android:layout_height="match_parent">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/pickerrequestRecycleview"
+                        android:id="@+id/picker_request_recycleview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dimen10sp"
                         android:orientation="horizontal"
-                        android:scrollbars="vertical" />
+                        android:scrollbars="vertical"
+                        android:visibility="visible" />
 
                     <TextView
                         android:id="@+id/no_picker_requests_found_text"

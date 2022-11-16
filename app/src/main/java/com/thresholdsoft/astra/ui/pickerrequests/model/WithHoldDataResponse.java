@@ -9,58 +9,57 @@ import java.util.List;
 public class WithHoldDataResponse  implements Serializable {
 
 
-        @SerializedName("requeststatus")
-        @Expose
-        private Boolean requeststatus;
-        @SerializedName("requestmessage")
-        @Expose
-        private String requestmessage;
-        @SerializedName("withholddetails")
-        @Expose
-        private List<Withholddetail> withholddetails = null;
+    @SerializedName("requeststatus")
+    @Expose
+    private Boolean requeststatus;
+    @SerializedName("requestmessage")
+    @Expose
+    private String requestmessage;
+    @SerializedName("withholddetails")
+    @Expose
+    private List<Withholddetail> withholddetails = null;
 
-        public Boolean getRequeststatus() {
-            return requeststatus;
-        }
+    public Boolean getRequeststatus() {
+        return requeststatus;
+    }
 
-        public void setRequeststatus(Boolean requeststatus) {
-            this.requeststatus = requeststatus;
-        }
+    public void setRequeststatus(Boolean requeststatus) {
+        this.requeststatus = requeststatus;
+    }
 
-        public WithHoldDataResponse withRequeststatus(Boolean requeststatus) {
-            this.requeststatus = requeststatus;
-            return this;
-        }
+    public WithHoldDataResponse withRequeststatus(Boolean requeststatus) {
+        this.requeststatus = requeststatus;
+        return this;
+    }
 
-        public String getRequestmessage() {
-            return requestmessage;
-        }
+    public String getRequestmessage() {
+        return requestmessage;
+    }
 
-        public void setRequestmessage(String requestmessage) {
-            this.requestmessage = requestmessage;
-        }
+    public void setRequestmessage(String requestmessage) {
+        this.requestmessage = requestmessage;
+    }
 
-        public WithHoldDataResponse withRequestmessage(String requestmessage) {
-            this.requestmessage = requestmessage;
-            return this;
-        }
+    public WithHoldDataResponse withRequestmessage(String requestmessage) {
+        this.requestmessage = requestmessage;
+        return this;
+    }
 
-        public List<Withholddetail> getWithholddetails() {
-            return withholddetails;
-        }
+    public List<Withholddetail> getWithholddetails() {
+        return withholddetails;
+    }
 
-        public void setWithholddetails(List<Withholddetail> withholddetails) {
-            this.withholddetails = withholddetails;
-        }
+    public void setWithholddetails(List<Withholddetail> withholddetails) {
+        this.withholddetails = withholddetails;
+    }
 
-        public WithHoldDataResponse withWithholddetails() {
-            this.withholddetails = withholddetails;
-            return this;
-        }
+    public WithHoldDataResponse withWithholddetails(List<Withholddetail> withholddetails) {
+        this.withholddetails = withholddetails;
+        return this;
+    }
 
 
-
-    public static class Withholddetail {
+    public class Withholddetail {
 
         @SerializedName("purchreqid")
         @Expose
@@ -97,7 +96,7 @@ public class WithHoldDataResponse  implements Serializable {
         private Integer shortqty;
         @SerializedName("mrp")
         @Expose
-        private Integer mrp;
+        private String mrp;
         @SerializedName("holdreasoncode")
         @Expose
         private String holdreasoncode;
@@ -254,15 +253,15 @@ public class WithHoldDataResponse  implements Serializable {
             return this;
         }
 
-        public Integer getMrp() {
+        public String getMrp() {
             return mrp;
         }
 
-        public void setMrp(Integer mrp) {
+        public void setMrp(String mrp) {
             this.mrp = mrp;
         }
 
-        public Withholddetail withMrp(Integer mrp) {
+        public Withholddetail withMrp(String mrp) {
             this.mrp = mrp;
             return this;
         }

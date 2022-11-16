@@ -54,6 +54,7 @@ public interface ApiInterface {
 
     @POST("WithHoldApproval")
     Call<WithHoldApprovalResponse> WITH_HOLD_APPROVAL_API_CALL(@Header("Auth-Token") String authToken, @Body ArrayList<WithHoldApprovalRequest> withHoldApprovalRequest);
-
+    @GET("https://jsonblob.com/api/jsonBlob/1041677549033504768")
+    Call<WithHoldDataResponse> GET_JSON_WITH_HOLD_RESPONSE(@Header("Auth-Token") String authToken);
 
 }
