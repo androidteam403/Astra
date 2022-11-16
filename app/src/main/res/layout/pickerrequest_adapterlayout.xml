@@ -3,8 +3,8 @@
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/dimen5dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,54 +25,52 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_semibold"
-                    android:text="Purchase Id"
+                    android:text="Purchase Rquisistion"
                     android:textColor="@color/bluetooth_header_bg"
-                    android:textSize="11sp" />
+                    android:textSize="@dimen/dimen10sp" />
 
                 <TextView
                     android:id="@+id/purchase_id"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Red Bull"
                     android:textColor="@color/black"
-                    android:textSize="9sp" />
+                    android:textSize="8dp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen3dp"
+                android:layout_marginStart="1dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen5dp"
                     android:fontFamily="@font/poppins_semibold"
-                    android:text="Rack Shelf"
+
+                    android:text="Product name"
                     android:textColor="@color/bluetooth_header_bg"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:id="@+id/rackshelf_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:textAlignment="center"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="-"
-                    android:layout_marginStart="@dimen/dimen3dp"
-
-                    android:textColor="@color/black"
                     android:textSize="@dimen/dimen10sp" />
 
+                <TextView
+                    android:id="@+id/product_name"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="-"
+
+                    android:textColor="@color/black"
+                    android:textSize="8dp" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen3dp"
 
                 android:orientation="vertical">
 
@@ -80,23 +78,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_semibold"
-                    android:text="Allocated Qty."
+                    android:text="Allocated qty"
                     android:textColor="@color/bluetooth_header_bg"
-                    android:textSize="11sp" />
+                    android:textSize="@dimen/dimen10sp" />
 
                 <TextView
                     android:id="@+id/allocation_qty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen10sp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="3.00"
-                    android:layout_marginStart="@dimen/dimen10sp"
 
                     android:textAlignment="center"
 
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dimen10sp" />
+                    android:textSize="8dp" />
             </LinearLayout>
 
 
@@ -111,12 +109,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_semibold"
-                    android:text="Item id"
+                    android:text="Scanned qty"
                     android:textColor="@color/bluetooth_header_bg"
-                    android:textSize="11sp" />
+                    android:textSize="@dimen/dimen10sp" />
 
                 <TextView
-                    android:id="@+id/item_id"
+                    android:id="@+id/scanned_qty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -126,7 +124,7 @@
                     android:textAlignment="center"
 
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dimen10sp" />
+                    android:textSize="8dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -142,20 +140,20 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Short Qty "
                     android:textColor="@color/bluetooth_header_bg"
-                    android:textSize="11sp" />
+                    android:textSize="@dimen/dimen10sp" />
 
 
                 <TextView
                     android:id="@+id/shortqty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen10sp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="2"
-                    android:layout_marginStart="@dimen/dimen10sp"
 
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dimen10sp" />
+                    android:textSize="8dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -166,33 +164,34 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="Short Scan Qty "
-                    android:textColor="@color/bluetooth_header_bg"
-                    android:textSize="11sp" />
-
-
-                <TextView
-                    android:id="@+id/shortscanqty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/poppins_semibold"
+                    android:text="Requested by"
+
+                    android:textColor="@color/bluetooth_header_bg"
+                    android:textSize="@dimen/dimen10sp" />
+
+
+                <TextView
+                    android:id="@+id/requestedby"
+                    android:layout_width="90dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
                     android:text="1"
-                    android:layout_marginStart="@dimen/dimen10sp"
 
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dimen10sp" />
+                    android:textSize="8dp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimen3dp"
+                android:orientation="vertical"
 
-                android:orientation="vertical">
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -219,30 +218,23 @@
                 android:id="@+id/approvelayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:layout_marginStart="@dimen/dimen5dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="@dimen/dimen40dp"
-                    android:layout_height="@dimen/dimen50dp"
-                    android:id="@+id/approve_image"
-                    android:visibility="invisible"
-                    android:src="@drawable/apollo_circleright" />
 
                 <TextView
                     android:id="@+id/approvebutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen15dp"
                     android:background="@color/red"
                     android:fontFamily="@font/poppins_semibold"
-                    android:paddingStart="6sp"
+                    android:paddingStart="@dimen/dimen12sp"
                     android:paddingTop="2dp"
-                    android:paddingEnd="6sp"
+                    android:paddingEnd="@dimen/dimen12sp"
                     android:paddingBottom="2dp"
-                    android:text="   Approve"
+                    android:text="Action"
                     android:textColor="@color/white"
-                    android:textSize="9sp" />
+                    android:textSize="@dimen/dimen10sp" />
 
             </LinearLayout>
 

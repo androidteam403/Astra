@@ -48,11 +48,14 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
+
                     android:layout_height="match_parent">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/pickerrequestRecycleview"
+                        android:id="@+id/picker_request_recycleview"
                         android:layout_width="match_parent"
+                        android:layout_marginEnd="@dimen/dimen10sp"
+
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:scrollbars="vertical" />

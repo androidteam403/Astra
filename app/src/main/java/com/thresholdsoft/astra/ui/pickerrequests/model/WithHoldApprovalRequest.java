@@ -42,7 +42,7 @@ public class WithHoldApprovalRequest implements Serializable {
         private Integer shortqty;
         @SerializedName("mrp")
         @Expose
-        private Integer mrp;
+        private Double mrp;
         @SerializedName("holdreasoncode")
         @Expose
         private String holdreasoncode;
@@ -199,15 +199,15 @@ public class WithHoldApprovalRequest implements Serializable {
             return this;
         }
 
-        public Integer getMrp() {
+        public Double getMrp() {
             return mrp;
         }
 
-        public void setMrp(Integer mrp) {
+        public void setMrp(Double mrp) {
             this.mrp = mrp;
         }
 
-        public WithHoldApprovalRequest withMrp(Integer mrp) {
+        public WithHoldApprovalRequest withMrp(Double mrp) {
             this.mrp = mrp;
             return this;
         }

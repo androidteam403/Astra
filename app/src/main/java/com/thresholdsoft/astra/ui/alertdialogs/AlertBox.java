@@ -1,22 +1,29 @@
 package com.thresholdsoft.astra.ui.alertdialogs;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import androidx.databinding.DataBindingUtil;
 
 
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.AlertDialogBinding;
+import com.thresholdsoft.astra.ui.adapter.PickerRequestSpinnerAdapter;
+
+import java.util.ArrayList;
 
 public class AlertBox {
 
@@ -26,7 +33,7 @@ public class AlertBox {
     private boolean negativeExist = false;
     private Context context;
     Intent intent;
-    public AlertBox(Context context,String itemname,String id) {
+    public AlertBox(Context context,String itemname,String id,Activity activity) {
         dialog = new Dialog(context);
         alertDialogBoxBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.alert_dialog, null, false);
         dialog.setCancelable(false);
@@ -35,14 +42,19 @@ public class AlertBox {
         if (dialog.getWindow() != null)
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         String[] areaNames = new String[]{"Approval", "Reject"};
+        ArrayList<String> arrayList=new ArrayList<>();
+        arrayList.add("Approval");
+        arrayList.add("Reject");
 
         if (dialog!=null) {
-            alertDialogBoxBinding.itemname.setText(itemname+" - "+id);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.spinner_items, areaNames);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            alertDialogBoxBinding.itemname.setText(itemname + " - " + id);
+            PickerRequestSpinnerAdapter adapter = new PickerRequestSpinnerAdapter(activity, arrayList);
             alertDialogBoxBinding.areaName.setAdapter(adapter);
+
+
+            }
         }
-    }
+
 
 
 
@@ -76,8 +88,8 @@ public class AlertBox {
             dialog.dismiss();
     }
 
-    public void cancel() {
-        yourOtpVarifyTimer.cancel();
+    public void cancel(View.OnClickListener okListener) {
+        alertDialogBoxBinding.close.setOnClickListener(okListener);
     }
 
     public void setTitle(String title) {

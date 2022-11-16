@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -12,29 +12,52 @@
         android:layout_marginRight="16dp"
         android:background="@drawable/dialog_background"
         android:stateListAnimator="@null">
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="@dimen/dimen40dp"
+            android:layout_height="@dimen/dimen40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/dimen10dp"
+            android:src="@drawable/ic_baseline_close_24" />
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="fill_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="12dp"
-            android:paddingTop="16dp"
-            android:paddingRight="12dp"
-            android:textStyle="bold"
-            android:text="APPROVE"
-            android:textAlignment="center"
-            android:textColor="#000"
-            android:fontFamily="@font/poppins_semibold"
-            android:textSize="@dimen/dimen12sp" />
+            android:id="@+id/titlelayout"
+
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/title"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingLeft="12dp"
+                android:layout_marginStart="@dimen/dimen50dp"
+                android:layout_gravity="center_horizontal"
+                android:paddingTop="16dp"
+                android:paddingRight="12dp"
+                android:text="APPROVE"
+                android:textAlignment="center"
+                android:textColor="#000"
+                android:textSize="@dimen/dimen12sp"
+                android:textStyle="bold" />
+
+
+
+        </LinearLayout>
+
+
 
 
         <View
             android:id="@+id/line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/title"
+            android:layout_below="@+id/titlelayout"
             android:layout_marginTop="@dimen/dimen5dp"
             android:background="#cdced2" />
+
         <LinearLayout
             android:id="@+id/text"
             android:layout_width="match_parent"
@@ -47,28 +70,30 @@
                 android:id="@+id/itemname"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen10sp"
+                android:fontFamily="@font/poppins_semibold"
                 android:paddingLeft="5dp"
                 android:paddingTop="16dp"
                 android:paddingRight="5dp"
-                android:textStyle="bold"
                 android:text="RED BULL - FYYHJJ777"
-              android:layout_marginStart="@dimen/dimen10sp"
                 android:textColor="#000"
-                android:fontFamily="@font/poppins_semibold"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen5dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="@dimen/dimen5dp"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/custom_dialog_background"
+                android:background="@drawable/dialog_background"
+
                 android:orientation="vertical">
 
 
                 <Spinner
                     android:id="@+id/area_name"
-                    style="@style/SpinnerTheme"
+                    style="@style/spinner_style"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="7dp"
@@ -78,15 +103,34 @@
                     android:layout_marginBottom="@dimen/dimen5dp"
                     android:spinnerMode="dropdown"
                     android:textSize="13sp" />
+
+
             </LinearLayout>
+
+            <EditText
+                android:id="@+id/remarks"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen50dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="@dimen/dimen10sp"
+                android:layout_marginEnd="7dp"
+                android:background="@drawable/custom_dialog_background"
+                android:hint="Remarks *"
+                android:paddingStart="@dimen/dimen10sp"
+                android:paddingEnd="@dimen/dimen10sp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/dimen12sp" />
+
         </LinearLayout>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen10sp"
             android:layout_below="@+id/text"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <!--            <TextView-->
             <!--                android:id="@+id/dialogButtonNO"-->
@@ -110,17 +154,21 @@
 
             <TextView
                 android:id="@+id/dialogButtonOK"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                android:stateListAnimator="@null"
-                android:textStyle="bold"
-                android:text="SUBMIT"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen20dp"
+                android:background="@drawable/rounded_corner_bg"
+                android:backgroundTint="@color/lite_yellow"
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingStart="@dimen/dimen10dp"
+                android:paddingTop="@dimen/dimen5dp"
+                android:paddingEnd="@dimen/dimen10dp"
+                android:paddingBottom="@dimen/dimen5dp"
+                android:text="@string/label_update"
                 android:textColor="@color/black"
-                android:background="@color/orange"
-                android:textAlignment="center"
-                android:textSize="@dimen/dimen14sp" />
+                android:textStyle="bold" />
+
         </LinearLayout>
 
     </RelativeLayout>
