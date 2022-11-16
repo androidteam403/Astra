@@ -292,7 +292,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="50dp"
-                            android:layout_marginTop="22dp"
                             android:background="@drawable/background_button"
                             android:backgroundTint="@{orderStatusModel.status.equals(`INPROCESS`) ? @color/inprogress_overallstatus_color : orderStatusModel.status.equals(`Assigned`) ? @color/color_takeprint : @color/green}"
                             android:fontFamily="@font/poppins_semibold"
@@ -1339,9 +1338,10 @@
 
                                                     <LinearLayout
                                                         android:layout_width="0dp"
-                                                        android:layout_height="wrap_content"
+                                                        android:layout_height="match_parent"
                                                         android:layout_weight="1"
                                                         android:gravity="center_vertical"
+                                                        android:layout_gravity="center"
                                                         android:orientation="horizontal"
                                                         android:visibility="@{barcodeScannedItem.allocatedPackscompleted == 0 ? view.GONE : barcodeScannedItem.selectedSupervisorRemarksdetail != null ? view.VISIBLE : view.GONE}">
 
@@ -1351,12 +1351,12 @@
                                                             android:background="@color/color_takeprint"
                                                             android:backgroundTint="@color/yellow"
                                                             android:fontFamily="@font/poppins_semibold"
-                                                            android:onClick="@{()-> callback.onClickCheckStatus(barcodeScannedItem)}"
+                                                            android:onClick="@{()-> callback.onClickCheckStatus(barcodeScannedItem, false)}"
                                                             android:paddingStart="@dimen/dimen3dp"
                                                             android:paddingEnd="@dimen/dimen3dp"
                                                             android:text="@string/label_check_status"
                                                             android:textColor="@color/white"
-                                                            android:textSize="@dimen/dimen8sp" />
+                                                            android:textSize="@dimen/dimen12sp" />
 
                                                     </LinearLayout>
 

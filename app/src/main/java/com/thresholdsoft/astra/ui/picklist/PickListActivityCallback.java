@@ -65,8 +65,8 @@ public interface PickListActivityCallback {
 
     void onClickSubmitBarcodeorId();
 
-    void onClickCheckStatus(GetAllocationLineResponse.Allocationdetail allocationdetail);
+    void onClickCheckStatus(GetAllocationLineResponse.Allocationdetail allocationdetail, boolean isItemClick);
 
-    void onSuccessGetWithHoldStatusApi(GetWithHoldStatusResponse getWithHoldStatusResponse);
+    void onSuccessGetWithHoldStatusApi(GetWithHoldStatusResponse getWithHoldStatusResponse, boolean isItemClick);
 
 }

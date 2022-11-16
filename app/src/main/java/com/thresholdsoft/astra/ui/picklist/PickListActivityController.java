@@ -214,7 +214,7 @@ public class PickListActivityController {
         }
     }
 
-    public void getWithHoldStatusApiCAll(GetWithHoldStatusRequest getWithHoldStatusRequest) {
+    public void getWithHoldStatusApiCAll(GetWithHoldStatusRequest getWithHoldStatusRequest, boolean isItemClick) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
 
@@ -225,11 +225,8 @@ public class PickListActivityController {
                 public void onResponse(@NotNull Call<GetWithHoldStatusResponse> call, @NotNull Response<GetWithHoldStatusResponse> response) {
                     ActivityUtils.hideDialog();
                     if (response.code() == 200 && response.body() != null) {
-                        if (response.body().getRequeststatus()) {
-                            mCallback.onSuccessGetWithHoldStatusApi(response.body());
-                        } else {
-                            mCallback.onFailureMessage(response.body().getRequestmessage());
-                        }
+                        mCallback.onSuccessGetWithHoldStatusApi(response.body(), isItemClick);
+
                     } else {
                         mCallback.onFailureMessage("Something went wrong.");
                     }

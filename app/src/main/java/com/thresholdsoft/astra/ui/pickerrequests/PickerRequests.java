@@ -3,8 +3,6 @@ package com.thresholdsoft.astra.ui.pickerrequests;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
@@ -13,11 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityPickerRequestsBinding;
-import com.thresholdsoft.astra.ui.CustomMenuCallback;
 import com.thresholdsoft.astra.ui.adapter.ApproveRequestListAdapter;
 import com.thresholdsoft.astra.ui.adapter.CompleteListAdapter;
 import com.thresholdsoft.astra.ui.adapter.PickerListAdapter;
 import com.thresholdsoft.astra.ui.alertdialogs.AlertBox;
+import com.thresholdsoft.astra.ui.menucallbacks.CustomMenuSupervisorCallback;
 import com.thresholdsoft.astra.ui.pickerrequests.model.PickerRequestCallback;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
@@ -28,7 +26,7 @@ import com.thresholdsoft.astra.utils.ActivityUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PickerRequests extends BaseActivity implements PickerRequestCallback, CustomMenuCallback {
+public class PickerRequests extends BaseActivity implements PickerRequestCallback, CustomMenuSupervisorCallback {
     ArrayList<String> names = new ArrayList<>();
     AlertBox alertBox;
     private ArrayList<WithHoldDataResponse.Withholddetail> withholddetailList = new ArrayList<>();
@@ -53,12 +51,8 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setUp();
-
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         activityPickerRequestsBinding = DataBindingUtil.setContentView(this, R.layout.activity_picker_requests);
-
+        setUp();
 
 //        req_picker.setTextColor(R.color.black);
 //        picklist.setTextColor(R.color.black);
@@ -151,6 +145,7 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
 //        activityPickerRequestsBinding.customMenuLayout.setSelectedMenu(5);
         //        activityPickerRequestsBinding.setCustomMenuCallback(this);
 //        activityPickerRequestsBinding.setSelectedMenu(5);
+        activityPickerRequestsBinding.setSelectedMenu(1);
         getController().getWithHoldApi();
         names.add("a");
         names.add("a");
@@ -219,28 +214,9 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
         getController().getWithHoldApi();
     }
 
-    @Override
-    public void onClickPickList() {
-
-    }
 
     @Override
-    public void onClickPickListHistory() {
-
-    }
-
-    @Override
-    public void onClickRequestHistory() {
-
-    }
-
-    @Override
-    public void onClickDashboard() {
-
-    }
-
-    @Override
-    public void onClickPickerRequest() {
+    public void onClickPickerRequests() {
 
     }
 }

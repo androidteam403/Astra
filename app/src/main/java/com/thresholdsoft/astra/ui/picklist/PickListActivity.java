@@ -31,6 +31,7 @@ import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
 import com.thresholdsoft.astra.databinding.DialogEditScannedPacksBinding;
 import com.thresholdsoft.astra.databinding.DialogItemResetBinding;
 import com.thresholdsoft.astra.databinding.DialogModeofDeliveryBinding;
+import com.thresholdsoft.astra.databinding.DialogRequestApprovalBinding;
 import com.thresholdsoft.astra.databinding.DialogScannedBarcodeItemListBinding;
 import com.thresholdsoft.astra.databinding.DialogSupervisorRequestRemarksBinding;
 import com.thresholdsoft.astra.db.room.AppDatabase;
@@ -684,8 +685,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         this.barcodeAllocationDetailList = allocationdetailList.stream().filter(e -> e.getItembarcode().equalsIgnoreCase(allocationdetail.getItembarcode()) && e.getId() == allocationdetail.getId())// && e.getAllocatedPackscompleted() != 0
                 .collect(Collectors.toList());
         activityPickListBinding.setIsBarcodeDetailsAvailavble(true);
-//        activityPickListBinding.productdetails.setVisibility(View.VISIBLE);
-//        activityPickListBinding.scanLayout.setVisibility(View.GONE);
+        onClickCheckStatus(activityPickListBinding.getBarcodeScannedItem(), true);
     }
 
     @Override
@@ -1047,26 +1047,54 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     }
 
     @Override
-    public void onClickCheckStatus(GetAllocationLineResponse.Allocationdetail allocationdetail) {
+    public void onClickCheckStatus(GetAllocationLineResponse.Allocationdetail allocationdetail, boolean isItemClick) {
         GetWithHoldStatusRequest getWithHoldStatusRequest = new GetWithHoldStatusRequest();
         getWithHoldStatusRequest.setId(allocationdetail.getId());
         getWithHoldStatusRequest.setItemid(allocationdetail.getItemid());
         getWithHoldStatusRequest.setPurchreqid(activityPickListBinding.getAllocationData().getPurchreqid());
         getWithHoldStatusRequest.setUserid(AppConstants.userId);
-        getController().getWithHoldStatusApiCAll(getWithHoldStatusRequest);
+        getController().getWithHoldStatusApiCAll(getWithHoldStatusRequest, isItemClick);
     }
 
     @Override
-    public void onSuccessGetWithHoldStatusApi(GetWithHoldStatusResponse getWithHoldStatusResponse) {
+    public void onSuccessGetWithHoldStatusApi(GetWithHoldStatusResponse getWithHoldStatusResponse, boolean isItemClick) {
         if (getWithHoldStatusResponse != null && getWithHoldStatusResponse.getRequeststatus()) {
-            this.barcodeAllocationDetailList.get(0).setSelectedSupervisorRemarksdetail(null);
-            activityPickListBinding.setBarcodeScannedItem(this.barcodeAllocationDetailList.get(0));
-            insertOrUpdateAllocationLineList();
-            pickListAdapter.notifyDataSetChanged();
+            if (!isItemClick){
+                requestApprovalPopup(true);
+            }else {
+                this.barcodeAllocationDetailList.get(0).setSelectedSupervisorRemarksdetail(null);
+                activityPickListBinding.setBarcodeScannedItem(this.barcodeAllocationDetailList.get(0));
+                insertOrUpdateAllocationLineList();
+                pickListAdapter.notifyDataSetChanged();
+            }
+
         } else {
-            assert getWithHoldStatusResponse != null;
-            Toast.makeText(this, getWithHoldStatusResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
+            requestApprovalPopup(false);
+//            assert getWithHoldStatusResponse != null;
+//            Toast.makeText(this, getWithHoldStatusResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void requestApprovalPopup(boolean isApproved) {
+        Dialog requestApprovalPopup = new Dialog(this);
+        DialogRequestApprovalBinding dialogRequestApprovalBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_request_approval, null, false);
+        requestApprovalPopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        requestApprovalPopup.setContentView(dialogRequestApprovalBinding.getRoot());
+        requestApprovalPopup.setCancelable(false);
+        dialogRequestApprovalBinding.message.setText(isApproved ? "Request approved for this item" : "Request is pending for this order");
+        dialogRequestApprovalBinding.okBtn.setOnClickListener(view -> {
+            if (isApproved) {
+                this.barcodeAllocationDetailList.get(0).setSelectedSupervisorRemarksdetail(null);
+                activityPickListBinding.setBarcodeScannedItem(this.barcodeAllocationDetailList.get(0));
+                insertOrUpdateAllocationLineList();
+                pickListAdapter.notifyDataSetChanged();
+                requestApprovalPopup.dismiss();
+            } else {
+                requestApprovalPopup.dismiss();
+            }
+
+        });
+        requestApprovalPopup.show();
     }
 
     private PickListActivityController getController() {

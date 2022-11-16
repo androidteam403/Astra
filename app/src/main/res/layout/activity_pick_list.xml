@@ -1345,7 +1345,7 @@
                                                                 android:background="@color/color_takeprint"
                                                                 android:backgroundTint="@color/yellow"
                                                                 android:fontFamily="@font/poppins_semibold"
-                                                                android:onClick="@{()-> callback.onClickCheckStatus(barcodeScannedItem)}"
+                                                                android:onClick="@{()-> callback.onClickCheckStatus(barcodeScannedItem, false)}"
                                                                 android:paddingStart="@dimen/dimen3dp"
                                                                 android:paddingEnd="@dimen/dimen3dp"
                                                                 android:text="@string/label_check_status"

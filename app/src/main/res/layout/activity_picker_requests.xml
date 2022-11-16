@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <RelativeLayout
@@ -21,9 +22,9 @@
 
                 <include
                     android:id="@+id/custom_menu_layout"
-                    layout="@layout/custom_menu_layout_updated" />
-                <!--                    app:customMenuCallback="@{customMenuCallback}"-->
-                <!--                    app:selectedMenu="@{selectedMenu}" />-->
+                    layout="@layout/custom_menu_layout_updated"
+                    app:customMenuSupervisorCallback="@{customMenuSupervisorCallback}"
+                    app:selectedMenu="@{selectedMenu}" />
 
             </RelativeLayout>
 
@@ -91,5 +92,15 @@
 
     </RelativeLayout>
 
+    <data>
+
+        <variable
+            name="customMenuSupervisorCallback"
+            type="com.thresholdsoft.astra.ui.menucallbacks.CustomMenuSupervisorCallback" />
+
+        <variable
+            name="selectedMenu"
+            type="Integer" />
+    </data>
 
 </layout>

@@ -26,9 +26,9 @@
                     android:gravity="center">
 
                     <ImageView
+                        android:id="@+id/image"
                         android:layout_width="@dimen/dimen60dp"
                         android:layout_height="@dimen/dimen60dp"
-                        android:id="@+id/image"
 
                         android:contentDescription="@string/app_name"
                         android:src="@drawable/apollo_circle_logo" />
@@ -42,12 +42,13 @@
                     android:orientation="vertical"
                     android:weightSum="1">
 
+
                     <LinearLayout
-                        android:id="@+id/pick_list_menu"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight=".2"
-android:visibility="gone"                        android:gravity="center"
+                        android:background="@{selectedMenu == 1 ? @color/yellow : @color/transperancy}"
+                        android:gravity="center"
                         android:orientation="vertical">
 
                         <ImageView
@@ -55,99 +56,7 @@ android:visibility="gone"                        android:gravity="center"
                             android:layout_height="@dimen/dimen50dp"
                             android:contentDescription="@string/app_name"
                             android:src="@drawable/ic_baseline_hail_24"
-/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_bold"
-                            android:gravity="center"
-                            android:text="@string/label_pick_list"
-                            android:textSize="@dimen/dimen12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight=".2"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:layout_width="@dimen/dimen50dp"
-                            android:layout_height="@dimen/dimen50dp"
-                            android:contentDescription="@string/app_name"
-                            android:src="@drawable/ic_baseline_receipt_long_24"
-/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_bold"
-                            android:gravity="center"
-                            android:text="@string/label_pick_list_nhistory"
-                            android:textSize="@dimen/dimen12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight=".2"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:layout_width="@dimen/dimen50dp"
-                            android:layout_height="@dimen/dimen50dp"
-                            android:contentDescription="@string/app_name"
-                            android:src="@drawable/ic_baseline_feed_24"
-/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_bold"
-                            android:gravity="center"
-                            android:text="@string/label_request_nhistory"
-                            android:textSize="@dimen/dimen12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight=".2"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:layout_width="@dimen/dimen50dp"
-                            android:layout_height="@dimen/dimen50dp"
-                            android:contentDescription="@string/app_name"
-                            android:src="@drawable/ic_baseline_analytics_24"
-/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_bold"
-                            android:gravity="center"
-                            android:text="@string/label_dashboard"
-                            android:textSize="@dimen/dimen12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight=".2"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:visibility="visible">
-
-                        <ImageView
-                            android:layout_width="@dimen/dimen50dp"
-                            android:layout_height="@dimen/dimen50dp"
-                            android:contentDescription="@string/app_name"
-                            android:src="@drawable/ic_baseline_hail_24"
-                            android:tint="@color/white" />
+                            android:tint="@{selectedMenu == 1 ? @color/black : @color/white}" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -155,7 +64,7 @@ android:visibility="gone"                        android:gravity="center"
                             android:fontFamily="@font/poppins_bold"
                             android:gravity="center"
                             android:text="@string/label_picker_nrequest"
-                            android:textColor="@color/black"
+                            android:textColor="@{selectedMenu == 1 ? @color/black : @color/white}"
                             android:textSize="@dimen/dimen12sp" />
                     </LinearLayout>
 
@@ -186,29 +95,34 @@ android:visibility="gone"                        android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight=".2"
-/>
+                        android:background="@{selectedMenu == 1 ? @color/yellow : @color/transperancy}" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight=".2"
+                        android:background="@{selectedMenu == 2 ? @color/yellow : @color/transperancy}"
                         android:visibility="gone" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight=".2"
+                        android:background="@{selectedMenu == 3 ? @color/yellow : @color/transperancy}"
                         android:visibility="gone" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight=".2"
+                        android:background="@{selectedMenu == 4 ? @color/yellow : @color/transperancy}"
                         android:visibility="gone" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight=".2"
+                        android:background="@{selectedMenu == 5 ? @color/yellow : @color/transperancy}"
                         android:visibility="gone" />
 
                 </LinearLayout>
@@ -218,5 +132,14 @@ android:visibility="gone"                        android:gravity="center"
         </LinearLayout>
     </RelativeLayout>
 
+    <data>
 
+        <variable
+            name="customMenuSupervisorCallback"
+            type="com.thresholdsoft.astra.ui.menucallbacks.CustomMenuSupervisorCallback" />
+
+        <variable
+            name="selectedMenu"
+            type="Integer" />
+    </data>
 </layout>
