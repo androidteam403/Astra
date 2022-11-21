@@ -25,16 +25,18 @@
                     android:id="@+id/custom_menu_layout"
                     layout="@layout/custom_menu_layout_updated"
                     app:customMenuSupervisorCallback="@{customMenuSupervisorCallback}"
-                    app:selectedMenu="@{selectedMenu}" />
+                    app:empRole="@{empRole}"
+                    app:selectedMenu="@{selectedMenu}"
+                    app:userId="@{userId}" />
 
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".9"
                 android:layout_marginStart="@dimen/dimen10dp"
                 android:layout_marginEnd="@dimen/dimen10dp"
+                android:layout_weight=".9"
                 android:orientation="vertical"
                 tools:ignore="NotSibling">
 
@@ -55,8 +57,8 @@
                         android:id="@+id/picker_request_recycleview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginEnd="@dimen/dimen5dp"
+                        android:orientation="horizontal"
                         android:scrollbars="vertical" />
 
                     <TextView
@@ -100,6 +102,14 @@
         <variable
             name="selectedMenu"
             type="Integer" />
+
+        <variable
+            name="userId"
+            type="String" />
+
+        <variable
+            name="empRole"
+            type="String" />
     </data>
 
 </layout>

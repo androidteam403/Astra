@@ -16,6 +16,7 @@ import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityPickerRequestsBinding;
 import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
+import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.ui.adapter.PickerListAdapter;
 import com.thresholdsoft.astra.ui.alertdialogs.AlertBox;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PickerRequests extends BaseActivity implements PickerRequestCallback, CustomMenuSupervisorCallback {
-    ArrayList<String> names = new ArrayList<>();
+    //    ArrayList<String> names = new ArrayList<>();
     AlertBox alertBox;
     private ArrayList<WithHoldDataResponse.Withholddetail> withholddetailList = new ArrayList<>();
 
@@ -151,10 +152,12 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
 //        activityPickerRequestsBinding.setSelectedMenu(5);
         activityPickerRequestsBinding.setSelectedMenu(1);
         activityPickerRequestsBinding.setCustomMenuSupervisorCallback(this);
+        activityPickerRequestsBinding.setUserId(getSessionManager().getEmplId());
+        activityPickerRequestsBinding.setEmpRole(getSessionManager().getEmplRole());
         getController().getWithHoldApi();
 
-        names.add("a");
-        names.add("a");
+//        names.add("a");
+//        names.add("a");
 
 //
 //        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this);
@@ -176,6 +179,10 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
 //        ApproveRequestListAdapter approveRequestListAdapter = new ApproveRequestListAdapter(this, names);
 
 
+    }
+
+    private SessionManager getSessionManager() {
+        return new SessionManager(this);
     }
 
     @Override

@@ -34,6 +34,7 @@ import com.thresholdsoft.astra.databinding.DialogModeofDeliveryBinding;
 import com.thresholdsoft.astra.databinding.DialogRequestApprovalBinding;
 import com.thresholdsoft.astra.databinding.DialogScannedBarcodeItemListBinding;
 import com.thresholdsoft.astra.databinding.DialogSupervisorRequestRemarksBinding;
+import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.db.room.AppDatabase;
 import com.thresholdsoft.astra.ui.CustomMenuCallback;
 import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
@@ -107,14 +108,6 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityPickListBinding = DataBindingUtil.setContentView(this, R.layout.activity_pick_list);
-        activityPickListBinding.customMenuLayout.image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(PickListActivity.this, PickerRequests.class);
-                startActivity(i);
-
-            }
-        });
 
 //        RelativeLayout dashboardsupervisor = findViewById(R.id.dashboard_layout);
 //        RelativeLayout dashboardadmin = findViewById(R.id.second_dashboard);
@@ -318,6 +311,8 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         activityPickListBinding.setCallback(this);
         activityPickListBinding.setCustomMenuCallback(this);
         activityPickListBinding.setSelectedMenu(1);
+        activityPickListBinding.setUserId(getSessionManager().getEmplId());
+        activityPickListBinding.setEmpRole(getSessionManager().getEmplRole());
         if (Build.VERSION.SDK_INT >= 21) {
             activityPickListBinding.barcodeScanEdittext.setShowSoftInputOnFocus(false);
         } else if (Build.VERSION.SDK_INT >= 11) {
@@ -390,6 +385,9 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
 
     }
 
+    private SessionManager getSessionManager() {
+        return new SessionManager(this);
+    }
 
     private void searchByPurchReqId() {
         activityPickListBinding.searchByText.addTextChangedListener(new TextWatcher() {
@@ -694,7 +692,8 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         this.barcodeAllocationDetailList = allocationdetailList.stream().filter(e -> e.getItembarcode().equalsIgnoreCase(allocationdetail.getItembarcode()) && e.getId() == allocationdetail.getId())// && e.getAllocatedPackscompleted() != 0
                 .collect(Collectors.toList());
         activityPickListBinding.setIsBarcodeDetailsAvailavble(true);
-        onClickCheckStatus(activityPickListBinding.getBarcodeScannedItem(), true);
+        if (barcodeAllocationDetailList.get(0).getSelectedSupervisorRemarksdetail() != null)
+            onClickCheckStatus(activityPickListBinding.getBarcodeScannedItem(), true);
     }
 
     @Override

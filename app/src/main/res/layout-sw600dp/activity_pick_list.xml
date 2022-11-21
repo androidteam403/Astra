@@ -24,7 +24,9 @@
                     android:id="@+id/custom_menu_layout"
                     layout="@layout/custom_menu"
                     app:customMenuCallback="@{customMenuCallback}"
-                    app:selectedMenu="@{selectedMenu}" />
+                    app:empRole="@{empRole}"
+                    app:selectedMenu="@{selectedMenu}"
+                    app:userId="@{userId}" />
 
             </RelativeLayout>
 
@@ -1656,5 +1658,13 @@
             type="Boolean" />
 
         <import type="com.thresholdsoft.astra.utils.CommonUtils" />
+
+        <variable
+            name="userId"
+            type="String" />
+
+        <variable
+            name="empRole"
+            type="String" />
     </data>
 </layout>
