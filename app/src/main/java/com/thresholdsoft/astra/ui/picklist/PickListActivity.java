@@ -78,6 +78,9 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     private PickListAdapter pickListAdapter;
     private ItemListAdapter itemListAdapter;
     private List<GetAllocationDataResponse.Allocationhddata> allocationhddataList;
+    private List<GetAllocationDataResponse.Allocationhddata> pendingAllocationhddataList = new ArrayList<>();
+    private List<GetAllocationDataResponse.Allocationhddata> completedAllocationhddataList = new ArrayList<>();
+    private List<GetAllocationDataResponse.Allocationhddata> inProgressAllocationhddataList = new ArrayList<>();
 
     private List<GetAllocationDataResponse.Allocationhddata> assignedAllocationData;
     private List<GetAllocationDataResponse.Allocationhddata> inProgressAllocationData;
@@ -1101,19 +1104,85 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         startActivity(getIntent());
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onClickPendingPickList() {
+        if (allocationhddataList != null) {
+
+            pendingAllocationhddataList = allocationhddataList.stream().filter(allocationhddata -> allocationhddata.getScanstatus().equalsIgnoreCase("Assigned")).collect(Collectors.toList());
+            if (pendingAllocationhddataList.isEmpty()) {
+                noPickListFound(0);
+                activityPickListBinding.progresslayout.setBackgroundColor(0);
+                activityPickListBinding.completetedlayout.setBackgroundColor(0);
+
+                activityPickListBinding.onPendingLayout.setBackgroundColor(Color.parseColor("#28baba"));
+            } else {
+                activityPickListBinding.progresslayout.setBackgroundColor(0);
+                activityPickListBinding.completetedlayout.setBackgroundColor(0);
+
+                activityPickListBinding.onPendingLayout.setBackgroundColor(Color.parseColor("#28baba"));
+                pickListAdapter = new PickListAdapter(this, pendingAllocationhddataList, this);
+                RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
+                activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
+                noPickListFound(allocationhddataList.size());
+                pickListAdapter.notifyDataSetChanged();
+            }
+        }
 
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onClickInProcessPickList() {
+        if (allocationhddataList != null) {
 
+            inProgressAllocationData = allocationhddataList.stream().filter(allocationhddata -> allocationhddata.getScanstatus().equalsIgnoreCase("INPROCESS")).collect(Collectors.toList());
+            if (inProgressAllocationData.isEmpty()) {
+                activityPickListBinding.progresslayout.setBackgroundColor(Color.parseColor("#28baba"));
+                activityPickListBinding.completetedlayout.setBackgroundColor(0);
+
+                activityPickListBinding.onPendingLayout.setBackgroundColor(0);
+                noPickListFound(0);
+            } else {
+                activityPickListBinding.progresslayout.setBackgroundColor(Color.parseColor("#28baba"));
+                activityPickListBinding.completetedlayout.setBackgroundColor(0);
+
+                activityPickListBinding.onPendingLayout.setBackgroundColor(0);
+                pickListAdapter = new PickListAdapter(this, inProgressAllocationData, this);
+                RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
+                activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
+                noPickListFound(allocationhddataList.size());
+                pickListAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onClickCompletedPickList() {
+        if (allocationhddataList != null) {
 
+            completedAllocationData = allocationhddataList.stream().filter(allocationhddata -> allocationhddata.getScanstatus().equalsIgnoreCase("Completed")).collect(Collectors.toList());
+            if (completedAllocationData.isEmpty()) {
+                activityPickListBinding.completetedlayout.setBackgroundColor(Color.parseColor("#28baba"));
+                activityPickListBinding.progresslayout.setBackgroundColor(0);
+                activityPickListBinding.onPendingLayout.setBackgroundColor(0);
+                noPickListFound(0);
+            } else {
+                activityPickListBinding.completetedlayout.setBackgroundColor(Color.parseColor("#28baba"));
+                activityPickListBinding.progresslayout.setBackgroundColor(0);
+                activityPickListBinding.onPendingLayout.setBackgroundColor(0);
+
+                pickListAdapter = new PickListAdapter(this, completedAllocationData, this);
+                RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
+                activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
+                noPickListFound(allocationhddataList.size());
+                pickListAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     private void requestApprovalPopup(GetWithHoldStatusResponse getWithHoldStatusResponse, boolean isApproved) {

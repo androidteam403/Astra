@@ -123,6 +123,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".326666667"
                         android:gravity="center"
+                        android:id="@+id/onPendingLayout"
+
                         android:onClick="@{()-> callback.onClickPendingPickList()}"
                         android:orientation="vertical">
 
@@ -155,6 +157,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".326666667"
                         android:gravity="center"
+                        android:id="@+id/progresslayout"
                         android:onClick="@{()-> callback.onClickInProcessPickList()}"
                         android:orientation="vertical">
 
@@ -186,6 +189,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".326666667"
                         android:gravity="center"
+                        android:id="@+id/completetedlayout"
+
                         android:onClick="@{()-> callback.onClickCompletedPickList()}"
                         android:orientation="vertical">
 
