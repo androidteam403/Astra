@@ -5,6 +5,8 @@ import android.content.Context;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.network.ApiClient;
 import com.thresholdsoft.astra.network.ApiInterface;
+import com.thresholdsoft.astra.ui.commonmodel.LogoutRequest;
+import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataRequest;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineRequest;
@@ -16,6 +18,7 @@ import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldStatusResponse;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateRequest;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
+import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.NetworkUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +36,7 @@ public class PickListActivityController {
         this.mCallback = mCallback;
     }
 
-    public void getAllocationDataApiCall() {
+    public void getAllocationDataApiCall(boolean isRequestToSupervisior, boolean isCompletedStatus) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
 
@@ -48,7 +51,7 @@ public class PickListActivityController {
                     ActivityUtils.hideDialog();
                     if (response.code() == 200 && response.body() != null) {
                         if (response.body().getRequeststatus()) {
-                            mCallback.onSuccessGetAllocationDataApi(response.body());
+                            mCallback.onSuccessGetAllocationDataApi(response.body(), isRequestToSupervisior, isCompletedStatus);
                         } else {
                             mCallback.noPickListFound(0);
                             mCallback.onFailureMessage(response.body().getRequestmessage());
@@ -117,7 +120,7 @@ public class PickListActivityController {
         }
     }
 
-    public void statusUpdateApiCall(StatusUpdateRequest statusUpdateRequest, String status, boolean ismanuallyEditedScannedPacks) {
+    public void statusUpdateApiCall(StatusUpdateRequest statusUpdateRequest, String status, boolean ismanuallyEditedScannedPacks, boolean isRequestToSupervisior) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
 
@@ -129,7 +132,7 @@ public class PickListActivityController {
                     ActivityUtils.hideDialog();
                     if (response.code() == 200 && response.body() != null) {
                         if (response.body().getRequeststatus()) {
-                            mCallback.onSuccessStatusUpdateApi(response.body(), status, ismanuallyEditedScannedPacks);
+                            mCallback.onSuccessStatusUpdateApi(response.body(), status, ismanuallyEditedScannedPacks, isRequestToSupervisior);
                         } else {
                             mCallback.onFailureMessage(response.body().getRequestmessage());
                         }
@@ -245,5 +248,39 @@ public class PickListActivityController {
 
     private SessionManager getDataManager() {
         return new SessionManager(mContext);
+    }
+
+    public void logoutApiCall() {
+        if (NetworkUtils.isNetworkConnected(mContext)) {
+            ActivityUtils.showDialog(mContext, "Please wait.");
+
+            LogoutRequest logoutRequest = new LogoutRequest();
+            logoutRequest.setUserid(AppConstants.userId);
+
+            ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
+            Call<LogoutResponse> call = apiInterface.LOGOUT_API_CALL("yvEoG+8MvYiOfhV2wb5jw", logoutRequest);
+
+            call.enqueue(new Callback<LogoutResponse>() {
+                @Override
+                public void onResponse(Call<LogoutResponse> call, Response<LogoutResponse> response) {
+                    ActivityUtils.hideDialog();
+                    if (response.code() == 200 && response.body() != null) {
+                        mCallback.onSuccessLogoutApiCAll(response.body());
+                    } else if (response.code() == 500) {
+                        mCallback.onFailureMessage("Internal Server Error");
+                    } else {
+                        mCallback.onFailureMessage("Something went wrong.");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<LogoutResponse> call, Throwable t) {
+                    ActivityUtils.hideDialog();
+                    mCallback.onFailureMessage(t.getMessage());
+
+                }
+            });
+        }
+
     }
 }

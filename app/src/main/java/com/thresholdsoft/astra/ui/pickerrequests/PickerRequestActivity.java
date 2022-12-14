@@ -19,9 +19,9 @@ import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.ui.adapter.PickerListAdapter;
 import com.thresholdsoft.astra.ui.alertdialogs.AlertBox;
+import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.menucallbacks.CustomMenuSupervisorCallback;
-import com.thresholdsoft.astra.ui.pickerrequests.model.PickerRequestCallback;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
@@ -30,7 +30,7 @@ import com.thresholdsoft.astra.utils.ActivityUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PickerRequests extends BaseActivity implements PickerRequestCallback, CustomMenuSupervisorCallback {
+public class PickerRequestActivity extends BaseActivity implements PickerRequestCallback, CustomMenuSupervisorCallback {
     //    ArrayList<String> names = new ArrayList<>();
     AlertBox alertBox;
     private ArrayList<WithHoldDataResponse.Withholddetail> withholddetailList = new ArrayList<>();
@@ -50,6 +50,7 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
 
     //made changes by naveen
     List<GetAllocationDataResponse.Allocationhddata> allocationhddataList = new ArrayList<>();
+    private String approvalReasonCode;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -127,8 +128,8 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
     }
 
     @Override
-    public void onClickApprove(WithHoldDataResponse.Withholddetail pickListItems, int position, String purchaseId, String itemName, ArrayList<WithHoldDataResponse.Withholddetail> withholddetailArrayList) {
-        alertBox = new AlertBox(PickerRequests.this, itemName, purchaseId, PickerRequests.this, pickListItems);
+    public void onClickApprove(String approvedQty, WithHoldDataResponse.Withholddetail pickListItems, int position, String purchaseId, String itemName, ArrayList<WithHoldDataResponse.Withholddetail> withholddetailArrayList) {
+        alertBox = new AlertBox(PickerRequestActivity.this, itemName, purchaseId, PickerRequestActivity.this, pickListItems, this);
         if (!isFinishing()) alertBox.show();
 //        alertDialog.setTitle("Do yo want to Continue Shopping or LogOut?");
 
@@ -137,25 +138,32 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
 
         alertBox.setPositiveListener(v -> {
             ActivityUtils.showDialog(getApplicationContext(), "");
-            getController().getWithHoldApprovalApi(withholddetailArrayList, position);
+            getController().getWithHoldApprovalApi(approvedQty, withholddetailArrayList, position, approvalReasonCode);
             alertBox.dismiss();
         });
 
 
     }
-
+    @SuppressLint("ClickableViewAccessibility")
+    private void parentLayoutTouchListener() {
+        activityPickerRequestsBinding.pickerRequestParentLayout.setOnTouchListener((view, motionEvent) -> {
+            hideKeyboard();
+            return false;
+        });
+    }
     private void setUp() {
 //        activityPickerRequestsBinding.setCallback(this);
 //        activityPickerRequestsBinding.customMenuLayout.setCustomMenuCallback(this);
 //        activityPickerRequestsBinding.customMenuLayout.setSelectedMenu(5);
         //        activityPickerRequestsBinding.setCustomMenuCallback(this);
 //        activityPickerRequestsBinding.setSelectedMenu(5);
+        activityPickerRequestsBinding.setMCallback(this);
         activityPickerRequestsBinding.setSelectedMenu(1);
         activityPickerRequestsBinding.setCustomMenuSupervisorCallback(this);
         activityPickerRequestsBinding.setUserId(getSessionManager().getEmplId());
         activityPickerRequestsBinding.setEmpRole(getSessionManager().getEmplRole());
         getController().getWithHoldApi();
-
+        parentLayoutTouchListener();
 //        names.add("a");
 //        names.add("a");
 
@@ -198,11 +206,11 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
                 noPickerRequestsFound(withholddetailList.size());
             } else {
                 noPickerRequestsFound(0);
-                Toast.makeText(this, withHoldDataResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, withHoldDataResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
             }
         } else {
             noPickerRequestsFound(0);
-            Toast.makeText(this, withHoldDataResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, withHoldDataResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -227,6 +235,22 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
         getController().getWithHoldApi();
     }
 
+    @Override
+    public void onSuccessLogoutApiCAll(LogoutResponse logoutResponse) {
+        getDataManager().clearAllSharedPref();
+        startActivity(LoginActivity.getStartIntent(PickerRequestActivity.this));
+    }
+
+    @Override
+    public void onSelectedApproveOrReject(String approveOrRejectCode) {
+        this.approvalReasonCode = approveOrRejectCode;
+    }
+
+    @Override
+    public void onClickRefreshRequest() {
+        getController().getWithHoldApi();
+    }
+
 
     @Override
     public void onClickPickerRequests() {
@@ -246,7 +270,7 @@ public class PickerRequests extends BaseActivity implements PickerRequestCallbac
             @Override
             public void onClick(View v) {
                 customDialog.dismiss();
-                startActivity(LoginActivity.getStartIntent(PickerRequests.this));
+                getController().logoutApiCall();
             }
         });
         dialogCustomAlertBinding.cancel.setOnClickListener(new View.OnClickListener() {

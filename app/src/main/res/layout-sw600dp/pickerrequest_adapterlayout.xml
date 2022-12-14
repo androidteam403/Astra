@@ -30,9 +30,9 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".2"
+                        android:layout_weight=".18"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="Purchase Requisistion"
+                        android:text="Purchase Requisition"
                         android:textColor="@color/bluetooth_header_bg"
                         android:textSize="@dimen/dimen14sp" />
 
@@ -48,7 +48,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".1"
+                        android:layout_weight=".08"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Allocated"
                         android:textColor="@color/bluetooth_header_bg"
@@ -57,7 +57,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".1"
+                        android:layout_weight=".08"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Scanned"
                         android:textColor="@color/bluetooth_header_bg"
@@ -66,7 +66,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".1"
+                        android:layout_weight=".08"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Short"
                         android:textColor="@color/bluetooth_header_bg"
@@ -75,7 +75,16 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".15"
+                        android:layout_weight=".1"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Approval"
+                        android:textColor="@color/bluetooth_header_bg"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".13"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Requested by "
                         android:textColor="@color/bluetooth_header_bg"
@@ -93,7 +102,7 @@
                         android:id="@+id/purchase_id"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".2"
+                        android:layout_weight=".18"
                         android:fontFamily="@font/poppins_semibold"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dimen12sp" />
@@ -111,7 +120,7 @@
                         android:id="@+id/allocation_qty"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".1"
+                        android:layout_weight=".08"
                         android:fontFamily="@font/poppins_semibold"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dimen12sp" />
@@ -120,7 +129,7 @@
                         android:id="@+id/scanned_qty"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".1"
+                        android:layout_weight=".08"
                         android:fontFamily="@font/poppins_semibold"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dimen12sp" />
@@ -130,16 +139,38 @@
                         android:id="@+id/shortqty"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".1"
+                        android:layout_weight=".08"
                         android:fontFamily="@font/poppins_semibold"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dimen12sp" />
+
+                    <LinearLayout
+                        android:layout_width="@dimen/dimen0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/approvalqty"
+                            android:layout_width="@dimen/dimen40dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:imeOptions="actionDone"
+                            android:background="@drawable/bg_approval_qty_edit"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen12sp" />
+
+                    </LinearLayout>
+
 
                     <TextView
                         android:id="@+id/requestedby"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".15"
+                        android:layout_weight=".13"
                         android:fontFamily="@font/poppins_semibold"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dimen12sp" />

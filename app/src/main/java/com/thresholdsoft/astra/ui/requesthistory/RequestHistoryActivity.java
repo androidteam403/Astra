@@ -22,7 +22,7 @@ import com.thresholdsoft.astra.ui.adapter.RequestHistoryAdapter;
 import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.picklist.PickListActivity;
-import com.thresholdsoft.astra.ui.pickerrequests.PickerRequests;
+import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestActivity;
 import com.thresholdsoft.astra.ui.picklisthistory.PickListHistoryActivity;
 
 import java.util.ArrayList;
@@ -126,7 +126,7 @@ public class RequestHistoryActivity extends BaseActivity {
 
         pickerrequestlayout.setOnClickListener(v -> {
 
-            startActivity(new Intent(RequestHistoryActivity.this, PickerRequests.class));
+            startActivity(new Intent(RequestHistoryActivity.this, PickerRequestActivity.class));
             overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
         });

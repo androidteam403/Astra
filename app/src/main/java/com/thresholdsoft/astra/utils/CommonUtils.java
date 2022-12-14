@@ -3,6 +3,7 @@ package com.thresholdsoft.astra.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.widget.Toast;
 
 import com.thresholdsoft.astra.db.room.AppDatabase;
 import com.thresholdsoft.astra.ui.picklist.model.OrderStatusTimeDateEntity;
@@ -25,6 +26,30 @@ public class CommonUtils {
             if (time.contains("Z")) inputPattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
             else inputPattern = "yyyy-MM-dd'T'HH:mm:ss";
             String outputPattern = "dd-MMM-yyyy h:mm a";
+            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+            Date date = null;
+            String str = null;
+
+            try {
+                date = inputFormat.parse(time);
+                str = outputFormat.format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return str;
+        } else {
+            return "-";
+        }
+    }
+
+    public static String parseDateToMMYYYY(String time) {
+        if (time != null && !time.isEmpty()) {
+            String inputPattern = "";
+            if (time.contains("Z")) inputPattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+            else inputPattern = "yyyy-MM-dd'T'HH:mm:ss";
+            String outputPattern = "MM-YYYY";
             SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
             SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
 
@@ -71,7 +96,20 @@ public class CommonUtils {
         }
     }
 
-    public static OrderStatusTimeDateEntity getOrderStatusEntity(Context mContext, String purchId) {
-        return AppDatabase.getDatabaseInstance(mContext).dbDao().getOrderStatusTimeDateByPurchId(purchId);
+    public static OrderStatusTimeDateEntity getOrderStatusEntity(Context mContext, String purchId, String areaId) {
+        return AppDatabase.getDatabaseInstance(mContext).dbDao().getOrderStatusTimeDateByPurchId(purchId, areaId);
+    }
+
+    public static void setClipboard(Context context, String text) {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+            android.text.ClipboardManager clipboard = (android.text.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            clipboard.setText(text);
+            Toast.makeText(context, "Copied To Clipboard", Toast.LENGTH_SHORT).show();
+        } else {
+            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text", text);
+            clipboard.setPrimaryClip(clip);
+            Toast.makeText(context, "Copied To Clipboard", Toast.LENGTH_SHORT).show();
+        }
     }
 }

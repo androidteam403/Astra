@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
                     android:fontFamily="@font/poppins_semibold"
-                    android:text="Purchase Requisistion"
+                    android:text="Purchase Requisition"
                     android:textSize="@dimen/dimen14sp" />
 
                 <TextView

@@ -1,5 +1,6 @@
 package com.thresholdsoft.astra.ui.picklist.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
     private List<GetAllocationLineResponse.Allocationdetail> allocationdetailfilteredList = new ArrayList<>();
     private List<GetAllocationLineResponse.Allocationdetail> allocationdetailListList = new ArrayList<>();
     private boolean isOrderCompleted;
+    private boolean isPagination;
 
     public ItemListAdapter(Context mContext, List<GetAllocationLineResponse.Allocationdetail> allocationdetailList, PickListActivityCallback pickListActivityCallback, boolean isOrderCompleted) {
         this.mContext = mContext;
@@ -34,6 +36,19 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         this.pickListActivityCallback = pickListActivityCallback;
         this.allocationdetailListList = allocationdetailList;
         this.isOrderCompleted = isOrderCompleted;
+    }
+
+    public void setAllocationedetailLists(List<GetAllocationLineResponse.Allocationdetail> allocationdetailList) {
+        this.allocationdetailList = allocationdetailList;
+        this.allocationdetailListList = allocationdetailList;
+    }
+
+    public void setCompletedStatus(boolean isOrderCompleted) {
+        this.isOrderCompleted = isOrderCompleted;
+    }
+
+    public void setIsPagination(boolean isPagination) {
+        this.isPagination = isPagination;
     }
 
     @NonNull
@@ -49,6 +64,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         holder.itemlistAdapterlayoutBinding.setAllocationdetail(allocationdetail);
         holder.itemlistAdapterlayoutBinding.setCallback(pickListActivityCallback);
         holder.itemlistAdapterlayoutBinding.setIsOrderCompleted(this.isOrderCompleted);
+        holder.itemlistAdapterlayoutBinding.setIsLastPos(isPagination && (allocationdetailList.size() == (position + 1)));
     }
 
     @Override
@@ -86,6 +102,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
                 return filterResults;
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 if (allocationdetailList != null && !allocationdetailList.isEmpty()) {
@@ -113,5 +130,4 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
             this.itemlistAdapterlayoutBinding = itemlistAdapterlayoutBinding;
         }
     }
-
 }

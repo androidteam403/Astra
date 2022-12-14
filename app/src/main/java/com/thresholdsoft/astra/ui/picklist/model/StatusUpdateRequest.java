@@ -108,7 +108,7 @@ public class StatusUpdateRequest implements Serializable {
         this.allocationdetails = allocationdetails;
     }
 
-    public static class Allocationdetail implements Serializable{
+    public static class Allocationdetail implements Serializable {
 
         @SerializedName("itemid")
         @Expose
@@ -125,6 +125,9 @@ public class StatusUpdateRequest implements Serializable {
         @SerializedName("shortqty")
         @Expose
         private Integer shortqty;
+        @SerializedName("approvalqty")
+        @Expose
+        private Integer approvalqty;
         @SerializedName("isreversesyncqty")
         @Expose
         private Integer isreversesyncqty;
@@ -182,6 +185,14 @@ public class StatusUpdateRequest implements Serializable {
 
         public void setShortqty(Integer shortqty) {
             this.shortqty = shortqty;
+        }
+
+        public Integer getApprovalqty() {
+            return approvalqty;
+        }
+
+        public void setApprovalqty(Integer approvalqty) {
+            this.approvalqty = approvalqty;
         }
 
         public Integer getIsreversesyncqty() {

@@ -10,10 +10,16 @@ import java.io.Serializable;
 @Entity(tableName = "order_status_time_entity")
 public class OrderStatusTimeDateEntity implements Serializable {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
+    @ColumnInfo(name = "uniquekey")
+    private int uniqueKey;
+
     @ColumnInfo(name = "purchreqid")
     private String purchreqid;
+
+    @ColumnInfo(name = "areaid")
+    private String areaId;
 
     @ColumnInfo(name = "scan_start_date_time")
     private String scanStartDateTime;
@@ -24,6 +30,14 @@ public class OrderStatusTimeDateEntity implements Serializable {
     @ColumnInfo(name = "completed_date_time")
     private String completedDateTime;
 
+    public int getUniqueKey() {
+        return uniqueKey;
+    }
+
+    public void setUniqueKey(int uniqueKey) {
+        this.uniqueKey = uniqueKey;
+    }
+
     @NonNull
     public String getPurchreqid() {
         return purchreqid;
@@ -31,6 +45,14 @@ public class OrderStatusTimeDateEntity implements Serializable {
 
     public void setPurchreqid(@NonNull String purchreqid) {
         this.purchreqid = purchreqid;
+    }
+
+    public String getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(String areaId) {
+        this.areaId = areaId;
     }
 
     public String getScanStartDateTime() {

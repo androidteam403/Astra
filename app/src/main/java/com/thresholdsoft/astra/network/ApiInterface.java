@@ -1,6 +1,8 @@
 package com.thresholdsoft.astra.network;
 
 
+import com.thresholdsoft.astra.ui.commonmodel.LogoutRequest;
+import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelRequest;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalRequest;
@@ -54,6 +56,10 @@ public interface ApiInterface {
 
     @POST("WithHoldApproval")
     Call<WithHoldApprovalResponse> WITH_HOLD_APPROVAL_API_CALL(@Header("Auth-Token") String authToken, @Body ArrayList<WithHoldApprovalRequest> withHoldApprovalRequest);
+
+    @POST("logout")
+    Call<LogoutResponse> LOGOUT_API_CALL(@Header("Auth-Token") String authToken, @Body LogoutRequest logoutRequest);
+
     @GET("https://jsonblob.com/api/jsonBlob/1041677549033504768")
     Call<WithHoldDataResponse> GET_JSON_WITH_HOLD_RESPONSE(@Header("Auth-Token") String authToken);
 

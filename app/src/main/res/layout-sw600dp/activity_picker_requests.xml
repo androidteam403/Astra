@@ -5,6 +5,7 @@
 
 
     <RelativeLayout
+        android:id="@+id/picker_request_parent_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -40,14 +41,36 @@
                 android:orientation="vertical"
                 tools:ignore="NotSibling">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen20dp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="PICKER REQUEST"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="PICKER REQUEST"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="@dimen/dimen5dp"
+                        android:background="@drawable/rounded_corner_bg"
+                        android:backgroundTint="@color/lite_yellow"
+                        android:gravity="center"
+                        android:onClick="@{()-> mCallback.onClickRefreshRequest()}"
+                        android:paddingStart="@dimen/dimen5dp"
+                        android:paddingEnd="@dimen/dimen5dp"
+                        android:text="@string/label_refresh_request"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen12sp" />
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -110,6 +133,10 @@
         <variable
             name="empRole"
             type="String" />
+
+        <variable
+            name="mCallback"
+            type="com.thresholdsoft.astra.ui.pickerrequests.PickerRequestCallback" />
     </data>
 
 </layout>

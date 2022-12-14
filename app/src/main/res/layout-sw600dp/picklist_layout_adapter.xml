@@ -5,8 +5,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:alpha="@{model.scanstatus.equalsIgnoreCase(`Completed`) ? .5f : 1f}"
         android:onClick="@{()-> callback.onClickPickListItem(model)}">
+<!--        android:alpha="@{model.scanstatus.equalsIgnoreCase(`Completed`) ? .5f : 1f}"-->
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardview"
@@ -47,7 +47,7 @@
                             android:fontFamily="@font/poppins_semibold"
                             android:text="@{model.purchreqid}"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/dimen10sp" />
+                            android:textSize="@dimen/dimen14sp" />
 
 
                     </LinearLayout>

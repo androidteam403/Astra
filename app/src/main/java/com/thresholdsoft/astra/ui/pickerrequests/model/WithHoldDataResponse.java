@@ -94,6 +94,9 @@ public class WithHoldDataResponse  implements Serializable {
         @SerializedName("shortqty")
         @Expose
         private Integer shortqty;
+        @SerializedName("approvalqty")
+        @Expose
+        private Integer approvalqty;
         @SerializedName("mrp")
         @Expose
         private String mrp;
@@ -251,6 +254,14 @@ public class WithHoldDataResponse  implements Serializable {
         public Withholddetail withShortqty(Integer shortqty) {
             this.shortqty = shortqty;
             return this;
+        }
+
+        public Integer getApprovalqty() {
+            return approvalqty;
+        }
+
+        public void setApprovalqty(Integer approvalqty) {
+            this.approvalqty = approvalqty;
         }
 
         public String getMrp() {

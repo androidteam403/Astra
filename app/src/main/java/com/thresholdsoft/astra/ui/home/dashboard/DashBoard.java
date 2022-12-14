@@ -28,7 +28,7 @@ import com.thresholdsoft.astra.ui.adapter.ReportAdapter;
 import com.thresholdsoft.astra.ui.home.Home;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.picklist.PickListActivity;
-import com.thresholdsoft.astra.ui.pickerrequests.PickerRequests;
+import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestActivity;
 import com.thresholdsoft.astra.ui.picklisthistory.PickListHistoryActivity;
 import com.thresholdsoft.astra.ui.requesthistory.RequestHistoryActivity;
 
@@ -167,7 +167,7 @@ public class DashBoard extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(DashBoard.this, PickerRequests.class));
+                startActivity(new Intent(DashBoard.this, PickerRequestActivity.class));
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }

@@ -25,14 +25,14 @@ public interface DbDao {
     @Update
     void getAllocationLineUpdate(GetAllocationLineResponse getAllocationLineResponse);
 
-    @Query("SELECT * FROM allocation_line_data WHERE purchreqid == :purchreqid")
-    List<GetAllocationLineResponse> getAllAllocationLineByPurchreqid(String purchreqid);
+    @Query("SELECT * FROM allocation_line_data WHERE purchreqid == :purchreqid AND areaid == :areaid")
+    List<GetAllocationLineResponse> getAllAllocationLineByPurchreqid(String purchreqid, String areaid);
 
-    @Query("SELECT scan_start_date_time FROM allocation_line_data WHERE purchreqid == :purchreqid")
-    String getScanStartedDateAndTime(String purchreqid);
+    @Query("SELECT scan_start_date_time FROM allocation_line_data WHERE purchreqid == :purchreqid AND areaid == :areaId")
+    String getScanStartedDateAndTime(String purchreqid, String areaId);
 
-    @Query("SELECT last_scanned_date_time FROM order_status_time_entity WHERE purchreqid == :purchreqid")
-    String getLatestStartedDateAndTime(String purchreqid);
+    @Query("SELECT last_scanned_date_time FROM order_status_time_entity WHERE purchreqid == :purchreqid AND areaid == :areaId")
+    String getLatestStartedDateAndTime(String purchreqid, String areaId);
 
     @Insert
     void orderStatusTimeDateInsert(OrderStatusTimeDateEntity orderStatusTimeDateEntity);
@@ -40,6 +40,6 @@ public interface DbDao {
     @Update
     void orderStatusTimeDateUpdate(OrderStatusTimeDateEntity orderStatusTimeDateEntity);
 
-    @Query("SELECT * FROM order_status_time_entity WHERE purchreqid == :purchreqid")
-    OrderStatusTimeDateEntity getOrderStatusTimeDateByPurchId(String purchreqid);
+    @Query("SELECT * FROM order_status_time_entity WHERE purchreqid == :purchreqid AND areaid == :areaid")
+    OrderStatusTimeDateEntity getOrderStatusTimeDateByPurchId(String purchreqid, String areaid);
 }

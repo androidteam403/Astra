@@ -14,7 +14,7 @@
             android:layout_marginEnd="@dimen/dimen10dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:weightSum="3">
+            android:weightSum="6">
 
             <TextView
                 android:layout_width="0dp"
@@ -43,6 +43,39 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/poppins_semibold"
+                android:text="@{String.valueOf(allocationDetails.allocatedqty)}"
+                android:textAllCaps="true"
+                android:textColor="@{allocationDetails.scannedBarcodeItemSelected ? @color/white : @color/black}"
+                android:textSize="@dimen/dimen10sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@{String.valueOf(allocationDetails.allocatedpacks)}"
+                android:textAllCaps="true"
+                android:textColor="@{allocationDetails.scannedBarcodeItemSelected ? @color/white : @color/black}"
+                android:textSize="@dimen/dimen10sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@{CommonUtils.parseDateToMMYYYY(allocationDetails.expdate)}"
+                android:textAllCaps="true"
+                android:textColor="@{allocationDetails.scannedBarcodeItemSelected ? @color/white : @color/black}"
+                android:textSize="@dimen/dimen10sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_semibold"
                 android:gravity="end"
                 android:text="@{@string/price_format(allocationDetails.mrp)}"
                 android:textAllCaps="true"
@@ -61,5 +94,8 @@
         <variable
             name="callback"
             type="com.thresholdsoft.astra.ui.picklist.PickListActivityCallback" />
+
+        <import type="com.thresholdsoft.astra.utils.CommonUtils" />
+
     </data>
 </layout>

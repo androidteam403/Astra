@@ -1,5 +1,8 @@
 package com.thresholdsoft.astra.ui.picklist;
 
+import android.view.View;
+
+import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetModeofDeliveryResponse;
@@ -9,7 +12,7 @@ import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
 
 public interface PickListActivityCallback {
 
-    void onSuccessGetAllocationDataApi(GetAllocationDataResponse getAllocationDataResponse);
+    void onSuccessGetAllocationDataApi(GetAllocationDataResponse getAllocationDataResponse, boolean isRequestToSupervisior, boolean isCompletedStatus);
 
     void onFailureMessage(String message);
 
@@ -25,7 +28,7 @@ public interface PickListActivityCallback {
 
     void noItemListFound(int count);
 
-    void onSuccessStatusUpdateApi(StatusUpdateResponse statusUpdateResponse, String status, boolean ismanuallyEditedScannedPacks);
+    void onSuccessStatusUpdateApi(StatusUpdateResponse statusUpdateResponse, String status, boolean ismanuallyEditedScannedPacks, boolean isRequestToSupervisior);
 
     void onClickProcessDocument();
 
@@ -71,4 +74,19 @@ public interface PickListActivityCallback {
 
     void onClickClearSearchByBarcodeorItemId();
 
+    void onSuccessLogoutApiCAll(LogoutResponse logoutResponse);
+
+    void onLongClickBarcode(View v, String barcode);
+
+    void onClickPrevPage();
+
+    void onClickNextPage();
+
+    void onClickRefresh();
+
+    void onClickPendingPickList();
+
+    void onClickInProcessPickList();
+
+    void onClickCompletedPickList();
 }

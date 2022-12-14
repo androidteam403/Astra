@@ -21,7 +21,7 @@ import com.thresholdsoft.astra.ui.CustomMenuCallback;
 import com.thresholdsoft.astra.ui.adapter.PickListHistoryAdapter;
 import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
-import com.thresholdsoft.astra.ui.pickerrequests.PickerRequests;
+import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestActivity;
 import com.thresholdsoft.astra.ui.picklist.PickListActivity;
 import com.thresholdsoft.astra.ui.requesthistory.RequestHistoryActivity;
 
@@ -166,7 +166,7 @@ public class PickListHistoryActivity extends BaseActivity implements CustomMenuC
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(PickListHistoryActivity.this, PickerRequests.class));
+                startActivity(new Intent(PickListHistoryActivity.this, PickerRequestActivity.class));
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }
@@ -210,7 +210,7 @@ public class PickListHistoryActivity extends BaseActivity implements CustomMenuC
 
     @Override
     public void onClickPickerRequest() {
-        Intent intent = new Intent(PickListHistoryActivity.this, PickerRequests.class);
+        Intent intent = new Intent(PickListHistoryActivity.this, PickerRequestActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }

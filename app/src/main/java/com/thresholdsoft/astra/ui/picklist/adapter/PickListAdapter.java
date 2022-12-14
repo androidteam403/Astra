@@ -50,7 +50,7 @@ public class PickListAdapter extends RecyclerView.Adapter<PickListAdapter.ViewHo
         GetAllocationDataResponse.Allocationhddata allocationhddata = allocationhddataList.get(position);
 
 
-        List<GetAllocationLineResponse> getAllocationLineResponse = AppDatabase.getDatabaseInstance(mContext).dbDao().getAllAllocationLineByPurchreqid(allocationhddata.getPurchreqid());
+        List<GetAllocationLineResponse> getAllocationLineResponse = AppDatabase.getDatabaseInstance(mContext).dbDao().getAllAllocationLineByPurchreqid(allocationhddata.getPurchreqid(), allocationhddata.getAreaid());
         if (getAllocationLineResponse != null && getAllocationLineResponse.size() > 0) {
             List<GetAllocationLineResponse.Allocationdetail> completedAllocationLineList = getAllocationLineResponse.get(0).getAllocationdetails().stream()
                     .filter(e -> e.getAllocatedPackscompleted() == 0)
@@ -62,7 +62,7 @@ public class PickListAdapter extends RecyclerView.Adapter<PickListAdapter.ViewHo
         holder.adapterOrderItemsListDataBinding.setModel(allocationhddata);
         holder.adapterOrderItemsListDataBinding.setCallback(pickListActivityCallback);
         if (allocationhddata.getScanstatus().equalsIgnoreCase("Completed")) {
-            OrderStatusTimeDateEntity orderStatusTimeDateEntity = AppDatabase.getDatabaseInstance(mContext).getOrderStatusTimeDateEntity(allocationhddata.getPurchreqid());
+            OrderStatusTimeDateEntity orderStatusTimeDateEntity = AppDatabase.getDatabaseInstance(mContext).getOrderStatusTimeDateEntity(allocationhddata.getPurchreqid(), allocationhddata.getAreaid());
             if (orderStatusTimeDateEntity != null) {
                 String completedDateTime = CommonUtils.differenceBetweenTwoTimes(orderStatusTimeDateEntity.getScanStartDateTime(), orderStatusTimeDateEntity.getCompletedDateTime());
                 holder.adapterOrderItemsListDataBinding.setStatusDateTime(completedDateTime);
@@ -70,7 +70,7 @@ public class PickListAdapter extends RecyclerView.Adapter<PickListAdapter.ViewHo
                 holder.adapterOrderItemsListDataBinding.setStatusDateTime("00:00:00");
             }
         } else if (allocationhddata.getScanstatus().equalsIgnoreCase("INPROCESS")) {
-            OrderStatusTimeDateEntity orderStatusTimeDateEntity = AppDatabase.getDatabaseInstance(mContext).getOrderStatusTimeDateEntity(allocationhddata.getPurchreqid());
+            OrderStatusTimeDateEntity orderStatusTimeDateEntity = AppDatabase.getDatabaseInstance(mContext).getOrderStatusTimeDateEntity(allocationhddata.getPurchreqid(), allocationhddata.getAreaid());
             if (orderStatusTimeDateEntity != null) {
                 String completedDateTime = CommonUtils.differenceBetweenTwoTimes(orderStatusTimeDateEntity.getScanStartDateTime(), orderStatusTimeDateEntity.getLastScannedDateTime());
                 holder.adapterOrderItemsListDataBinding.setStatusDateTime(completedDateTime);

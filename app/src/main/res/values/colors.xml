@@ -141,6 +141,11 @@
     <color name="inprocess_color">#FF8C00</color>
     <color name="bottom_strip_color">#1A03b3b3</color>
     <color name="hash_color">#dcdeea</color>
+    <color name="red_transparent_fifty_per">#80FF0000</color>
+    <color name="red_transparent_seventy_five_per">#BFFF0000</color>
+    <color name="red_transparent_thirty_per">#4DFF0000</color>
+
+
 
     FF8C00
 </resources>

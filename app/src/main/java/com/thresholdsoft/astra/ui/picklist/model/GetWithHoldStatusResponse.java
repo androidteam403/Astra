@@ -13,6 +13,13 @@ public class GetWithHoldStatusResponse implements Serializable {
     @SerializedName("requestmessage")
     @Expose
     private String requestmessage;
+    @SerializedName("approvalqty")
+    @Expose
+    private Integer approvalqty;
+    @SerializedName("approvedqty")
+    @Expose
+    private Integer approvedqty;
+
     private final static long serialVersionUID = -7879654897947638663L;
 
     public Boolean getRequeststatus() {
@@ -31,4 +38,19 @@ public class GetWithHoldStatusResponse implements Serializable {
         this.requestmessage = requestmessage;
     }
 
+    public Integer getApprovalqty() {
+        return approvalqty;
+    }
+
+    public void setApprovalqty(Integer approvalqty) {
+        this.approvalqty = approvalqty;
+    }
+
+    public Integer getApprovedqty() {
+        return approvedqty;
+    }
+
+    public void setApprovedqty(Integer approvedqty) {
+        this.approvedqty = approvedqty;
+    }
 }

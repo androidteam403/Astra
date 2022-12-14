@@ -13,10 +13,16 @@ import java.util.List;
 
 @Entity(tableName = "allocation_line_data")
 public class GetAllocationLineResponse implements Serializable {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
+    @ColumnInfo(name = "uniquekey")
+    private int uniqueKey;
+
     @ColumnInfo(name = "purchreqid")
     private String purchreqid;
+
+    @ColumnInfo(name = "areaid")
+    private String areaid;
 
     @ColumnInfo(name = "scan_start_date_time")
     private String scanStartDateTime;
@@ -36,12 +42,28 @@ public class GetAllocationLineResponse implements Serializable {
     @ColumnInfo(name = "allocationdetails")
     private List<Allocationdetail> allocationdetails = null;
 
+    public int getUniqueKey() {
+        return uniqueKey;
+    }
+
+    public void setUniqueKey(int uniqueKey) {
+        this.uniqueKey = uniqueKey;
+    }
+
     public String getPurchreqid() {
         return purchreqid;
     }
 
     public void setPurchreqid(String purchreqid) {
         this.purchreqid = purchreqid;
+    }
+
+    public String getAreaid() {
+        return areaid;
+    }
+
+    public void setAreaid(String areaid) {
+        this.areaid = areaid;
     }
 
     public String getScanStartDateTime() {
@@ -91,6 +113,9 @@ public class GetAllocationLineResponse implements Serializable {
         @SerializedName("variant")
         @Expose
         private String variant;
+        @SerializedName("expdate")
+        @Expose
+        private String expdate;
         @SerializedName("itembarcode")
         @Expose
         private String itembarcode;
@@ -111,9 +136,17 @@ public class GetAllocationLineResponse implements Serializable {
 
         private int allocatedPackscompleted;
 
+        private int supervisorApprovedQty = 0;
+        private int supervisorApprovalQty = 0;
+
+
         private boolean isSelected;
 
-        private boolean isRequestAccepted;
+        private boolean isRequestAccepted = false;
+
+        private boolean isRequestRejected = false;
+
+        private int rejectedPacks = 0;
 
         public boolean isRequestAccepted() {
             return isRequestAccepted;
@@ -121,6 +154,22 @@ public class GetAllocationLineResponse implements Serializable {
 
         public void setRequestAccepted(boolean requestAccepted) {
             isRequestAccepted = requestAccepted;
+        }
+
+        public boolean isRequestRejected() {
+            return isRequestRejected;
+        }
+
+        public void setRequestRejected(boolean requestRejected) {
+            isRequestRejected = requestRejected;
+        }
+
+        public int getRejectedPacks() {
+            return rejectedPacks;
+        }
+
+        public void setRejectedPacks(int rejectedPacks) {
+            this.rejectedPacks = rejectedPacks;
         }
 
         @SerializedName("scannedqty")
@@ -187,6 +236,14 @@ public class GetAllocationLineResponse implements Serializable {
             this.variant = variant;
         }
 
+        public String getExpdate() {
+            return expdate;
+        }
+
+        public void setExpdate(String expdate) {
+            this.expdate = expdate;
+        }
+
         public String getItembarcode() {
             return itembarcode;
         }
@@ -241,6 +298,22 @@ public class GetAllocationLineResponse implements Serializable {
 
         public void setAllocatedPackscompleted(int allocatedPackscompleted) {
             this.allocatedPackscompleted = allocatedPackscompleted;
+        }
+
+        public int getSupervisorApprovedQty() {
+            return supervisorApprovedQty;
+        }
+
+        public void setSupervisorApprovedQty(int supervisorApprovedQty) {
+            this.supervisorApprovedQty = supervisorApprovedQty;
+        }
+
+        public int getSupervisorApprovalQty() {
+            return supervisorApprovalQty;
+        }
+
+        public void setSupervisorApprovalQty(int supervisorApprovalQty) {
+            this.supervisorApprovalQty = supervisorApprovalQty;
         }
 
         public boolean isSelected() {

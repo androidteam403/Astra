@@ -2,6 +2,7 @@ package com.thresholdsoft.astra.ui.login;
 
 import android.content.Context;
 
+import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.network.ApiClient;
 import com.thresholdsoft.astra.network.ApiInterface;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelRequest;
@@ -73,16 +74,19 @@ public class LoginActivityController {
             call.enqueue(new Callback<GetModeofDeliveryResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetModeofDeliveryResponse> call, @NotNull Response<GetModeofDeliveryResponse> response) {
-                    ActivityUtils.hideDialog();
+
                     if (response.code() == 200 && response.body() != null) {
                         if (response.body().getRequeststatus()) {
                             AppConstants.getModeofDeliveryResponse = response.body();
+                            getDataManager().setGetModeofDeliveryResponse(response.body());
                             getWithHoldRemarksApiCall();
 //                            mCallback.onSuccessGetModeofDeliveryApi(response.body());
                         } else {
+                            ActivityUtils.hideDialog();
                             loginActivityCallback.onFailureMessage(response.body().getRequestmessage());
                         }
                     } else {
+                        ActivityUtils.hideDialog();
                         loginActivityCallback.onFailureMessage("Something went wrong.");
                     }
                 }
@@ -100,7 +104,7 @@ public class LoginActivityController {
 
     public void getWithHoldRemarksApiCall() {
         if (NetworkUtils.isNetworkConnected(mContext)) {
-            ActivityUtils.showDialog(mContext, "Please wait.");
+//            ActivityUtils.showDialog(mContext, "Please wait.");
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
             Call<GetWithHoldRemarksResponse> call = apiInterface.GET_WITH_HOLD_REMARKS_API_CALL("yvEoG+8MvYiOfhV2wb5jw");
@@ -111,6 +115,7 @@ public class LoginActivityController {
                     if (response.code() == 200 && response.body() != null) {
                         if (response.body().getRequeststatus()) {
                             AppConstants.getWithHoldRemarksResponse = response.body();
+                            getDataManager().setGetWithHoldRemarksResponse(response.body());
 //                            mCallback.onSuccessGetWithHoldRemarksApi(response.body());
                         } else {
                             loginActivityCallback.onFailureMessage(response.body().getRequestmessage());
@@ -129,5 +134,9 @@ public class LoginActivityController {
         } else {
             loginActivityCallback.onFailureMessage("Something went wrong.");
         }
+    }
+
+    private SessionManager getDataManager() {
+        return new SessionManager(mContext);
     }
 }

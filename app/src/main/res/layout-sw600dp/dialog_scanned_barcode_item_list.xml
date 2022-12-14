@@ -4,10 +4,10 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="#B3000000"
         android:gravity="center"
-        android:padding="@dimen/dimen50dp">
+        android:padding="@dimen/diman250dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardview"
@@ -53,9 +53,9 @@
                             android:fontFamily="@font/poppins_semibold"
                             android:text="@string/label_barcode_scanner"
                             android:textAllCaps="true"
-                            android:visibility="gone"
                             android:textColor="@color/black"
                             android:textSize="12sp"
+                            android:visibility="gone"
                             android:textStyle="bold" />
 
                         <TextView
@@ -130,7 +130,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="Allocated Packs."
+                        android:text="@string/label_allocated_packs"
                         android:textAllCaps="true"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dimen10sp"
@@ -193,4 +193,5 @@
             name="itemName"
             type="String" />
     </data>
+
 </layout>

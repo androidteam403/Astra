@@ -9,12 +9,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 
 import androidx.databinding.DataBindingUtil;
 
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.AlertDialogBinding;
 import com.thresholdsoft.astra.ui.adapter.PickerRequestSpinnerAdapter;
+import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestCallback;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
 
 import java.util.ArrayList;
@@ -28,7 +30,10 @@ public class AlertBox {
     private Context context;
     Intent intent;
 
-    public AlertBox(Context context, String itemname, String id, Activity activity, WithHoldDataResponse.Withholddetail pickListItems) {
+    private PickerRequestCallback mCallback;
+
+    public AlertBox(Context context, String itemname, String id, Activity activity, WithHoldDataResponse.Withholddetail pickListItems, PickerRequestCallback mCallback) {
+        this.mCallback = mCallback;
         dialog = new Dialog(context);
         alertDialogBoxBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.alert_dialog, null, false);
         dialog.setCancelable(false);
@@ -38,16 +43,31 @@ public class AlertBox {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         String[] areaNames = new String[]{"Approval", "Reject"};
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("Approval");
+        arrayList.add("Approve");
         arrayList.add("Reject");
 
         if (dialog != null) {
             alertDialogBoxBinding.itemname.setText(itemname + " - " + id);
             PickerRequestSpinnerAdapter adapter = new PickerRequestSpinnerAdapter(activity, arrayList);
             alertDialogBoxBinding.areaName.setAdapter(adapter);
+            alertDialogBoxBinding.areaName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    //AHLR0007//AHLR0002
+                    if (mCallback != null){
+                        mCallback.onSelectedApproveOrReject(position == 0 ? "AHLR0007" : "AHLR0002");
+                    }
+//                    itemListAdapter.getFilter().filter(statusList[position]);
+                }
 
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
 
         }
+
     }
 
 

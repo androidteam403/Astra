@@ -101,7 +101,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:fontFamily="@font/poppins_semibold"
-                        android:hint="@{String.valueOf(allocationHdData.noofboxes)}"
+                        android:text="@{String.valueOf(allocationHdData.noofboxes)}"
                         android:importantForAutofill="no"
                         android:inputType="number"
                         android:textColor="@color/black"

@@ -12,7 +12,7 @@ import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityLoginBinding;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
-import com.thresholdsoft.astra.ui.pickerrequests.PickerRequests;
+import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestActivity;
 import com.thresholdsoft.astra.ui.picklist.PickListActivity;
 import com.thresholdsoft.astra.utils.AppConstants;
 
@@ -37,6 +37,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     }
 
     private void setUp() {
+        getDataManager().clearAllSharedPref();
         activityLoginBinding.setCallback(this);
         getController().getDeliveryofModeApiCall();
         parentLayoutTouchListener();
@@ -54,8 +55,9 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
                     activityLoginBinding.setIsOtpScreen(true);
                 } else {
                     getDataManager().setEmplRole(empRole);
+                    getDataManager().setIsLoggedIn(true);
                     if (empRole.equals("Supervisor")) {
-                        Intent intent = new Intent(this, PickerRequests.class);
+                        Intent intent = new Intent(this, PickerRequestActivity.class);
                         startActivity(intent);
                         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                         finish();
@@ -90,8 +92,9 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     public void onClickSubmit() {
         if (isOtpValidate()) {
             getDataManager().setEmplRole(empRole);
+            getDataManager().setIsLoggedIn(true);
             if (empRole.equals("Supervisor")) {
-                Intent intent = new Intent(this, PickerRequests.class);
+                Intent intent = new Intent(this, PickerRequestActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 finish();

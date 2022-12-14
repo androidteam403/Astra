@@ -23,7 +23,7 @@ import com.thresholdsoft.astra.ui.adapter.ReportAdapter;
 import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.picklist.PickListActivity;
-import com.thresholdsoft.astra.ui.pickerrequests.PickerRequests;
+import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestActivity;
 import com.thresholdsoft.astra.ui.picklisthistory.PickListHistoryActivity;
 import com.thresholdsoft.astra.ui.requesthistory.RequestHistoryActivity;
 
@@ -102,7 +102,7 @@ activityHomeBinding.admin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(Home.this, PickerRequests.class));
+                startActivity(new Intent(Home.this, PickerRequestActivity.class));
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
             }

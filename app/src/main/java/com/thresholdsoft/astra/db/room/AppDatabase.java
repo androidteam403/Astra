@@ -18,7 +18,7 @@ import java.util.List;
  * Created on : Nov 1, 2022
  * Author     : NAVEEN.M
  */
-@Database(entities = {GetAllocationLineResponse.class, OrderStatusTimeDateEntity.class}, version = 2, exportSchema = false)
+@Database(entities = {GetAllocationLineResponse.class, OrderStatusTimeDateEntity.class}, version = 1, exportSchema = false)
 @TypeConverters({DataConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase mInstance;
@@ -43,35 +43,40 @@ public abstract class AppDatabase extends RoomDatabase {
 //                allocationdetail.setSelected(false);
 //            }
 //        }
-        List<GetAllocationLineResponse> getAllocationLineResponse1 = dbDao().getAllAllocationLineByPurchreqid(getAllocationLineResponse.getPurchreqid());
+        List<GetAllocationLineResponse> getAllocationLineResponse1 = dbDao().getAllAllocationLineByPurchreqid(getAllocationLineResponse.getPurchreqid(), getAllocationLineResponse.getAreaid());
         if (getAllocationLineResponse1 != null && getAllocationLineResponse1.size() > 0) {
-            getAllocationLineResponse.setScanStartDateTime(getAllocationLineResponse1.get(0).getScanStartDateTime());
+            getAllocationLineResponse.setScanStartDateTime((getAllocationLineResponse1.get(0).getScanStartDateTime() != null
+                    && !getAllocationLineResponse1.get(0).getScanStartDateTime().isEmpty())
+                    ? getAllocationLineResponse1.get(0).getScanStartDateTime()
+                    : getAllocationLineResponse.getScanStartDateTime());
+            getAllocationLineResponse.setUniqueKey(getAllocationLineResponse1.get(0).getUniqueKey());
             dbDao().getAllocationLineUpdate(getAllocationLineResponse);
         } else {
             dbDao().getAllocationLineInsert(getAllocationLineResponse);
         }
     }
 
-    public String getScanStartedTimeAndDate(String purchId) {
-        return dbDao().getScanStartedDateAndTime(purchId) != null ? dbDao().getScanStartedDateAndTime(purchId) : "";
+    public String getScanStartedTimeAndDate(String purchId, String areaId) {
+        return dbDao().getScanStartedDateAndTime(purchId, areaId) != null ? dbDao().getScanStartedDateAndTime(purchId, areaId) : "";
     }
 
     public void orderStatusTimeDateEntityInsertOrUpdate(OrderStatusTimeDateEntity orderStatusTimeDateEntity) {
-        OrderStatusTimeDateEntity orderStatusTimeDateEntity1 = dbDao().getOrderStatusTimeDateByPurchId(orderStatusTimeDateEntity.getPurchreqid());
+        OrderStatusTimeDateEntity orderStatusTimeDateEntity1 = dbDao().getOrderStatusTimeDateByPurchId(orderStatusTimeDateEntity.getPurchreqid(), orderStatusTimeDateEntity.getAreaId());
         if (orderStatusTimeDateEntity1 != null) {
             orderStatusTimeDateEntity.setScanStartDateTime(orderStatusTimeDateEntity1.getScanStartDateTime());
+            orderStatusTimeDateEntity.setUniqueKey(orderStatusTimeDateEntity1.getUniqueKey());
             dbDao().orderStatusTimeDateUpdate(orderStatusTimeDateEntity);
         } else {
             dbDao().orderStatusTimeDateInsert(orderStatusTimeDateEntity);
         }
     }
 
-    public String getLastTimeAndDate(String purchId) {
-        return dbDao().getLatestStartedDateAndTime(purchId) != null ? dbDao().getLatestStartedDateAndTime(purchId) : "";
+    public String getLastTimeAndDate(String purchId, String areaId) {
+        return dbDao().getLatestStartedDateAndTime(purchId, areaId) != null ? dbDao().getLatestStartedDateAndTime(purchId, areaId) : "";
     }
 
-    public OrderStatusTimeDateEntity getOrderStatusTimeDateEntity(String purchId) {
-        return dbDao().getOrderStatusTimeDateByPurchId(purchId);
+    public OrderStatusTimeDateEntity getOrderStatusTimeDateEntity(String purchId, String areaId) {
+        return dbDao().getOrderStatusTimeDateByPurchId(purchId, areaId);
     }
 
     public abstract DbDao dbDao();
