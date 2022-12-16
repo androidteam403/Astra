@@ -26,7 +26,9 @@
                     android:id="@+id/custom_menu_layout"
                     layout="@layout/custom_menu_layout_updated"
                     app:customMenuSupervisorCallback="@{customMenuSupervisorCallback}"
+                    app:dcName="@{dcName}"
                     app:empRole="@{empRole}"
+                    app:pickerName="@{pickerName}"
                     app:selectedMenu="@{selectedMenu}"
                     app:userId="@{userId}" />
 
@@ -137,6 +139,14 @@
         <variable
             name="mCallback"
             type="com.thresholdsoft.astra.ui.pickerrequests.PickerRequestCallback" />
+
+        <variable
+            name="pickerName"
+            type="String" />
+
+        <variable
+            name="dcName"
+            type="String" />
     </data>
 
 </layout>

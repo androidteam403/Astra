@@ -40,5 +40,7 @@
     <dimen name="dimen45dp">45dp</dimen>
     <dimen name="dimen0dp">0dp</dimen>
     <dimen name="diman250dp">250dp</dimen>
+    <dimen name="diman30sp">30sp</dimen>
+
 
 </resources>

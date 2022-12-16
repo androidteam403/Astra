@@ -61,6 +61,9 @@ public class WithHoldApprovalRequest implements Serializable {
     @SerializedName("approvedqty")
     @Expose
     private Integer approvedqty;
+    @SerializedName("remarks")
+    @Expose
+    private String remarks;
 
 
     public String getPurchreqid() {
@@ -285,6 +288,14 @@ public class WithHoldApprovalRequest implements Serializable {
 
     public void setApprovedqty(Integer approvedqty) {
         this.approvedqty = approvedqty;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 }
 

@@ -19,6 +19,9 @@ public class GetWithHoldStatusResponse implements Serializable {
     @SerializedName("approvedqty")
     @Expose
     private Integer approvedqty;
+    @SerializedName("remarks")
+    @Expose
+    private String remarks;
 
     private final static long serialVersionUID = -7879654897947638663L;
 
@@ -52,5 +55,13 @@ public class GetWithHoldStatusResponse implements Serializable {
 
     public void setApprovedqty(Integer approvedqty) {
         this.approvedqty = approvedqty;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 }

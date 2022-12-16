@@ -18,13 +18,15 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".1"
-                android:background="@color/white">
+                android:background="@{isDetailViewExpanded ? @color/bg_pick_list_details_view : @color/white}">
 
                 <include
                     android:id="@+id/custom_menu_layout"
                     layout="@layout/custom_menu"
                     app:customMenuCallback="@{customMenuCallback}"
+                    app:dcName="@{dcName}"
                     app:empRole="@{empRole}"
+                    app:pickerName="@{pickerName}"
                     app:selectedMenu="@{selectedMenu}"
                     app:userId="@{userId}" />
 
@@ -35,7 +37,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight=".2"
                 android:background="@color/white"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="@{isDetailViewExpanded ? view.GONE : view.VISIBLE}">
 
                 <ImageView
                     android:layout_width="@dimen/dimen15dp"
@@ -101,6 +104,14 @@
 
                 </RelativeLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@{`Assigned Lines(`+assignedLines+`)`}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen14sp" />
+
                 <EditText
                     android:id="@+id/search_by_text"
                     android:layout_width="match_parent"
@@ -119,12 +130,12 @@
                     android:weightSum="1">
 
                     <LinearLayout
+                        android:id="@+id/onPendingLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".326666667"
+                        android:background="@{pickListSelectedStatus == 1 ? @color/very_light_grey : @color/transperancy}"
                         android:gravity="center"
-                        android:id="@+id/onPendingLayout"
-
                         android:onClick="@{()-> callback.onClickPendingPickList()}"
                         android:orientation="vertical">
 
@@ -133,7 +144,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_bold"
-                            android:textColor="@color/black"
+                            android:textColor="@{pickListSelectedStatus == 1 ? @color/green : @color/black}"
                             android:textSize="@dimen/dimen18sp" />
 
                         <TextView
@@ -142,6 +153,7 @@
                             android:fontFamily="@font/poppins_semibold"
                             android:text="@string/pending"
                             android:textAllCaps="true"
+                            android:textColor="@{pickListSelectedStatus == 1 ? @color/green : @color/black}"
                             android:textSize="@dimen/dimen9sp" />
 
                     </LinearLayout>
@@ -153,11 +165,12 @@
                         android:background="@color/grey" />
 
                     <LinearLayout
+                        android:id="@+id/progresslayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".326666667"
+                        android:background="@{pickListSelectedStatus == 2 ? @color/very_light_grey : @color/transperancy}"
                         android:gravity="center"
-                        android:id="@+id/progresslayout"
                         android:onClick="@{()-> callback.onClickInProcessPickList()}"
                         android:orientation="vertical">
 
@@ -166,7 +179,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_bold"
-                            android:textColor="@color/black"
+                            android:textColor="@{pickListSelectedStatus == 2 ? @color/green : @color/black}"
                             android:textSize="@dimen/dimen18sp" />
 
                         <TextView
@@ -175,6 +188,7 @@
                             android:fontFamily="@font/poppins_semibold"
                             android:text="@string/label_in_pregress"
                             android:textAllCaps="true"
+                            android:textColor="@{pickListSelectedStatus == 2 ? @color/green : @color/black}"
                             android:textSize="@dimen/dimen9sp" />
                     </LinearLayout>
 
@@ -185,12 +199,12 @@
                         android:background="@color/grey" />
 
                     <LinearLayout
+                        android:id="@+id/completetedlayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".326666667"
+                        android:background="@{pickListSelectedStatus == 3 ? @color/very_light_grey : @color/transperancy}"
                         android:gravity="center"
-                        android:id="@+id/completetedlayout"
-
                         android:onClick="@{()-> callback.onClickCompletedPickList()}"
                         android:orientation="vertical">
 
@@ -199,7 +213,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_bold"
-                            android:textColor="@color/black"
+                            android:textColor="@{pickListSelectedStatus == 3 ? @color/green : @color/black}"
                             android:textSize="@dimen/dimen18sp" />
 
                         <TextView
@@ -208,6 +222,7 @@
                             android:fontFamily="@font/poppins_semibold"
                             android:text="@string/completed"
                             android:textAllCaps="true"
+                            android:textColor="@{pickListSelectedStatus == 3 ? @color/green : @color/black}"
                             android:textSize="@dimen/dimen9sp" />
                     </LinearLayout>
 
@@ -241,7 +256,7 @@
                 android:id="@+id/layout_picklist"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".7"
+                android:layout_weight="@integer/layout_weight_point_seven"
                 android:background="#dcdeea"
                 android:visibility="gone">
 
@@ -256,7 +271,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/dimen10dp"
                     android:layout_marginBottom="@dimen/dimen65dp"
                     android:orientation="vertical">
 
@@ -271,9 +285,19 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
+                            <ImageView
+                                android:id="@+id/detail_view_enlarge_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/app_name"
+                                android:onClick="@{()-> callback.onClickDetailsLayoutEnlarge()}"
+                                android:rotation="180"
+                                android:src="@drawable/arrow_icon" />
+
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dimen10dp"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -382,6 +406,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen10dp"
                         android:layout_marginTop="@dimen/dimen3dp"
                         android:background="@color/white"
                         android:orientation="horizontal"
@@ -563,6 +588,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen10dp"
                         android:layout_marginTop="@dimen/dimen3dp"
                         android:orientation="horizontal"
                         android:weightSum="7">
@@ -838,6 +864,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/dimen10dp"
                         android:orientation="horizontal"
                         android:weightSum="1">
 
@@ -1492,7 +1519,7 @@
                                                         android:layout_height="wrap_content"
                                                         android:layout_weight="1"
                                                         android:orientation="vertical"
-                                                        android:visibility="@{(allocationData.scanstatus.equalsIgnoreCase(`Completed`) || barcodeScannedItem.isRequestAccepted || (barcodeScannedItem.allocatedPackscompleted - barcodeScannedItem.supervisorApprovedQty) == 0 || barcodeScannedItem.selectedSupervisorRemarksdetail != null) ? view.GONE : view.VISIBLE}">
+                                                        android:visibility="@{(allocationData.scanstatus.equalsIgnoreCase(`Completed`) || (barcodeScannedItem.allocatedPackscompleted - barcodeScannedItem.supervisorApprovedQty) == 0 || barcodeScannedItem.selectedSupervisorRemarksdetail != null) ? view.GONE : view.VISIBLE}">
 
                                                         <TextView
                                                             android:layout_width="wrap_content"
@@ -1591,13 +1618,141 @@
 
                                                     </LinearLayout>
 
+                                                    <!--                                                    <LinearLayout-->
+                                                    <!--                                                        android:layout_width="0dp"-->
+                                                    <!--                                                        android:layout_height="wrap_content"-->
+                                                    <!--                                                        android:layout_weight="1"-->
+                                                    <!--                                                        android:gravity="center_vertical"-->
+                                                    <!--                                                        android:orientation="vertical"-->
+                                                    <!--                                                        android:visibility="@{barcodeScannedItem.isRequestAccepted ? view.VISIBLE : view.GONE}">-->
+
+                                                    <!--                                                        <TextView-->
+                                                    <!--                                                            android:layout_width="wrap_content"-->
+                                                    <!--                                                            android:layout_height="wrap_content"-->
+                                                    <!--                                                            android:fontFamily="@font/poppins_semibold"-->
+                                                    <!--                                                            android:text="Approval Status"-->
+                                                    <!--                                                            android:textSize="@dimen/dimen12sp" />-->
+
+                                                    <!--                                                        <TextView-->
+                                                    <!--                                                            android:layout_width="wrap_content"-->
+                                                    <!--                                                            android:layout_height="wrap_content"-->
+                                                    <!--                                                            android:fontFamily="@font/poppins_semibold"-->
+                                                    <!--                                                            android:paddingStart="@dimen/dimen3dp"-->
+                                                    <!--                                                            android:paddingEnd="@dimen/dimen3dp"-->
+                                                    <!--                                                            android:text="Approved"-->
+                                                    <!--                                                            android:textColor="@color/green"-->
+                                                    <!--                                                            android:textSize="@dimen/dimen18sp" />-->
+
+                                                    <!--                                                    </LinearLayout>-->
+
+
+                                                    <!--                                                    <LinearLayout-->
+                                                    <!--                                                        android:layout_width="0dp"-->
+                                                    <!--                                                        android:layout_height="wrap_content"-->
+                                                    <!--                                                        android:layout_marginStart="@dimen/dimen5dp"-->
+                                                    <!--                                                        android:layout_weight=".9"-->
+                                                    <!--                                                        android:orientation="vertical"-->
+                                                    <!--                                                        android:visibility="@{barcodeScannedItem.isRequestAccepted ? view.VISIBLE : view.GONE}">-->
+
+                                                    <!--                                                        <TextView-->
+                                                    <!--                                                            android:layout_width="wrap_content"-->
+                                                    <!--                                                            android:layout_height="wrap_content"-->
+                                                    <!--                                                            android:fontFamily="@font/poppins_semibold"-->
+                                                    <!--                                                            android:text="Approved Packs"-->
+                                                    <!--                                                            android:textSize="@dimen/dimen12sp" />-->
+
+                                                    <!--                                                        <TextView-->
+                                                    <!--                                                            android:layout_width="wrap_content"-->
+                                                    <!--                                                            android:layout_height="wrap_content"-->
+                                                    <!--                                                            android:fontFamily="@font/poppins_semibold"-->
+                                                    <!--                                                            android:text="@{String.valueOf(barcodeScannedItem.supervisorApprovedQty)}"-->
+                                                    <!--                                                            android:textColor="@color/black"-->
+                                                    <!--                                                            android:textSize="@dimen/dimen18sp"-->
+                                                    <!--                                                            android:textStyle="bold" />-->
+                                                    <!--                                                    </LinearLayout>-->
+
+                                                    <!--                                                    <LinearLayout-->
+                                                    <!--                                                        android:layout_width="0dp"-->
+                                                    <!--                                                        android:layout_height="wrap_content"-->
+                                                    <!--                                                        android:layout_marginStart="@dimen/dimen5dp"-->
+                                                    <!--                                                        android:layout_weight="1.1"-->
+                                                    <!--                                                        android:orientation="vertical"-->
+                                                    <!--                                                        android:visibility="@{barcodeScannedItem.isRequestAccepted ? view.VISIBLE : view.GONE}">-->
+
+                                                    <!--                                                        <TextView-->
+                                                    <!--                                                            android:layout_width="wrap_content"-->
+                                                    <!--                                                            android:layout_height="wrap_content"-->
+                                                    <!--                                                            android:fontFamily="@font/poppins_semibold"-->
+                                                    <!--                                                            android:text="Pending Scan Packs"-->
+                                                    <!--                                                            android:textSize="@dimen/dimen12sp" />-->
+
+                                                    <!--                                                        <TextView-->
+                                                    <!--                                                            android:layout_width="wrap_content"-->
+                                                    <!--                                                            android:layout_height="wrap_content"-->
+                                                    <!--                                                            android:fontFamily="@font/poppins_semibold"-->
+                                                    <!--                                                            android:text="@{String.valueOf(barcodeScannedItem.allocatedPackscompleted - barcodeScannedItem.supervisorApprovedQty)}"-->
+                                                    <!--                                                            android:textColor="@color/black"-->
+                                                    <!--                                                            android:textSize="@dimen/dimen18sp"-->
+                                                    <!--                                                            android:textStyle="bold" />-->
+                                                    <!--                                                    </LinearLayout>-->
+                                                    <LinearLayout
+                                                        android:layout_width="0dp"
+                                                        android:layout_height="match_parent"
+                                                        android:layout_marginStart="@dimen/dimen5dp"
+                                                        android:layout_weight="2"
+                                                        android:gravity="center_vertical"
+                                                        android:orientation="vertical"
+                                                        android:visibility="@{barcodeScannedItem.isRequestAccepted ? view.VISIBLE : view.GONE}">
+
+
+                                                        <TextView
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            android:fontFamily="@font/poppins_semibold"
+                                                            android:text="@{barcodeScannedItem.remarks}"
+                                                            android:textColor="@color/green"
+                                                            android:textSize="@dimen/dimen14sp"
+                                                            android:textStyle="bold" />
+                                                    </LinearLayout>
+
+                                                    <LinearLayout
+                                                        android:layout_width="0dp"
+                                                        android:layout_height="match_parent"
+                                                        android:layout_marginStart="@dimen/dimen5dp"
+                                                        android:layout_weight="2"
+                                                        android:gravity="center_vertical"
+                                                        android:orientation="vertical"
+                                                        android:visibility="@{barcodeScannedItem.isRequestRejected ? view.VISIBLE : view.GONE}">
+
+
+                                                        <TextView
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            android:fontFamily="@font/poppins_semibold"
+                                                            android:text="@{barcodeScannedItem.remarks}"
+                                                            android:textColor="@color/red"
+                                                            android:textSize="@dimen/dimen14sp"
+                                                            android:textStyle="bold" />
+                                                    </LinearLayout>
+
+
+                                                </LinearLayout>
+
+                                                <LinearLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="@dimen/dimen5dp"
+                                                    android:orientation="horizontal"
+                                                    android:visibility="@{barcodeScannedItem.isRequestAccepted ? view.VISIBLE : view.GONE}"
+                                                    android:weightSum="4">
+
+
                                                     <LinearLayout
                                                         android:layout_width="0dp"
                                                         android:layout_height="wrap_content"
                                                         android:layout_weight="1"
                                                         android:gravity="center_vertical"
-                                                        android:orientation="vertical"
-                                                        android:visibility="@{barcodeScannedItem.isRequestAccepted ? view.VISIBLE : view.GONE}">
+                                                        android:orientation="vertical">
 
                                                         <TextView
                                                             android:layout_width="wrap_content"
@@ -1623,9 +1778,8 @@
                                                         android:layout_width="0dp"
                                                         android:layout_height="wrap_content"
                                                         android:layout_marginStart="@dimen/dimen5dp"
-                                                        android:layout_weight=".9"
-                                                        android:orientation="vertical"
-                                                        android:visibility="@{barcodeScannedItem.isRequestAccepted ? view.VISIBLE : view.GONE}">
+                                                        android:layout_weight="1"
+                                                        android:orientation="vertical">
 
                                                         <TextView
                                                             android:layout_width="wrap_content"
@@ -1648,9 +1802,8 @@
                                                         android:layout_width="0dp"
                                                         android:layout_height="wrap_content"
                                                         android:layout_marginStart="@dimen/dimen5dp"
-                                                        android:layout_weight="1.1"
-                                                        android:orientation="vertical"
-                                                        android:visibility="@{barcodeScannedItem.isRequestAccepted ? view.VISIBLE : view.GONE}">
+                                                        android:layout_weight="2"
+                                                        android:orientation="vertical">
 
                                                         <TextView
                                                             android:layout_width="wrap_content"
@@ -1666,26 +1819,6 @@
                                                             android:text="@{String.valueOf(barcodeScannedItem.allocatedPackscompleted - barcodeScannedItem.supervisorApprovedQty)}"
                                                             android:textColor="@color/black"
                                                             android:textSize="@dimen/dimen18sp"
-                                                            android:textStyle="bold" />
-                                                    </LinearLayout>
-
-                                                    <LinearLayout
-                                                        android:layout_width="0dp"
-                                                        android:layout_height="match_parent"
-                                                        android:layout_marginStart="@dimen/dimen5dp"
-                                                        android:layout_weight="2"
-                                                        android:gravity="center_vertical"
-                                                        android:orientation="vertical"
-                                                        android:visibility="@{barcodeScannedItem.isRequestRejected ? view.VISIBLE : view.GONE}">
-
-
-                                                        <TextView
-                                                            android:layout_width="wrap_content"
-                                                            android:layout_height="wrap_content"
-                                                            android:fontFamily="@font/poppins_semibold"
-                                                            android:text="Request rejected for this item."
-                                                            android:textColor="@color/red"
-                                                            android:textSize="@dimen/dimen14sp"
                                                             android:textStyle="bold" />
                                                     </LinearLayout>
 
@@ -1803,7 +1936,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:weightSum="7">
+                        android:weightSum="8">
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -1857,7 +1990,7 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:layout_weight=".8"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -1882,7 +2015,7 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:layout_weight=".8"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -1907,7 +2040,7 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:layout_weight=".8"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -1932,7 +2065,7 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:layout_weight="1.3"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -1940,7 +2073,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_semibold"
-                                android:text="TIME TAKEN"
+                                android:text="Start Time"
                                 android:textSize="@dimen/dimen10sp"
                                 android:textStyle="bold" />
 
@@ -1948,7 +2081,32 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_semibold"
-                                android:text="@{orderStatusModel.timeTaken}"
+                                android:text="@{CommonUtils.parseDateToddMMyyyy(orderStatusModel.startTime)}"
+                                android:textSize="@dimen/dimen10sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.3"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="End Time"
+                                android:textSize="@dimen/dimen10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@{CommonUtils.parseDateToddMMyyyy(orderStatusModel.endTime)}"
                                 android:textSize="@dimen/dimen10sp"
                                 android:textStyle="bold" />
 
@@ -2106,5 +2264,24 @@
             name="assignedOrdersCount"
             type="String" />
 
+        <variable
+            name="pickListSelectedStatus"
+            type="Integer" />
+
+        <variable
+            name="isDetailViewExpanded"
+            type="Boolean" />
+
+        <variable
+            name="assignedLines"
+            type="String" />
+
+        <variable
+            name="pickerName"
+            type="String" />
+
+        <variable
+            name="dcName"
+            type="String" />
     </data>
 </layout>

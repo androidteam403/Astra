@@ -135,15 +135,15 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
         alertBox.setNegativeListener(v -> alertBox.dismiss());
         alertBox.cancel(v -> alertBox.dismiss());
-
         alertBox.setPositiveListener(v -> {
             ActivityUtils.showDialog(getApplicationContext(), "");
-            getController().getWithHoldApprovalApi(approvedQty, withholddetailArrayList, position, approvalReasonCode);
+            getController().getWithHoldApprovalApi(approvedQty, withholddetailArrayList, position, approvalReasonCode, alertBox.getRemarks());
             alertBox.dismiss();
         });
 
 
     }
+
     @SuppressLint("ClickableViewAccessibility")
     private void parentLayoutTouchListener() {
         activityPickerRequestsBinding.pickerRequestParentLayout.setOnTouchListener((view, motionEvent) -> {
@@ -151,6 +151,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             return false;
         });
     }
+
     private void setUp() {
 //        activityPickerRequestsBinding.setCallback(this);
 //        activityPickerRequestsBinding.customMenuLayout.setCustomMenuCallback(this);
@@ -158,10 +159,15 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         //        activityPickerRequestsBinding.setCustomMenuCallback(this);
 //        activityPickerRequestsBinding.setSelectedMenu(5);
         activityPickerRequestsBinding.setMCallback(this);
+
+        //menu dataset
         activityPickerRequestsBinding.setSelectedMenu(1);
         activityPickerRequestsBinding.setCustomMenuSupervisorCallback(this);
         activityPickerRequestsBinding.setUserId(getSessionManager().getEmplId());
         activityPickerRequestsBinding.setEmpRole(getSessionManager().getEmplRole());
+        activityPickerRequestsBinding.setPickerName(getSessionManager().getPickerName());
+        activityPickerRequestsBinding.setDcName(getSessionManager().getDcName());
+
         getController().getWithHoldApi();
         parentLayoutTouchListener();
 //        names.add("a");

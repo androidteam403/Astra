@@ -19,6 +19,8 @@ public class SessionManager {
     //Pref keys
     private static final String PREF_KEY_EMP_ROLE = "PREF_KEY_EMP_ROLE";
     private static final String PREF_KEY_EMP_ID = "PREF_KEY_EMP_ID";
+    private static final String PREF_KEY_PICKER_NAME = "PREF_KEY_PICKER_NAME";
+    private static final String PREF_KEY_DC_NAME = "PREF_KEY_DC_NAME";
     private static final String PREF_KEY_GET_MODEOF_DELIVERY_RESPONSE = "PREF_KEY_GET_MODEOF_DELIVERY_RESPONSE";
     private static final String PREF_KEY_GET_WITHHOLD_REMARKS_RESPONSE = "PREF_KEY_GET_WITHHOLD_REMARKS_RESPONSE";
     private static final String PREF_KEY_LOGGED_IN = "PREF_KEY_LOGGED_IN";
@@ -53,6 +55,22 @@ public class SessionManager {
 
     public String getEmplId() {
         return preferences.getString(PREF_KEY_EMP_ID, "");
+    }
+
+    public void setPickerName(String empRole) {
+        preferences.edit().putString(PREF_KEY_PICKER_NAME, empRole).apply();
+    }
+
+    public String getPickerName() {
+        return preferences.getString(PREF_KEY_PICKER_NAME, "");
+    }
+
+    public void setDcName(String empRole) {
+        preferences.edit().putString(PREF_KEY_DC_NAME, empRole).apply();
+    }
+
+    public String getDcName() {
+        return preferences.getString(PREF_KEY_DC_NAME, "");
     }
 
     public void setGetModeofDeliveryResponse(GetModeofDeliveryResponse getModeofDeliveryResponse) {

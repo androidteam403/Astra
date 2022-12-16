@@ -54,7 +54,7 @@ public class AlertBox {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     //AHLR0007//AHLR0002
-                    if (mCallback != null){
+                    if (mCallback != null) {
                         mCallback.onSelectedApproveOrReject(position == 0 ? "AHLR0007" : "AHLR0002");
                     }
 //                    itemListAdapter.getFilter().filter(statusList[position]);
@@ -95,6 +95,10 @@ public class AlertBox {
     public void dismiss() {
         if (dialog != null)
             dialog.dismiss();
+    }
+
+    public String getRemarks() {
+        return alertDialogBoxBinding.remarks.getText().toString();
     }
 
     public void cancel(View.OnClickListener okListener) {

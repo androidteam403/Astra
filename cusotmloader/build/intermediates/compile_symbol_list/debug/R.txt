@@ -10,6 +10,7 @@ int dimen spot_size 0x0
 int dimen title_margin 0x0
 int dimen title_padding 0x0
 int drawable apollo_circle_logo 0x0
+int drawable apollo_healthco_logo 0x0
 int drawable dmax_spots_spot 0x0
 int drawable ic_launcher 0x0
 int id dmax_spots_progress 0x0

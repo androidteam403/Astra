@@ -23,6 +23,12 @@ public class ValidateUserModelResponse implements Serializable {
     @SerializedName("emprole")
     @Expose
     private String emprole;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("dcname")
+    @Expose
+    private String dcname;
 
 
     public Boolean getRequeststatus() {
@@ -65,4 +71,19 @@ public class ValidateUserModelResponse implements Serializable {
         this.emprole = emprole;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDcname() {
+        return dcname;
+    }
+
+    public void setDcname(String dcname) {
+        this.dcname = dcname;
+    }
 }

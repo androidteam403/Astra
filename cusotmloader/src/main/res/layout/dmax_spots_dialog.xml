@@ -16,7 +16,7 @@
             android:layout_width="50dp"
             android:layout_centerHorizontal="true"
             android:layout_height="50dp"
-            android:background="@drawable/apollo_circle_logo" />
+            android:background="@drawable/apollo_healthco_logo" />
 
         <TextView
             android:id="@+id/dmax_spots_title"
