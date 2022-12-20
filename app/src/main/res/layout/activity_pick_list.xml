@@ -25,6 +25,9 @@
                     layout="@layout/custom_menu"
                     app:customMenuCallback="@{customMenuCallback}"
                     app:empRole="@{empRole}"
+                    app:pickerName="@{pickerName}"
+                    app:dcName="@{dcName}"
+
                     app:selectedMenu="@{selectedMenu}"
                     app:userId="@{userId}" />
 
@@ -66,7 +69,17 @@
                         android:fontFamily="@font/poppins_semibold"
                         android:text="@{`Assigned Orders(`+assignedOrdersCount+`)`}"
                         android:textColor="@color/black"
+                        android:id="@+id/assignedorders"
                         android:textSize="@dimen/dimen10sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_below="@+id/assignedorders"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="@{`Assigned Lines(`+assignedLinesCount+`)`}"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen10dp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -2068,6 +2081,15 @@
             name="empRole"
             type="String" />
 
+
+        <variable
+            name="pickerName"
+            type="String" />
+
+        <variable
+            name="dcName"
+            type="String" />
+
         <variable
             name="isNaxtPage"
             type="Boolean" />
@@ -2083,7 +2105,9 @@
         <variable
             name="startToEndPageNo"
             type="String" />
-
+        <variable
+            name="assignedLinesCount"
+            type="String" />
         <variable
             name="assignedOrdersCount"
             type="String" />

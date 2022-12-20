@@ -133,6 +133,8 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         activityPickListBinding.setCallback(this);
         activityPickListBinding.setCustomMenuCallback(this);
         activityPickListBinding.setSelectedMenu(1);
+        activityPickListBinding.setPickerName(getSessionManager().getpickerName());
+        activityPickListBinding.setDcName("");
         activityPickListBinding.setUserId(getSessionManager().getEmplId());
         activityPickListBinding.setEmpRole(getSessionManager().getEmplRole());
         if (Build.VERSION.SDK_INT >= 21) {
@@ -260,22 +262,18 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         }
         if (getAllocationDataResponse != null && getAllocationDataResponse.getAllocationhddatas() != null && getAllocationDataResponse.getAllocationhddatas().size() > 0) {
             this.allocationhddataList = new ArrayList<>();
-
+            List<Integer> integers = getAllocationDataResponse.getAllocationhddatas().stream().map(GetAllocationDataResponse.Allocationhddata::getAllocatedlines).collect(Collectors.toList());
+            activityPickListBinding.setAssignedLinesCount(String.valueOf(integers.stream().mapToInt(Integer::intValue).sum()));
             assignedAllocationData = getAllocationDataResponse.getAllocationhddatas().stream().filter(e -> e.getScanstatus().equalsIgnoreCase("Assigned")).collect(Collectors.toList());
             this.allocationhddataList.addAll(assignedAllocationData);
-
             inProgressAllocationData = getAllocationDataResponse.getAllocationhddatas().stream().filter(e -> e.getScanstatus().equalsIgnoreCase("INPROCESS")).collect(Collectors.toList());
             this.allocationhddataList.addAll(inProgressAllocationData);
-
             completedAllocationData = getAllocationDataResponse.getAllocationhddatas().stream().filter(e -> e.getScanstatus().equalsIgnoreCase("Completed")).collect(Collectors.toList());
             this.allocationhddataList.addAll(completedAllocationData);
-
             activityPickListBinding.setAssignedOrdersCount(String.valueOf(allocationhddataList.size()));
             activityPickListBinding.pendingOrdersCount.setText(String.valueOf(assignedAllocationData.size()));
             activityPickListBinding.progressCount.setText(String.valueOf(inProgressAllocationData.size()));
             activityPickListBinding.completecount.setText(String.valueOf(completedAllocationData.size()));
-
-
             pickListAdapter = new PickListAdapter(this, allocationhddataList, this);
             RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);

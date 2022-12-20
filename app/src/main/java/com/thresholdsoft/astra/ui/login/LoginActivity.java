@@ -45,7 +45,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
 
     @Override
     public void onSucessfullValidateResponse(ValidateUserModelResponse validateUserModelResponse) {
-        if (validateUserModelResponse != null) {
+        if (validateUserModelResponse != null) {//allocatedlines
+            getDataManager().setPickerName(validateUserModelResponse.getName());
             if (validateUserModelResponse.getRequeststatus()) {
                 this.loginOtp = validateUserModelResponse.getOtp();
                 this.empRole = validateUserModelResponse.getEmprole();
