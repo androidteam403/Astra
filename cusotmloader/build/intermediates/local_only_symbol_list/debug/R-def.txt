@@ -12,6 +12,7 @@ dimen spot_size
 dimen title_margin
 dimen title_padding
 drawable apollo_circle_logo
+drawable apollo_healthco_logo
 drawable dmax_spots_spot
 drawable ic_launcher
 id dmax_spots_progress

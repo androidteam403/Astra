@@ -76,4 +76,5 @@
     <string name="label_refresh_request">Refresh Request</string>
     <string name="label_expiry_date">Expiry date</string>
     <string name="label_refresh">refresh</string>
+    <string name="label_remarks">Remarks</string>
 </resources>

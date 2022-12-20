@@ -19,7 +19,7 @@
                 android:layout_width="@dimen/dimen100dp"
                 android:layout_height="@dimen/dimen100dp"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/apollo_circle_logo" />
+                android:src="@drawable/apollo_healthco_logo" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -93,7 +93,7 @@
                 android:layout_width="@dimen/dimen100dp"
                 android:layout_height="@dimen/dimen100dp"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/apollo_circle_logo" />
+                android:src="@drawable/apollo_healthco_logo" />
 
             <TextView
                 android:layout_width="wrap_content"

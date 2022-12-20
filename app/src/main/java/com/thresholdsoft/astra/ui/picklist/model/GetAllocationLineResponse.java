@@ -148,6 +148,8 @@ public class GetAllocationLineResponse implements Serializable {
 
         private int rejectedPacks = 0;
 
+        private String remarks;
+
         public boolean isRequestAccepted() {
             return isRequestAccepted;
         }
@@ -170,6 +172,14 @@ public class GetAllocationLineResponse implements Serializable {
 
         public void setRejectedPacks(int rejectedPacks) {
             this.rejectedPacks = rejectedPacks;
+        }
+
+        public String getRemarks() {
+            return remarks;
+        }
+
+        public void setRemarks(String remarks) {
+            this.remarks = remarks;
         }
 
         @SerializedName("scannedqty")

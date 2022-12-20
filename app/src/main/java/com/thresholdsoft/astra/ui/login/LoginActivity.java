@@ -22,6 +22,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     private ActivityLoginBinding activityLoginBinding;
     private String loginOtp;
     private String empRole;
+    private String pickerName;
+    private String dcName;
 
     public static Intent getStartIntent(Context mContext) {
         Intent intent = new Intent(mContext, LoginActivity.class);
@@ -50,12 +52,18 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
             if (validateUserModelResponse.getRequeststatus()) {
                 this.loginOtp = validateUserModelResponse.getOtp();
                 this.empRole = validateUserModelResponse.getEmprole();
+                this.pickerName = validateUserModelResponse.getName();
+                this.dcName = validateUserModelResponse.getDcname();
+
+
                 AppConstants.userId = activityLoginBinding.userId.getText().toString().trim();
                 getDataManager().setEmpId(activityLoginBinding.userId.getText().toString().trim());
                 if (validateUserModelResponse.getIsotpvalidate()) {
                     activityLoginBinding.setIsOtpScreen(true);
                 } else {
                     getDataManager().setEmplRole(empRole);
+                    getDataManager().setPickerName(pickerName);
+                    getDataManager().setDcName(dcName);
                     getDataManager().setIsLoggedIn(true);
                     if (empRole.equals("Supervisor")) {
                         Intent intent = new Intent(this, PickerRequestActivity.class);
@@ -93,6 +101,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     public void onClickSubmit() {
         if (isOtpValidate()) {
             getDataManager().setEmplRole(empRole);
+            getDataManager().setPickerName(pickerName);
+            getDataManager().setDcName(dcName);
             getDataManager().setIsLoggedIn(true);
             if (empRole.equals("Supervisor")) {
                 Intent intent = new Intent(this, PickerRequestActivity.class);

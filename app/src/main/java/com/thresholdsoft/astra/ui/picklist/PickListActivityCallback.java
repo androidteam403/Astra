@@ -89,4 +89,6 @@ public interface PickListActivityCallback {
     void onClickInProcessPickList();
 
     void onClickCompletedPickList();
+
+    void onClickDetailsLayoutEnlarge();
 }

@@ -62,7 +62,7 @@ public class PickerRequestController {
 
     }
 
-    public void getWithHoldApprovalApi(String approvedQty, ArrayList<WithHoldDataResponse.Withholddetail> withholddetailArrayList, int pos, String approvalReasonCode) {
+    public void getWithHoldApprovalApi(String approvedQty, ArrayList<WithHoldDataResponse.Withholddetail> withholddetailArrayList, int pos, String approvalReasonCode, String remarks) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ArrayList<WithHoldApprovalRequest> withHoldApprovalRequestList = new ArrayList<>();
             ActivityUtils.showDialog(mContext, "Please wait.");
@@ -84,6 +84,7 @@ public class PickerRequestController {
             withholddetail.setId((withholddetailArrayList.get(pos).getId()));
             withholddetail.setApprovalqty(withholddetailArrayList.get(pos).getApprovalqty());
             withholddetail.setApprovedqty(Integer.parseInt(approvedQty));
+            withholddetail.setRemarks(remarks);
             withHoldApprovalRequestList.add(withholddetail);
 
 //

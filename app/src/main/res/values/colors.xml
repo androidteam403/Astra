@@ -144,9 +144,10 @@
     <color name="red_transparent_fifty_per">#80FF0000</color>
     <color name="red_transparent_seventy_five_per">#BFFF0000</color>
     <color name="red_transparent_thirty_per">#4DFF0000</color>
+    <color name="bg_color_tab_selected">#28baba</color>
+    <color name="bg_pick_list_details_view">#dcdeea</color>
 
 
 
-    FF8C00
 </resources>
 

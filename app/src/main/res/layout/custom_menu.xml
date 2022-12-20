@@ -23,7 +23,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="0.2"
+                    android:layout_weight="0.25"
                     android:gravity="center">
 
                     <LinearLayout
@@ -37,25 +37,53 @@
                             android:layout_width="@dimen/dimen40dp"
                             android:layout_height="@dimen/dimen40dp"
                             android:contentDescription="@string/app_name"
-                            android:src="@drawable/apollo_circle_logo" />
+                            android:src="@drawable/apollo_healthco_logo" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen5dp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center"
+                            android:text="@{empRole +` : `+ userId +` - ` + pickerName}"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dimen10sp" />
+
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:fontFamily="@font/poppins_bold"-->
+<!--                            android:gravity="center"-->
+<!--                            android:text="@{userId}"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="@dimen/dimen10sp" />-->
+
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:fontFamily="@font/poppins_bold"-->
+<!--                            android:gravity="center"-->
+<!--                            android:text="@{empRole}"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="@dimen/dimen10sp" />-->
+
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:fontFamily="@font/poppins_bold"-->
+<!--                            android:gravity="center"-->
+<!--                            android:text="@{pickerName}"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            android:textSize="@dimen/dimen10sp" />-->
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_bold"
                             android:gravity="center"
-                            android:text="@{userId}"
+                            android:text="@{dcName}"
                             android:textColor="@color/white"
                             android:textSize="@dimen/dimen10sp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_bold"
-                            android:gravity="center"
-                            android:text="@{empRole}"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/dimen10sp" />
 
                     </LinearLayout>
 
@@ -64,27 +92,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight=".8"
+                    android:layout_weight=".75"
                     android:orientation="vertical"
                     android:weightSum="1">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="@{pickerName}"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/dimen10sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="@{dcName}"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/dimen10sp" />
 
                     <LinearLayout
                         android:id="@+id/pick_list_menu"
@@ -287,12 +297,12 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight=".3" />
+                    android:layout_weight=".25" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight=".7"
+                    android:layout_weight=".75"
                     android:orientation="vertical"
                     android:weightSum="1">
 
@@ -356,7 +366,6 @@
             name="empRole"
             type="String" />
 
-
         <variable
             name="pickerName"
             type="String" />
@@ -364,6 +373,7 @@
         <variable
             name="dcName"
             type="String" />
+
 
         <import type="com.thresholdsoft.astra.BuildConfig" />
 

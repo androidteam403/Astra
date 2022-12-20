@@ -29,6 +29,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
     private List<GetAllocationLineResponse.Allocationdetail> allocationdetailListList = new ArrayList<>();
     private boolean isOrderCompleted;
     private boolean isPagination;
+    private boolean isDetailsViewExpanded;
 
     public ItemListAdapter(Context mContext, List<GetAllocationLineResponse.Allocationdetail> allocationdetailList, PickListActivityCallback pickListActivityCallback, boolean isOrderCompleted) {
         this.mContext = mContext;
@@ -45,6 +46,10 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
 
     public void setCompletedStatus(boolean isOrderCompleted) {
         this.isOrderCompleted = isOrderCompleted;
+    }
+
+    public void setIsDetailsViewExpanded(Boolean isDetailsViewExpanded) {
+        this.isDetailsViewExpanded = isDetailsViewExpanded;
     }
 
     public void setIsPagination(boolean isPagination) {
@@ -65,6 +70,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         holder.itemlistAdapterlayoutBinding.setCallback(pickListActivityCallback);
         holder.itemlistAdapterlayoutBinding.setIsOrderCompleted(this.isOrderCompleted);
         holder.itemlistAdapterlayoutBinding.setIsLastPos(isPagination && (allocationdetailList.size() == (position + 1)));
+        holder.itemlistAdapterlayoutBinding.setIsDetailsViewExpanded(isDetailsViewExpanded);
     }
 
     @Override
