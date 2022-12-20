@@ -131,7 +131,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         activityPickListBinding.setAssignedOrdersCount("0");
         activityPickListBinding.setAssignedLines("0");
         activityPickListBinding.setCallback(this);
-
+        activityPickListBinding.setPickListSelectedStatus(0);
         // menu dataset
         activityPickListBinding.setCustomMenuCallback(this);
         activityPickListBinding.setSelectedMenu(1);
@@ -283,13 +283,19 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
             activityPickListBinding.pendingOrdersCount.setText(String.valueOf(assignedAllocationData.size()));
             activityPickListBinding.progressCount.setText(String.valueOf(inProgressAllocationData.size()));
             activityPickListBinding.completecount.setText(String.valueOf(completedAllocationData.size()));
-
-
-            pickListAdapter = new PickListAdapter(this, allocationhddataList, this);
-            RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
-            activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
-            noPickListFound(allocationhddataList.size());
+            if (activityPickListBinding.getPickListSelectedStatus() == 1) {
+                onClickPendingPickList();
+            } else if (activityPickListBinding.getPickListSelectedStatus() == 2) {
+                onClickInProcessPickList();
+            } else if (activityPickListBinding.getPickListSelectedStatus() == 3) {
+                onClickCompletedPickList();
+            } else {
+                pickListAdapter = new PickListAdapter(this, allocationhddataList, this);
+                RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
+                activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
+                noPickListFound(allocationhddataList.size());
+            }
         } else {
             noPickListFound(0);
         }
@@ -513,12 +519,26 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     }
 
     private void setPendingMoveToFirst() {
+//        if (barcodeAllocationDetailList != null && !barcodeAllocationDetailList.isEmpty()) {
+//            if (allocationdetailListForAdapter.contains(barcodeAllocationDetailList.get(0)) && ((barcodeAllocationDetailList.get(0).getAllocatedPackscompleted() - barcodeAllocationDetailList.get(0).getSupervisorApprovedQty()) == 0 || barcodeAllocationDetailList.get(0).isRequestAccepted())) {
+//                allocationdetailListForAdapter.remove(barcodeAllocationDetailList.get(0));
+//                allocationdetailListForAdapter.add(barcodeAllocationDetailList.get(0));
+//            }
+//        }
         if (barcodeAllocationDetailList != null && !barcodeAllocationDetailList.isEmpty()) {
-            if (allocationdetailListForAdapter.contains(barcodeAllocationDetailList.get(0)) && ((barcodeAllocationDetailList.get(0).getAllocatedPackscompleted() - barcodeAllocationDetailList.get(0).getSupervisorApprovedQty()) == 0 || barcodeAllocationDetailList.get(0).isRequestAccepted())) {
-                allocationdetailListForAdapter.remove(barcodeAllocationDetailList.get(0));
-                allocationdetailListForAdapter.add(barcodeAllocationDetailList.get(0));
+            if (allocationdetailList.contains(barcodeAllocationDetailList.get(0)) && ((barcodeAllocationDetailList.get(0).getAllocatedPackscompleted() - barcodeAllocationDetailList.get(0).getSupervisorApprovedQty()) == 0 || barcodeAllocationDetailList.get(0).isRequestAccepted())) {
+                allocationdetailList.remove(barcodeAllocationDetailList.get(0));
+                allocationdetailList.add(barcodeAllocationDetailList.get(0));
             }
         }
+        activityPickListBinding.setIsNaxtPage(endIndex != allocationdetailList.size());
+        activityPickListBinding.setIsPrevtPage(startIndex != 0);
+        allocationdetailListForAdapter = allocationdetailList.subList(startIndex, endIndex);
+        itemListAdapter.setAllocationedetailLists(allocationdetailListForAdapter);
+        itemListAdapter.notifyDataSetChanged();
+        activityPickListBinding.listitemRecycleview.scrollToPosition(0);
+        activityPickListBinding.setStartToEndPageNo(startIndex + 1 + "-" + endIndex);
+
     }
 
     private void insertOrUpdateAllocationLineList() {
@@ -1092,7 +1112,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
 
     @Override
     public void onClickNextPage() {
-        if (allocationdetailList.size() - 1 > endIndex) {
+        if (allocationdetailList.size() > endIndex) {
             startIndex = startIndex + pageSize;
             if (allocationdetailList != null && allocationdetailList.size() >= endIndex + pageSize) {
                 endIndex = endIndex + pageSize;
@@ -1114,8 +1134,12 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
 
     @Override
     public void onClickRefresh() {
-        finish();
-        startActivity(getIntent());
+        activityPickListBinding.clickOrderToScan.setVisibility(View.VISIBLE);
+        activityPickListBinding.layoutPicklist.setVisibility(View.GONE);
+        activityPickListBinding.setAllocationData(null);
+        getController().getAllocationDataApiCall(false, false);
+//        finish();
+//        startActivity(getIntent());
     }
 
     @Override

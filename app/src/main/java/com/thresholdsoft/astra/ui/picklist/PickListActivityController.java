@@ -23,6 +23,9 @@ import com.thresholdsoft.astra.utils.NetworkUtils;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
+import java.util.Comparator;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -98,6 +101,15 @@ public class PickListActivityController {
 //                                response.body().getAllocationdetails().get(i).setIsbulkscanenable(true);
 
                             }
+
+                            Collections.sort(response.body().getAllocationdetails(), new Comparator<GetAllocationLineResponse.Allocationdetail>(){
+                                public int compare(GetAllocationLineResponse.Allocationdetail s1, GetAllocationLineResponse.Allocationdetail s2) {
+                                    return s1.getRackshelf().compareToIgnoreCase(s2.getRackshelf());
+                                }
+                            });
+
+
+
                             mCallback.onSuccessGetAllocationLineApi(response.body());
                         } else {
                             mCallback.noItemListFound(0);

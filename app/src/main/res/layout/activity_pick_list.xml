@@ -131,7 +131,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".326666667"
-                        android:background="@{pickListSelectedStatus == 3 ? @color/very_light_grey : @color/transperancy}"
+                        android:background="@{pickListSelectedStatus == 1 ? @color/very_light_grey : @color/transperancy}"
                         android:gravity="center"
                         android:onClick="@{()-> callback.onClickPendingPickList()}"
 
@@ -365,19 +365,28 @@
 
                             </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/status"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="50dp"
-                                android:layout_marginTop="22dp"
-                                android:fontFamily="@font/poppins_semibold"
-                                android:paddingStart="5dp"
-                                android:paddingTop="4dp"
-                                android:paddingEnd="5dp"
-                                android:text="@{orderStatusModel.status}"
-                                android:textColor="@{orderStatusModel.status.equals(`INPROCESS`) ? @color/inprogress_overallstatus_color : orderStatusModel.status.equals(`Assigned`) ? @color/color_takeprint : @color/green}"
-                                android:textSize="@dimen/dimen10sp" />
+                                android:layout_marginStart="@dimen/dimen30dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="Status"
+                                    android:textSize="@dimen/dimen10sp" />
+
+                                <TextView
+                                    android:id="@+id/status"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="@{orderStatusModel.status}"
+                                    android:textColor="@{orderStatusModel.status.equals(`INPROCESS`) ? @color/inprogress_overallstatus_color : orderStatusModel.status.equals(`Assigned`) ? @color/color_takeprint : @color/green}"
+                                    android:textSize="@dimen/dimen10sp" />
+                            </LinearLayout>
                             <!--                            android:background="@drawable/background_button"-->
                         </LinearLayout>
 
@@ -1696,12 +1705,18 @@
                                                             android:orientation="vertical"
                                                             android:visibility="@{barcodeScannedItem.isRequestAccepted ? view.VISIBLE : view.GONE}">
 
+                                                            <TextView
+                                                                android:layout_width="wrap_content"
+                                                                android:layout_height="wrap_content"
+                                                                android:fontFamily="@font/poppins_semibold"
+                                                                android:text="@string/label_remarks"
+                                                                android:textSize="@dimen/dimen8sp" />
 
                                                             <TextView
                                                                 android:layout_width="wrap_content"
                                                                 android:layout_height="wrap_content"
                                                                 android:fontFamily="@font/poppins_semibold"
-                                                                android:text="Request Approved for this item."
+                                                                android:text="@{barcodeScannedItem.remarks}"
                                                                 android:textColor="@color/green"
                                                                 android:textSize="@dimen/dimen8sp"
                                                                 android:textStyle="bold" />
@@ -1715,12 +1730,18 @@
                                                             android:orientation="vertical"
                                                             android:visibility="@{barcodeScannedItem.isRequestRejected ? view.VISIBLE : view.GONE}">
 
+                                                            <TextView
+                                                                android:layout_width="wrap_content"
+                                                                android:layout_height="wrap_content"
+                                                                android:fontFamily="@font/poppins_semibold"
+                                                                android:text="@string/label_remarks"
+                                                                android:textSize="@dimen/dimen8sp" />
 
                                                             <TextView
                                                                 android:layout_width="wrap_content"
                                                                 android:layout_height="wrap_content"
                                                                 android:fontFamily="@font/poppins_semibold"
-                                                                android:text="Request rejected for this item."
+                                                                android:text="@{barcodeScannedItem.remarks}"
                                                                 android:textColor="@color/red"
                                                                 android:textSize="@dimen/dimen8sp"
                                                                 android:textStyle="bold" />
