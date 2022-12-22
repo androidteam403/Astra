@@ -199,6 +199,8 @@
                 android:hint="Remarks"
                 android:importantForAutofill="no"
                 android:paddingStart="@dimen/dimen10sp"
+                android:maxLength="50"
+
                 android:paddingEnd="@dimen/dimen10sp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"

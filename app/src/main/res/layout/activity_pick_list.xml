@@ -657,7 +657,7 @@
                                 android:fontFamily="@font/poppins_semibold"
                                 android:gravity="center_horizontal"
                                 android:stateListAnimator="@null"
-                                android:text="PICKED"
+                                android:text="SCANNED"
                                 android:textAlignment="center"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/dimen8sp" />
@@ -1041,7 +1041,7 @@
                                     android:layout_height="@dimen/dimen40dp"
                                     android:hint="Search by Barcode or Item ID"
                                     android:importantForAutofill="no"
-                                    android:inputType="number"
+                                    android:inputType="text"
                                     android:text=""
                                     android:textSize="@dimen/dimen8sp" />
 
@@ -1276,7 +1276,7 @@
                                                             android:layout_height="wrap_content"
                                                             android:layout_weight="1"
                                                             android:fontFamily="@font/poppins_semibold"
-                                                            android:text="Item Number"
+                                                            android:text="Product code"
                                                             android:textSize="@dimen/dimen8sp" />
 
                                                         <TextView
@@ -1479,7 +1479,7 @@
                                                                 android:layout_height="wrap_content"
                                                                 android:fontFamily="@font/poppins_semibold"
                                                                 android:text="@{@string/price_format(barcodeScannedItem.mrp)}"
-                                                                android:textColor="@color/black"
+                                                                android:textColor="#007d9d"
                                                                 android:textSize="@dimen/dimen8sp"
                                                                 android:textStyle="bold" />
                                                         </LinearLayout>
@@ -1984,7 +1984,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_semibold"
-                                android:text="TOTAL LIST ITEMS"
+                                android:text="Total Quantity"
                                 android:textSize="@dimen/dimen8sp"
                                 android:textStyle="bold" />
 

@@ -32,7 +32,7 @@ public interface PickListActivityCallback {
 
     void onClickProcessDocument();
 
-    void onClickItemListItem(GetAllocationLineResponse.Allocationdetail allocationdetail);
+    void onClickItemListItem(GetAllocationLineResponse.Allocationdetail allocationdetail,int position);
 
     void onSuccessGetModeofDeliveryApi(GetModeofDeliveryResponse getModeofDeliveryResponse);
 
@@ -50,7 +50,7 @@ public interface PickListActivityCallback {
 
     void onClickDismissSupervisorHoldRemarksDialog();
 
-    void onClickResetItemDetails(GetAllocationLineResponse.Allocationdetail allocationdetail);
+    void onClickResetItemDetails(GetAllocationLineResponse.Allocationdetail allocationdetail,int pos);
 
     void onClickAllowResetItem(GetAllocationLineResponse.Allocationdetail allocationdetail);
 

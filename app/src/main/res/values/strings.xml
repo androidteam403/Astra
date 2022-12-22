@@ -69,7 +69,7 @@
     <string name="label_user_id">User ID</string>
     <string name="label_login_otp">login otp</string>
     <string name="label_enter_4_digit_otp">Enter 4 digit otp</string>
-    <string name="label_search">search</string>
+    <string name="label_search">Scan</string>
     <string name="label_allocated_qty">Allocated Qty.</string>
     <string name="label_allocated_packs">Allocated Packs.</string>
     <string name="label_required_packs">Required Packs</string>

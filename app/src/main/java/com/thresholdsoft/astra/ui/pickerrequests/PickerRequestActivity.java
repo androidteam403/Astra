@@ -163,35 +163,13 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         //menu dataset
         activityPickerRequestsBinding.setSelectedMenu(1);
         activityPickerRequestsBinding.setCustomMenuSupervisorCallback(this);
-        activityPickerRequestsBinding.setUserId(getSessionManager().getEmplId());
-        activityPickerRequestsBinding.setEmpRole(getSessionManager().getEmplRole());
+//        activityPickerRequestsBinding.setUserId(getSessionManager().getEmplId());
+//        activityPickerRequestsBinding.setEmpRole(getSessionManager().getEmplRole());
         activityPickerRequestsBinding.setPickerName(getSessionManager().getPickerName());
-        activityPickerRequestsBinding.setDcName(getSessionManager().getDcName());
+        activityPickerRequestsBinding.setDcName(getSessionManager().getDcName().substring(getSessionManager().getDcName().lastIndexOf("-")+1));
 
         getController().getWithHoldApi();
         parentLayoutTouchListener();
-//        names.add("a");
-//        names.add("a");
-
-//
-//        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this);
-//        CompleteListAdapter completeListAdapter = new CompleteListAdapter(this, names);
-////
-////        activityPickerRequestsBinding.completlistrecycleview.setLayoutManager(linearLayoutManager1);
-////        activityPickerRequestsBinding.completlistrecycleview.setAdapter(completeListAdapter);
-//
-//
-//        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(this);
-//        PickListAdapter pickListAdapter = new PickListAdapter(this, allocationhddataList, null);
-////
-//        activityPickerRequestsBinding.pickerlistrecycleview.setLayoutManager(linearLayoutManager2);
-//        activityPickerRequestsBinding.pickerlistrecycleview.setAdapter(pickListAdapter);
-
-//
-//        LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(this);
-//
-//        ApproveRequestListAdapter approveRequestListAdapter = new ApproveRequestListAdapter(this, names);
-
 
     }
 
@@ -208,7 +186,6 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
                 PickerListAdapter pickListHistoryAdapter = new PickerListAdapter(this, withholddetailList, this);
                 activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
                 activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
-
                 noPickerRequestsFound(withholddetailList.size());
             } else {
                 noPickerRequestsFound(0);

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -68,6 +69,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         GetAllocationLineResponse.Allocationdetail allocationdetail = allocationdetailList.get(position);
         holder.itemlistAdapterlayoutBinding.setAllocationdetail(allocationdetail);
         holder.itemlistAdapterlayoutBinding.setCallback(pickListActivityCallback);
+        holder.itemlistAdapterlayoutBinding.setPosition(position);
         holder.itemlistAdapterlayoutBinding.setIsOrderCompleted(this.isOrderCompleted);
         holder.itemlistAdapterlayoutBinding.setIsLastPos(isPagination && (allocationdetailList.size() == (position + 1)));
         holder.itemlistAdapterlayoutBinding.setIsDetailsViewExpanded(isDetailsViewExpanded);

@@ -61,7 +61,7 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".5"
+                            android:layout_weight=".4"
                             android:orientation="horizontal">
 
                             <TextView
@@ -85,14 +85,14 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".5"
+                            android:layout_weight=".6"
                             android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_semibold"
-                                android:text="REQUIRE : "
+                                android:text="Allocated lines : "
                                 android:textSize="@dimen/dimen8sp" />
 
                             <TextView
@@ -118,7 +118,7 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".5">
+                            android:layout_weight=".49">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -140,13 +140,13 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".5">
+                            android:layout_weight=".51">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_semibold"
-                                android:text="COLLECTED : "
+                                android:text="Scanned lines : "
                                 android:textSize="@dimen/dimen8sp" />
 
                             <TextView

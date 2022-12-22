@@ -45,7 +45,7 @@
                             android:layout_marginTop="@dimen/dimen5dp"
                             android:fontFamily="@font/poppins_bold"
                             android:gravity="center"
-                            android:text="@{empRole +` : `+ userId +` - ` + pickerName}"
+                            android:text="@{pickerName}"
                             android:textColor="@color/white"
                             android:textSize="@dimen/dimen10sp" />
 

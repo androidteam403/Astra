@@ -27,7 +27,9 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.util.StringUtil;
 
+import com.google.zxing.common.StringUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.thresholdsoft.astra.R;
@@ -73,6 +75,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import retrofit2.http.GET;
+
 public class PickListActivity extends BaseActivity implements PickListActivityCallback, CustomMenuCallback, Filterable {
     // made changes by naveen
     private ActivityPickListBinding activityPickListBinding;
@@ -83,7 +87,8 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     private List<GetAllocationDataResponse.Allocationhddata> assignedAllocationData;
     private List<GetAllocationDataResponse.Allocationhddata> inProgressAllocationData;
     private List<GetAllocationDataResponse.Allocationhddata> completedAllocationData;
-
+    List<GetAllocationLineResponse.Allocationdetail> allocationdetailListSort = new ArrayList<>();
+    List<GetAllocationLineResponse.Allocationdetail> pendingAllocationdetailList=new ArrayList<>();
     //    private GetAllocationDataResponse.Allocationhddata allocationhddata;
     private List<GetAllocationLineResponse.Allocationdetail> allocationdetailList;
     private List<GetAllocationLineResponse.Allocationdetail> barcodeAllocationDetailList;
@@ -106,6 +111,8 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     private List<GetAllocationLineResponse.Allocationdetail> allocationdetailListList = new ArrayList<>();
     List<GetAllocationLineResponse.Allocationdetail> allocationdetailListForAdapter;
 
+    private int position;
+    Boolean completeStatus=false;
 
     //For pagination
     private int startIndex = 0;
@@ -127,6 +134,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     }
 
     private void setUp() {
+        //
 //        this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
         activityPickListBinding.setAssignedOrdersCount("0");
         activityPickListBinding.setAssignedLines("0");
@@ -135,10 +143,12 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         // menu dataset
         activityPickListBinding.setCustomMenuCallback(this);
         activityPickListBinding.setSelectedMenu(1);
-        activityPickListBinding.setUserId(getSessionManager().getEmplId());
-        activityPickListBinding.setEmpRole(getSessionManager().getEmplRole());
+//        activityPickListBinding.setUserId(getSessionManager().getEmplId());
+//        activityPickListBinding.setEmpRole(getSessionManager().getEmplRole());
         activityPickListBinding.setPickerName(getSessionManager().getPickerName());
-        activityPickListBinding.setDcName(getSessionManager().getDcName());
+        activityPickListBinding.setDcName(getSessionManager().getDcName().substring(getSessionManager().getDcName().lastIndexOf("-")+1));
+
+//                getSessionManager().getDcName());
 
         if (Build.VERSION.SDK_INT >= 21) {
             activityPickListBinding.barcodeScanEdittext.setShowSoftInputOnFocus(false);
@@ -346,9 +356,8 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
                 }
             }
 
-            List<GetAllocationLineResponse.Allocationdetail> allocationdetailListSort = new ArrayList<>();
 
-            List<GetAllocationLineResponse.Allocationdetail> pendingAllocationdetailList = getAllocationLineResponse.getAllocationdetails().stream().filter(e -> (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) != 0 && !e.isRequestAccepted()).collect(Collectors.toList());
+         pendingAllocationdetailList = getAllocationLineResponse.getAllocationdetails().stream().filter(e -> (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) != 0 && !e.isRequestAccepted()).collect(Collectors.toList());
             allocationdetailListSort.addAll(pendingAllocationdetailList);
 
             List<GetAllocationLineResponse.Allocationdetail> completedAllocationdetailList = getAllocationLineResponse.getAllocationdetails().stream().filter(e -> ((e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) == 0 || e.isRequestAccepted())).collect(Collectors.toList());
@@ -485,6 +494,10 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
                 int scannedQty = (barcodeAllocationDetailList.get(0).getAllocatedqty() / barcodeAllocationDetailList.get(0).getAllocatedpacks()) * (editedScannedPack);
                 barcodeAllocationDetailList.get(0).setScannedqty(scannedQty);//barcodeAllocationDetailList.get(0).getScannedqty() + 1
                 int shortScannedQty = barcodeAllocationDetailList.get(0).getAllocatedqty() - (barcodeAllocationDetailList.get(0).getAllocatedqty() / barcodeAllocationDetailList.get(0).getAllocatedpacks()) * (editedScannedPack);// barcodeAllocationDetailList.get(0).getAllocatedPackscompleted();
+//                itemListAdapter.setCompletedStatus(true);
+//                itemListAdapter.notifyDataSetChanged();
+//                android:visibility="@{isOrderCompleted ? view.GONE : (allocationdetail.allocatedPackscompleted - allocationdetail.supervisorApprovedQty) == 0 &amp;&amp; (allocationdetail.allocatedpacks != allocationdetail.supervisorApprovedQty)  ? view.VISIBLE : view.GONE}">
+
                 barcodeAllocationDetailList.get(0).setShortqty(shortScannedQty);
                 barcodeAllocationDetailList.get(0).setScannedDateTime(this.scanStartDateTime);
                 activityPickListBinding.setBarcodeScannedItem(barcodeAllocationDetailList.get(0));
@@ -500,11 +513,15 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
                 pickListAdapter.notifyDataSetChanged();
             }
         } else if (status.equals("COMPLETED")) {
+
+
             activityPickListBinding.getOrderStatusModel().setStatus("COMPLETED");
             activityPickListBinding.setOrderStatusModel(activityPickListBinding.getOrderStatusModel());
             this.orderCompletedDateTime = CommonUtils.getCurrentDateAndTime();
             insertOrUpdateOrderStatusTimeDateEntity();
             itemListAdapter.setCompletedStatus(true);
+
+//             (allocationdetail.allocatedPackscompleted - allocationdetail.supervisorApprovedQty) == 0 &amp;&amp; (allocationdetail.allocatedpacks != allocationdetail.supervisorApprovedQty)
             setPendingMoveToFirst();
             itemListAdapter.notifyDataSetChanged();
             getController().getAllocationDataApiCall(false, true);
@@ -519,23 +536,55 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     }
 
     private void setPendingMoveToFirst() {
+
 //        if (barcodeAllocationDetailList != null && !barcodeAllocationDetailList.isEmpty()) {
 //            if (allocationdetailListForAdapter.contains(barcodeAllocationDetailList.get(0)) && ((barcodeAllocationDetailList.get(0).getAllocatedPackscompleted() - barcodeAllocationDetailList.get(0).getSupervisorApprovedQty()) == 0 || barcodeAllocationDetailList.get(0).isRequestAccepted())) {
 //                allocationdetailListForAdapter.remove(barcodeAllocationDetailList.get(0));
 //                allocationdetailListForAdapter.add(barcodeAllocationDetailList.get(0));
 //            }
 //        }
+
+
+
         if (barcodeAllocationDetailList != null && !barcodeAllocationDetailList.isEmpty()) {
             if (allocationdetailList.contains(barcodeAllocationDetailList.get(0)) && ((barcodeAllocationDetailList.get(0).getAllocatedPackscompleted() - barcodeAllocationDetailList.get(0).getSupervisorApprovedQty()) == 0 || barcodeAllocationDetailList.get(0).isRequestAccepted())) {
-                allocationdetailList.remove(barcodeAllocationDetailList.get(0));
-                allocationdetailList.add(barcodeAllocationDetailList.get(0));
+
+//            activityPickListBinding.listitemRecycleview.setHasFixedSize(true);
+//            activityPickListBinding.listitemRecycleview.setItemViewCacheSize(10);
+//            activityPickListBinding.listitemRecycleview.setDrawingCacheEnabled(true);
+//            activityPickListBinding.listitemRecycleview.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
+                    allocationdetailList.add(barcodeAllocationDetailList.get(0));
+                    allocationdetailList.remove(barcodeAllocationDetailList.get(0));
+
+
+
+
+
+
+
+
+
             }
         }
+
+
         activityPickListBinding.setIsNaxtPage(endIndex != allocationdetailList.size());
         activityPickListBinding.setIsPrevtPage(startIndex != 0);
         allocationdetailListForAdapter = allocationdetailList.subList(startIndex, endIndex);
         itemListAdapter.setAllocationedetailLists(allocationdetailListForAdapter);
         itemListAdapter.notifyDataSetChanged();
+        if (completeStatus){
+            completeStatus=false;
+            allocationdetailListForAdapter = pendingAllocationdetailList.subList(startIndex, endIndex);
+            itemListAdapter.setAllocationedetailLists(pendingAllocationdetailList);
+            itemListAdapter.notifyDataSetChanged();
+        }else {
+            allocationdetailListForAdapter = allocationdetailList.subList(startIndex, endIndex);
+            itemListAdapter.setAllocationedetailLists(allocationdetailListForAdapter);
+            itemListAdapter.notifyDataSetChanged();
+        }
+
         activityPickListBinding.listitemRecycleview.scrollToPosition(0);
         activityPickListBinding.setStartToEndPageNo(startIndex + 1 + "-" + endIndex);
 
@@ -571,7 +620,8 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     }
 
     @Override
-    public void onClickItemListItem(GetAllocationLineResponse.Allocationdetail allocationdetail) {
+    public void onClickItemListItem(GetAllocationLineResponse.Allocationdetail allocationdetail,int pos) {
+        position=pos;
         activityPickListBinding.setBarcodeScannedItem(allocationdetail);
         for (GetAllocationLineResponse.Allocationdetail a : allocationdetailList) {
             a.setSelected((a.getItembarcode().equalsIgnoreCase(allocationdetail.getItembarcode()) && a.getId() == allocationdetail.getId()));
@@ -782,7 +832,8 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     }
 
     @Override
-    public void onClickResetItemDetails(GetAllocationLineResponse.Allocationdetail allocationdetails) {
+    public void onClickResetItemDetails(GetAllocationLineResponse.Allocationdetail allocationdetails,int pos) {
+
         itemResetDialog = new Dialog(this);
         DialogItemResetBinding dialogItemResetBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_item_reset, null, false);
         itemResetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -806,6 +857,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
 
         barcodeAllocationDetailList.get(0).setScannedDateTime(CommonUtils.getCurrentDateAndTime());
         activityPickListBinding.setBarcodeScannedItem(barcodeAllocationDetailList.get(0));
+        completeStatus=true;
         setPendingMoveToFirst();
         itemListAdapter.notifyDataSetChanged();
         insertOrUpdateAllocationLineList();

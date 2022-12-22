@@ -30,17 +30,7 @@ public class ValidateUserModelResponse implements Serializable {
     @Expose
     private String dcname;
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @SerializedName("name")
-    @Expose
-    private String name;
 
     public Boolean getRequeststatus() {
         return requeststatus;

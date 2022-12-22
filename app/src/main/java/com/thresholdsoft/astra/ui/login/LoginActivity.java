@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 
+import com.google.zxing.common.StringUtils;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityLoginBinding;

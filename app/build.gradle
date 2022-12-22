@@ -66,6 +66,7 @@ dependencies {
 
     //OkHttpProfiler
     implementation 'com.localebro:okhttpprofiler:1.0.8'
+    implementation 'org.apache.commons:commons-collections4:4.4'
 
 
     implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
