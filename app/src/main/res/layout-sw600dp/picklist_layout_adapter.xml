@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{()-> callback.onClickPickListItem(model)}">
+<!--        android:alpha="@{model.scanstatus.equalsIgnoreCase(`Completed`) ? .5f : 1f}"-->
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen5dp"
+            android:layout_marginTop="@dimen/dimen5dp"
+            android:layout_marginEnd="@dimen/dimen5dp"
+            android:layout_marginBottom="5dp"
+            android:visibility="visible"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="7dp">
+
+            <LinearLayout
+                android:id="@+id/orderHead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@{model.isSelected ? @drawable/bg_order_selected : model.scanstatus.equalsIgnoreCase(`INPROCESS`) ? @drawable/bg_inprogress_order : model.scanstatus.equalsIgnoreCase(`Assigned`) ? @drawable/bg_assigned_order : @drawable/bg_completed_order}"
+                android:orientation="vertical"
+                android:padding="@dimen/dimen5dp">
+
+                <LinearLayout
+                    android:id="@+id/pendingLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:id="@+id/order_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="@{model.purchreqid}"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen14sp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".4"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="AREA : "
+                                android:textSize="@dimen/dimen10sp" />
+
+                            <TextView
+                                android:id="@+id/area"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@{model.areaid}"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen10sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".6"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="Allocated lines : "
+                                android:textSize="@dimen/dimen10sp" />
+
+                            <TextView
+                                android:id="@+id/require"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@{String.valueOf(model.allocatedlines)}"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen10sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".49">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="ROUTE : "
+                                android:textSize="@dimen/dimen10sp" />
+
+                            <TextView
+                                android:id="@+id/route"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@{model.routecode}"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen10sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".51">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="Scanned lines : "
+                                android:textSize="@dimen/dimen10sp" />
+
+                            <TextView
+                                android:id="@+id/collected"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@{String.valueOf(model.collected)}"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen10sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:gravity="center_horizontal"
+                            android:text="Status : "
+                            android:textAlignment="center"
+                            android:textSize="@dimen/dimen10sp" />
+
+                        <TextView
+                            android:id="@+id/status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:gravity="center_horizontal"
+                            android:text="@{model.scanstatus}"
+                            android:textAlignment="center"
+                            android:textColor="@{model.scanstatus.equalsIgnoreCase(`INPROCESS`) ? @color/material_amber_accent_700 : model.scanstatus.equalsIgnoreCase(`Assigned`) ? @color/black : @color/green}"
+                            android:textSize="@dimen/dimen10sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:gravity="end"
+                        android:orientation="horizontal">
+
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen15dp"
+                            android:layout_height="@dimen/dimen15dp"
+                            android:background="@{model.scanstatus.equalsIgnoreCase(`INPROCESS`) ? @color/inprogress_color : @color/transperancy}"
+                            android:contentDescription="@string/app_name"
+                            android:src="@{model.scanstatus.equalsIgnoreCase(`INPROCESS`) ? @drawable/ic_baseline_thermostat_24 : @drawable/check_mark_icon}" />
+
+                        <TextView
+                            android:id="@+id/time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:gravity="center_horizontal"
+                            android:text="@{statusDateTime}"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen10sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse.Allocationhddata" />
+
+        <variable
+            name="callback"
+            type="com.thresholdsoft.astra.ui.picklist.PickListActivityCallback" />
+
+        <variable
+            name="statusDateTime"
+            type="String" />
+
+        <import type="com.thresholdsoft.astra.utils.CommonUtils" />
+    </data>
+</layout>
+
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<layout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:app="http://schemas.android.com/apk/res-auto">-->
+
+    <!--    <RelativeLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:onClick="@{()-> callback.onClickPickListItem(model)}">-->
+
+    <!--        <androidx.cardview.widget.CardView-->
+    <!--            android:id="@+id/cardview"-->
+    <!--            android:layout_width="225dp"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginStart="10dp"-->
+    <!--            android:layout_marginTop="5dp"-->
+    <!--            android:layout_marginEnd="10dp"-->
+    <!--            android:layout_marginBottom="3dp"-->
+    <!--            android:visibility="visible"-->
+    <!--            app:cardCornerRadius="6sp"-->
+    <!--            app:cardElevation="7dp">-->
+
+    <!--            <LinearLayout-->
+    <!--                android:id="@+id/orderHead"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginBottom="5dp"-->
+    <!--                android:orientation="vertical">-->
+
+    <!--                <LinearLayout-->
+    <!--                    android:id="@+id/pendingLayout"-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:background="@color/white"-->
+    <!--                    android:orientation="vertical">-->
+
+    <!--                    <LinearLayout-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_marginStart="20dp"-->
+    <!--                        android:layout_marginLeft="10dp"-->
+    <!--                        android:layout_marginTop="10dp"-->
+    <!--                        android:layout_marginEnd="5dp"-->
+    <!--                        android:layout_marginRight="5dp"-->
+    <!--                        android:orientation="horizontal">-->
+
+
+    <!--                        <TextView-->
+    <!--                            android:id="@+id/order_id"-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:fontFamily="@font/poppins_semibold"-->
+    <!--                            android:text="@{model.purchreqid}"-->
+    <!--                            android:textColor="@color/black"-->
+    <!--                            android:textSize="12sp" />-->
+
+
+    <!--                    </LinearLayout>-->
+
+    <!--                    <LinearLayout-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_marginStart="20dp"-->
+    <!--                        android:layout_marginTop="4dp"-->
+    <!--                        android:layout_marginEnd="5dp"-->
+    <!--                        android:layout_marginRight="5dp"-->
+    <!--                        android:orientation="horizontal">-->
+
+
+    <!--                        <TextView-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:fontFamily="@font/poppins_semibold"-->
+    <!--                            android:text="AREA : "-->
+    <!--                            android:textSize="12sp" />-->
+
+    <!--                        <TextView-->
+    <!--                            android:id="@+id/area"-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:fontFamily="@font/poppins_semibold"-->
+    <!--                            android:text="@{model.areaid}"-->
+    <!--                            android:textColor="@color/black"-->
+    <!--                            android:textSize="12sp"-->
+    <!--                            android:textStyle="bold" />-->
+
+    <!--                        <TextView-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:layout_marginLeft="45dp"-->
+    <!--                            android:fontFamily="@font/poppins_semibold"-->
+    <!--                            android:text="REQUIRE : "-->
+    <!--                            android:textSize="13sp" />-->
+
+    <!--                        <TextView-->
+    <!--                            android:id="@+id/require"-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:fontFamily="@font/poppins_semibold"-->
+    <!--                            android:text="-"-->
+    <!--                            android:textColor="@color/black"-->
+    <!--                            android:textSize="12sp"-->
+    <!--                            android:textStyle="bold" />-->
+
+    <!--                    </LinearLayout>-->
+
+    <!--                    <LinearLayout-->
+
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_marginStart="20dp"-->
+    <!--                        android:layout_marginLeft="10dp"-->
+    <!--                        android:layout_marginTop="4dp"-->
+    <!--                        android:layout_marginEnd="5dp"-->
+    <!--                        android:layout_marginRight="5dp"-->
+    <!--                        android:orientation="horizontal">-->
+
+    <!--                        <TextView-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:fontFamily="@font/poppins_semibold"-->
+    <!--                            android:text="ROUTE : "-->
+    <!--                            android:textSize="12sp" />-->
+
+    <!--                        <TextView-->
+    <!--                            android:id="@+id/route"-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:fontFamily="@font/poppins_semibold"-->
+    <!--                            android:text="@{model.routecode}"-->
+    <!--                            android:textColor="@color/black"-->
+    <!--                            android:textSize="12sp"-->
+    <!--                            android:textStyle="bold" />-->
+
+    <!--                        <TextView-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:layout_marginLeft="38dp"-->
+    <!--                            android:fontFamily="@font/poppins_semibold"-->
+    <!--                            android:text="COLLECTED : "-->
+    <!--                            android:textSize="12sp" />-->
+
+    <!--                        <TextView-->
+    <!--                            android:id="@+id/collected"-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:fontFamily="@font/poppins_semibold"-->
+    <!--                            android:text="-"-->
+    <!--                            android:textColor="@color/black"-->
+    <!--                            android:textSize="12sp"-->
+    <!--                            android:textStyle="bold" />-->
+
+    <!--                    </LinearLayout>-->
+
+    <!--                    <LinearLayout-->
+
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_marginStart="8dp"-->
+    <!--                        android:layout_marginTop="4dp"-->
+    <!--                        android:layout_marginEnd="3dp"-->
+    <!--                        android:layout_marginRight="5dp"-->
+    <!--                        android:orientation="horizontal">-->
+
+
+    <!--                        <TextView-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:fontFamily="@font/poppins_semibold"-->
+    <!--                            android:gravity="center_horizontal"-->
+
+    <!--                            android:text="Status: "-->
+    <!--                            android:textAlignment="center"-->
+    <!--                            android:textSize="12sp" />-->
+
+    <!--                        <TextView-->
+    <!--                            android:id="@+id/status"-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:layout_marginStart="5dp"-->
+    <!--                            android:layout_marginLeft="5dp"-->
+    <!--                            android:fontFamily="@font/poppins_semibold"-->
+    <!--                            android:gravity="center_horizontal"-->
+    <!--                            android:text="@{model.scanstatus}"-->
+    <!--                            android:textAlignment="center"-->
+    <!--                            android:textColor="@{model.scanstatus.equalsIgnoreCase(`INPROCESS`) ? @color/material_amber_accent_700 : model.scanstatus.equalsIgnoreCase(`Assigned`) ? @color/black : @color/green}"-->
+    <!--                            android:textSize="12sp" />-->
+
+    <!--                    </LinearLayout>-->
+
+    <!--                    <LinearLayout-->
+
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_marginStart="105dp"-->
+    <!--                        android:layout_marginLeft="10dp"-->
+    <!--                        android:layout_marginEnd="5dp"-->
+    <!--                        android:layout_marginRight="5dp"-->
+    <!--                        android:orientation="horizontal">-->
+
+
+    <!--                        <ImageView-->
+    <!--                            android:layout_width="22dp"-->
+    <!--                            android:layout_height="22dp"-->
+    <!--                            android:background="@{model.scanstatus.equalsIgnoreCase(`INPROCESS`) ? @color/inprogress_color : @color/transperancy}"-->
+    <!--                            android:contentDescription="@string/app_name"-->
+    <!--                            android:src="@{model.scanstatus.equalsIgnoreCase(`INPROCESS`) ? @drawable/ic_baseline_thermostat_24 : @drawable/check_mark_icon}" />-->
+
+    <!--                        <TextView-->
+    <!--                            android:id="@+id/time"-->
+    <!--                            android:layout_width="wrap_content"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:layout_marginStart="5dp"-->
+    <!--                            android:layout_marginLeft="5dp"-->
+    <!--                            android:fontFamily="@font/poppins_semibold"-->
+    <!--                            android:gravity="center_horizontal"-->
+    <!--                            android:text="@{model.transdate}"-->
+    <!--                            android:textAlignment="center"-->
+    <!--                            android:textColor="@color/black"-->
+    <!--                            android:textSize="13sp" />-->
+
+    <!--                    </LinearLayout>-->
+
+    <!--                </LinearLayout>-->
+    <!--            </LinearLayout>-->
+    <!--        </androidx.cardview.widget.CardView>-->
+    <!--    </RelativeLayout>-->
+
+    <!--    <data>-->
+
+    <!--        <variable-->
+    <!--            name="model"-->
+    <!--            type="com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse.Allocationhddata" />-->
+
+    <!--        <variable-->
+    <!--            name="callback"-->
+    <!--            type="com.thresholdsoft.astra.ui.picklist.PickListActivityCallback" />-->
+    <!--    </data>-->
+
+    <!--</layout>-->

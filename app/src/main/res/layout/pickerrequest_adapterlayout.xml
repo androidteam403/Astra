@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen5dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="@dimen/dimen5dp"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".95"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".18"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Purchase Requisition"
+                        android:textColor="@color/bluetooth_header_bg"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".35"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Product name"
+                        android:textColor="@color/bluetooth_header_bg"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".08"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Allocated"
+                        android:textColor="@color/bluetooth_header_bg"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".08"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Scanned"
+                        android:textColor="@color/bluetooth_header_bg"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".08"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Short"
+                        android:textColor="@color/bluetooth_header_bg"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".1"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Approval"
+                        android:textColor="@color/bluetooth_header_bg"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".13"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Requested by "
+                        android:textColor="@color/bluetooth_header_bg"
+                        android:textSize="@dimen/dimen14sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/purchase_id"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".18"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen12sp" />
+
+                    <TextView
+                        android:id="@+id/product_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".35"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen12sp" />
+
+                    <TextView
+                        android:id="@+id/allocation_qty"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".08"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen12sp" />
+
+                    <TextView
+                        android:id="@+id/scanned_qty"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".08"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen12sp" />
+
+                    <TextView
+
+                        android:id="@+id/shortqty"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".08"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen12sp" />
+
+                    <LinearLayout
+                        android:layout_width="@dimen/dimen0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/approvalqty"
+                            android:layout_width="@dimen/dimen30dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_approval_qty_edit"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:gravity="center"
+                            android:imeOptions="actionDone"
+                            android:inputType="number"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen12sp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/requestedby"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".13"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen12sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/approvelayout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".05"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <ImageView
+                    android:id="@+id/approvebutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dimen10dp"
+                    android:src="@drawable/edit_view" />
+
+                <!--                <TextView-->
+                <!--                    android:id="@+id/approvebutton"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:background="@color/red"-->
+                <!--                    android:fontFamily="@font/poppins_semibold"-->
+                <!--                    android:paddingStart="@dimen/dimen14sp"-->
+                <!--                    android:paddingTop="2dp"-->
+                <!--                    android:paddingEnd="@dimen/dimen14sp"-->
+                <!--                    android:text="Action"-->
+                <!--                    android:textColor="@color/white"-->
+                <!--                    android:textSize="@dimen/dimen14sp" />-->
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:background="@color/white"-->
+        <!--            android:gravity="center_vertical"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            android:paddingHorizontal="5dp"-->
+        <!--            android:paddingTop="5dp"-->
+        <!--            android:paddingBottom="5dp">-->
+
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginRight="5dp"-->
+        <!--                android:orientation="vertical">-->
+
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="@font/poppins_semibold"-->
+        <!--                    android:text="Purchase Requisistion"-->
+        <!--                    android:textColor="@color/bluetooth_header_bg"-->
+        <!--                    android:textSize="11sp" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/purchase_id"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="@font/poppins_semibold"-->
+        <!--                    android:text="Red Bull"-->
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="@dimen/dimen10sp" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/allocation_qty"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="@font/poppins_semibold"-->
+        <!--                    android:text="3.00"-->
+        <!--                    android:textAlignment="center"-->
+
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="@dimen/dimen10sp" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/scanned_qty"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="@font/poppins_semibold"-->
+        <!--                    android:text="3.00"-->
+        <!--                    android:textAlignment="center"-->
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="@dimen/dimen10sp" />-->
+
+        <!--                <TextView-->
+
+        <!--                    android:id="@+id/shortqty"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="@font/poppins_semibold"-->
+        <!--                    android:text="2"-->
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="12sp" />-->
+
+        <!--            </LinearLayout>-->
+
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginStart="8dp"-->
+        <!--                android:orientation="vertical">-->
+
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="@font/poppins_semibold"-->
+        <!--                    android:text="Product name"-->
+        <!--                    android:textColor="@color/bluetooth_header_bg"-->
+        <!--                    android:textSize="11sp" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/product_name"-->
+        <!--                    android:layout_width="240dp"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="@font/poppins_semibold"-->
+        <!--                    android:text="-"-->
+
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="10sp" />-->
+
+        <!--            </LinearLayout>-->
+
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginStart="5dp"-->
+
+        <!--                android:orientation="vertical">-->
+
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="@font/poppins_semibold"-->
+        <!--                    android:text="Allocated qty"-->
+        <!--                    android:textColor="@color/bluetooth_header_bg"-->
+        <!--                    android:textSize="11sp" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/allocation_qty"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="@font/poppins_semibold"-->
+        <!--                    android:text="3.00"-->
+        <!--                    android:textAlignment="center"-->
+
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="@dimen/dimen10sp" />-->
+        <!--            </LinearLayout>-->
+
+
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginStart="5dp"-->
+
+        <!--                android:orientation="vertical">-->
+
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="@font/poppins_semibold"-->
+        <!--                    android:text="Scanned qty"-->
+        <!--                    android:textColor="@color/bluetooth_header_bg"-->
+        <!--                    android:textSize="11sp" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/scanned_qty"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="@font/poppins_semibold"-->
+
+        <!--                    android:text="3.00"-->
+        <!--                    android:textAlignment="center"-->
+
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="@dimen/dimen10sp" />-->
+        <!--            </LinearLayout>-->
+
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginStart="8dp"-->
+
+        <!--                android:orientation="vertical">-->
+
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="@font/poppins_semibold"-->
+        <!--                    android:text="Short Qty "-->
+        <!--                    android:textColor="@color/bluetooth_header_bg"-->
+        <!--                    android:textSize="11sp" />-->
+
+
+        <!--                <TextView-->
+
+        <!--                    android:id="@+id/shortqty"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="@font/poppins_semibold"-->
+        <!--                    android:text="2"-->
+
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="12sp" />-->
+        <!--            </LinearLayout>-->
+
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+
+        <!--                android:layout_marginStart="8dp"-->
+        <!--                android:orientation="vertical">-->
+
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="@font/poppins_semibold"-->
+        <!--                    android:text="Requested by "-->
+        <!--                    android:textColor="@color/bluetooth_header_bg"-->
+        <!--                    android:textSize="11sp" />-->
+
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/requestedby"-->
+        <!--                    android:layout_width="140dp"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="@font/poppins_semibold"-->
+        <!--                    android:text="1"-->
+
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="@dimen/dimen10sp" />-->
+        <!--            </LinearLayout>-->
+
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginStart="1dp"-->
+        <!--                android:orientation="vertical"-->
+
+        <!--                android:visibility="gone">-->
+
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:fontFamily="@font/poppins_semibold"-->
+        <!--                    android:text="Request"-->
+        <!--                    android:textColor="@color/bluetooth_header_bg"-->
+        <!--                    android:textSize="11sp" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/request"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginTop="5dp"-->
+        <!--                    android:fontFamily="@font/poppins_semibold"-->
+        <!--                    android:text="Out of Stock"-->
+
+        <!--                    android:textColor="@color/black"-->
+        <!--                    android:textSize="12sp" />-->
+        <!--            </LinearLayout>-->
+
+
+        <!--            <LinearLayout-->
+        <!--                android:id="@+id/approvelayout"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:orientation="horizontal">-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/approvebutton"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:background="@color/red"-->
+        <!--                    android:fontFamily="@font/poppins_semibold"-->
+        <!--                    android:paddingStart="@dimen/dimen14sp"-->
+        <!--                    android:paddingTop="2dp"-->
+        <!--                    android:paddingEnd="@dimen/dimen14sp"-->
+        <!--                    android:text="Action"-->
+        <!--                    android:textColor="@color/white"-->
+        <!--                    android:textSize="@dimen/dimen12sp" />-->
+
+        <!--            </LinearLayout>-->
+
+
+        <!--        </LinearLayout>-->
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,855 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#dcdeea"
+        tools:context=".ui.picklist.PickListActivity">
+
+
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+                <RelativeLayout
+                    android:id="@+id/custom_layout"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent">
+
+                    <include layout="@layout/custom_menu_layout" />
+
+                    <LinearLayout
+                        android:layout_width="1250dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginBottom="8dp"
+                            android:orientation="horizontal">
+
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="1020dp"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="Chandra Mouli"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="1040dp"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="Supervisor"
+                                    android:textColor="@color/black"
+                                    android:textSize="11sp"
+
+                                    android:textStyle="bold" />
+
+
+                            </LinearLayout>
+
+                            <ImageView
+                                android:layout_width="34dp"
+                                android:layout_height="34dp"
+                                android:layout_marginStart="10sp"
+
+                                android:src="@drawable/apollo_circle_logo" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginStart="10sp"
+                                android:layout_marginTop="4dp"
+
+                                android:rotation="90"
+                                android:src="@drawable/black_right_arroww" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="1200dp"
+                            android:layout_height="80dp"
+                            android:layout_marginStart="120dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="20dp"
+                            android:background="@color/white"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+
+                                <RelativeLayout
+
+                                    android:id="@+id/order_child_layout"
+                                    android:layout_width="200dp"
+                                    android:layout_height="35dp"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginTop="34dp"
+                                    android:background="@drawable/square_stroke_bg"
+                                    android:padding="5dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="20dp"
+                                        android:fontFamily="@font/poppins_semibold"
+                                        android:padding="3dp"
+                                        android:paddingStart="10dp"
+                                        android:text="Hyderabad"
+                                        android:textColor="@color/black"
+                                        android:textSize="12sp"
+                                        android:textStyle="bold" />
+
+
+                                    <ImageView
+                                        android:id="@+id/right_arrow"
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
+                                        android:layout_marginStart="150dp"
+                                        android:contentDescription="@string/app_name"
+                                        android:padding="5dp"
+                                        android:rotation="90"
+                                        android:src="@drawable/black_right_arroww"
+                                        android:visibility="visible" />
+
+
+                                </RelativeLayout>
+
+
+                            </LinearLayout>
+
+
+                            <RelativeLayout
+
+                                android:layout_width="189dp"
+                                android:layout_height="35dp"
+                                android:layout_marginStart="18sp"
+                                android:layout_marginTop="25dp"
+                                android:background="@drawable/square_stroke_bg"
+                                android:padding="5dp">
+
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="20dp"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:padding="3dp"
+                                    android:paddingStart="10dp"
+                                    android:text="All"
+                                    android:textColor="@color/black"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginStart="141dp"
+                                    android:contentDescription="@string/app_name"
+                                    android:padding="5dp"
+                                    android:rotation="90"
+                                    android:src="@drawable/black_right_arroww"
+                                    android:visibility="visible" />
+
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+
+                                android:layout_width="110dp"
+                                android:layout_height="35dp"
+                                android:layout_marginStart="10sp"
+                                android:layout_marginTop="28dp"
+                                android:background="@drawable/square_stroke_bg"
+                                android:padding="5dp">
+
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:paddingTop="6dp"
+                                    android:text="Today"
+                                    android:layout_marginStart="5dp"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+
+                                android:layout_width="90dp"
+                                android:layout_height="35dp"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="25dp"
+                                android:background="@drawable/square_stroke_bg"
+                                android:padding="5dp">
+
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:paddingTop="6dp"
+                                    android:text="Week"
+                                    android:layout_marginStart="5dp"
+                                    android:textColor="@color/black"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+
+                                android:layout_width="80dp"
+                                android:layout_height="35dp"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="25dp"
+                                android:background="@drawable/square_stroke_bg"
+                                android:padding="5dp">
+
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:paddingTop="6dp"
+                                    android:text="Month"
+                                    android:textColor="@color/black"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+
+                                android:layout_width="150dp"
+                                android:layout_height="35dp"
+                                android:layout_marginStart="10sp"
+                                android:layout_marginTop="25dp"
+                                android:background="@drawable/square_stroke_bg"
+                                android:padding="5dp">
+
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:paddingTop="6dp"
+                                    android:text="DD/MM/YYYY"
+                                    android:textColor="@color/black"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="90dp"
+                                    android:contentDescription="@string/app_name"
+                                    android:src="@drawable/calendar"
+                                    android:visibility="visible" />
+
+
+                            </RelativeLayout>
+
+
+                            <RelativeLayout
+
+                                android:layout_width="50dp"
+                                android:layout_height="35dp"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="30dp"
+                                android:background="@drawable/square_stroke_bg"
+                                android:padding="5dp">
+
+
+                                <ImageView
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:layout_marginStart="8dp"
+                                    android:contentDescription="@string/app_name"
+                                    android:src="@drawable/ic_baseline_filter_list_24"
+                                    android:visibility="visible" />
+
+
+                            </RelativeLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="30dp"
+                                android:background="@color/yellow"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:paddingStart="13sp"
+                                android:paddingTop="5dp"
+                                android:paddingEnd="13sp"
+                                android:text="Apply"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+
+
+                            <ImageView
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_marginStart="15sp"
+                                android:layout_marginTop="30dp"
+                                android:background="@color/color_takeprint"
+                                android:src="@drawable/ic_baseline_file_upload_24" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:layout_toRightOf="@+id/custom_layout"
+
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="450dp"
+                                android:layout_height="25dp"
+                                android:layout_marginStart="125dp"
+                                android:layout_marginTop="15sp"
+
+                                android:background="@color/white"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:paddingStart="7dp"
+                                    android:text="Report"
+                                    android:textColor="@color/black"
+                                    android:textSize="17sp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:layout_width="18sp"
+                                    android:layout_height="18sp"
+                                    android:layout_marginStart="350dp"
+                                    android:layout_marginTop="4dp"
+                                    android:src="@drawable/edit_view" />
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="450dp"
+                                android:layout_height="25dp"
+                                android:layout_marginStart="125dp"
+                                android:background="@color/white"
+                                android:orientation="horizontal">
+
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:paddingStart="7dp"
+                                    android:paddingTop="4dp"
+                                    android:text="Picker Name"
+                                    android:textColor="@color/black"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:paddingStart="7dp"
+                                    android:paddingTop="4dp"
+                                    android:text="Area"
+                                    android:textColor="@color/black"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:paddingStart="7dp"
+                                    android:paddingTop="4dp"
+                                    android:text="Assigned"
+                                    android:textColor="@color/black"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:paddingStart="7dp"
+                                    android:paddingTop="4dp"
+                                    android:text="In-Progressed"
+                                    android:textColor="@color/black"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:paddingStart="7dp"
+                                    android:paddingTop="4dp"
+                                    android:text="Completed"
+                                    android:textColor="@color/black"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:paddingStart="7dp"
+                                    android:paddingTop="4dp"
+                                    android:text="SKUS"
+                                    android:textColor="@color/black"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/listitem_recycleview"
+                                android:layout_width="450dp"
+
+                                android:layout_height="250dp"
+                                android:layout_marginStart="125dp" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="370dp"
+                        android:layout_height="310dp"
+                        android:layout_marginStart="640dp"
+                        android:layout_marginTop="185dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@color/white">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="60dp"
+                            android:layout_marginTop="10sp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="ASSIGNED/IN-PROGRESS/COMPLETED"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <lecho.lib.hellocharts.view.PieChartView
+                            android:id="@+id/piechart"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_marginStart="70dp"
+                            android:layout_marginTop="40dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginTop="255dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="7dp"
+                                android:layout_height="7dp"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginTop="10sp"
+                                android:background="@color/purple_500"
+                                android:fontFamily="@font/poppins_semibold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10sp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:paddingBottom="7dp"
+                                android:text="Assigned"
+
+                                android:textColor="@color/purple_500"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="7dp"
+                                android:layout_height="7dp"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="10sp"
+                                android:background="#FFFF33"
+                                android:fontFamily="@font/poppins_semibold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10sp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:paddingBottom="7dp"
+                                android:text="In-Progress"
+                                android:textColor="@color/purple_500"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+
+                            <TextView
+                                android:layout_width="7dp"
+                                android:layout_height="7dp"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="10sp"
+                                android:background="@color/green"
+                                android:fontFamily="@font/poppins_semibold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10sp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:paddingBottom="7dp"
+                                android:text="Completed"
+                                android:textColor="@color/purple_500"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="1045dp"
+                        android:layout_marginTop="185dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="200dp"
+                            android:layout_height="70dp"
+                            android:background="@color/white"
+
+                            android:orientation="horizontal">
+
+
+                            <ImageView
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="15dp"
+                                android:background="@color/color_takeprint"
+                                android:src="@drawable/ic_baseline_receipt_24" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="9sp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="TOTAL"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/silver" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="20"
+                                    android:textSize="18sp"
+
+                                    android:textColor="@color/black" />
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="200dp"
+                            android:layout_height="70dp"
+                            android:layout_marginTop="80dp"
+                            android:background="@color/white"
+
+                            android:orientation="horizontal">
+
+
+                            <ImageView
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="15dp"
+                                android:background="@color/purple_500"
+                                android:src="@drawable/ic_baseline_receipt_24" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="9sp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="ASSIGNED"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/silver" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="6"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/black" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="200dp"
+                            android:layout_height="70dp"
+                            android:layout_marginTop="161dp"
+                            android:background="@color/white"
+
+                            android:orientation="horizontal">
+
+
+                            <ImageView
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="15dp"
+                                android:background="@color/orange"
+                                android:src="@drawable/ic_baseline_receipt_24" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="9sp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="IN PROGRESS"
+                                    android:textSize="18sp"
+
+                                    android:textColor="@color/silver" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="2"
+                                    android:textSize="18sp"
+
+                                    android:textColor="@color/black" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="200dp"
+                            android:layout_height="70dp"
+                            android:layout_marginTop="241dp"
+                            android:background="@color/white"
+
+                            android:orientation="horizontal">
+
+
+                            <ImageView
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="15dp"
+                                android:background="@color/green"
+                                android:src="@drawable/ic_baseline_receipt_24" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="9sp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="COMPLETED"
+                                    android:textSize="18sp"
+
+                                    android:textColor="@color/silver" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="12"
+                                    android:textSize="18sp"
+
+                                    android:textColor="@color/black" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="120dp"
+                        android:layout_marginTop="33dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Supervisor DashBoard"
+                        android:textColor="@color/black"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="126dp"
+                        android:layout_marginTop="74dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:paddingStart="28dp"
+                        android:paddingTop="26dp"
+                        android:text="DC ID"
+                        android:textColor="@color/silver"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="335dp"
+                        android:layout_marginTop="74dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:paddingStart="29dp"
+                        android:paddingTop="26dp"
+                        android:text="Area Name"
+                        android:textColor="@color/silver"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="535dp"
+                        android:layout_marginTop="74dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:paddingStart="28dp"
+                        android:paddingTop="26dp"
+
+                        android:text="Date &amp; Time"
+                        android:textColor="@color/silver"
+                        android:textSize="11sp" />
+
+
+                    <TextView
+                        android:id="@+id/yellow_line"
+                        android:layout_width="10dp"
+                        android:layout_height="60dp"
+                        android:layout_marginStart="99dp"
+                        android:layout_marginTop="361dp"
+                        android:background="@color/lite_yellow"
+                        android:paddingStart="28dp"
+                        android:paddingTop="26dp"
+
+                        android:textSize="11sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="700dp"
+                        android:layout_marginTop="290dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="70%"
+                        android:textColor="@color/black"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="690dp"
+                        android:layout_marginTop="390dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:rotation="20"
+                        android:text="20%"
+                        android:textColor="@color/black"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="840dp"
+                        android:layout_marginTop="454dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:rotation="-20"
+                        android:text="10%"
+
+                        android:textColor="@color/black"
+                        android:textSize="11sp" />
+
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Admin Dashboard"
+                        android:id="@+id/admin"
+                        android:visibility="gone"
+                        android:layout_marginTop="600dp"
+                        android:layout_marginStart="200dp"
+                        android:textColor="@color/black"
+                        android:background="@color/yellow"/>
+
+                </RelativeLayout>
+            </HorizontalScrollView>
+
+
+    </RelativeLayout>
+</layout>

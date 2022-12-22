@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <RelativeLayout
+        android:id="@+id/picker_request_parent_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/hash_color"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".1"
+                android:background="@color/white">
+
+                <include
+                    android:id="@+id/custom_menu_layout"
+                    layout="@layout/custom_menu_layout_updated"
+                    app:customMenuSupervisorCallback="@{customMenuSupervisorCallback}"
+                    app:dcName="@{dcName}"
+                    app:empRole="@{empRole}"
+                    app:pickerName="@{pickerName}"
+                    app:selectedMenu="@{selectedMenu}"
+                    app:userId="@{userId}" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/dimen10dp"
+                android:layout_marginEnd="@dimen/dimen10dp"
+                android:layout_weight=".9"
+                android:orientation="vertical"
+                tools:ignore="NotSibling">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen20dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="PICKER REQUEST"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="@dimen/dimen5dp"
+                        android:background="@drawable/rounded_corner_bg"
+                        android:backgroundTint="@color/lite_yellow"
+                        android:gravity="center"
+                        android:onClick="@{()-> mCallback.onClickRefreshRequest()}"
+                        android:paddingStart="@dimen/dimen5dp"
+                        android:paddingEnd="@dimen/dimen5dp"
+                        android:text="@string/label_refresh_request"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen12sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/picker_request_recycleview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dimen5dp"
+                        android:orientation="horizontal"
+                        android:scrollbars="vertical" />
+
+                    <TextView
+                        android:id="@+id/no_picker_requests_found_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="@string/label_no_picker_requests_found"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen14sp" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/yellow_line"
+            android:layout_width="10sp"
+            android:layout_height="74dp"
+            android:layout_marginStart="99dp"
+            android:layout_marginTop="182dp"
+            android:background="@color/lite_yellow"
+            android:paddingStart="28dp"
+            android:paddingTop="26dp"
+
+            android:textSize="11sp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <data>
+
+        <variable
+            name="customMenuSupervisorCallback"
+            type="com.thresholdsoft.astra.ui.menucallbacks.CustomMenuSupervisorCallback" />
+
+        <variable
+            name="selectedMenu"
+            type="Integer" />
+
+        <variable
+            name="userId"
+            type="String" />
+
+        <variable
+            name="empRole"
+            type="String" />
+
+        <variable
+            name="mCallback"
+            type="com.thresholdsoft.astra.ui.pickerrequests.PickerRequestCallback" />
+
+        <variable
+            name="pickerName"
+            type="String" />
+
+        <variable
+            name="dcName"
+            type="String" />
+    </data>
+
+</layout>
