@@ -43,7 +43,29 @@ public class CommonUtils {
             return "-";
         }
     }
+    public static String parseDateToddMMyyyyNoTime(String time) {
+        if (time != null && !time.isEmpty()) {
+            String inputPattern = "";
+            if (time.contains("Z")) inputPattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+            else inputPattern = "yyyy-MM-dd'T'HH:mm:ss";
+            String outputPattern = "dd-MMM-yyyy";
+            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
 
+            Date date = null;
+            String str = null;
+
+            try {
+                date = inputFormat.parse(time);
+                str = outputFormat.format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return str;
+        } else {
+            return "-";
+        }
+    }
     public static String parseDateToMMYYYY(String time) {
         if (time != null && !time.isEmpty()) {
             String inputPattern = "";

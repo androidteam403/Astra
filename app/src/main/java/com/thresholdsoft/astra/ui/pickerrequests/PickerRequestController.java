@@ -15,6 +15,9 @@ import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.NetworkUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,6 +48,19 @@ public class PickerRequestController {
                 public void onResponse(Call<WithHoldDataResponse> call, Response<WithHoldDataResponse> response) {
                     ActivityUtils.hideDialog();
                     if (response.code() == 200 && response.body() != null) {
+                        Collections.sort(response.body().getWithholddetails(), new Comparator<WithHoldDataResponse.Withholddetail>() {
+                            public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                                return s1.getPurchreqid().compareToIgnoreCase(s2.getPurchreqid());
+                            }
+                        });
+
+                        Collections.sort(response.body().getWithholddetails(), new Comparator<WithHoldDataResponse.Withholddetail>() {
+                            public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                                return s1.getRoutecode().compareToIgnoreCase(s2.getRoutecode());
+                            }
+                        });
+
+
                         mCallback.onSuccessWithHoldApi(response.body());
                     } else {
                         mCallback.onFailureMessage("Something went wrong.");
@@ -62,7 +78,7 @@ public class PickerRequestController {
 
     }
 
-    public void getWithHoldApprovalApi(String approvedQty, ArrayList<WithHoldDataResponse.Withholddetail> withholddetailArrayList, int pos, String approvalReasonCode, String remarks) {
+    public void getWithHoldApprovalApi(String approvedQty, List<WithHoldDataResponse.Withholddetail> withholddetailArrayList, int pos, String approvalReasonCode, String remarks) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ArrayList<WithHoldApprovalRequest> withHoldApprovalRequestList = new ArrayList<>();
             ActivityUtils.showDialog(mContext, "Please wait.");
@@ -117,6 +133,7 @@ public class PickerRequestController {
                             ActivityUtils.hideDialog();
                             mCallback.onSuccessWithHoldApprovalApi(response.body());
                         } else {
+                            ActivityUtils.hideDialog();
                             mCallback.onFailureMessage(response.body().getRequestmessage());
                         }
                     } else {

@@ -52,26 +52,96 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="PICKER REQUEST"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/dimen30dp"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginStart="@dimen/dimen5dp"
-                        android:background="@drawable/rounded_corner_bg"
-                        android:backgroundTint="@color/lite_yellow"
-                        android:gravity="center"
-                        android:onClick="@{()-> mCallback.onClickRefreshRequest()}"
-                        android:paddingStart="@dimen/dimen5dp"
-                        android:paddingEnd="@dimen/dimen5dp"
-                        android:text="@string/label_refresh_request"
-                        android:textAllCaps="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimen12sp" />
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/dimen30dp"
+                                android:layout_marginStart="@dimen/dimen5dp"
+                                android:gravity="center"
+                                android:paddingStart="@dimen/dimen5dp"
+                                android:paddingEnd="@dimen/dimen5dp"
+                                android:text="Request Type :"
+                                android:textSize="@dimen/dimen12sp" />
+
+                            <Spinner
+                                android:id="@+id/request_code_spinner"
+                                style="@style/spinner_style"
+                                android:layout_width="@dimen/dimen200dp"
+                                android:layout_height="wrap_content"
+                                android:spinnerMode="dropdown"
+                                android:textSize="@dimen/dimen14sp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/dimen30dp"
+                            android:layout_marginStart="@dimen/dimen5dp"
+                            android:gravity="center"
+                            android:paddingStart="@dimen/dimen5dp"
+                            android:paddingEnd="@dimen/dimen5dp"
+                            android:text="Sort by :"
+                            android:textSize="@dimen/dimen12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/dimen30dp"
+                            android:layout_marginStart="@dimen/dimen5dp"
+                            android:background="@drawable/rounded_corner_bg"
+                            android:backgroundTint="@{isSortByRouteWise ? @color/green : @color/grey}"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:gravity="center"
+                            android:onClick="@{()-> mCallback.onClickSortByRoute()}"
+                            android:paddingStart="@dimen/dimen5dp"
+                            android:paddingEnd="@dimen/dimen5dp"
+                            android:text="Route"
+                            android:textAllCaps="true"
+                            android:textColor="@{isSortByRouteWise ? @color/white : @color/text_color_grey}"
+                            android:textSize="@dimen/dimen12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/dimen30dp"
+                            android:layout_marginStart="@dimen/dimen10dp"
+                            android:background="@drawable/rounded_corner_bg"
+                            android:backgroundTint="@{!isSortByRouteWise ? @color/green : @color/grey}"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:gravity="center"
+                            android:onClick="@{()-> mCallback.onClickSortByRequestedDate()}"
+                            android:paddingStart="@dimen/dimen5dp"
+                            android:paddingEnd="@dimen/dimen5dp"
+                            android:text="Requested date"
+                            android:textAllCaps="true"
+                            android:textColor="@{!isSortByRouteWise ? @color/white : @color/text_color_grey}"
+                            android:textSize="@dimen/dimen12sp" />
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen40dp"
+                            android:layout_height="@dimen/dimen40dp"
+                            android:layout_marginStart="@dimen/dimen10dp"
+                            android:contentDescription="@string/app_name"
+                            android:onClick="@{()-> mCallback.onClickRefreshRequest()}"
+                            android:src="@drawable/refresh_icon" />
+
+                    </LinearLayout>
+
                 </RelativeLayout>
 
                 <RelativeLayout

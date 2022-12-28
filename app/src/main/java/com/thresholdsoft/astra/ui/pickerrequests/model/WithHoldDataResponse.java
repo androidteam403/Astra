@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class WithHoldDataResponse  implements Serializable {
+public class WithHoldDataResponse implements Serializable {
 
 
     @SerializedName("requeststatus")
@@ -112,6 +112,19 @@ public class WithHoldDataResponse  implements Serializable {
         @SerializedName("id")
         @Expose
         private Integer id;
+        @SerializedName("routecode")
+        @Expose
+        private String routecode;
+
+        @SerializedName("onholddatetime")
+        @Expose
+        private String onholddatetime;
+
+        @SerializedName("onholdapproveddatetime")
+        @Expose
+        private String onholdapproveddatetime;
+
+        private boolean isNotifying;
 
         public String getPurchreqid() {
             return purchreqid;
@@ -329,5 +342,36 @@ public class WithHoldDataResponse  implements Serializable {
             return this;
         }
 
+        public String getRoutecode() {
+            return routecode;
+        }
+
+        public void setRoutecode(String routecode) {
+            this.routecode = routecode;
+        }
+
+        public String getOnholddatetime() {
+            return onholddatetime;
+        }
+
+        public void setOnholddatetime(String onholddatetime) {
+            this.onholddatetime = onholddatetime;
+        }
+
+        public String getOnholdapproveddatetime() {
+            return onholdapproveddatetime;
+        }
+
+        public void setOnholdapproveddatetime(String onholdapproveddatetime) {
+            this.onholdapproveddatetime = onholdapproveddatetime;
+        }
+
+        public boolean isNotifying() {
+            return isNotifying;
+        }
+
+        public void setNotifying(boolean notifying) {
+            isNotifying = notifying;
+        }
     }
 }

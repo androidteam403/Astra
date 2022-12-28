@@ -166,12 +166,46 @@
                 android:background="@drawable/dialog_background"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="Status Update"
-                    android:textSize="@dimen/dimen14sp" />
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Status Update"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <LinearLayout
+                        android:layout_width="@dimen/dimen0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="On Hold Date:"
+                            android:textSize="@dimen/dimen14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen5dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="@{CommonUtils.parseDateToddMMyyyy(model.onholddatetime)}"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen14sp" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -198,6 +232,7 @@
                 android:background="@drawable/custom_dialog_background"
                 android:hint="Remarks"
                 android:importantForAutofill="no"
+                android:maxLength="50"
                 android:paddingStart="@dimen/dimen10sp"
                 android:paddingEnd="@dimen/dimen10sp"
                 android:textColor="@color/black"
@@ -258,5 +293,8 @@
         <variable
             name="model"
             type="com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse.Withholddetail" />
+
+        <import type="com.thresholdsoft.astra.utils.CommonUtils" />
+
     </data>
 </layout>

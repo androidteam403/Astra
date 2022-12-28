@@ -1,5 +1,6 @@
 package com.thresholdsoft.astra.ui.picklist.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -110,6 +111,7 @@ public class PickListAdapter extends RecyclerView.Adapter<PickListAdapter.ViewHo
                 return filterResults;
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 if (allocationhddataList != null && !allocationhddataList.isEmpty()) {

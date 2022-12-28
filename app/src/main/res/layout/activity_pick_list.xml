@@ -51,78 +51,110 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen5dp"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="@string/label_pick_list"
                         android:textAllCaps="true"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen14sp"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:text="@{`Assigned Orders(`+assignedOrdersCount+`)`}"
-                        android:textColor="@color/black"
                         android:textSize="@dimen/dimen10sp" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/dimen15dp"
+                        android:layout_width="@dimen/dimen25dp"
+                        android:layout_height="@dimen/dimen25dp"
                         android:layout_alignParentEnd="true"
-                        android:background="@drawable/rounded_corner_bg"
-                        android:backgroundTint="@color/lite_yellow"
                         android:gravity="center"
                         android:onClick="@{()-> callback.onClickRefresh()}"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/dimen5dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="@string/label_refresh"
-                            android:textAllCaps="true"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/dimen10sp" />
+                        android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_width="@dimen/dimen10dp"
-                            android:layout_height="@dimen/dimen10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:contentDescription="@string/app_name"
-                            android:padding="@dimen/dimen5dp"
-                            android:src="@drawable/ic_refresh_black" />
+                            android:src="@drawable/refresh_icon" />
                     </LinearLayout>
 
                 </RelativeLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="@{`Assigned Lines(`+assignedLines+`)`}"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/dimen10sp" />
-
-                <EditText
-                    android:id="@+id/search_by_text"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen40dp"
-                    android:drawableEnd="@drawable/search_icon"
-                    android:hint="Search"
-                    android:importantForAutofill="no"
-                    android:inputType="text"
-                    android:text=""
-                    android:textSize="@dimen/dimen10sp" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen5dp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:layout_width="@dimen/dimen0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:gravity="end"
+                            android:text="Assigned\nOrders"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen6sp" />
+
+                        <TextView
+                            android:layout_width="@dimen/dimen30dp"
+                            android:layout_height="@dimen/dimen30dp"
+                            android:layout_marginStart="@dimen/dimen5dp"
+                            android:background="@color/bg_assigned_orders_count"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center"
+                            android:padding="@dimen/dimen5dp"
+                            android:text="@{String.valueOf(assignedOrdersCount)}"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen8sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="@dimen/dimen0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:gravity="end"
+                            android:text="Assigned\nLines"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen6sp" />
+
+                        <TextView
+                            android:layout_width="@dimen/dimen30dp"
+                            android:layout_height="@dimen/dimen30dp"
+                            android:layout_marginStart="@dimen/dimen5dp"
+                            android:background="@color/green"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center"
+                            android:padding="@dimen/dimen5dp"
+                            android:text="@{String.valueOf(assignedLines)}"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen8sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen5dp"
                     android:orientation="horizontal"
                     android:weightSum="1">
 
@@ -270,9 +302,42 @@
                     android:layout_marginBottom="@dimen/dimen50dp"
                     android:orientation="vertical">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen5dp"
+                        android:layout_marginEnd="@dimen/dimen5dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/detail_view_enlarge_icon"
+                            android:layout_width="@dimen/dimen25dp"
+                            android:layout_height="@dimen/dimen25dp"
+                            android:contentDescription="@string/app_name"
+                            android:onClick="@{()-> callback.onClickDetailsLayoutEnlarge()}"
+                            android:rotation="180"
+                            android:src="@drawable/right_expand_arrow" />
+
+                        <EditText
+                            android:id="@+id/search_by_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dimen25dp"
+                            android:layout_marginStart="@dimen/dimen5dp"
+                            android:background="@drawable/bg_edit_text"
+                            android:drawableLeft="@drawable/search_icon"
+                            android:hint="@string/label_search_by_purchase_requisition"
+                            android:importantForAutofill="no"
+                            android:inputType="text"
+                            android:paddingStart="@dimen/dimen5dp"
+                            android:text=""
+                            android:textSize="@dimen/dimen10sp" />
+
+                    </LinearLayout>
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen10dp"
                         android:layout_marginTop="@dimen/dimen5dp">
 
                         <LinearLayout
@@ -281,19 +346,9 @@
                             android:layout_marginTop="@dimen/dimen5dp"
                             android:orientation="horizontal">
 
-                            <ImageView
-                                android:id="@+id/detail_view_enlarge_icon"
-                                android:layout_width="@dimen/dimen20dp"
-                                android:layout_height="@dimen/dimen20dp"
-                                android:contentDescription="@string/app_name"
-                                android:onClick="@{()-> callback.onClickDetailsLayoutEnlarge()}"
-                                android:rotation="180"
-                                android:src="@drawable/arrow_icon" />
-
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dimen5dp"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -387,6 +442,7 @@
                                     android:textColor="@{orderStatusModel.status.equals(`INPROCESS`) ? @color/inprogress_overallstatus_color : orderStatusModel.status.equals(`Assigned`) ? @color/color_takeprint : @color/green}"
                                     android:textSize="@dimen/dimen10sp" />
                             </LinearLayout>
+
                             <!--                            android:background="@drawable/background_button"-->
                         </LinearLayout>
 
@@ -637,6 +693,7 @@
                             android:layout_marginEnd="@dimen/dimen10dp"
                             android:layout_weight="1"
                             android:background="@color/grey"
+                            android:onClick="@{()-> callback.onClickScanned()}"
                             android:orientation="vertical">
 
 
@@ -648,7 +705,7 @@
                                 android:gravity="center_horizontal"
                                 android:text="@{String.valueOf(orderStatusModel.picked)}"
                                 android:textAlignment="center"
-                                android:textColor="@color/black"
+                                android:textColor="@{itemListStatus == 1 ? @color/green : itemListStatus == 0 ? @color/black : @color/black}"
                                 android:textSize="@dimen/dimen8sp" />
 
                             <TextView
@@ -657,9 +714,10 @@
                                 android:fontFamily="@font/poppins_semibold"
                                 android:gravity="center_horizontal"
                                 android:stateListAnimator="@null"
-                                android:text="PICKED"
+                                android:text="scanned"
                                 android:textAlignment="center"
-                                android:textColor="@color/black"
+                                android:textAllCaps="true"
+                                android:textColor="@{itemListStatus == 1 ? @color/green : itemListStatus == 0 ? @color/black : @color/black}"
                                 android:textSize="@dimen/dimen8sp" />
 
 
@@ -672,6 +730,7 @@
                             android:layout_marginEnd="@dimen/dimen10dp"
                             android:layout_weight="1"
                             android:background="@color/grey"
+                            android:onClick="@{()-> callback.onClickPending()}"
                             android:orientation="vertical">
 
 
@@ -683,7 +742,7 @@
                                 android:gravity="center_horizontal"
                                 android:text="@{String.valueOf(orderStatusModel.pending)}"
                                 android:textAlignment="center"
-                                android:textColor="@color/black"
+                                android:textColor="@{itemListStatus == 2 ? @color/green : itemListStatus == 0 ? @color/black : @color/black}"
                                 android:textSize="@dimen/dimen8sp" />
 
                             <TextView
@@ -694,7 +753,7 @@
                                 android:stateListAnimator="@null"
                                 android:text="PENDING"
                                 android:textAlignment="center"
-                                android:textColor="@color/black"
+                                android:textColor="@{itemListStatus == 2 ? @color/green : itemListStatus == 0 ? @color/black : @color/black}"
                                 android:textSize="@dimen/dimen8sp" />
 
 
@@ -706,6 +765,7 @@
                             android:layout_marginEnd="@dimen/dimen10dp"
                             android:layout_weight="1"
                             android:background="@color/grey"
+                            android:onClick="@{()-> callback.onClickApproved()}"
                             android:orientation="vertical">
 
 
@@ -717,7 +777,7 @@
                                 android:gravity="center_horizontal"
                                 android:text="@{String.valueOf(orderStatusModel.approvedItemCount)}"
                                 android:textAlignment="center"
-                                android:textColor="@color/black"
+                                android:textColor="@{itemListStatus == 3 ? @color/green : itemListStatus == 0 ? @color/black : @color/black}"
                                 android:textSize="@dimen/dimen8sp" />
 
                             <TextView
@@ -728,7 +788,7 @@
                                 android:stateListAnimator="@null"
                                 android:text="APPROVED"
                                 android:textAlignment="center"
-                                android:textColor="@color/black"
+                                android:textColor="@{itemListStatus == 3 ? @color/green : itemListStatus == 0 ? @color/black : @color/black}"
                                 android:textSize="@dimen/dimen8sp" />
 
 
@@ -740,6 +800,7 @@
                             android:layout_marginEnd="@dimen/dimen10dp"
                             android:layout_weight="1"
                             android:background="@color/grey"
+                            android:onClick="@{()-> callback.onClickCompleted()}"
                             android:orientation="vertical">
 
 
@@ -751,7 +812,7 @@
                                 android:gravity="center_horizontal"
                                 android:text="@{String.valueOf(orderStatusModel.completed)}"
                                 android:textAlignment="center"
-                                android:textColor="@color/black"
+                                android:textColor="@{itemListStatus == 4 ? @color/green : itemListStatus == 0 ? @color/black : @color/black}"
                                 android:textSize="@dimen/dimen8sp" />
 
                             <TextView
@@ -763,7 +824,7 @@
                                 android:stateListAnimator="@null"
                                 android:text="COMPLETED"
                                 android:textAlignment="center"
-                                android:textColor="@color/black"
+                                android:textColor="@{itemListStatus == 4 ? @color/green : itemListStatus == 0 ? @color/black : @color/black}"
                                 android:textSize="@dimen/dimen8sp" />
 
 
@@ -804,26 +865,26 @@
                         <LinearLayout
                             android:id="@+id/printlabel"
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/dimen10dp"
                             android:layout_weight="1"
                             android:background="@color/lite_yellow"
                             android:gravity="center"
+                            android:onClick="@{()-> callback.onClickPrint()}"
                             android:orientation="horizontal"
-                            android:visibility="gone">
+                            android:visibility="@{allocationData.scanstatus.equalsIgnoreCase(`Completed`) ? view.VISIBLE : orderStatusModel.status.equalsIgnoreCase(`Completed`) ? view.VISIBLE : view.GONE}">
 
                             <ImageView
-                                android:layout_width="@dimen/dimen15dp"
-                                android:layout_height="@dimen/dimen15dp"
+                                android:layout_width="@dimen/dimen20dp"
+                                android:layout_height="@dimen/dimen20dp"
                                 android:contentDescription="@string/app_name"
                                 android:rotation="90"
                                 android:src="@drawable/ic_baseline_view_headline_24" />
 
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dimen5dp"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:stateListAnimator="@null"
                                 android:text="Print\nLabel"
@@ -844,7 +905,8 @@
                             android:gravity="center"
                             android:onClick="@{()-> callback.onClickScanNow()}"
                             android:orientation="horizontal"
-                            android:visibility="@{orderStatusModel.status.equalsIgnoreCase(`Completed`) ? view.GONE : view.VISIBLE}">
+                            android:visibility="gone">
+                            <!--                            android:visibility="@{orderStatusModel.status.equalsIgnoreCase(`Completed`) ? view.GONE : view.VISIBLE}">-->
 
                             <ImageView
                                 android:layout_width="@dimen/dimen15dp"
@@ -1037,7 +1099,7 @@
 
                                 <EditText
                                     android:id="@+id/search_by_barcode_orid"
-                                    android:layout_width="@dimen/dimen200dp"
+                                    android:layout_width="@dimen/dimen150dp"
                                     android:layout_height="@dimen/dimen40dp"
                                     android:hint="Search by Barcode or Item ID"
                                     android:importantForAutofill="no"
@@ -1054,25 +1116,71 @@
                                     <ImageView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginStart="@dimen/dimen5dp"
+                                        android:layout_marginStart="@dimen/dimen2dp"
                                         android:contentDescription="@string/app_name"
                                         android:onClick="@{()-> callback.onClickClearSearchByBarcodeorItemId()}"
                                         android:src="@drawable/close_new" />
 
-                                    <TextView
+                                    <LinearLayout
                                         android:layout_width="wrap_content"
-                                        android:layout_height="@dimen/dimen20dp"
-                                        android:layout_marginStart="@dimen/dimen5dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/dimen2dp"
                                         android:background="@drawable/rounded_corner_bg"
                                         android:backgroundTint="@color/lite_yellow"
                                         android:gravity="center"
                                         android:onClick="@{()-> callback.onClickSubmitBarcodeorId()}"
+                                        android:orientation="horizontal"
                                         android:paddingStart="@dimen/dimen5dp"
-                                        android:paddingEnd="@dimen/dimen5dp"
-                                        android:text="@string/label_search"
-                                        android:textAllCaps="true"
-                                        android:textColor="@color/black"
-                                        android:textSize="@dimen/dimen8sp" />
+                                        android:paddingEnd="@dimen/dimen5dp">
+
+                                        <ImageView
+                                            android:layout_width="@dimen/dimen15dp"
+                                            android:layout_height="@dimen/dimen15dp"
+                                            android:contentDescription="@string/app_name"
+                                            android:src="@drawable/scan_icon" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="@dimen/dimen30dp"
+                                            android:layout_marginStart="@dimen/dimen2dp"
+                                            android:background="@drawable/rounded_corner_bg"
+                                            android:backgroundTint="@color/lite_yellow"
+                                            android:gravity="center"
+                                            android:text="@string/label_scan"
+                                            android:textAllCaps="true"
+                                            android:textColor="@color/black"
+                                            android:textSize="@dimen/dimen8sp" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/dimen2dp"
+                                        android:background="@drawable/rounded_corner_bg"
+                                        android:backgroundTint="@color/lite_yellow"
+                                        android:gravity="center"
+                                        android:onClick="@{()-> callback.onClickSearchItem()}"
+                                        android:orientation="horizontal"
+                                        android:paddingStart="@dimen/dimen5dp"
+                                        android:paddingEnd="@dimen/dimen5dp">
+
+                                        <ImageView
+                                            android:layout_width="@dimen/dimen15dp"
+                                            android:layout_height="@dimen/dimen15dp"
+                                            android:contentDescription="@string/app_name"
+                                            android:src="@drawable/search_icon" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="@dimen/dimen30dp"
+                                            android:layout_marginStart="@dimen/dimen2dp"
+                                            android:gravity="center"
+                                            android:text="Search"
+                                            android:textAllCaps="true"
+                                            android:textColor="@color/black"
+                                            android:textSize="@dimen/dimen8sp" />
+                                    </LinearLayout>
+
                                 </LinearLayout>
                             </LinearLayout>
 
@@ -1226,7 +1334,7 @@
                                                         <LinearLayout
                                                             android:layout_width="@dimen/dimen0dp"
                                                             android:layout_height="wrap_content"
-                                                            android:layout_weight="0.5"
+                                                            android:layout_weight="0.25"
                                                             android:orientation="vertical">
 
                                                             <TextView
@@ -1241,6 +1349,28 @@
                                                                 android:layout_height="wrap_content"
                                                                 android:fontFamily="@font/poppins_semibold"
                                                                 android:text="@{CommonUtils.parseDateToMMYYYY(barcodeScannedItem.expdate)}"
+                                                                android:textColor="@color/black"
+                                                                android:textSize="@dimen/dimen8sp" />
+                                                        </LinearLayout>
+
+                                                        <LinearLayout
+                                                            android:layout_width="@dimen/dimen0dp"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_weight="0.25"
+                                                            android:orientation="vertical">
+
+                                                            <TextView
+                                                                android:layout_width="wrap_content"
+                                                                android:layout_height="wrap_content"
+                                                                android:fontFamily="@font/poppins_semibold"
+                                                                android:text="Supervisor Name"
+                                                                android:textSize="@dimen/dimen8sp" />
+
+                                                            <TextView
+                                                                android:layout_width="wrap_content"
+                                                                android:layout_height="wrap_content"
+                                                                android:fontFamily="@font/poppins_semibold"
+                                                                android:text="@{allocationData.managername}"
                                                                 android:textColor="@color/black"
                                                                 android:textSize="@dimen/dimen8sp" />
                                                         </LinearLayout>
@@ -1276,7 +1406,7 @@
                                                             android:layout_height="wrap_content"
                                                             android:layout_weight="1"
                                                             android:fontFamily="@font/poppins_semibold"
-                                                            android:text="Item Number"
+                                                            android:text="Product code"
                                                             android:textSize="@dimen/dimen8sp" />
 
                                                         <TextView
@@ -1471,15 +1601,15 @@
                                                                 android:layout_width="wrap_content"
                                                                 android:layout_height="wrap_content"
                                                                 android:fontFamily="@font/poppins_semibold"
-                                                                android:text="Maximum \nRetail Price"
+                                                                android:text="MRP"
                                                                 android:textSize="@dimen/dimen8sp" />
 
                                                             <TextView
                                                                 android:layout_width="wrap_content"
                                                                 android:layout_height="wrap_content"
-                                                                android:fontFamily="@font/poppins_semibold"
+                                                                android:fontFamily="@font/poppins_bold"
                                                                 android:text="@{@string/price_format(barcodeScannedItem.mrp)}"
-                                                                android:textColor="@color/black"
+                                                                android:textColor="@color/green"
                                                                 android:textSize="@dimen/dimen8sp"
                                                                 android:textStyle="bold" />
                                                         </LinearLayout>
@@ -1984,7 +2114,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_semibold"
-                                android:text="TOTAL LIST ITEMS"
+                                android:text="Total Packs"
                                 android:textSize="@dimen/dimen8sp"
                                 android:textStyle="bold" />
 
@@ -2191,6 +2321,19 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/layoutPdfPreview"
+            android:layout_width="@dimen/pdf_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dimen16dp"
+            android:paddingTop="@dimen/pdf_margin_vertical"
+            android:paddingRight="@dimen/dimen16dp"
+            android:paddingBottom="@dimen/pdf_margin_vertical"
+            android:visibility="invisible" />
+
     </RelativeLayout>
 
     <data>
@@ -2284,5 +2427,10 @@
         <variable
             name="dcName"
             type="String" />
+
+        <variable
+            name="itemListStatus"
+            type="Integer" />
+
     </data>
 </layout>

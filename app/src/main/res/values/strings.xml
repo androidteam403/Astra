@@ -77,4 +77,6 @@
     <string name="label_expiry_date">Expiry date</string>
     <string name="label_refresh">refresh</string>
     <string name="label_remarks">Remarks</string>
+    <string name="label_scan">Scan</string>
+    <string name="label_search_by_purchase_requisition">Search by Purchase Requisition</string>
 </resources>

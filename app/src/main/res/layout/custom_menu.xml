@@ -38,49 +38,51 @@
                             android:layout_height="@dimen/dimen40dp"
                             android:contentDescription="@string/app_name"
                             android:src="@drawable/apollo_healthco_logo" />
+
+
+                        <!--                        <TextView-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:fontFamily="@font/poppins_bold"-->
+                        <!--                            android:gravity="center"-->
+                        <!--                            android:text="@{userId}"-->
+                        <!--                            android:textColor="@color/white"-->
+                        <!--                            android:textSize="@dimen/dimen10sp" />-->
+
+                        <!--                        <TextView-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:fontFamily="@font/poppins_bold"-->
+                        <!--                            android:gravity="center"-->
+                        <!--                            android:text="@{empRole}"-->
+                        <!--                            android:textColor="@color/white"-->
+                        <!--                            android:textSize="@dimen/dimen10sp" />-->
+
+                        <!--                        <TextView-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:fontFamily="@font/poppins_bold"-->
+                        <!--                            android:gravity="center"-->
+                        <!--                            android:text="@{pickerName}"-->
+                        <!--                            android:textColor="@color/white"-->
+                        <!--                            android:textSize="@dimen/dimen10sp" />-->
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen5dp"
                             android:fontFamily="@font/poppins_bold"
                             android:gravity="center"
-                            android:text="@{empRole +` : `+ userId +` - ` + pickerName}"
+                            android:text="@{dcName}"
                             android:textColor="@color/white"
                             android:textSize="@dimen/dimen10sp" />
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:fontFamily="@font/poppins_bold"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="@{userId}"-->
-<!--                            android:textColor="@color/white"-->
-<!--                            android:textSize="@dimen/dimen10sp" />-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:fontFamily="@font/poppins_bold"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="@{empRole}"-->
-<!--                            android:textColor="@color/white"-->
-<!--                            android:textSize="@dimen/dimen10sp" />-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:fontFamily="@font/poppins_bold"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="@{pickerName}"-->
-<!--                            android:textColor="@color/white"-->
-<!--                            android:textSize="@dimen/dimen10sp" />-->
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_bold"
                             android:gravity="center"
-                            android:text="@{dcName}"
+                            android:text="@{userId +` - ` + pickerName}"
                             android:textColor="@color/white"
                             android:textSize="@dimen/dimen10sp" />
 

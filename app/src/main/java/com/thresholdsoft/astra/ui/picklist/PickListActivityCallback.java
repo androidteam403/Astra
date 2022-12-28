@@ -91,4 +91,20 @@ public interface PickListActivityCallback {
     void onClickCompletedPickList();
 
     void onClickDetailsLayoutEnlarge();
+
+    void onClickPrint();
+
+    void onClickScanned();
+
+    void onClickPending();
+
+    void onClickApproved();
+
+    void onClickCompleted();
+
+    void onClickFirstPage();
+
+    void onClickLastPage();
+
+    void onClickSearchItem();
 }

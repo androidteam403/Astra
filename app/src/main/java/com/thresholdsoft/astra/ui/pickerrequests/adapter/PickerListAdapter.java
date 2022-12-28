@@ -1,15 +1,19 @@
-package com.thresholdsoft.astra.ui.adapter;
+package com.thresholdsoft.astra.ui.pickerrequests.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -22,17 +26,22 @@ import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestCallback;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.ViewHolder> {
+public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.ViewHolder> implements Filterable {
     private Activity activity;
     private PickerRequestCallback pickerRequestCallback;
-    private ArrayList<WithHoldDataResponse.Withholddetail> withholddetailList = new ArrayList<>();
+    private List<WithHoldDataResponse.Withholddetail> withholddetailList = new ArrayList<>();
+    private List<WithHoldDataResponse.Withholddetail> withholddetailfilteredList = new ArrayList<>();
+    private List<WithHoldDataResponse.Withholddetail> withholddetailListList = new ArrayList<>();
+    private boolean isNotifying = false;
+    private Dialog customDialog;
 
     public PickerListAdapter(Activity activity, ArrayList<WithHoldDataResponse.Withholddetail> withholddetailList, PickerRequestCallback pickerRequestCallback) {
         this.activity = activity;
         this.withholddetailList = withholddetailList;
+        this.withholddetailListList = withholddetailList;
         this.pickerRequestCallback = pickerRequestCallback;
-
     }
 
 
@@ -45,7 +54,7 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull PickerListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PickerListAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         WithHoldDataResponse.Withholddetail pickListItems = withholddetailList.get(position);
         String holdres = pickListItems.getHoldreasoncode();
 
@@ -58,6 +67,7 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
         if (allocqty != null) {
             holder.pickerrequestAdapterlayoutBinding.allocationQty.setText(allocqty);
         }
+        holder.pickerrequestAdapterlayoutBinding.route.setText(pickListItems.getRoutecode());
         holder.pickerrequestAdapterlayoutBinding.shortqty.setText(pickListItems.getShortqty().toString());
         holder.pickerrequestAdapterlayoutBinding.scannedQty.setText(pickListItems.getScannedqty().toString());
         holder.pickerrequestAdapterlayoutBinding.requestedby.setText(pickListItems.getUsername() + " (" + pickListItems.getUserid() + " )");
@@ -89,32 +99,83 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
 
             @Override
             public void afterTextChanged(Editable s) {
-                String text = s.toString();
-                if (!text.isEmpty()) {
-                    if (Integer.parseInt(text) > pickListItems.getApprovalqty()) {
-                        Dialog customDialog = new Dialog(activity);
-                        DialogCustomAlertBinding dialogCustomAlertBinding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.dialog_custom_alert, null, false);
-                        customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                        customDialog.setContentView(dialogCustomAlertBinding.getRoot());
-                        customDialog.setCancelable(false);
-                        dialogCustomAlertBinding.message.setText("Approval qty should not be greater than Request qty.");
-                        dialogCustomAlertBinding.alertListenerLayout.setVisibility(View.GONE);
-                        dialogCustomAlertBinding.okBtn.setOnClickListener(view -> {
-                            holder.pickerrequestAdapterlayoutBinding.approvalqty.setText(String.valueOf(pickListItems.getApprovalqty()));
-                            customDialog.dismiss();
-                        });
-                        customDialog.show();
+                if (!isNotifying) {
+                    String text = s.toString();
+                    if (!text.isEmpty()) {
+                        if (Integer.parseInt(text) > pickListItems.getApprovalqty()) {
+                            if (customDialog != null && customDialog.isShowing()) {
+                                customDialog.dismiss();
+                            }
+                            customDialog = new Dialog(activity);
+                            DialogCustomAlertBinding dialogCustomAlertBinding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.dialog_custom_alert, null, false);
+                            customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                            customDialog.setContentView(dialogCustomAlertBinding.getRoot());
+                            customDialog.setCancelable(false);
+                            dialogCustomAlertBinding.message.setText("Approval qty should not be greater than Request qty.");
+                            dialogCustomAlertBinding.alertListenerLayout.setVisibility(View.GONE);
+                            dialogCustomAlertBinding.okBtn.setOnClickListener(view -> {
+                                holder.pickerrequestAdapterlayoutBinding.approvalqty.setText(String.valueOf(pickListItems.getApprovalqty()));
+                                customDialog.dismiss();
+                            });
+                            customDialog.show();
+                        }
                     }
                 }
             }
         });
-
-
+        new Handler().postDelayed(() -> {
+            if (position == withholddetailList.size() - 1) {
+                isNotifying = false;
+            }
+        }, 100);
     }
 
     @Override
     public int getItemCount() {
         return withholddetailList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.equals("All")) {
+                    withholddetailList = withholddetailListList;
+                    isNotifying = true;
+                } else {
+                    withholddetailfilteredList.clear();
+                    for (WithHoldDataResponse.Withholddetail row : withholddetailListList) {
+                        if (!withholddetailfilteredList.contains(row) && (row.getHoldreasoncode().toLowerCase().contains(charString.toLowerCase()))) {
+                            isNotifying = true;
+                            withholddetailfilteredList.add(row);
+                        }
+
+                    }
+                    withholddetailList = withholddetailfilteredList;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = withholddetailList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                if (withholddetailList != null && !withholddetailList.isEmpty()) {
+                    withholddetailList = (ArrayList<WithHoldDataResponse.Withholddetail>) filterResults.values;
+                    try {
+                        pickerRequestCallback.noPickerRequestsFound(withholddetailList.size());
+                        notifyDataSetChanged();
+                    } catch (Exception e) {
+                        Log.e("FullfilmentAdapter", e.getMessage());
+                    }
+                } else {
+                    pickerRequestCallback.noPickerRequestsFound(0);
+                    notifyDataSetChanged();
+                }
+            }
+        };
     }
 
 

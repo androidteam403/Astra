@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
@@ -17,40 +18,38 @@ import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityPickerRequestsBinding;
 import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
 import com.thresholdsoft.astra.db.SessionManager;
-import com.thresholdsoft.astra.ui.adapter.PickerListAdapter;
+import com.thresholdsoft.astra.ui.pickerrequests.adapter.PickerListAdapter;
 import com.thresholdsoft.astra.ui.alertdialogs.AlertBox;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.menucallbacks.CustomMenuSupervisorCallback;
+import com.thresholdsoft.astra.ui.pickerrequests.adapter.RequestTypeDropdownSpinner;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
+import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
+import com.thresholdsoft.astra.utils.AppConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class PickerRequestActivity extends BaseActivity implements PickerRequestCallback, CustomMenuSupervisorCallback {
-    //    ArrayList<String> names = new ArrayList<>();
     AlertBox alertBox;
     private ArrayList<WithHoldDataResponse.Withholddetail> withholddetailList = new ArrayList<>();
 
     ActivityPickerRequestsBinding activityPickerRequestsBinding;
-//    RelativeLayout dashboardsupervisor = findViewById(R.id.dashboard_layout);
-//    RelativeLayout dashboardadmin = findViewById(R.id.second_dashboard);
-//    ImageView apollologo = findViewById(R.id.apollo_logo);
-//    RelativeLayout pickListLayout = findViewById(R.id.picklist_layout);
-//    RelativeLayout pickListHistoryLayout = findViewById(R.id.picklist_history_layout);
-//    RelativeLayout requestHistoryLayout = findViewById(R.id.requesthistory_layout);
-//    RelativeLayout pickerrequestlayout = findViewById(R.id.picker_request_layout);
-//    RelativeLayout approvedhistoryLayout = findViewById(R.id.approved_history_layout);
-//    TextView picklist = findViewById(R.id.pickerrequest_text);
-//    TextView req_picker = findViewById(R.id.request_text);
 
 
     //made changes by naveen
-    List<GetAllocationDataResponse.Allocationhddata> allocationhddataList = new ArrayList<>();
+    private List<GetAllocationDataResponse.Allocationhddata> allocationhddataList = new ArrayList<>();
+    private PickerListAdapter pickListHistoryAdapter;
     private String approvalReasonCode;
+
+    private List<GetWithHoldRemarksResponse.Remarksdetail> remarksdetails;
+
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -58,69 +57,25 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         super.onCreate(savedInstanceState);
         activityPickerRequestsBinding = DataBindingUtil.setContentView(this, R.layout.activity_picker_requests);
         setUp();
+        List<GetWithHoldRemarksResponse.Remarksdetail> remarksdetailsList = AppConstants.getWithHoldRemarksResponse.getRemarksdetails();
+        GetWithHoldRemarksResponse.Remarksdetail remarksdetail = new GetWithHoldRemarksResponse.Remarksdetail();
+        remarksdetail.setRemarkscode("All");
+        remarksdetail.setRemarksdesc("All");
+        remarksdetailsList.add(0, remarksdetail);
+        RequestTypeDropdownSpinner adapter = new RequestTypeDropdownSpinner(this, remarksdetailsList);
+        activityPickerRequestsBinding.requestCodeSpinner.setAdapter(adapter);
+        activityPickerRequestsBinding.requestCodeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (pickListHistoryAdapter != null)
+                    pickListHistoryAdapter.getFilter().filter(remarksdetailsList.get(position).getRemarkscode());
+            }
 
-//        req_picker.setTextColor(R.color.black);
-//        picklist.setTextColor(R.color.black);
-//        activityPickerRequestsBinding.yellowLine.setVisibility(View.VISIBLE);
-//        pickerrequestlayout.setBackgroundResource(R.color.lite_yellow);
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-//
-//        String[] areaNames = new String[]{"Hyderabad", "Area-1", "Area-2"};
-//        Spinner s = (Spinner) findViewById(R.id.requested_spinner);
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, areaNames);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        s.setAdapter(adapter);
-//
-//
-//        String[] status = new String[]{"Assign", "In-Progress", "Completed"};
-//        Spinner s1 = (Spinner) findViewById(R.id.status_spinner);
-//        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, R.layout.spinner_item, status);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        s1.setAdapter(adapter1);
-
-//        dashboardsupervisor.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(PickerRequests.this, DashBoard.class);
-//                startActivity(intent);
-//                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-//            }
-//        });
-//        apollologo.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                startActivity(new Intent(PickerRequests.this, LoginActivity.class));
-//                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-//
-//            }
-//        });
-//        pickListLayout.setOnClickListener(v -> {
-//
-//            startActivity(new Intent(PickerRequests.this, PickListActivity.class));
-//            overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-//
-//        });
-//
-//        pickListHistoryLayout.setOnClickListener(v -> {
-//
-//            startActivity(new Intent(PickerRequests.this, PickListHistoryActivity.class));
-//            overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-//
-//        });
-//        requestHistoryLayout.setOnClickListener(v -> {
-//
-//            startActivity(new Intent(PickerRequests.this, RequestHistoryActivity.class));
-//            overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-//
-//        });
-
-
-//
-//        activityPickerRequestsBinding.approverequestlist.setLayoutManager(linearLayoutManager3);
-//        activityPickerRequestsBinding.approverequestlist.setAdapter(approveRequestListAdapter);
-
-
+            }
+        });
     }
 
     private PickerRequestController getController() {
@@ -128,17 +83,19 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     }
 
     @Override
-    public void onClickApprove(String approvedQty, WithHoldDataResponse.Withholddetail pickListItems, int position, String purchaseId, String itemName, ArrayList<WithHoldDataResponse.Withholddetail> withholddetailArrayList) {
+    public void onClickApprove(String approvedQty, WithHoldDataResponse.Withholddetail pickListItems, int position, String purchaseId, String itemName, List<WithHoldDataResponse.Withholddetail> withholddetailArrayList) {
         alertBox = new AlertBox(PickerRequestActivity.this, itemName, purchaseId, PickerRequestActivity.this, pickListItems, this);
         if (!isFinishing()) alertBox.show();
-//        alertDialog.setTitle("Do yo want to Continue Shopping or LogOut?");
-
         alertBox.setNegativeListener(v -> alertBox.dismiss());
         alertBox.cancel(v -> alertBox.dismiss());
         alertBox.setPositiveListener(v -> {
-            ActivityUtils.showDialog(getApplicationContext(), "");
-            getController().getWithHoldApprovalApi(approvedQty, withholddetailArrayList, position, approvalReasonCode, alertBox.getRemarks());
-            alertBox.dismiss();
+            if (alertBox.getRemarks() != null && alertBox.getRemarks().length() > 50) {
+                Toast.makeText(this, "Remarks characters must be less than 50 characters", Toast.LENGTH_SHORT).show();
+            } else {
+                ActivityUtils.showDialog(getApplicationContext(), "");
+                getController().getWithHoldApprovalApi(approvedQty, withholddetailArrayList, position, approvalReasonCode, alertBox.getRemarks());
+                alertBox.dismiss();
+            }
         });
 
 
@@ -170,29 +127,6 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
         getController().getWithHoldApi();
         parentLayoutTouchListener();
-//        names.add("a");
-//        names.add("a");
-
-//
-//        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this);
-//        CompleteListAdapter completeListAdapter = new CompleteListAdapter(this, names);
-////
-////        activityPickerRequestsBinding.completlistrecycleview.setLayoutManager(linearLayoutManager1);
-////        activityPickerRequestsBinding.completlistrecycleview.setAdapter(completeListAdapter);
-//
-//
-//        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(this);
-//        PickListAdapter pickListAdapter = new PickListAdapter(this, allocationhddataList, null);
-////
-//        activityPickerRequestsBinding.pickerlistrecycleview.setLayoutManager(linearLayoutManager2);
-//        activityPickerRequestsBinding.pickerlistrecycleview.setAdapter(pickListAdapter);
-
-//
-//        LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(this);
-//
-//        ApproveRequestListAdapter approveRequestListAdapter = new ApproveRequestListAdapter(this, names);
-
-
     }
 
     private SessionManager getSessionManager() {
@@ -201,11 +135,14 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
     @Override
     public void onSuccessWithHoldApi(WithHoldDataResponse withHoldDataResponse) {
+        activityPickerRequestsBinding.setIsSortByRouteWise(true);
         if (withHoldDataResponse != null && withHoldDataResponse.getRequeststatus()) {
             withholddetailList = (ArrayList<WithHoldDataResponse.Withholddetail>) withHoldDataResponse.getWithholddetails();
+
+
             if (withholddetailList != null && withholddetailList.size() > 0) {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-                PickerListAdapter pickListHistoryAdapter = new PickerListAdapter(this, withholddetailList, this);
+                pickListHistoryAdapter = new PickerListAdapter(this, withholddetailList, this);
                 activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
                 activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
 
@@ -220,7 +157,8 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         }
     }
 
-    private void noPickerRequestsFound(int count) {
+    @Override
+    public void noPickerRequestsFound(int count) {
         if (count == 0) {
             activityPickerRequestsBinding.pickerRequestRecycleview.setVisibility(View.GONE);
             activityPickerRequestsBinding.noPickerRequestsFoundText.setVisibility(View.VISIBLE);
@@ -255,6 +193,59 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     @Override
     public void onClickRefreshRequest() {
         getController().getWithHoldApi();
+    }
+
+    @Override
+    public void onClickSortByRoute() {
+        activityPickerRequestsBinding.setIsSortByRouteWise(true);
+        if (withholddetailList != null && withholddetailList.size() > 0) {
+            Collections.sort(withholddetailList, new Comparator<WithHoldDataResponse.Withholddetail>() {
+                public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                    return s1.getPurchreqid().compareToIgnoreCase(s2.getPurchreqid());
+                }
+            });
+
+            Collections.sort(withholddetailList, new Comparator<WithHoldDataResponse.Withholddetail>() {
+                public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                    return s1.getRoutecode().compareToIgnoreCase(s2.getRoutecode());
+                }
+            });
+            if (withholddetailList != null && withholddetailList.size() > 0) {
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                pickListHistoryAdapter = new PickerListAdapter(this, withholddetailList, this);
+                activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
+                activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+
+                noPickerRequestsFound(withholddetailList.size());
+            } else {
+                noPickerRequestsFound(0);
+//                Toast.makeText(this, withHoldDataResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onClickSortByRequestedDate() {
+        activityPickerRequestsBinding.setIsSortByRouteWise(false);
+        if (withholddetailList != null && withholddetailList.size() > 0) {
+            Collections.sort(withholddetailList, new Comparator<WithHoldDataResponse.Withholddetail>() {
+                public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                    return s1.getOnholddatetime().compareToIgnoreCase(s2.getOnholddatetime());
+                }
+            });
+            if (withholddetailList != null && withholddetailList.size() > 0) {
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                pickListHistoryAdapter = new PickerListAdapter(this, withholddetailList, this);
+                activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
+                activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+
+                noPickerRequestsFound(withholddetailList.size());
+            } else {
+                noPickerRequestsFound(0);
+//                Toast.makeText(this, withHoldDataResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+
     }
 
 

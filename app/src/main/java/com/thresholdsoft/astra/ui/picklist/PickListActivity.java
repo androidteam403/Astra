@@ -1,37 +1,69 @@
 package com.thresholdsoft.astra.ui.picklist;
 
+import android.Manifest;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CancellationSignal;
+import android.os.Environment;
 import android.os.Handler;
+import android.os.ParcelFileDescriptor;
+import android.print.PageRange;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintDocumentInfo;
+import android.print.PrintManager;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.Writer;
+import com.google.zxing.common.BitMatrix;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.google.zxing.oned.Code128Writer;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.thresholdsoft.astra.R;
-import com.thresholdsoft.astra.base.BaseActivity;
+import com.thresholdsoft.astra.custumpdf.PDFCreatorActivity;
+import com.thresholdsoft.astra.custumpdf.utils.PDFUtil;
+import com.thresholdsoft.astra.custumpdf.views.PDFBody;
+import com.thresholdsoft.astra.custumpdf.views.PDFFooterView;
+import com.thresholdsoft.astra.custumpdf.views.PDFHeaderView;
+import com.thresholdsoft.astra.custumpdf.views.basic.PDFHorizontalView;
+import com.thresholdsoft.astra.custumpdf.views.basic.PDFImageView;
+import com.thresholdsoft.astra.custumpdf.views.basic.PDFTextView;
+import com.thresholdsoft.astra.custumpdf.views.basic.PDFVerticalView;
 import com.thresholdsoft.astra.databinding.ActivityPickListBinding;
 import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
 import com.thresholdsoft.astra.databinding.DialogEditScannedPacksBinding;
@@ -69,11 +101,20 @@ import com.thresholdsoft.astra.ui.scanner.ScannerActivity;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.CommonUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PickListActivity extends BaseActivity implements PickListActivityCallback, CustomMenuCallback, Filterable {
+public class PickListActivity extends PDFCreatorActivity implements PickListActivityCallback, CustomMenuCallback, Filterable {
     // made changes by naveen
     private ActivityPickListBinding activityPickListBinding;
     private PickListAdapter pickListAdapter;
@@ -112,10 +153,18 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     private int endIndex = 0;
     private static int pageSize = 15;
 
+
+    private boolean isItemListRefreshRequired = false;
+
     public static Intent getStartActivity(Context mContext) {
         Intent intent = new Intent(mContext, PickListActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         return intent;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
     }
 
     @SuppressLint("ResourceAsColor")
@@ -126,12 +175,19 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         setUp();
     }
 
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
     private void setUp() {
 //        this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
         activityPickListBinding.setAssignedOrdersCount("0");
         activityPickListBinding.setAssignedLines("0");
         activityPickListBinding.setCallback(this);
-        activityPickListBinding.setPickListSelectedStatus(0);
+        activityPickListBinding.setPickListSelectedStatus(1);
+        activityPickListBinding.setItemListStatus(0);
         // menu dataset
         activityPickListBinding.setCustomMenuCallback(this);
         activityPickListBinding.setSelectedMenu(1);
@@ -162,6 +218,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
             }
         });
         searchByPurchReqId();
+        searchByItemBoxCheckEmpty();
         getController().getAllocationDataApiCall(false, false);
         barcodeCodeScanEdittextTextWatcher();
         parentLayoutTouchListener();
@@ -233,6 +290,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
             public void afterTextChanged(Editable editable) {
                 if (editable.length() >= 2) {
                     if (pickListAdapter != null) {
+                        activityPickListBinding.setPickListSelectedStatus(0);
                         pickListAdapter.getFilter().filter(editable);
 
                     }
@@ -266,6 +324,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         if (getAllocationDataResponse != null && getAllocationDataResponse.getAllocationhddatas() != null && getAllocationDataResponse.getAllocationhddatas().size() > 0) {
             this.allocationhddataList = new ArrayList<>();
 
+
             assignedAllocationData = getAllocationDataResponse.getAllocationhddatas().stream().filter(e -> e.getScanstatus().equalsIgnoreCase("Assigned")).collect(Collectors.toList());
             this.allocationhddataList.addAll(assignedAllocationData);
 
@@ -284,10 +343,13 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
             activityPickListBinding.progressCount.setText(String.valueOf(inProgressAllocationData.size()));
             activityPickListBinding.completecount.setText(String.valueOf(completedAllocationData.size()));
             if (activityPickListBinding.getPickListSelectedStatus() == 1) {
+                activityPickListBinding.setPickListSelectedStatus(0);
                 onClickPendingPickList();
             } else if (activityPickListBinding.getPickListSelectedStatus() == 2) {
+                activityPickListBinding.setPickListSelectedStatus(0);
                 onClickInProcessPickList();
             } else if (activityPickListBinding.getPickListSelectedStatus() == 3) {
+                activityPickListBinding.setPickListSelectedStatus(0);
                 onClickCompletedPickList();
             } else {
                 pickListAdapter = new PickListAdapter(this, allocationhddataList, this);
@@ -348,11 +410,14 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
 
             List<GetAllocationLineResponse.Allocationdetail> allocationdetailListSort = new ArrayList<>();
 
-            List<GetAllocationLineResponse.Allocationdetail> pendingAllocationdetailList = getAllocationLineResponse.getAllocationdetails().stream().filter(e -> (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) != 0 && !e.isRequestAccepted()).collect(Collectors.toList());
+            List<GetAllocationLineResponse.Allocationdetail> pendingAllocationdetailList = getAllocationLineResponse.getAllocationdetails().stream().filter(e -> (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) != 0 && !e.isRequestAccepted() && e.getSelectedSupervisorRemarksdetail() == null).collect(Collectors.toList());
             allocationdetailListSort.addAll(pendingAllocationdetailList);
 
-            List<GetAllocationLineResponse.Allocationdetail> completedAllocationdetailList = getAllocationLineResponse.getAllocationdetails().stream().filter(e -> ((e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) == 0 || e.isRequestAccepted())).collect(Collectors.toList());
+            List<GetAllocationLineResponse.Allocationdetail> completedAllocationdetailList = getAllocationLineResponse.getAllocationdetails().stream().filter(e -> (e.getSelectedSupervisorRemarksdetail() == null && (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) == 0 || e.isRequestAccepted())).collect(Collectors.toList());
             allocationdetailListSort.addAll(completedAllocationdetailList);
+
+            List<GetAllocationLineResponse.Allocationdetail> requestPendingAllocationDetailsLIst = getAllocationLineResponse.getAllocationdetails().stream().filter(e -> (e.getSelectedSupervisorRemarksdetail() != null)).collect(Collectors.toList());
+            allocationdetailListSort.addAll(requestPendingAllocationDetailsLIst);
 
 
             allocationdetailList = allocationdetailListSort;     //getAllocationLineResponse.getAllocationdetails();
@@ -383,13 +448,14 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
 
             activityPickListBinding.listitemRecycleview.setAdapter(itemListAdapter);
 
-            String[] statusList = new String[]{"All", "Pending", "Completed"};
+            String[] statusList = new String[]{"All", "Scanned", "Pending", "Approved", "Completed"};
             StatusFilterCustomSpinnerAdapter statusFilterCustomSpinnerAdapter = new StatusFilterCustomSpinnerAdapter(this, statusList, this);
             activityPickListBinding.astramain.setAdapter(statusFilterCustomSpinnerAdapter);
             activityPickListBinding.astramain.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //                    itemListAdapter.getFilter().filter(statusList[position]);
+                    activityPickListBinding.setItemListStatus(position);
                     getFilter().filter(statusList[position]);
                 }
 
@@ -431,9 +497,18 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
     public void onSuccessStatusUpdateApi(StatusUpdateResponse statusUpdateResponse, String status, boolean ismanuallyEditedScannedPacks, boolean isRequestToSupervisior) {
         if (status.equals("INPROCESS")) {
             if (isRequestToSupervisior) {
+
                 activityPickListBinding.getOrderStatusModel().setStatus("INPROCESS");
                 activityPickListBinding.setOrderStatusModel(activityPickListBinding.getOrderStatusModel());
+
+                this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
+                this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
+                barcodeAllocationDetailList.get(0).setScannedDateTime(this.scanStartDateTime);
+
+                insertOrUpdateAllocationLineList();
+                insertOrUpdateOrderStatusTimeDateEntity();
                 setOrderCompletedPending("INPROCESS");
+
                 getController().getAllocationDataApiCall(true, false);
 
 
@@ -504,16 +579,22 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
             activityPickListBinding.setOrderStatusModel(activityPickListBinding.getOrderStatusModel());
             this.orderCompletedDateTime = CommonUtils.getCurrentDateAndTime();
             insertOrUpdateOrderStatusTimeDateEntity();
+            setOrderCompletedPending(activityPickListBinding.getOrderStatusModel().getStatus());
             itemListAdapter.setCompletedStatus(true);
             setPendingMoveToFirst();
             itemListAdapter.notifyDataSetChanged();
             getController().getAllocationDataApiCall(false, true);
         } else if (status.equals("WITHHOLD")) {
+            this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
+            this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
             this.barcodeAllocationDetailList.get(0).setSelectedSupervisorRemarksdetail(this.selectedSupervisorRemarksdetail);
             this.barcodeAllocationDetailList.get(0).setRequestRejected(false);
             this.barcodeAllocationDetailList.get(0).setRequestAccepted(false);
             activityPickListBinding.setBarcodeScannedItem(this.barcodeAllocationDetailList.get(0));
             insertOrUpdateAllocationLineList();
+            insertOrUpdateOrderStatusTimeDateEntity();
+            setOrderCompletedPending(activityPickListBinding.getOrderStatusModel().getStatus());
+            setPendingMoveToFirst();
             pickListAdapter.notifyDataSetChanged();
         }
     }
@@ -525,12 +606,36 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
 //                allocationdetailListForAdapter.add(barcodeAllocationDetailList.get(0));
 //            }
 //        }
-        if (barcodeAllocationDetailList != null && !barcodeAllocationDetailList.isEmpty()) {
-            if (allocationdetailList.contains(barcodeAllocationDetailList.get(0)) && ((barcodeAllocationDetailList.get(0).getAllocatedPackscompleted() - barcodeAllocationDetailList.get(0).getSupervisorApprovedQty()) == 0 || barcodeAllocationDetailList.get(0).isRequestAccepted())) {
-                allocationdetailList.remove(barcodeAllocationDetailList.get(0));
-                allocationdetailList.add(barcodeAllocationDetailList.get(0));
+//        if (barcodeAllocationDetailList != null && !barcodeAllocationDetailList.isEmpty()) {
+//            if (allocationdetailList.contains(barcodeAllocationDetailList.get(0)) && ((barcodeAllocationDetailList.get(0).getAllocatedPackscompleted() - barcodeAllocationDetailList.get(0).getSupervisorApprovedQty()) == 0 || barcodeAllocationDetailList.get(0).isRequestAccepted())) {
+//                allocationdetailList.remove(barcodeAllocationDetailList.get(0));
+//                allocationdetailList.add(barcodeAllocationDetailList.get(0));
+//            }
+//        }
+
+
+        Collections.sort(allocationdetailList, new Comparator<GetAllocationLineResponse.Allocationdetail>() {
+            public int compare(GetAllocationLineResponse.Allocationdetail s1, GetAllocationLineResponse.Allocationdetail s2) {
+                return s1.getRackshelf().compareToIgnoreCase(s2.getRackshelf());
             }
-        }
+        });
+
+        List<GetAllocationLineResponse.Allocationdetail> allocationdetailListSort = new ArrayList<>();
+
+        List<GetAllocationLineResponse.Allocationdetail> pendingAllocationdetailList = allocationdetailList.stream().filter(e -> (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) != 0 && !e.isRequestAccepted() && e.getSelectedSupervisorRemarksdetail() == null).collect(Collectors.toList());
+        allocationdetailListSort.addAll(pendingAllocationdetailList);
+
+        List<GetAllocationLineResponse.Allocationdetail> completedAllocationdetailList = allocationdetailList.stream().filter(e -> (e.getSelectedSupervisorRemarksdetail() == null && (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) == 0 || e.isRequestAccepted())).collect(Collectors.toList());
+        allocationdetailListSort.addAll(completedAllocationdetailList);
+
+        List<GetAllocationLineResponse.Allocationdetail> requestPendingAllocationDetailsLIst = allocationdetailList.stream().filter(e -> (e.getSelectedSupervisorRemarksdetail() != null)).collect(Collectors.toList());
+        allocationdetailListSort.addAll(requestPendingAllocationDetailsLIst);
+
+        allocationdetailList = allocationdetailListSort;     //getAllocationLineResponse.getAllocationdetails();
+        allocationdetailListTemp = allocationdetailListSort; //getAllocationLineResponse.getAllocationdetails();
+        allocationdetailListList = allocationdetailListSort; //getAllocationLineResponse.getAllocationdetails();
+
+
         activityPickListBinding.setIsNaxtPage(endIndex != allocationdetailList.size());
         activityPickListBinding.setIsPrevtPage(startIndex != 0);
         allocationdetailListForAdapter = allocationdetailList.subList(startIndex, endIndex);
@@ -572,6 +677,8 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
 
     @Override
     public void onClickItemListItem(GetAllocationLineResponse.Allocationdetail allocationdetail) {
+        isItemListRefreshRequired = true;
+        activityPickListBinding.searchByBarcodeOrid.setText("");
         activityPickListBinding.setBarcodeScannedItem(allocationdetail);
         for (GetAllocationLineResponse.Allocationdetail a : allocationdetailList) {
             a.setSelected((a.getItembarcode().equalsIgnoreCase(allocationdetail.getItembarcode()) && a.getId() == allocationdetail.getId()));
@@ -806,8 +913,50 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
 
         barcodeAllocationDetailList.get(0).setScannedDateTime(CommonUtils.getCurrentDateAndTime());
         activityPickListBinding.setBarcodeScannedItem(barcodeAllocationDetailList.get(0));
-        setPendingMoveToFirst();
-        itemListAdapter.notifyDataSetChanged();
+//        setPendingMoveToFirst();
+
+        Collections.sort(allocationdetailList, new Comparator<GetAllocationLineResponse.Allocationdetail>() {
+            public int compare(GetAllocationLineResponse.Allocationdetail s1, GetAllocationLineResponse.Allocationdetail s2) {
+                return s1.getRackshelf().compareToIgnoreCase(s2.getRackshelf());
+            }
+        });
+
+        List<GetAllocationLineResponse.Allocationdetail> allocationdetailListSort = new ArrayList<>();
+
+        List<GetAllocationLineResponse.Allocationdetail> pendingAllocationdetailList = allocationdetailList.stream().filter(e -> (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) != 0 && !e.isRequestAccepted()).collect(Collectors.toList());
+        allocationdetailListSort.addAll(pendingAllocationdetailList);
+
+        List<GetAllocationLineResponse.Allocationdetail> completedAllocationdetailList = allocationdetailList.stream().filter(e -> ((e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) == 0 || e.isRequestAccepted())).collect(Collectors.toList());
+        allocationdetailListSort.addAll(completedAllocationdetailList);
+
+        List<GetAllocationLineResponse.Allocationdetail> requestPendingAllocationDetailsLIst = allocationdetailList.stream().filter(e -> (e.getSelectedSupervisorRemarksdetail() != null)).collect(Collectors.toList());
+        allocationdetailListSort.addAll(requestPendingAllocationDetailsLIst);
+
+        allocationdetailList = allocationdetailListSort;     //getAllocationLineResponse.getAllocationdetails();
+        allocationdetailListTemp = allocationdetailListSort; //getAllocationLineResponse.getAllocationdetails();
+        allocationdetailListList = allocationdetailListSort; //getAllocationLineResponse.getAllocationdetails();
+
+        if (allocationdetailList != null && allocationdetailList.size() >= pageSize) {
+            startIndex = 0;
+            endIndex = pageSize;
+        } else {
+            endIndex = allocationdetailList.size();
+        }
+
+        activityPickListBinding.setIsNaxtPage(endIndex != allocationdetailList.size());
+        activityPickListBinding.setIsPrevtPage(startIndex != 0);
+        allocationdetailListForAdapter = allocationdetailList.subList(startIndex, endIndex);
+
+        activityPickListBinding.setIsPagination(allocationdetailList.size() > pageSize);
+
+        itemListAdapter = new ItemListAdapter(this, allocationdetailListForAdapter, this, activityPickListBinding.getAllocationData().getScanstatus().equalsIgnoreCase("Completed"));
+        setPagination(allocationdetailList.size() > pageSize);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        activityPickListBinding.listitemRecycleview.setLayoutManager(layoutManager);
+        activityPickListBinding.listitemRecycleview.setAdapter(itemListAdapter);
+
+        activityPickListBinding.astramain.setSelection(0);
+
         insertOrUpdateAllocationLineList();
         setOrderCompletedPending(activityPickListBinding.getOrderStatusModel().getStatus());
     }
@@ -1144,43 +1293,82 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
 
     @Override
     public void onClickPendingPickList() {
-        activityPickListBinding.setPickListSelectedStatus(1);
-        if (assignedAllocationData != null && !assignedAllocationData.isEmpty()) {
-            pickListAdapter = new PickListAdapter(this, assignedAllocationData, this);
-            RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
-            activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
-            noPickListFound(assignedAllocationData.size());
+        if (activityPickListBinding.getPickListSelectedStatus() == 1) {
+            activityPickListBinding.setPickListSelectedStatus(0);
+            if (allocationhddataList != null && !allocationhddataList.isEmpty()) {
+                pickListAdapter = new PickListAdapter(this, allocationhddataList, this);
+                RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
+                activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
+                noPickListFound(allocationhddataList.size());
+            } else {
+                noPickListFound(0);
+            }
         } else {
-            noPickListFound(0);
+            activityPickListBinding.setPickListSelectedStatus(1);
+            if (assignedAllocationData != null && !assignedAllocationData.isEmpty()) {
+                pickListAdapter = new PickListAdapter(this, assignedAllocationData, this);
+                RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
+                activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
+                noPickListFound(assignedAllocationData.size());
+            } else {
+                noPickListFound(0);
+            }
         }
     }
 
     @Override
     public void onClickInProcessPickList() {
-        activityPickListBinding.setPickListSelectedStatus(2);
-        if (inProgressAllocationData != null && !inProgressAllocationData.isEmpty()) {
-            pickListAdapter = new PickListAdapter(this, inProgressAllocationData, this);
-            RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
-            activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
-            noPickListFound(inProgressAllocationData.size());
+        if (activityPickListBinding.getPickListSelectedStatus() == 2) {
+            activityPickListBinding.setPickListSelectedStatus(0);
+            if (allocationhddataList != null && !allocationhddataList.isEmpty()) {
+                pickListAdapter = new PickListAdapter(this, allocationhddataList, this);
+                RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
+                activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
+                noPickListFound(allocationhddataList.size());
+            } else {
+                noPickListFound(0);
+            }
         } else {
-            noPickListFound(0);
+            activityPickListBinding.setPickListSelectedStatus(2);
+            if (inProgressAllocationData != null && !inProgressAllocationData.isEmpty()) {
+                pickListAdapter = new PickListAdapter(this, inProgressAllocationData, this);
+                RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
+                activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
+                noPickListFound(inProgressAllocationData.size());
+            } else {
+                noPickListFound(0);
+            }
         }
     }
 
     @Override
     public void onClickCompletedPickList() {
-        activityPickListBinding.setPickListSelectedStatus(3);
-        if (completedAllocationData != null && !completedAllocationData.isEmpty()) {
-            pickListAdapter = new PickListAdapter(this, completedAllocationData, this);
-            RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
-            activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
-            noPickListFound(completedAllocationData.size());
+        if (activityPickListBinding.getPickListSelectedStatus() == 3) {
+            activityPickListBinding.setPickListSelectedStatus(0);
+            if (allocationhddataList != null && !allocationhddataList.isEmpty()) {
+                pickListAdapter = new PickListAdapter(this, allocationhddataList, this);
+                RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
+                activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
+                noPickListFound(allocationhddataList.size());
+            } else {
+                noPickListFound(0);
+            }
         } else {
-            noPickListFound(0);
+            activityPickListBinding.setPickListSelectedStatus(3);
+            if (completedAllocationData != null && !completedAllocationData.isEmpty()) {
+                pickListAdapter = new PickListAdapter(this, completedAllocationData, this);
+                RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
+                activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
+                noPickListFound(completedAllocationData.size());
+            } else {
+                noPickListFound(0);
+            }
         }
     }
 
@@ -1191,6 +1379,116 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         activityPickListBinding.detailViewEnlargeIcon.setRotation(activityPickListBinding.getIsDetailViewExpanded() ? 0 : 180);
         itemListAdapter.setIsDetailsViewExpanded(activityPickListBinding.getIsDetailViewExpanded());
         itemListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClickPrint() {
+        if (activityPickListBinding.layoutPdfPreview != null) {
+            activityPickListBinding.layoutPdfPreview.removeAllViews();
+        }
+        String fileName = activityPickListBinding.getAllocationData().getPurchreqid() + activityPickListBinding.getAllocationData().getAreaid();
+        if (isStoragePermissionGranted()) {
+            createPDF(fileName, activityPickListBinding.layoutPdfPreview, activityPickListBinding.getAllocationData(), new PDFUtil.PDFUtilListener() {
+                @Override
+                public void pdfGenerationSuccess(File savedPDFFile) {
+                    Toast.makeText(PickListActivity.this, "PDF Created", Toast.LENGTH_SHORT).show();
+                    openPdf();
+                }
+
+                @Override
+                public void pdfGenerationFailure(Exception exception) {
+                    Toast.makeText(PickListActivity.this, "PDF NOT Created", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onClickScanned() {
+        if (activityPickListBinding.getItemListStatus() == 1) {
+            activityPickListBinding.setItemListStatus(0);
+            activityPickListBinding.astramain.setSelection(0);
+        } else {
+            activityPickListBinding.setItemListStatus(1);
+            activityPickListBinding.astramain.setSelection(1);
+        }
+    }
+
+    @Override
+    public void onClickPending() {
+        if (activityPickListBinding.getItemListStatus() == 2) {
+            activityPickListBinding.setItemListStatus(0);
+            activityPickListBinding.astramain.setSelection(0);
+        } else {
+            activityPickListBinding.setItemListStatus(2);
+            activityPickListBinding.astramain.setSelection(2);
+        }
+    }
+
+    @Override
+    public void onClickApproved() {
+        if (activityPickListBinding.getItemListStatus() == 3) {
+            activityPickListBinding.setItemListStatus(0);
+            activityPickListBinding.astramain.setSelection(0);
+        } else {
+            activityPickListBinding.setItemListStatus(3);
+            activityPickListBinding.astramain.setSelection(3);
+        }
+    }
+
+    @Override
+    public void onClickCompleted() {
+        if (activityPickListBinding.getItemListStatus() == 4) {
+            activityPickListBinding.setItemListStatus(0);
+            activityPickListBinding.astramain.setSelection(0);
+        } else {
+            activityPickListBinding.setItemListStatus(4);
+            activityPickListBinding.astramain.setSelection(4);
+        }
+    }
+
+    @Override
+    public void onClickFirstPage() {
+
+        startIndex = 0;
+        endIndex = pageSize;
+
+        activityPickListBinding.setIsFirstPage(true);
+        activityPickListBinding.setIsLastPage(false);
+
+        activityPickListBinding.setIsNaxtPage(endIndex != allocationdetailList.size());
+        activityPickListBinding.setIsPrevtPage(startIndex != 0);
+        allocationdetailListForAdapter = allocationdetailList.subList(startIndex, endIndex);
+        itemListAdapter.setAllocationedetailLists(allocationdetailListForAdapter);
+        itemListAdapter.notifyDataSetChanged();
+        activityPickListBinding.listitemRecycleview.scrollToPosition(0);
+        activityPickListBinding.setStartToEndPageNo(startIndex + 1 + "-" + endIndex);
+    }
+
+    @Override
+    public void onClickLastPage() {
+
+        int lastPageSize = allocationdetailList.size() % pageSize;
+
+
+        startIndex = allocationdetailList.size() - lastPageSize;
+        endIndex = allocationdetailList.size();
+
+        activityPickListBinding.setIsFirstPage(false);
+        activityPickListBinding.setIsLastPage(true);
+
+        activityPickListBinding.setIsNaxtPage(endIndex != allocationdetailList.size());
+        activityPickListBinding.setIsPrevtPage(startIndex != 0);
+        allocationdetailListForAdapter = allocationdetailList.subList(startIndex, endIndex);
+        itemListAdapter.setAllocationedetailLists(allocationdetailListForAdapter);
+        itemListAdapter.notifyDataSetChanged();
+        activityPickListBinding.listitemRecycleview.scrollToPosition(0);
+        activityPickListBinding.setStartToEndPageNo(startIndex + 1 + "-" + endIndex);
+    }
+
+    @Override
+    public void onClickSearchItem() {
+        getFilter().filter(activityPickListBinding.searchByBarcodeOrid.getText().toString().toString());
     }
 
     private void requestApprovalPopup(GetWithHoldStatusResponse getWithHoldStatusResponse, boolean isApproved) {
@@ -1257,6 +1555,8 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
                                 } else if (barcodeAllocationDetailList.get(0).getSelectedSupervisorRemarksdetail() != null) {
                                     showCustomDialog("This item request is pending with supervisor");
                                 } else {
+//                                    isItemListRefreshRequired = true;
+                                    activityPickListBinding.searchByBarcodeOrid.setText(barcodeAllocationDetailList.get(0).getItembarcode());
                                     StatusUpdateRequest statusUpdateRequest = new StatusUpdateRequest();
                                     statusUpdateRequest.setRequesttype("INPROCESS");
                                     statusUpdateRequest.setPurchreqid(activityPickListBinding.getAllocationData().getPurchreqid());
@@ -1275,6 +1575,8 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
                                 } else if (barcodeAllocationDetailList.get(0).getSelectedSupervisorRemarksdetail() != null) {
                                     showCustomDialog("This item request is pending with supervisor");
                                 } else {
+//                                    isItemListRefreshRequired = true;
+                                    activityPickListBinding.searchByBarcodeOrid.setText(barcodeAllocationDetailList.get(0).getItembarcode());
                                     this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
                                     this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
                                     barcodeAllocationDetailList.get(0).setAllocatedqtycompleted(barcodeAllocationDetailList.get(0).getAllocatedqtycompleted() - 1);
@@ -1380,7 +1682,18 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         ordersStatusModel.setToDoQty(toDoQty);
         ordersStatusModel.setApprovedItemCount(approvedItemCount);
         ordersStatusModel.setStartTime(getLatestScanDateTime());
-        ordersStatusModel.setEndTime(getLastScanDateTime());
+        if (activityPickListBinding.getAllocationData().getScanstatus().equalsIgnoreCase("Completed")) {
+            OrderStatusTimeDateEntity orderStatusTimeDateEntity = AppDatabase.getDatabaseInstance(this).getOrderStatusTimeDateEntity(activityPickListBinding.getAllocationData().getPurchreqid(), activityPickListBinding.getAllocationData().getAreaid());
+            if (orderStatusTimeDateEntity != null) {
+                ordersStatusModel.setEndTime(orderStatusTimeDateEntity.getCompletedDateTime());
+            } else {
+                ordersStatusModel.setEndTime("");
+            }
+
+        } else {
+            ordersStatusModel.setEndTime(getLastScanDateTime());
+        }
+
         ordersStatusModel.setTotalItemsQty(doneQty + toDoQty + pickerRequestApprovedQty);
         ordersStatusModel.setPickerRequestApprovedQty(pickerRequestApprovedQty);
         ordersStatusModel.setTimeTaken(CommonUtils.differenceBetweenTwoTimes(getLatestScanDateTime(), getLastScanDateTime()));
@@ -1420,6 +1733,7 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
                 barcodeAllocationDetailList = barcodeAllocationDetailListTemp;
                 this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
                 this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
+                activityPickListBinding.searchByBarcodeOrid.setText(barcodeAllocationDetailList.get(0).getItembarcode());
                 barcodeAllocationDetailList.get(0).setAllocatedqtycompleted(barcodeAllocationDetailList.get(0).getAllocatedqtycompleted() - 1);
                 barcodeAllocationDetailList.get(0).setAllocatedPackscompleted(barcodeAllocationDetailList.get(0).getAllocatedPackscompleted() - 1);
                 int scannedQty = (barcodeAllocationDetailList.get(0).getAllocatedqty() / barcodeAllocationDetailList.get(0).getAllocatedpacks()) * (barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted());
@@ -1514,41 +1828,80 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         super.onPause();
     }
 
+    private void searchByItemBoxCheckEmpty() {
+        activityPickListBinding.searchByBarcodeOrid.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.toString().isEmpty()) {
+                    if (!isItemListRefreshRequired) {
+                        getFilter().filter(editable.toString());
+                    } else {
+                        isItemListRefreshRequired = false;
+                    }
+                }
+            }
+        });
+    }
+
     @Override
     public Filter getFilter() {
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String charString = charSequence.toString();
-                if (charString.isEmpty()) {
-                    allocationdetailListTemp = allocationdetailListList;
-                } else {
-                    allocationdetailfilteredList.clear();
-                    for (GetAllocationLineResponse.Allocationdetail row : allocationdetailListList) {
-                        if (charString.equals("All")) {
+//                if (charString.isEmpty()) {
+//                    allocationdetailListTemp = allocationdetailListList;
+//                } else {
+                allocationdetailfilteredList.clear();
+                for (GetAllocationLineResponse.Allocationdetail row : allocationdetailListList) {
+                    if (charString.equals("All")) {
+                        allocationdetailfilteredList.add(row);
+                    } else if (charSequence.equals("Scanned")) {
+                        if (!allocationdetailfilteredList.contains(row) && ((row.getAllocatedPackscompleted() - row.getSupervisorApprovedQty()) == 0 || row.isRequestAccepted())) {
                             allocationdetailfilteredList.add(row);
-                        } else if (charSequence.equals("Pending")) {
-                            if (!allocationdetailfilteredList.contains(row) && (row.getAllocatedPackscompleted() - row.getSupervisorApprovedQty()) != 0 && !row.isRequestAccepted()) {
-                                allocationdetailfilteredList.add(row);
-                            }
-                        } else if (charSequence.equals("Completed")) {
-                            if (!allocationdetailfilteredList.contains(row) && ((row.getAllocatedPackscompleted() - row.getSupervisorApprovedQty()) == 0 || row.isRequestAccepted())) {
-                                allocationdetailfilteredList.add(row);
-                            }
+                        }
+                    } else if (charSequence.equals("Pending")) {
+                        if (!allocationdetailfilteredList.contains(row) && (row.getAllocatedPackscompleted() - row.getSupervisorApprovedQty()) != 0 && !row.isRequestAccepted()) {
+                            allocationdetailfilteredList.add(row);
+                        }
+                    } else if (charSequence.equals("Approved")) {
+                        if (!allocationdetailfilteredList.contains(row) && row.isRequestAccepted()) {
+                            allocationdetailfilteredList.add(row);
+                        }
+                    } else if (charSequence.equals("Completed")) {
+                        if (!allocationdetailfilteredList.contains(row) && ((row.getAllocatedPackscompleted() - row.getSupervisorApprovedQty()) == 0 || row.isRequestAccepted())) {
+                            allocationdetailfilteredList.add(row);
+                        }
+                    } else if (charString.trim().isEmpty()) {
+                        allocationdetailfilteredList.add(row);
+                    } else {
+                        if (!allocationdetailfilteredList.contains(row) && (row.getItemid().toLowerCase().contains(charString.toLowerCase()) || (row.getItemname().toLowerCase().contains(charString.toLowerCase())) || (row.getItembarcode().toLowerCase().contains(charString.toLowerCase())))) {
+                            allocationdetailfilteredList.add(row);
                         }
                     }
-                    allocationdetailListTemp = allocationdetailfilteredList;
-
-                    startIndex = 0;
-                    if (allocationdetailListTemp != null && allocationdetailListTemp.size() >= pageSize) {
-                        endIndex = pageSize;
-                    } else {
-                        endIndex = allocationdetailListTemp.size();
-                    }
-                    activityPickListBinding.setIsNaxtPage(endIndex != allocationdetailListTemp.size());
-                    activityPickListBinding.setIsPrevtPage(startIndex != 0);
-                    allocationdetailListForAdapter = allocationdetailListTemp.subList(startIndex, endIndex);
                 }
+                allocationdetailListTemp = allocationdetailfilteredList;
+
+                startIndex = 0;
+                if (allocationdetailListTemp != null && allocationdetailListTemp.size() >= pageSize) {
+                    endIndex = pageSize;
+                } else {
+                    endIndex = allocationdetailListTemp.size();
+                }
+                activityPickListBinding.setIsNaxtPage(endIndex != allocationdetailListTemp.size());
+                activityPickListBinding.setIsPrevtPage(startIndex != 0);
+                allocationdetailListForAdapter = allocationdetailListTemp.subList(startIndex, endIndex);
+//                }
                 activityPickListBinding.setIsPagination(allocationdetailListTemp.size() > pageSize);
                 setPagination(allocationdetailList.size() > pageSize);
                 FilterResults filterResults = new FilterResults();
@@ -1569,9 +1922,11 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
                         Log.e("FullfilmentAdapter", e.getMessage());
                     }
                 } else {
-                    itemListAdapter.setAllocationedetailLists(allocationdetailListForAdapter);
-                    noItemListFound(0);
-                    itemListAdapter.notifyDataSetChanged();
+                    if (itemListAdapter != null) {
+                        itemListAdapter.setAllocationedetailLists(allocationdetailListForAdapter);
+                        noItemListFound(0);
+                        itemListAdapter.notifyDataSetChanged();
+                    }
                 }
             }
         };
@@ -1589,6 +1944,379 @@ public class PickListActivity extends BaseActivity implements PickListActivityCa
         colorAnimation.setDuration(750); // milliseconds
         colorAnimation.addUpdateListener(animator -> view.setBackgroundColor((int) animator.getAnimatedValue()));
         colorAnimation.start();
+    }
+
+    private Context getContext() {
+        return this;
+    }
+
+    @Override
+    protected PDFHeaderView getHeaderView(int forPage, GetAllocationDataResponse.Allocationhddata pdfModelResponse) {
+        PDFHeaderView headerView = new PDFHeaderView(getApplicationContext());
+
+
+        PDFVerticalView verticalView2 = new PDFVerticalView(getApplicationContext());
+        LinearLayout.LayoutParams verticalLayoutParamSamples2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        verticalLayoutParamSamples2.setMargins(0, 10, 0, 0);
+
+        verticalView2.setLayout(verticalLayoutParamSamples2);
+
+
+        PDFHorizontalView horizontalView = new PDFHorizontalView(getApplicationContext());
+        LinearLayout.LayoutParams verticalLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        verticalLayoutParamSample.setMargins(0, 10, 0, 0);
+
+        PDFImageView apolloLogo = new PDFImageView(getContext());
+        LinearLayout.LayoutParams headerImageLayoutParam = new LinearLayout.LayoutParams(100, 100, 0);
+        apolloLogo.setLayout(headerImageLayoutParam);
+
+        apolloLogo.setImageScale(ImageView.ScaleType.FIT_XY);
+        apolloLogo.setImageResource(R.drawable.apollo_healthco_logo);
+
+        horizontalView.addView(apolloLogo);
+        headerView.setLayout(verticalLayoutParamSample);
+
+        PDFTextView apolloHealthColtdText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+        apolloHealthColtdText.setPadding(25, 0, 0, 0);
+        apolloHealthColtdText.setText("APOLLO HEALTHCO LIMITED").setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_bold));
+        horizontalView.addView(apolloHealthColtdText);
+        horizontalView.getView().setGravity(Gravity.CENTER_VERTICAL);
+
+        verticalView2.addView(horizontalView);
+//        headerView.addView(horizontalView);
+
+        PDFVerticalView verticalView1 = new PDFVerticalView(getApplicationContext());
+        LinearLayout.LayoutParams verticalLayoutParamSamples = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        verticalLayoutParamSamples.setMargins(0, 10, 0, 0);
+
+        verticalView1.setLayout(verticalLayoutParamSamples);
+
+        PDFTextView dcText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+        dcText.setText("DC: " + getSessionManager().getDcName()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        verticalView1.addView(dcText);
+
+        PDFImageView barcodeImageView = new PDFImageView(getApplicationContext());
+        LinearLayout.LayoutParams headerImageLayoutParams = new LinearLayout.LayoutParams(600, 60, 0);
+        headerImageLayoutParams.setMargins(0, 15, 0, 0);
+        barcodeImageView.setLayout(headerImageLayoutParams);
+        barcodeImageView.setImageScale(ImageView.ScaleType.FIT_XY);
+        barcodeImageView.setImageBitmap(generateBarcode(pdfModelResponse.getPurchreqid()));
+        verticalView1.addView(barcodeImageView);
+
+        PDFTextView custIdText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+        LinearLayout.LayoutParams custIdTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        custIdTextLayoutParamSample.setMargins(0, 15, 0, 0);
+        custIdText.setLayout(custIdTextLayoutParamSample);
+        custIdText.setText("CustID : " + pdfModelResponse.getCustaccount()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        verticalView1.addView(custIdText);
+
+        PDFTextView custNameText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+        LinearLayout.LayoutParams custNameTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        custNameTextLayoutParamSample.setMargins(0, 15, 0, 0);
+        custNameText.setLayout(custNameTextLayoutParamSample);
+        custNameText.setText("CustName: " + pdfModelResponse.getCustname()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        verticalView1.addView(custNameText);
+
+        PDFTextView rpdNoText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+        LinearLayout.LayoutParams rpdNoTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        rpdNoTextLayoutParamSample.setMargins(0, 15, 0, 0);
+        rpdNoText.setLayout(rpdNoTextLayoutParamSample);
+        rpdNoText.setText("RPR.No: " + pdfModelResponse.getPurchreqid()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        verticalView1.addView(rpdNoText);
+
+        PDFTextView rprDateText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+        LinearLayout.LayoutParams rprDateTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        rprDateTextLayoutParamSample.setMargins(0, 15, 0, 0);
+        rprDateText.setLayout(rprDateTextLayoutParamSample);
+        rprDateText.setText("RPR Date: " + CommonUtils.parseDateToddMMyyyyNoTime(pdfModelResponse.getTransdate())).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        verticalView1.addView(rprDateText);
+
+        PDFTextView applicationDateText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+        LinearLayout.LayoutParams applicationDateTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        applicationDateTextLayoutParamSample.setMargins(0, 15, 0, 0);
+        applicationDateText.setLayout(applicationDateTextLayoutParamSample);
+        applicationDateText.setText("Allocation Date: " + CommonUtils.parseDateToddMMyyyyNoTime(pdfModelResponse.getTransdate())).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        verticalView1.addView(applicationDateText);
+
+        PDFTextView pickerIdText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+        LinearLayout.LayoutParams pickerIdTextTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        pickerIdTextTextLayoutParamSample.setMargins(0, 15, 0, 0);
+        pickerIdText.setLayout(pickerIdTextTextLayoutParamSample);
+        pickerIdText.setText("PickerID: " + getSessionManager().getEmplId()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        verticalView1.addView(pickerIdText);
+
+        PDFTextView pickerNameText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+        LinearLayout.LayoutParams pickerNameTextTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        pickerNameTextTextLayoutParamSample.setMargins(0, 15, 0, 0);
+        pickerNameText.setLayout(pickerNameTextTextLayoutParamSample);
+        pickerNameText.setText("PickerName: " + pdfModelResponse.getUsername()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        verticalView1.addView(pickerNameText);
+
+        PDFTextView areaText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+        LinearLayout.LayoutParams areaTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        areaTextLayoutParamSample.setMargins(0, 15, 0, 0);
+        areaText.setLayout(areaTextLayoutParamSample);
+        areaText.setText("AREA: " + pdfModelResponse.getAreaid()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        verticalView1.addView(areaText);
+
+        PDFTextView boxNoText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.HEADER);
+        LinearLayout.LayoutParams boxNoTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        boxNoTextLayoutParamSample.setMargins(0, 15, 0, 0);
+        boxNoText.setLayout(boxNoTextLayoutParamSample);
+        boxNoText.setText("Box No: " + String.valueOf(pdfModelResponse.getNoofboxes())).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        verticalView1.addView(boxNoText);
+
+        PDFTextView routeText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.FORTY);
+        LinearLayout.LayoutParams routeTextLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        routeTextLayout.setMargins(0, 15, 0, 0);
+        routeText.setText(pdfModelResponse.getRoutecode()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        routeText.getView().setGravity(Gravity.CENTER_HORIZONTAL);
+        verticalView1.addView(routeText);
+        verticalView2.addView(verticalView1);
+        headerView.addView(verticalView2);
+
+
+        return headerView;
+    }
+
+    @Override
+    protected PDFBody getBodyViews(GetAllocationDataResponse.Allocationhddata pdfModelResponse) {
+//        PDFBody pdfBody = new PDFBody();
+//        PDFVerticalView verticalView1 = new PDFVerticalView(getApplicationContext());
+//        LinearLayout.LayoutParams verticalLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        verticalLayoutParamSample.setMargins(0, 10, 0, 0);
+//
+//        verticalView1.setLayout(verticalLayoutParamSample);
+//
+//        PDFTextView dcText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+//        dcText.setText("DC: " + getSessionManager().getDcName()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+//        verticalView1.addView(dcText);
+//
+//        PDFImageView barcodeImageView = new PDFImageView(getApplicationContext());
+//        LinearLayout.LayoutParams headerImageLayoutParam = new LinearLayout.LayoutParams(600, 60, 0);
+//        headerImageLayoutParam.setMargins(0, 15, 0, 0);
+//        barcodeImageView.setLayout(headerImageLayoutParam);
+//        barcodeImageView.setImageScale(ImageView.ScaleType.FIT_XY);
+//        barcodeImageView.setImageBitmap(generateBarcode("376567875787"));
+//        verticalView1.addView(barcodeImageView);
+//
+//        PDFTextView custIdText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+//        LinearLayout.LayoutParams custIdTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        custIdTextLayoutParamSample.setMargins(0, 15, 0, 0);
+//        custIdText.setLayout(custIdTextLayoutParamSample);
+//        custIdText.setText("CustID : " + pdfModelResponse.getCustaccount()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+//        verticalView1.addView(custIdText);
+//
+//        PDFTextView custNameText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+//        LinearLayout.LayoutParams custNameTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        custNameTextLayoutParamSample.setMargins(0, 15, 0, 0);
+//        custNameText.setLayout(custNameTextLayoutParamSample);
+//        custNameText.setText("CustName: " + pdfModelResponse.getCustname()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+//        verticalView1.addView(custNameText);
+//
+//        PDFTextView rpdNoText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+//        LinearLayout.LayoutParams rpdNoTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        rpdNoTextLayoutParamSample.setMargins(0, 15, 0, 0);
+//        rpdNoText.setLayout(rpdNoTextLayoutParamSample);
+//        rpdNoText.setText("RPR.No: " + pdfModelResponse.getPurchreqid()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+//        verticalView1.addView(rpdNoText);
+//
+//        PDFTextView rprDateText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+//        LinearLayout.LayoutParams rprDateTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        rprDateTextLayoutParamSample.setMargins(0, 15, 0, 0);
+//        rprDateText.setLayout(rprDateTextLayoutParamSample);
+//        rprDateText.setText("RPR Date: " + pdfModelResponse.getTransdate()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+//        verticalView1.addView(rprDateText);
+//
+//        PDFTextView applicationDateText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+//        LinearLayout.LayoutParams applicationDateTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        applicationDateTextLayoutParamSample.setMargins(0, 15, 0, 0);
+//        applicationDateText.setLayout(applicationDateTextLayoutParamSample);
+//        applicationDateText.setText("Allocation Date: 20-Dec-2022").setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+//        verticalView1.addView(applicationDateText);
+//
+//        PDFTextView pickerIdText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+//        LinearLayout.LayoutParams pickerIdTextTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        pickerIdTextTextLayoutParamSample.setMargins(0, 15, 0, 0);
+//        pickerIdText.setLayout(pickerIdTextTextLayoutParamSample);
+//        pickerIdText.setText("PickerID: " + getSessionManager().getEmplId()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+//        verticalView1.addView(pickerIdText);
+//
+//        PDFTextView pickerNameText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+//        LinearLayout.LayoutParams pickerNameTextTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        pickerNameTextTextLayoutParamSample.setMargins(0, 15, 0, 0);
+//        pickerNameText.setLayout(pickerNameTextTextLayoutParamSample);
+//        pickerNameText.setText("PickerName: " + pdfModelResponse.getUsername()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+//        verticalView1.addView(pickerNameText);
+//
+//        PDFTextView areaText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+//        LinearLayout.LayoutParams areaTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        areaTextLayoutParamSample.setMargins(0, 15, 0, 0);
+//        areaText.setLayout(areaTextLayoutParamSample);
+//        areaText.setText("AREA: " + pdfModelResponse.getAreaid()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+//        verticalView1.addView(areaText);
+//
+//        PDFTextView boxNoText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.HEADER);
+//        LinearLayout.LayoutParams boxNoTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        boxNoTextLayoutParamSample.setMargins(0, 15, 0, 0);
+//        boxNoText.setLayout(boxNoTextLayoutParamSample);
+//        boxNoText.setText("Box No: " + String.valueOf(pdfModelResponse.getNoofboxes())).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+//        verticalView1.addView(boxNoText);
+//
+//        PDFTextView routeText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.FORTY);
+//        LinearLayout.LayoutParams routeTextLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        routeTextLayout.setMargins(0, 15, 0, 0);
+//        routeText.setText(pdfModelResponse.getRoutecode()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+//        routeText.getView().setGravity(Gravity.CENTER_HORIZONTAL);
+//        verticalView1.addView(routeText);
+//
+//        pdfBody.addView(verticalView1);
+
+        return null;//pdfBody;
+    }
+
+    @Override
+    protected PDFFooterView getFooterView(int forPage, GetAllocationDataResponse.Allocationhddata pdfModelResponse) {
+        return null;
+    }
+
+    private Bitmap generateBarcode(String productId) {
+        try {
+            Hashtable<EncodeHintType, ErrorCorrectionLevel> hintMap = new Hashtable<EncodeHintType, ErrorCorrectionLevel>();
+            hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+            Writer codeWriter;
+            codeWriter = new Code128Writer();
+            BitMatrix byteMatrix = codeWriter.encode(productId, BarcodeFormat.CODE_128, 400, 200, hintMap);
+            int width = byteMatrix.getWidth();
+            int height = byteMatrix.getHeight();
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    bitmap.setPixel(i, j, byteMatrix.get(i, j) ? Color.BLACK : Color.WHITE);
+                }
+            }
+            return bitmap;
+//        imageViewResult.setImageBitmap(bitmap);
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            return null;
+        }
+    }
+
+    private void openPdf() {
+
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString(), activityPickListBinding.getAllocationData().getPurchreqid() + activityPickListBinding.getAllocationData().getAreaid().concat(".pdf"));
+        if (file.exists()) {
+            //Button To start print
+
+            PrintAttributes.Builder builder = new PrintAttributes.Builder();
+//            builder.setMediaSize(PrintAttributes.MediaSize.ISO_A4);
+            builder.setColorMode(PrintAttributes.COLOR_MODE_MONOCHROME);
+
+            PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
+            String jobName = this.getString(R.string.app_name) + " Document";
+
+            printManager.print(jobName, pda, builder.build());
+
+//            Intent intent = new Intent(Intent.ACTION_VIEW);
+//            Uri photoURI = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", file);
+////            Uri uri = Uri.fromFile(file);
+//            intent.setDataAndType(photoURI, "application/pdf");
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//
+//
+//            try {
+//                startActivity(intent);
+//            } catch (ActivityNotFoundException e) {
+//                Toast.makeText(this, "No Application for pdf view", Toast.LENGTH_SHORT).show();
+//            }
+        } else {
+//            Toast.makeText(this, "File not exist", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    PrintDocumentAdapter pda = new PrintDocumentAdapter() {
+
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        @Override
+        public void onWrite(PageRange[] pages, ParcelFileDescriptor destination, CancellationSignal cancellationSignal, WriteResultCallback callback) {
+            InputStream input = null;
+            OutputStream output = null;
+            try {
+                String fileName = activityPickListBinding.getAllocationData().getPurchreqid() + activityPickListBinding.getAllocationData().getAreaid();
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString(), fileName.concat(".pdf"));
+
+                input = new FileInputStream(file);//"/storage/emulated/0/Documents/my-document-1656940186153.pdf"
+                output = new FileOutputStream(destination.getFileDescriptor());
+                byte[] buf = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = input.read(buf)) > 0) {
+                    output.write(buf, 0, bytesRead);
+                }
+            } catch (Exception e) {
+
+            } finally {
+                try {
+                    if (input != null) {
+                        input.close();
+                    } else {
+                        Toast.makeText(getContext(), "FileInputStream getting null", Toast.LENGTH_SHORT).show();
+                    }
+
+                    if (output != null) {
+                        output.close();
+                    } else {
+                        Toast.makeText(getContext(), "FileOutStream getting null", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            callback.onWriteFinished(new PageRange[]{PageRange.ALL_PAGES});
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        @Override
+        public void onLayout(PrintAttributes oldAttributes, PrintAttributes newAttributes, CancellationSignal cancellationSignal, LayoutResultCallback callback, Bundle extras) {
+            if (cancellationSignal.isCanceled()) {
+                callback.onLayoutCancelled();
+                return;
+            }
+            //int pages = computePageCount(newAttributes);
+            String fileName = activityPickListBinding.getAllocationData().getPurchreqid() + activityPickListBinding.getAllocationData().getAreaid();
+            PrintDocumentInfo pdi = new PrintDocumentInfo.Builder(fileName + ".pdf").setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT).build();
+            callback.onLayoutFinished(pdi, true);
+        }
+
+    };
+
+    public boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+//                Log.v(TAG,"Permission is granted");
+                return true;
+            } else {
+
+//                Log.v(TAG,"Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        } else { //permission is automatically granted on sdk<23 upon installation
+//            Log.v(TAG,"Permission is granted");
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//            openPdf();
+            onClickPrint();
+//            Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
+            //resume tasks needing this permission
+        }
     }
 
     public static class OrdersStatusModel {

@@ -92,7 +92,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_semibold"
-                                android:text="REQUIRE : "
+                                android:text="Allocated lines : "
                                 android:textSize="@dimen/dimen10sp" />
 
                             <TextView
@@ -146,7 +146,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_semibold"
-                                android:text="COLLECTED : "
+                                android:text="Scanned lines : "
                                 android:textSize="@dimen/dimen10sp" />
 
                             <TextView
