@@ -19,8 +19,7 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".1"
-                android:background="@color/white">
+                android:layout_weight=".1">
 
                 <include
                     android:id="@+id/custom_menu_layout"
@@ -66,6 +65,7 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
+
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
                             <Spinner
                                 android:id="@+id/request_code_spinner"
                                 style="@style/spinner_style"
-                                android:layout_width="@dimen/dimen200dp"
+                                android:layout_width="@dimen/dimen250dp"
                                 android:layout_height="wrap_content"
                                 android:spinnerMode="dropdown"
                                 android:textSize="@dimen/dimen14sp" />
@@ -144,6 +144,22 @@
                     </LinearLayout>
 
                 </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/picker_request_search_by_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen35dp"
+                    android:layout_marginTop="@dimen/dimen5dp"
+                    android:layout_marginEnd="@dimen/dimen5dp"
+                    android:background="@drawable/bg_edit_text"
+                    android:drawableLeft="@drawable/search_icon"
+                    android:hint="Search by Purchase Requisition, Product Name, Route"
+                    android:imeOptions="actionDone"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:paddingStart="@dimen/dimen5dp"
+                    android:text=""
+                    android:textSize="@dimen/dimen12sp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"

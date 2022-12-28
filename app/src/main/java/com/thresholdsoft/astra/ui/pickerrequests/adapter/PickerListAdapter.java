@@ -36,6 +36,7 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
     private List<WithHoldDataResponse.Withholddetail> withholddetailListList = new ArrayList<>();
     private boolean isNotifying = false;
     private Dialog customDialog;
+    private String requestType;
 
     public PickerListAdapter(Activity activity, ArrayList<WithHoldDataResponse.Withholddetail> withholddetailList, PickerRequestCallback pickerRequestCallback) {
         this.activity = activity;
@@ -44,6 +45,9 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
         this.pickerRequestCallback = pickerRequestCallback;
     }
 
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
+    }
 
     @NonNull
     @Override
@@ -141,17 +145,32 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String charString = charSequence.toString();
-                if (charString.equals("All")) {
+                if (requestType.equals("All") && (charString.equals("All") || charString.isEmpty())) {
                     withholddetailList = withholddetailListList;
                     isNotifying = true;
-                } else {
+                } else if (!requestType.equalsIgnoreCase("All") && charString.isEmpty()) {
                     withholddetailfilteredList.clear();
                     for (WithHoldDataResponse.Withholddetail row : withholddetailListList) {
-                        if (!withholddetailfilteredList.contains(row) && (row.getHoldreasoncode().toLowerCase().contains(charString.toLowerCase()))) {
+                        if (!withholddetailfilteredList.contains(row) && (row.getHoldreasoncode().toLowerCase().contains(requestType.toLowerCase()))) {
                             isNotifying = true;
                             withholddetailfilteredList.add(row);
                         }
-
+                    }
+                    withholddetailList = withholddetailfilteredList;
+                } else {
+                    withholddetailfilteredList.clear();
+                    for (WithHoldDataResponse.Withholddetail row : withholddetailListList) {
+                        if (requestType.equalsIgnoreCase("All")) {
+                            if (!withholddetailfilteredList.contains(row) && ((row.getHoldreasoncode().toLowerCase().contains(charString.toLowerCase())) || (row.getPurchreqid().toLowerCase().contains(charString.toLowerCase())) || (row.getItemname().toLowerCase().contains(charString.toLowerCase())) || (row.getRoutecode().toLowerCase().contains(charString.toLowerCase())))) {
+                                isNotifying = true;
+                                withholddetailfilteredList.add(row);
+                            }
+                        } else {
+                            if (!withholddetailfilteredList.contains(row) && ((row.getHoldreasoncode().toLowerCase().contains(charString.toLowerCase())) || (row.getPurchreqid().toLowerCase().contains(charString.toLowerCase()) && (row.getHoldreasoncode().toLowerCase().contains(requestType.toLowerCase()))) || (row.getItemname().toLowerCase().contains(charString.toLowerCase()) && (row.getHoldreasoncode().toLowerCase().contains(requestType.toLowerCase()))) || (row.getRoutecode().toLowerCase().contains(charString.toLowerCase())) && (row.getHoldreasoncode().toLowerCase().contains(requestType.toLowerCase())))) {
+                                isNotifying = true;
+                                withholddetailfilteredList.add(row);
+                            }
+                        }
                     }
                     withholddetailList = withholddetailfilteredList;
                 }

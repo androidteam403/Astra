@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,11 +20,11 @@ import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityPickerRequestsBinding;
 import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
 import com.thresholdsoft.astra.db.SessionManager;
-import com.thresholdsoft.astra.ui.pickerrequests.adapter.PickerListAdapter;
 import com.thresholdsoft.astra.ui.alertdialogs.AlertBox;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.menucallbacks.CustomMenuSupervisorCallback;
+import com.thresholdsoft.astra.ui.pickerrequests.adapter.PickerListAdapter;
 import com.thresholdsoft.astra.ui.pickerrequests.adapter.RequestTypeDropdownSpinner;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
@@ -50,6 +52,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
     private List<GetWithHoldRemarksResponse.Remarksdetail> remarksdetails;
 
+    private String selectedRequestType = "All";
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -67,8 +70,11 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         activityPickerRequestsBinding.requestCodeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (pickListHistoryAdapter != null)
+                if (pickListHistoryAdapter != null) {
                     pickListHistoryAdapter.getFilter().filter(remarksdetailsList.get(position).getRemarkscode());
+                    selectedRequestType = remarksdetailsList.get(position).getRemarkscode();
+                    pickListHistoryAdapter.setRequestType(selectedRequestType);
+                }
             }
 
             @Override
@@ -77,6 +83,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             }
         });
     }
+
 
     private PickerRequestController getController() {
         return new PickerRequestController(this, this);
@@ -127,6 +134,38 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
         getController().getWithHoldApi();
         parentLayoutTouchListener();
+        pickerRequestSearchByText();
+    }
+
+    private void pickerRequestSearchByText() {
+        activityPickerRequestsBinding.pickerRequestSearchByText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() >= 2) {
+                    if (pickListHistoryAdapter != null) {
+                        pickListHistoryAdapter.setRequestType(selectedRequestType);
+                        pickListHistoryAdapter.getFilter().filter(editable);
+
+                    }
+                } else {
+                    if (pickListHistoryAdapter != null) {
+                        pickListHistoryAdapter.setRequestType(selectedRequestType);
+                        pickListHistoryAdapter.getFilter().filter("");
+
+                    }
+                }
+            }
+        });
     }
 
     private SessionManager getSessionManager() {
@@ -143,6 +182,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             if (withholddetailList != null && withholddetailList.size() > 0) {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
                 pickListHistoryAdapter = new PickerListAdapter(this, withholddetailList, this);
+                pickListHistoryAdapter.setRequestType(selectedRequestType);
                 activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
                 activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
 

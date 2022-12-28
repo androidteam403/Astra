@@ -1171,6 +1171,7 @@
                                     android:layout_width="@dimen/dimen300dp"
                                     android:layout_height="@dimen/dimen40dp"
                                     android:hint="Search by Barcode or Item ID"
+                                    android:imeOptions="actionDone"
                                     android:importantForAutofill="no"
                                     android:inputType="text"
                                     android:text=""
