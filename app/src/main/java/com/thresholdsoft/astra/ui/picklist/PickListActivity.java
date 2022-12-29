@@ -27,6 +27,7 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,7 +43,6 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -217,6 +217,15 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 }
             }
         });
+        activityPickListBinding.searchByBarcodeOrid.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    activityPickListBinding.barcodeScanEdittext.requestFocus();
+                }
+            }
+        });
+
         searchByPurchReqId();
         searchByItemBoxCheckEmpty();
         getController().getAllocationDataApiCall(false, false);
@@ -224,6 +233,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         parentLayoutTouchListener();
         onLongClickBarcode(null, null);
     }
+
 
     @SuppressLint("ClickableViewAccessibility")
     private void parentLayoutTouchListener() {
@@ -275,6 +285,24 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     }
 
     private void searchByPurchReqId() {
+        activityPickListBinding.searchByText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_ENTER) || keyCode == KeyEvent.KEYCODE_TAB) {
+                    // handleInputScan();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (activityPickListBinding.searchByText != null) {
+                                activityPickListBinding.searchByText.requestFocus();
+                            }
+                        }
+                    }, 10); // Remove this Delay Handler IF requestFocus(); works just fine without delay
+                    return true;
+                }
+                return false;
+            }
+        });
         activityPickListBinding.searchByText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -410,15 +438,14 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
             List<GetAllocationLineResponse.Allocationdetail> allocationdetailListSort = new ArrayList<>();
 
-            List<GetAllocationLineResponse.Allocationdetail> pendingAllocationdetailList = getAllocationLineResponse.getAllocationdetails().stream().filter(e -> (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) != 0 && !e.isRequestAccepted() && e.getSelectedSupervisorRemarksdetail() == null).collect(Collectors.toList());
+            List<GetAllocationLineResponse.Allocationdetail> pendingAllocationdetailList = getAllocationLineResponse.getAllocationdetails().stream().filter(e -> (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) != 0 && !e.isRequestAccepted() && (e.getSelectedSupervisorRemarksdetail() == null)).collect(Collectors.toList());
             allocationdetailListSort.addAll(pendingAllocationdetailList);
-
-            List<GetAllocationLineResponse.Allocationdetail> completedAllocationdetailList = getAllocationLineResponse.getAllocationdetails().stream().filter(e -> (e.getSelectedSupervisorRemarksdetail() == null && (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) == 0 || e.isRequestAccepted())).collect(Collectors.toList());
-            allocationdetailListSort.addAll(completedAllocationdetailList);
 
             List<GetAllocationLineResponse.Allocationdetail> requestPendingAllocationDetailsLIst = getAllocationLineResponse.getAllocationdetails().stream().filter(e -> (e.getSelectedSupervisorRemarksdetail() != null)).collect(Collectors.toList());
             allocationdetailListSort.addAll(requestPendingAllocationDetailsLIst);
 
+            List<GetAllocationLineResponse.Allocationdetail> completedAllocationdetailList = getAllocationLineResponse.getAllocationdetails().stream().filter(e -> (e.getSelectedSupervisorRemarksdetail() == null && (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) == 0 || e.isRequestAccepted())).collect(Collectors.toList());
+            allocationdetailListSort.addAll(completedAllocationdetailList);
 
             allocationdetailList = allocationdetailListSort;     //getAllocationLineResponse.getAllocationdetails();
             allocationdetailListTemp = allocationdetailListSort; //getAllocationLineResponse.getAllocationdetails();
@@ -625,11 +652,11 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         List<GetAllocationLineResponse.Allocationdetail> pendingAllocationdetailList = allocationdetailList.stream().filter(e -> (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) != 0 && !e.isRequestAccepted() && e.getSelectedSupervisorRemarksdetail() == null).collect(Collectors.toList());
         allocationdetailListSort.addAll(pendingAllocationdetailList);
 
-        List<GetAllocationLineResponse.Allocationdetail> completedAllocationdetailList = allocationdetailList.stream().filter(e -> (e.getSelectedSupervisorRemarksdetail() == null && (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) == 0 || e.isRequestAccepted())).collect(Collectors.toList());
-        allocationdetailListSort.addAll(completedAllocationdetailList);
-
         List<GetAllocationLineResponse.Allocationdetail> requestPendingAllocationDetailsLIst = allocationdetailList.stream().filter(e -> (e.getSelectedSupervisorRemarksdetail() != null)).collect(Collectors.toList());
         allocationdetailListSort.addAll(requestPendingAllocationDetailsLIst);
+
+        List<GetAllocationLineResponse.Allocationdetail> completedAllocationdetailList = allocationdetailList.stream().filter(e -> (e.getSelectedSupervisorRemarksdetail() == null && (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) == 0 || e.isRequestAccepted())).collect(Collectors.toList());
+        allocationdetailListSort.addAll(completedAllocationdetailList);
 
         allocationdetailList = allocationdetailListSort;     //getAllocationLineResponse.getAllocationdetails();
         allocationdetailListTemp = allocationdetailListSort; //getAllocationLineResponse.getAllocationdetails();
@@ -923,14 +950,14 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
         List<GetAllocationLineResponse.Allocationdetail> allocationdetailListSort = new ArrayList<>();
 
-        List<GetAllocationLineResponse.Allocationdetail> pendingAllocationdetailList = allocationdetailList.stream().filter(e -> (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) != 0 && !e.isRequestAccepted()).collect(Collectors.toList());
+        List<GetAllocationLineResponse.Allocationdetail> pendingAllocationdetailList = allocationdetailList.stream().filter(e -> (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) != 0 && !e.isRequestAccepted() && (e.getSelectedSupervisorRemarksdetail() == null)).collect(Collectors.toList());
         allocationdetailListSort.addAll(pendingAllocationdetailList);
-
-        List<GetAllocationLineResponse.Allocationdetail> completedAllocationdetailList = allocationdetailList.stream().filter(e -> ((e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) == 0 || e.isRequestAccepted())).collect(Collectors.toList());
-        allocationdetailListSort.addAll(completedAllocationdetailList);
 
         List<GetAllocationLineResponse.Allocationdetail> requestPendingAllocationDetailsLIst = allocationdetailList.stream().filter(e -> (e.getSelectedSupervisorRemarksdetail() != null)).collect(Collectors.toList());
         allocationdetailListSort.addAll(requestPendingAllocationDetailsLIst);
+
+        List<GetAllocationLineResponse.Allocationdetail> completedAllocationdetailList = allocationdetailList.stream().filter(e -> ((e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) == 0 || e.isRequestAccepted())).collect(Collectors.toList());
+        allocationdetailListSort.addAll(completedAllocationdetailList);
 
         allocationdetailList = allocationdetailListSort;     //getAllocationLineResponse.getAllocationdetails();
         allocationdetailListTemp = allocationdetailListSort; //getAllocationLineResponse.getAllocationdetails();
@@ -949,6 +976,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
         activityPickListBinding.setIsPagination(allocationdetailList.size() > pageSize);
 
+        activityPickListBinding.listitemRecycleview.removeAllViews();
         itemListAdapter = new ItemListAdapter(this, allocationdetailListForAdapter, this, activityPickListBinding.getAllocationData().getScanstatus().equalsIgnoreCase("Completed"));
         setPagination(allocationdetailList.size() > pageSize);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -1698,6 +1726,10 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         ordersStatusModel.setPickerRequestApprovedQty(pickerRequestApprovedQty);
         ordersStatusModel.setTimeTaken(CommonUtils.differenceBetweenTwoTimes(getLatestScanDateTime(), getLastScanDateTime()));
         activityPickListBinding.setOrderStatusModel(ordersStatusModel);
+        if (barcodeAllocationDetailList != null && !barcodeAllocationDetailList.isEmpty() && (barcodeAllocationDetailList.get(0).getAllocatedPackscompleted() - barcodeAllocationDetailList.get(0).getSupervisorApprovedQty()) == 0) {
+            isItemListRefreshRequired = true;
+            activityPickListBinding.searchByBarcodeOrid.setText("");
+        }
     }
 
     private void scannedBarcodeItemListDialog(List<GetAllocationLineResponse.Allocationdetail> barcodeAllocationDetailListItems) {
@@ -1829,6 +1861,24 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     }
 
     private void searchByItemBoxCheckEmpty() {
+        activityPickListBinding.searchByBarcodeOrid.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_ENTER) || keyCode == KeyEvent.KEYCODE_TAB) {
+                    // handleInputScan();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (activityPickListBinding.searchByBarcodeOrid != null) {
+                                activityPickListBinding.searchByBarcodeOrid.requestFocus();
+                            }
+                        }
+                    }, 10); // Remove this Delay Handler IF requestFocus(); works just fine without delay
+                    return true;
+                }
+                return false;
+            }
+        });
         activityPickListBinding.searchByBarcodeOrid.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

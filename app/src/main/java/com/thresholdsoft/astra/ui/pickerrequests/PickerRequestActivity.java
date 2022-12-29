@@ -71,9 +71,10 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (pickListHistoryAdapter != null) {
-                    pickListHistoryAdapter.getFilter().filter(remarksdetailsList.get(position).getRemarkscode());
+//                    pickListHistoryAdapter.getFilter().filter(remarksdetailsList.get(position).getRemarkscode());
                     selectedRequestType = remarksdetailsList.get(position).getRemarkscode();
                     pickListHistoryAdapter.setRequestType(selectedRequestType);
+                    activityPickerRequestsBinding.pickerRequestSearchByText.setText("");
                 }
             }
 
