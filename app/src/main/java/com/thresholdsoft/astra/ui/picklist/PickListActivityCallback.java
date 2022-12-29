@@ -107,4 +107,9 @@ public interface PickListActivityCallback {
     void onClickLastPage();
 
     void onClickSearchItem();
+
+    void onClickPickListClose();
+
+    void onClickPurchaseRequisitionClose();
+
 }

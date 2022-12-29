@@ -100,6 +100,7 @@ import com.thresholdsoft.astra.ui.requesthistory.RequestHistoryActivity;
 import com.thresholdsoft.astra.ui.scanner.ScannerActivity;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.CommonUtils;
+import com.thresholdsoft.astra.utils.Utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -120,6 +121,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     private PickListAdapter pickListAdapter;
     private ItemListAdapter itemListAdapter;
     private List<GetAllocationDataResponse.Allocationhddata> allocationhddataList;
+    private List<GetAllocationDataResponse.Allocationhddata> tempAllocationhddataList=new ArrayList<>();
 
     private List<GetAllocationDataResponse.Allocationhddata> assignedAllocationData;
     private List<GetAllocationDataResponse.Allocationhddata> inProgressAllocationData;
@@ -223,6 +225,11 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         barcodeCodeScanEdittextTextWatcher();
         parentLayoutTouchListener();
         onLongClickBarcode(null, null);
+
+
+
+
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -243,6 +250,29 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             activityPickListBinding.barcodeScanEdittext.requestFocus();
         }
     };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private void barcodeCodeScanEdittextTextWatcher() {
         activityPickListBinding.barcodeScanEdittext.addTextChangedListener(new TextWatcher() {
@@ -275,6 +305,37 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     }
 
     private void searchByPurchReqId() {
+        activityPickListBinding.searchByItemId.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() >= 2) {
+                    if (pickListAdapter != null) {
+                        activityPickListBinding.setPickListSelectedStatus(0);
+                        pickListAdapter.getFilter().filter(editable);
+
+                    }
+                } else if (activityPickListBinding.searchByText.getText().toString().equals("")) {
+                    if (pickListAdapter != null) {
+                        pickListAdapter.getFilter().filter("");
+                    }
+                } else {
+                    if (pickListAdapter != null) {
+                        pickListAdapter.getFilter().filter("");
+                    }
+                }
+            }
+        });
+
         activityPickListBinding.searchByText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -791,9 +852,24 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSuccessGetWithHoldRemarksApi(GetWithHoldRemarksResponse getWithHoldRemarksResponse) {
+
         if (getWithHoldRemarksResponse.getRemarksdetails() != null && getWithHoldRemarksResponse.getRemarksdetails().size() > 0) {
+            getWithHoldRemarksResponse.getRemarksdetails().stream().filter(i->i.getRemarksdesc().equalsIgnoreCase("ByPass_Scan")).findFirst().map(i-> {
+                getWithHoldRemarksResponse.getRemarksdetails().remove(i);
+                return i;
+            });
+            getWithHoldRemarksResponse.getRemarksdetails().stream().filter(i->i.getRemarksdesc().equalsIgnoreCase("Quantity_Wise")).findFirst().map(i-> {
+                getWithHoldRemarksResponse.getRemarksdetails().remove(i);
+                return i;
+            });
+
+            getWithHoldRemarksResponse.getRemarksdetails().stream().filter(i->i.getRemarksdesc().equalsIgnoreCase("Area_Wise_ByPass")).findFirst().map(i-> {
+                getWithHoldRemarksResponse.getRemarksdetails().remove(i);
+                return i;
+            });
             this.supervisorHoldRemarksdetailsList = getWithHoldRemarksResponse.getRemarksdetails();
             supervisorRequestRemarksDialog = new Dialog(this);
             DialogSupervisorRequestRemarksBinding supervisorRequestRemarksBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_supervisor_request_remarks, null, false);
@@ -802,9 +878,12 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             SupervisorRequestRemarksSpinnerAdapter supervisorRequestRemarksSpinnerAdapter = new SupervisorRequestRemarksSpinnerAdapter(this, getWithHoldRemarksResponse.getRemarksdetails(), this);
             supervisorRequestRemarksBinding.supervisorRequestRemarksListRecycler.setAdapter(supervisorRequestRemarksSpinnerAdapter);
             supervisorRequestRemarksBinding.supervisorRequestRemarksListRecycler.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                     PickListActivity.this.selectedSupervisorRemarksdetail = getWithHoldRemarksResponse.getRemarksdetails().get(position);
+
                 }
 
                 @Override
@@ -1490,6 +1569,20 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     public void onClickSearchItem() {
         getFilter().filter(activityPickListBinding.searchByBarcodeOrid.getText().toString().toString());
     }
+
+    @Override
+    public void onClickPickListClose() {
+        activityPickListBinding.searchByItemId.setText("");
+    }
+
+    @Override
+    public void onClickPurchaseRequisitionClose() {
+        activityPickListBinding.searchByText.setText("");
+    }
+
+
+
+
 
     private void requestApprovalPopup(GetWithHoldStatusResponse getWithHoldStatusResponse, boolean isApproved) {
         Dialog requestApprovalPopup = new Dialog(this);

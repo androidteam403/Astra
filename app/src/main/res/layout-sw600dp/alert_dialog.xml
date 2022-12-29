@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
                     android:fontFamily="@font/poppins_semibold"
-                    android:text="@{model.purchreqid}"
+                    android:text="@{model.purchreqid.substring(model.purchreqid.lastIndexOf('-')+1)}"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen14sp" />
 
@@ -190,7 +190,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_semibold"
-                            android:text="On Hold Date:"
+                            android:text="Requested Date Time:"
                             android:textSize="@dimen/dimen14sp" />
 
                         <TextView
