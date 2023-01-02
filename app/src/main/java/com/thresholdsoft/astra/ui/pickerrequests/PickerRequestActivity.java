@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -30,6 +32,7 @@ import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.menucallbacks.CustomMenuSupervisorCallback;
 import com.thresholdsoft.astra.ui.pickerrequests.adapter.PickerListAdapter;
 import com.thresholdsoft.astra.ui.pickerrequests.adapter.RequestTypeDropdownSpinner;
+import com.thresholdsoft.astra.ui.pickerrequests.adapter.RouteTypeDropdownSpinner;
 import com.thresholdsoft.astra.ui.pickerrequests.adapter.SortbyDropDownSpinner;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
@@ -48,12 +51,15 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class PickerRequestActivity extends BaseActivity implements PickerRequestCallback, CustomMenuSupervisorCallback {
     AlertBox alertBox;
     private ArrayList<WithHoldDataResponse.Withholddetail> withholddetailList = new ArrayList<>();
     private List<WithHoldDataResponse.Withholddetail> withholddetailListTemp;
     private List<WithHoldDataResponse.Withholddetail> withholddetailListList = new ArrayList<>();
+    private List<String> routeList = new ArrayList<>();
+
 
     ActivityPickerRequestsBinding activityPickerRequestsBinding;
 
@@ -112,6 +118,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void setUp() {
 //        activityPickerRequestsBinding.setCallback(this);
 //        activityPickerRequestsBinding.customMenuLayout.setCustomMenuCallback(this);
@@ -133,7 +140,11 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         pickerRequestSearchByText();
         setRequestTypeDropDown();
         setSortbyDropDown();
+        setRouteDropDown();
+
+
     }
+
 
     private void setRequestTypeDropDown() {
         List<GetWithHoldRemarksResponse.Remarksdetail> remarksdetailsList = AppConstants.getWithHoldRemarksResponse.getRemarksdetails();
@@ -168,6 +179,13 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void setRouteDropDown() {
+        List<WithHoldDataResponse.Withholddetail> withholddetailRoute = new ArrayList<>();
+
+
+    }
+
     private void setSortbyDropDown() {
         List<String> sortbyDropDownList = new ArrayList<>();
         sortbyDropDownList.add("Purchase Requisition");
@@ -179,6 +197,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         SortbyDropDownSpinner adapter = new SortbyDropDownSpinner(this, sortbyDropDownList);
         activityPickerRequestsBinding.sortBySprinner.setAdapter(adapter);
         activityPickerRequestsBinding.sortBySprinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (!isSortbySpinnerReset) {
@@ -195,15 +214,35 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void sortRequestList(String sortVariable) {
+
         if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
+
+
+
+            List<WithHoldDataResponse.Withholddetail> withholddetailList = new ArrayList<>();
+
+            withholddetailList = withholddetailListTemp.stream().filter(i -> i.getRoutecode().equalsIgnoreCase(sortVariable)).collect(Collectors.toList());
+            if (withholddetailList != null && withholddetailList.size() > 0) {
+
+                pickListHistoryAdapter.setWithholddetailList(withholddetailList);
+                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+                pickListHistoryAdapter.setRequestType(selectedRequestType);
+                pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+
+                noPickerRequestsFound(withholddetailListTemp.size());
+            } else {
+                noPickerRequestsFound(0);
+            }
+        }
+
+
+        if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
+
             switch (sortVariable) {
                 case "Purchase Requisition":
-                    Collections.sort(withholddetailListTemp, new Comparator<WithHoldDataResponse.Withholddetail>() {
-                        public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
-                            return s1.getPurchreqid().compareToIgnoreCase(s2.getPurchreqid());
-                        }
-                    });
+                    Collections.sort(withholddetailListTemp, (s1, s2) -> s1.getPurchreqid().compareToIgnoreCase(s2.getPurchreqid()));
                     if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
 //                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 //                        pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, this);
@@ -264,6 +303,8 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
                         noPickerRequestsFound(0);
                     }
                     break;
+
+
                 case "Requested By":
                     Collections.sort(withholddetailListTemp, new Comparator<WithHoldDataResponse.Withholddetail>() {
                         public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
@@ -356,6 +397,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         return new SessionManager(this);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSuccessWithHoldApi(WithHoldDataResponse withHoldDataResponse, String minDate, String maxDate) {
         this.minDate = CommonUtils.parseDateToddMMyyyyNoTime(minDate);
@@ -365,8 +407,27 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         activityPickerRequestsBinding.setIsSortByRouteWise(true);
         if (withHoldDataResponse != null && withHoldDataResponse.getRequeststatus()) {
             withholddetailList = (ArrayList<WithHoldDataResponse.Withholddetail>) withHoldDataResponse.getWithholddetails();
-            withholddetailListTemp = (ArrayList<WithHoldDataResponse.Withholddetail>) withHoldDataResponse.getWithholddetails();
 
+            withholddetailListTemp = (ArrayList<WithHoldDataResponse.Withholddetail>) withHoldDataResponse.getWithholddetails();
+            routeList = withholddetailListTemp.stream().map(WithHoldDataResponse.Withholddetail::getRoutecode).distinct().collect(Collectors.toList());
+
+            RouteTypeDropdownSpinner adapter = new RouteTypeDropdownSpinner(this, routeList);
+            activityPickerRequestsBinding.routeSprinner.setAdapter(adapter);
+            activityPickerRequestsBinding.routeSprinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (!isSortbySpinnerReset) {
+                        sortRequestList(routeList.get(position));
+                    } else {
+                        isSortbySpinnerReset = false;
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
             if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
                 pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, this);

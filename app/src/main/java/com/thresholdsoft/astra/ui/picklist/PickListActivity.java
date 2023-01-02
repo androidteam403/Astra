@@ -290,6 +290,10 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             }
             return false;
         });
+
+
+
+
         activityPickListBinding.searchByText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -343,6 +347,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 if (editable.length() >= 2) {
                     if (pickListAdapter != null) {
                         pickListAdapter.getFilter().filter(editable);
+                        activityPickListBinding.layoutPicklist.setVisibility(View.GONE);
+
 
                     }
                 } else if (activityPickListBinding.searchByItemId.getText().toString().equals("")) {
@@ -358,6 +364,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSuccessGetAllocationDataApi(GetAllocationDataResponse getAllocationDataResponse, boolean isRequestToSupervisior, boolean isCompletedStatus) {
         if (isRequestToSupervisior) {
@@ -403,7 +410,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 activityPickListBinding.setPickListSelectedStatus(0);
                 onClickCompletedPickList();
             } else {
-                pickListAdapter = new PickListAdapter(this, allocationhddataList, this);
+                pickListAdapter = new PickListAdapter(this, allocationhddataList, this,activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
                 activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
@@ -649,6 +656,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void setPendingMoveToFirst() {
 //        if (barcodeAllocationDetailList != null && !barcodeAllocationDetailList.isEmpty()) {
 //            if (allocationdetailListForAdapter.contains(barcodeAllocationDetailList.get(0)) && ((barcodeAllocationDetailList.get(0).getAllocatedPackscompleted() - barcodeAllocationDetailList.get(0).getSupervisorApprovedQty()) == 0 || barcodeAllocationDetailList.get(0).isRequestAccepted())) {
@@ -1352,7 +1360,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         if (activityPickListBinding.getPickListSelectedStatus() == 1) {
             activityPickListBinding.setPickListSelectedStatus(0);
             if (allocationhddataList != null && !allocationhddataList.isEmpty()) {
-                pickListAdapter = new PickListAdapter(this, allocationhddataList, this);
+                pickListAdapter = new PickListAdapter(this, allocationhddataList, this,activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
                 activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
@@ -1363,7 +1371,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         } else {
             activityPickListBinding.setPickListSelectedStatus(1);
             if (assignedAllocationData != null && !assignedAllocationData.isEmpty()) {
-                pickListAdapter = new PickListAdapter(this, assignedAllocationData, this);
+                pickListAdapter = new PickListAdapter(this, assignedAllocationData, this,activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
                 activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
@@ -1379,7 +1387,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         if (activityPickListBinding.getPickListSelectedStatus() == 2) {
             activityPickListBinding.setPickListSelectedStatus(0);
             if (allocationhddataList != null && !allocationhddataList.isEmpty()) {
-                pickListAdapter = new PickListAdapter(this, allocationhddataList, this);
+                pickListAdapter = new PickListAdapter(this, allocationhddataList, this,activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
                 activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
@@ -1390,7 +1398,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         } else {
             activityPickListBinding.setPickListSelectedStatus(2);
             if (inProgressAllocationData != null && !inProgressAllocationData.isEmpty()) {
-                pickListAdapter = new PickListAdapter(this, inProgressAllocationData, this);
+                pickListAdapter = new PickListAdapter(this, inProgressAllocationData, this,activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
                 activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
@@ -1406,7 +1414,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         if (activityPickListBinding.getPickListSelectedStatus() == 3) {
             activityPickListBinding.setPickListSelectedStatus(0);
             if (allocationhddataList != null && !allocationhddataList.isEmpty()) {
-                pickListAdapter = new PickListAdapter(this, allocationhddataList, this);
+                pickListAdapter = new PickListAdapter(this, allocationhddataList, this,activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
                 activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
@@ -1417,7 +1425,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         } else {
             activityPickListBinding.setPickListSelectedStatus(3);
             if (completedAllocationData != null && !completedAllocationData.isEmpty()) {
-                pickListAdapter = new PickListAdapter(this, completedAllocationData, this);
+                pickListAdapter = new PickListAdapter(this, completedAllocationData, this,activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
                 activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
