@@ -111,7 +111,8 @@ public abstract class PDFCreatorActivity extends BaseActivity {
                 fileManager.cleanTempFolder(getApplicationContext());
 
                 // get height per page
-                final int HEIGHT_ALLOTTED_PER_PAGE = (getResources().getDimensionPixelSize(R.dimen.pdf_height) - (getResources().getDimensionPixelSize(R.dimen.pdf_margin_vertical) * 2));
+                final int HEIGHT_ALLOTTED_PER_PAGE = 392;
+                        //(getResources().getDimensionPixelSize(R.dimen.pdf_height) - (getResources().getDimensionPixelSize(R.dimen.pdf_margin_vertical) * 2));
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -119,8 +120,8 @@ public abstract class PDFCreatorActivity extends BaseActivity {
                         final List<View> pdfPageViewList = new ArrayList<>();
                         FrameLayout currentPDFLayout = (FrameLayout) getLayoutInflater().inflate(R.layout.item_pdf_page, layoutPageParent, false);
                         currentPDFLayout.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
-                        if (allocationhddata.getNoofboxes() > 0) {
-                            for (int i = 0; i < allocationhddata.getNoofboxes(); i++) {
+                        if (allocationhddata.getNoofboxes()+3 > 0) {
+                            for (int i = 0; i < allocationhddata.getNoofboxes()+3; i++) {
                                 pdfPageViewList.add(currentPDFLayout);
                             }
                         } else {
@@ -164,8 +165,8 @@ public abstract class PDFCreatorActivity extends BaseActivity {
                                 // this will be exceed current page, create a new page and add this view to that page
                                 currentPDFLayout = (FrameLayout) getLayoutInflater().inflate(R.layout.item_pdf_page, layoutPageParent, false);
                                 currentPDFLayout.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
-                                if (allocationhddata.getNoofboxes() > 0) {
-                                    for (int j = 0; j < allocationhddata.getNoofboxes(); j++) {
+                                if (allocationhddata.getNoofboxes()+3 > 0) {
+                                    for (int j = 0; j < allocationhddata.getNoofboxes()+3; j++) {
                                         pdfPageViewList.add(currentPDFLayout);
                                     }
                                 } else {

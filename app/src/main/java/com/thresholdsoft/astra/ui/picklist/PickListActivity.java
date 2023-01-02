@@ -2059,7 +2059,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         verticalLayoutParamSample.setMargins(0, 0, 0, 0);
 
         PDFImageView apolloLogo = new PDFImageView(getContext());
-        LinearLayout.LayoutParams headerImageLayoutParam = new LinearLayout.LayoutParams(30, 30, 0);
+        LinearLayout.LayoutParams headerImageLayoutParam = new LinearLayout.LayoutParams(50, 50, 0);
         apolloLogo.setLayout(headerImageLayoutParam);
 
         apolloLogo.setImageScale(ImageView.ScaleType.FIT_XY);
@@ -2071,6 +2071,9 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         PDFTextView apolloHealthColtdText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
         apolloHealthColtdText.setPadding(10, 0, 0, 0);
         apolloHealthColtdText.setText("APOLLO HEALTHCO LIMITED").setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_bold));
+        LinearLayout.LayoutParams apolloHealthColtdTextlayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        apolloHealthColtdTextlayout.setMargins(0, 0, 0, 0);
+        apolloHealthColtdText.setLayout(apolloHealthColtdTextlayout);
         horizontalView.addView(apolloHealthColtdText);
         horizontalView.getView().setGravity(Gravity.CENTER_VERTICAL);
 
@@ -2088,7 +2091,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         verticalView1.addView(dcText);
 
         PDFImageView barcodeImageView = new PDFImageView(getApplicationContext());
-        LinearLayout.LayoutParams headerImageLayoutParams = new LinearLayout.LayoutParams(150, 15, 0);
+        LinearLayout.LayoutParams headerImageLayoutParams = new LinearLayout.LayoutParams(150, 20, 0);
         headerImageLayoutParams.setMargins(0, 5, 0, 0);
         barcodeImageView.setLayout(headerImageLayoutParams);
         barcodeImageView.setImageScale(ImageView.ScaleType.FIT_XY);
@@ -2099,14 +2102,14 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         LinearLayout.LayoutParams custIdTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         custIdTextLayoutParamSample.setMargins(0, 5, 0, 0);
         custIdText.setLayout(custIdTextLayoutParamSample);
-        custIdText.setText("CustID : " + pdfModelResponse.getCustaccount()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        custIdText.setText("Cust ID : " + pdfModelResponse.getCustaccount()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
         verticalView1.addView(custIdText);
 
         PDFTextView custNameText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
         LinearLayout.LayoutParams custNameTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         custNameTextLayoutParamSample.setMargins(0, 5, 0, 0);
         custNameText.setLayout(custNameTextLayoutParamSample);
-        custNameText.setText("CustName: " + pdfModelResponse.getCustname()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        custNameText.setText("Cust Name: " + pdfModelResponse.getCustname()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
         verticalView1.addView(custNameText);
 
         PDFTextView rpdNoText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
@@ -2134,14 +2137,14 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         LinearLayout.LayoutParams pickerIdTextTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         pickerIdTextTextLayoutParamSample.setMargins(0, 5, 0, 0);
         pickerIdText.setLayout(pickerIdTextTextLayoutParamSample);
-        pickerIdText.setText("PickerID: " + getSessionManager().getEmplId()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        pickerIdText.setText("Picker ID: " + getSessionManager().getEmplId()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
         verticalView1.addView(pickerIdText);
 
         PDFTextView pickerNameText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
         LinearLayout.LayoutParams pickerNameTextTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         pickerNameTextTextLayoutParamSample.setMargins(0, 5, 0, 0);
         pickerNameText.setLayout(pickerNameTextTextLayoutParamSample);
-        pickerNameText.setText("PickerName: " + pdfModelResponse.getUsername()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        pickerNameText.setText("Picker Name: " + pdfModelResponse.getUsername()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
         verticalView1.addView(pickerNameText);
 
         PDFTextView areaText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
