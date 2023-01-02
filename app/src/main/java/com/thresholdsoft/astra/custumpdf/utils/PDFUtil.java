@@ -31,11 +31,13 @@ public class PDFUtil {
     /**
      * Page width for our PDF.
      */
-    private static final double PDF_PAGE_WIDTH = 8.3 * 72;
+//    private static final double PDF_PAGE_WIDTH = 8.3 * 72;
+    private static final double PDF_PAGE_WIDTH = 4.0 * 72;
     /**
      * Page height for our PDF.
      */
-    private static final double PDF_PAGE_HEIGHT = 11.7 * 72;
+//    private static final double PDF_PAGE_HEIGHT = 11.7 * 72;
+    private static final double PDF_PAGE_HEIGHT = 6.0 * 72;
     /**
      * Singleton instance for PDFUtil.
      */
@@ -283,6 +285,17 @@ public class PDFUtil {
          * @throws IOException
          */
         private File savePDFDocumentToStorage(final PdfDocument pdfDocument) throws IOException {
+
+//            final PdfProcessorTask task = PdfProcessorTask.fromDocument(document);
+//// Scale the first page down to half its size.
+//            final Size pageSize = document.getPageSize(0);
+//            final Size halfSize = new Size(pageSize.width / 2, pageSize.height / 2);
+//            task.resizePage(0, halfSize)
+//// Output to a new document.
+//            final File outputFile = new File(context.getFilesDir(), "outputDocument.pdf");
+//            PdfProcessor.processDocument(task, outputFile);
+
+
             FileOutputStream fos = null;
             // Create file.
             File pdfFile = null;

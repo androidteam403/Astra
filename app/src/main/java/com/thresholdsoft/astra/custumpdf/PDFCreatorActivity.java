@@ -2,6 +2,7 @@ package com.thresholdsoft.astra.custumpdf;
 
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;

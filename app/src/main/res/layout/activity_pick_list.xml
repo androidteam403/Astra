@@ -82,34 +82,32 @@
 
                 </RelativeLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dimen5dp"
-                    android:orientation="horizontal">
-
+                    android:layout_marginTop="@dimen/dimen10dp">
 
                     <EditText
                         android:id="@+id/search_by_item_id"
-                        android:layout_width="110dp"
-                        android:layout_height="@dimen/dimen40dp"
-                        android:hint="Search by Item ID"
-                        android:imeOptions="actionDone"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen25dp"
+                        android:layout_marginEnd="@dimen/dimen30dp"
+                        android:background="@drawable/bg_edit_text"
+                        android:drawableLeft="@drawable/search_icon"
+                        android:hint="@string/label_search_by_purchase_requisition"
                         android:importantForAutofill="no"
                         android:inputType="text"
-                        android:text=""
-                        android:textSize="@dimen/dimen12sp" />
-
+                        android:paddingStart="@dimen/dimen5dp"
+                        android:textSize="@dimen/dimen8sp" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{()-> callback.onClickPickListClose()}"
-                        android:layout_marginTop="@dimen/dimen10dp"
-                        android:layout_marginStart="@dimen/dimen5dp"
+                        android:layout_width="@dimen/dimen25dp"
+                        android:layout_height="@dimen/dimen25dp"
+                        android:layout_alignParentEnd="true"
                         android:contentDescription="@string/app_name"
+                        android:onClick="@{()-> callback.onClickPickListClose()}"
                         android:src="@drawable/close_new" />
-                </LinearLayout>
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -348,7 +346,6 @@
                             android:src="@drawable/right_expand_arrow" />
 
 
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -359,8 +356,8 @@
                                 android:id="@+id/search_by_text"
                                 android:layout_width="0dp"
                                 android:layout_height="@dimen/dimen25dp"
-                                android:layout_weight="3.7"
                                 android:layout_marginStart="@dimen/dimen5dp"
+                                android:layout_weight="3.7"
                                 android:background="@drawable/bg_edit_text"
                                 android:drawableLeft="@drawable/search_icon"
                                 android:hint="@string/label_search_by_purchase_requisition"
@@ -919,7 +916,8 @@
                             android:gravity="center"
                             android:onClick="@{()-> callback.onClickPrint()}"
                             android:orientation="horizontal"
-                            android:visibility="@{allocationData.scanstatus.equalsIgnoreCase(`Completed`) ? view.VISIBLE : orderStatusModel.status.equalsIgnoreCase(`Completed`) ? view.VISIBLE : view.GONE}">
+                            android:visibility="visible">
+<!--                            android:visibility="@{allocationData.scanstatus.equalsIgnoreCase(`Completed`) ? view.VISIBLE : orderStatusModel.status.equalsIgnoreCase(`Completed`) ? view.VISIBLE : view.GONE}">-->
 
                             <ImageView
                                 android:layout_width="@dimen/dimen20dp"
@@ -1166,6 +1164,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="@dimen/dimen2dp"
                                         android:contentDescription="@string/app_name"
+                                        android:imeOptions="actionDone"
                                         android:onClick="@{()-> callback.onClickClearSearchByBarcodeorItemId()}"
                                         android:src="@drawable/close_new" />
 

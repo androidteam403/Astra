@@ -4,6 +4,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class WithHoldDataResponse implements Serializable {
@@ -125,6 +128,8 @@ public class WithHoldDataResponse implements Serializable {
         private String onholdapproveddatetime;
 
         private boolean isNotifying;
+
+        private Date date;
 
         public String getPurchreqid() {
             return purchreqid;
@@ -372,6 +377,22 @@ public class WithHoldDataResponse implements Serializable {
 
         public void setNotifying(boolean notifying) {
             isNotifying = notifying;
+        }
+
+        public Date getDate() {
+            String inputPattern = "";
+            if (getOnholddatetime().contains("Z")) inputPattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+            else inputPattern = "yyyy-MM-dd'T'HH:mm:ss";
+            SimpleDateFormat format = new SimpleDateFormat(inputPattern);
+            try {
+                Date date = format.parse(inputPattern);
+                System.out.println(date);
+                return date;
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return null;
+            }
+
         }
     }
 }

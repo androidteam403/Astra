@@ -75,6 +75,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/dimen30dp"
                                 android:layout_marginStart="@dimen/dimen5dp"
+                                android:fontFamily="@font/poppins_semibold"
                                 android:gravity="center"
                                 android:paddingStart="@dimen/dimen5dp"
                                 android:paddingEnd="@dimen/dimen5dp"
@@ -91,6 +92,32 @@
 
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/dimen30dp"
+                                android:layout_marginStart="@dimen/dimen5dp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center"
+                                android:paddingStart="@dimen/dimen5dp"
+                                android:paddingEnd="@dimen/dimen5dp"
+                                android:text="Sort by :"
+                                android:textSize="@dimen/dimen12sp" />
+
+                            <Spinner
+                                android:id="@+id/sort_by_sprinner"
+                                style="@style/spinner_style"
+                                android:layout_width="@dimen/dimen250dp"
+                                android:layout_height="wrap_content"
+                                android:spinnerMode="dropdown"
+                                android:textSize="@dimen/dimen14sp" />
+
+                        </LinearLayout>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/dimen30dp"
@@ -99,7 +126,8 @@
                             android:paddingStart="@dimen/dimen5dp"
                             android:paddingEnd="@dimen/dimen5dp"
                             android:text="Sort by :"
-                            android:textSize="@dimen/dimen12sp" />
+                            android:textSize="@dimen/dimen12sp"
+                            android:visibility="gone" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -115,7 +143,8 @@
                             android:text="Route"
                             android:textAllCaps="true"
                             android:textColor="@{isSortByRouteWise ? @color/white : @color/text_color_grey}"
-                            android:textSize="@dimen/dimen12sp" />
+                            android:textSize="@dimen/dimen12sp"
+                            android:visibility="gone" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -131,7 +160,8 @@
                             android:text="Requested date"
                             android:textAllCaps="true"
                             android:textColor="@{!isSortByRouteWise ? @color/white : @color/text_color_grey}"
-                            android:textSize="@dimen/dimen12sp" />
+                            android:textSize="@dimen/dimen12sp"
+                            android:visibility="gone" />
 
                         <ImageView
                             android:layout_width="@dimen/dimen40dp"
@@ -145,21 +175,131 @@
 
                 </RelativeLayout>
 
-                <EditText
-                    android:id="@+id/picker_request_search_by_text"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen35dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen5dp"
-                    android:layout_marginEnd="@dimen/dimen5dp"
-                    android:background="@drawable/bg_edit_text"
-                    android:drawableLeft="@drawable/search_icon"
-                    android:hint="Search by Purchase Requisition, Product Name, Route"
-                    android:imeOptions="actionDone"
-                    android:importantForAutofill="no"
-                    android:inputType="text"
-                    android:paddingStart="@dimen/dimen5dp"
-                    android:text=""
-                    android:textSize="@dimen/dimen12sp" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <EditText
+                        android:id="@+id/picker_request_search_by_text"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dimen35dp"
+                        android:layout_marginEnd="@dimen/dimen5dp"
+                        android:layout_weight=".6"
+                        android:background="@drawable/bg_edit_text"
+                        android:drawableLeft="@drawable/search_icon"
+                        android:hint="Search by Purchase Requisition, Product Name, Route"
+                        android:imeOptions="actionDone"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:paddingStart="@dimen/dimen5dp"
+                        android:text=""
+                        android:textSize="@dimen/dimen12sp" />
+
+                    <LinearLayout
+                        android:layout_width="@dimen/dimen0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".4"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/dimen10dp"
+                                android:layout_weight=".42"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="From" />
+
+                                <EditText
+                                    android:id="@+id/from_date"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/dimen30dp"
+                                    android:layout_marginStart="@dimen/dimen5dp"
+                                    android:background="@drawable/bg_edit_text"
+                                    android:focusable="false"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:gravity="center"
+                                    android:importantForAutofill="no"
+                                    android:inputType="date"
+                                    android:onClick="@{()-> mCallback.onClickFromDate()}"
+                                    android:text="@{minDate}"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/dimen12sp"
+                                    tools:ignore="LabelFor" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/dimen10dp"
+                                android:layout_weight=".42"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="To" />
+
+                                <EditText
+                                    android:id="@+id/to_date"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/dimen30dp"
+                                    android:layout_marginStart="@dimen/dimen5dp"
+                                    android:background="@drawable/bg_edit_text"
+                                    android:focusable="false"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:gravity="center"
+                                    android:importantForAutofill="no"
+                                    android:inputType="date"
+                                    android:onClick="@{()-> mCallback.onClickToDate()}"
+                                    android:text="@{maxDate}"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/dimen12sp"
+                                    tools:ignore="LabelFor" />
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.16"
+                                android:gravity="bottom">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/dimen30dp"
+                                    android:background="@color/yellow"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:gravity="center"
+                                    android:onClick="@{()-> mCallback.onClickDateApply()}"
+                                    android:text="Apply"
+                                    android:textColor="@color/black" />
+
+                            </RelativeLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -238,6 +378,15 @@
         <variable
             name="isSortByRouteWise"
             type="Boolean" />
+
+        <variable
+            name="minDate"
+            type="String" />
+
+        <variable
+            name="maxDate"
+            type="String" />
+
     </data>
 
 </layout>

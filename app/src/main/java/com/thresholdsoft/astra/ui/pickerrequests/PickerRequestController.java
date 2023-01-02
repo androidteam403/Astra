@@ -48,20 +48,33 @@ public class PickerRequestController {
                 public void onResponse(Call<WithHoldDataResponse> call, Response<WithHoldDataResponse> response) {
                     ActivityUtils.hideDialog();
                     if (response.code() == 200 && response.body() != null) {
+//                        Collections.sort(response.body().getWithholddetails(), new Comparator<WithHoldDataResponse.Withholddetail>() {
+//                            public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+//                                return s1.getPurchreqid().compareToIgnoreCase(s2.getPurchreqid());
+//                            }
+//                        });
+//
+//                        Collections.sort(response.body().getWithholddetails(), new Comparator<WithHoldDataResponse.Withholddetail>() {
+//                            public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+//                                return s1.getRoutecode().compareToIgnoreCase(s2.getRoutecode());
+//                            }
+//                        });
+
+                        Collections.sort(response.body().getWithholddetails(), new Comparator<WithHoldDataResponse.Withholddetail>() {
+                            public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                                return s1.getOnholddatetime().compareToIgnoreCase(s2.getOnholddatetime());
+                            }
+                        });
+                        String minDate = response.body().getWithholddetails().get(0).getOnholddatetime();
+                        String maxDate = response.body().getWithholddetails().get(response.body().getWithholddetails().size() - 1).getOnholddatetime();
                         Collections.sort(response.body().getWithholddetails(), new Comparator<WithHoldDataResponse.Withholddetail>() {
                             public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
                                 return s1.getPurchreqid().compareToIgnoreCase(s2.getPurchreqid());
                             }
                         });
 
-                        Collections.sort(response.body().getWithholddetails(), new Comparator<WithHoldDataResponse.Withholddetail>() {
-                            public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
-                                return s1.getRoutecode().compareToIgnoreCase(s2.getRoutecode());
-                            }
-                        });
 
-
-                        mCallback.onSuccessWithHoldApi(response.body());
+                        mCallback.onSuccessWithHoldApi(response.body(), minDate, maxDate);
                     } else {
                         mCallback.onFailureMessage("Something went wrong.");
                     }

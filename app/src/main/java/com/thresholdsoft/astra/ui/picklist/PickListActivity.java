@@ -26,6 +26,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -37,7 +38,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
@@ -100,7 +100,6 @@ import com.thresholdsoft.astra.ui.requesthistory.RequestHistoryActivity;
 import com.thresholdsoft.astra.ui.scanner.ScannerActivity;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.CommonUtils;
-import com.thresholdsoft.astra.utils.Utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -121,7 +120,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     private PickListAdapter pickListAdapter;
     private ItemListAdapter itemListAdapter;
     private List<GetAllocationDataResponse.Allocationhddata> allocationhddataList;
-    private List<GetAllocationDataResponse.Allocationhddata> tempAllocationhddataList=new ArrayList<>();
+    private List<GetAllocationDataResponse.Allocationhddata> tempAllocationhddataList = new ArrayList<>();
 
     private List<GetAllocationDataResponse.Allocationhddata> assignedAllocationData;
     private List<GetAllocationDataResponse.Allocationhddata> inProgressAllocationData;
@@ -177,12 +176,6 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         setUp();
     }
 
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-    }
-
     private void setUp() {
 //        this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
         activityPickListBinding.setAssignedOrdersCount("0");
@@ -210,21 +203,21 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
 
         activityPickListBinding.barcodeScanEdittext.requestFocus();
-        //search_by_text
-        activityPickListBinding.searchByText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-                    activityPickListBinding.barcodeScanEdittext.requestFocus();
-                }
+
+        activityPickListBinding.searchByItemId.setOnFocusChangeListener((view, hasFocus) -> {
+            if (!hasFocus) {
+                activityPickListBinding.barcodeScanEdittext.requestFocus();
             }
         });
-        activityPickListBinding.searchByBarcodeOrid.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    activityPickListBinding.barcodeScanEdittext.requestFocus();
-                }
+        //search_by_text
+        activityPickListBinding.searchByText.setOnFocusChangeListener((view, hasFocus) -> {
+            if (!hasFocus) {
+                activityPickListBinding.barcodeScanEdittext.requestFocus();
+            }
+        });
+        activityPickListBinding.searchByBarcodeOrid.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                activityPickListBinding.barcodeScanEdittext.requestFocus();
             }
         });
 
@@ -234,9 +227,6 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         barcodeCodeScanEdittextTextWatcher();
         parentLayoutTouchListener();
         onLongClickBarcode(null, null);
-
-
-
 
 
     }
@@ -260,29 +250,6 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             activityPickListBinding.barcodeScanEdittext.requestFocus();
         }
     };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     private void barcodeCodeScanEdittextTextWatcher() {
         activityPickListBinding.barcodeScanEdittext.addTextChangedListener(new TextWatcher() {
@@ -315,23 +282,13 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     }
 
     private void searchByPurchReqId() {
-        activityPickListBinding.searchByText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_ENTER) || keyCode == KeyEvent.KEYCODE_TAB) {
-                    // handleInputScan();
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (activityPickListBinding.searchByText != null) {
-                                activityPickListBinding.searchByText.requestFocus();
-                            }
-                        }
-                    }, 10); // Remove this Delay Handler IF requestFocus(); works just fine without delay
-                    return true;
-                }
-                return false;
+        activityPickListBinding.searchByText.setOnKeyListener((v, keyCode, event) -> {
+            if ((event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_ENTER) || keyCode == KeyEvent.KEYCODE_TAB) {
+                // handleInputScan();
+                new Handler().postDelayed(() -> activityPickListBinding.searchByText.requestFocus(), 10); // Remove this Delay Handler IF requestFocus(); works just fine without delay
+                return true;
             }
+            return false;
         });
         activityPickListBinding.searchByText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -348,11 +305,47 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             public void afterTextChanged(Editable editable) {
                 if (editable.length() >= 2) {
                     if (pickListAdapter != null) {
-                        activityPickListBinding.setPickListSelectedStatus(0);
                         pickListAdapter.getFilter().filter(editable);
 
                     }
                 } else if (activityPickListBinding.searchByText.getText().toString().equals("")) {
+                    if (pickListAdapter != null) {
+                        pickListAdapter.getFilter().filter("");
+                    }
+                } else {
+                    if (pickListAdapter != null) {
+                        pickListAdapter.getFilter().filter("");
+                    }
+                }
+            }
+        });
+        activityPickListBinding.searchByItemId.setOnKeyListener((v, keyCode, event) -> {
+            if ((event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_ENTER) || keyCode == KeyEvent.KEYCODE_TAB) {
+                // handleInputScan();
+                new Handler().postDelayed(() -> activityPickListBinding.searchByItemId.requestFocus(), 10); // Remove this Delay Handler IF requestFocus(); works just fine without delay
+                return true;
+            }
+            return false;
+        });
+        activityPickListBinding.searchByItemId.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() >= 2) {
+                    if (pickListAdapter != null) {
+                        pickListAdapter.getFilter().filter(editable);
+
+                    }
+                } else if (activityPickListBinding.searchByItemId.getText().toString().equals("")) {
                     if (pickListAdapter != null) {
                         pickListAdapter.getFilter().filter("");
                     }
@@ -853,19 +846,6 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     public void onSuccessGetWithHoldRemarksApi(GetWithHoldRemarksResponse getWithHoldRemarksResponse) {
 
         if (getWithHoldRemarksResponse.getRemarksdetails() != null && getWithHoldRemarksResponse.getRemarksdetails().size() > 0) {
-            getWithHoldRemarksResponse.getRemarksdetails().stream().filter(i->i.getRemarksdesc().equalsIgnoreCase("ByPass_Scan")).findFirst().map(i-> {
-                getWithHoldRemarksResponse.getRemarksdetails().remove(i);
-                return i;
-            });
-            getWithHoldRemarksResponse.getRemarksdetails().stream().filter(i->i.getRemarksdesc().equalsIgnoreCase("Quantity_Wise")).findFirst().map(i-> {
-                getWithHoldRemarksResponse.getRemarksdetails().remove(i);
-                return i;
-            });
-
-            getWithHoldRemarksResponse.getRemarksdetails().stream().filter(i->i.getRemarksdesc().equalsIgnoreCase("Area_Wise_ByPass")).findFirst().map(i-> {
-                getWithHoldRemarksResponse.getRemarksdetails().remove(i);
-                return i;
-            });
             this.supervisorHoldRemarksdetailsList = getWithHoldRemarksResponse.getRemarksdetails();
             supervisorRequestRemarksDialog = new Dialog(this);
             DialogSupervisorRequestRemarksBinding supervisorRequestRemarksBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_supervisor_request_remarks, null, false);
@@ -1578,9 +1558,6 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     }
 
 
-
-
-
     private void requestApprovalPopup(GetWithHoldStatusResponse getWithHoldStatusResponse, boolean isApproved) {
         Dialog requestApprovalPopup = new Dialog(this);
         DialogRequestApprovalBinding dialogRequestApprovalBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_request_approval, null, false);
@@ -1931,9 +1908,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            if (activityPickListBinding.searchByBarcodeOrid != null) {
-                                activityPickListBinding.searchByBarcodeOrid.requestFocus();
-                            }
+                            activityPickListBinding.searchByBarcodeOrid.requestFocus();
                         }
                     }, 10); // Remove this Delay Handler IF requestFocus(); works just fine without delay
                     return true;
@@ -2069,17 +2044,22 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
         PDFVerticalView verticalView2 = new PDFVerticalView(getApplicationContext());
         LinearLayout.LayoutParams verticalLayoutParamSamples2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        verticalLayoutParamSamples2.setMargins(0, 10, 0, 0);
+        verticalLayoutParamSamples2.setMargins(0, 0, 0, 0);
 
         verticalView2.setLayout(verticalLayoutParamSamples2);
 
 
         PDFHorizontalView horizontalView = new PDFHorizontalView(getApplicationContext());
         LinearLayout.LayoutParams verticalLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        verticalLayoutParamSample.setMargins(0, 10, 0, 0);
+//        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, 240, getResources().getDisplayMetrics());
+//
+//        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, 360, getResources().getDisplayMetrics());
+//        LinearLayout.LayoutParams verticalLayoutParamSample = new LinearLayout.LayoutParams(width, height);
+
+        verticalLayoutParamSample.setMargins(0, 0, 0, 0);
 
         PDFImageView apolloLogo = new PDFImageView(getContext());
-        LinearLayout.LayoutParams headerImageLayoutParam = new LinearLayout.LayoutParams(100, 100, 0);
+        LinearLayout.LayoutParams headerImageLayoutParam = new LinearLayout.LayoutParams(30, 30, 0);
         apolloLogo.setLayout(headerImageLayoutParam);
 
         apolloLogo.setImageScale(ImageView.ScaleType.FIT_XY);
@@ -2089,7 +2069,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         headerView.setLayout(verticalLayoutParamSample);
 
         PDFTextView apolloHealthColtdText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
-        apolloHealthColtdText.setPadding(25, 0, 0, 0);
+        apolloHealthColtdText.setPadding(10, 0, 0, 0);
         apolloHealthColtdText.setText("APOLLO HEALTHCO LIMITED").setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_bold));
         horizontalView.addView(apolloHealthColtdText);
         horizontalView.getView().setGravity(Gravity.CENTER_VERTICAL);
@@ -2099,7 +2079,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
         PDFVerticalView verticalView1 = new PDFVerticalView(getApplicationContext());
         LinearLayout.LayoutParams verticalLayoutParamSamples = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        verticalLayoutParamSamples.setMargins(0, 10, 0, 0);
+        verticalLayoutParamSamples.setMargins(0, 5, 0, 0);
 
         verticalView1.setLayout(verticalLayoutParamSamples);
 
@@ -2108,8 +2088,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         verticalView1.addView(dcText);
 
         PDFImageView barcodeImageView = new PDFImageView(getApplicationContext());
-        LinearLayout.LayoutParams headerImageLayoutParams = new LinearLayout.LayoutParams(600, 60, 0);
-        headerImageLayoutParams.setMargins(0, 15, 0, 0);
+        LinearLayout.LayoutParams headerImageLayoutParams = new LinearLayout.LayoutParams(150, 15, 0);
+        headerImageLayoutParams.setMargins(0, 5, 0, 0);
         barcodeImageView.setLayout(headerImageLayoutParams);
         barcodeImageView.setImageScale(ImageView.ScaleType.FIT_XY);
         barcodeImageView.setImageBitmap(generateBarcode(pdfModelResponse.getPurchreqid()));
@@ -2117,70 +2097,70 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
         PDFTextView custIdText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
         LinearLayout.LayoutParams custIdTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        custIdTextLayoutParamSample.setMargins(0, 15, 0, 0);
+        custIdTextLayoutParamSample.setMargins(0, 5, 0, 0);
         custIdText.setLayout(custIdTextLayoutParamSample);
         custIdText.setText("CustID : " + pdfModelResponse.getCustaccount()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
         verticalView1.addView(custIdText);
 
         PDFTextView custNameText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
         LinearLayout.LayoutParams custNameTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        custNameTextLayoutParamSample.setMargins(0, 15, 0, 0);
+        custNameTextLayoutParamSample.setMargins(0, 5, 0, 0);
         custNameText.setLayout(custNameTextLayoutParamSample);
         custNameText.setText("CustName: " + pdfModelResponse.getCustname()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
         verticalView1.addView(custNameText);
 
         PDFTextView rpdNoText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
         LinearLayout.LayoutParams rpdNoTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        rpdNoTextLayoutParamSample.setMargins(0, 15, 0, 0);
+        rpdNoTextLayoutParamSample.setMargins(0, 5, 0, 0);
         rpdNoText.setLayout(rpdNoTextLayoutParamSample);
         rpdNoText.setText("RPR.No: " + pdfModelResponse.getPurchreqid()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
         verticalView1.addView(rpdNoText);
 
         PDFTextView rprDateText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
         LinearLayout.LayoutParams rprDateTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        rprDateTextLayoutParamSample.setMargins(0, 15, 0, 0);
+        rprDateTextLayoutParamSample.setMargins(0, 5, 0, 0);
         rprDateText.setLayout(rprDateTextLayoutParamSample);
         rprDateText.setText("RPR Date: " + CommonUtils.parseDateToddMMyyyyNoTime(pdfModelResponse.getTransdate())).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
         verticalView1.addView(rprDateText);
 
         PDFTextView applicationDateText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
         LinearLayout.LayoutParams applicationDateTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        applicationDateTextLayoutParamSample.setMargins(0, 15, 0, 0);
+        applicationDateTextLayoutParamSample.setMargins(0, 5, 0, 0);
         applicationDateText.setLayout(applicationDateTextLayoutParamSample);
         applicationDateText.setText("Allocation Date: " + CommonUtils.parseDateToddMMyyyyNoTime(pdfModelResponse.getTransdate())).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
         verticalView1.addView(applicationDateText);
 
         PDFTextView pickerIdText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
         LinearLayout.LayoutParams pickerIdTextTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        pickerIdTextTextLayoutParamSample.setMargins(0, 15, 0, 0);
+        pickerIdTextTextLayoutParamSample.setMargins(0, 5, 0, 0);
         pickerIdText.setLayout(pickerIdTextTextLayoutParamSample);
         pickerIdText.setText("PickerID: " + getSessionManager().getEmplId()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
         verticalView1.addView(pickerIdText);
 
         PDFTextView pickerNameText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
         LinearLayout.LayoutParams pickerNameTextTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        pickerNameTextTextLayoutParamSample.setMargins(0, 15, 0, 0);
+        pickerNameTextTextLayoutParamSample.setMargins(0, 5, 0, 0);
         pickerNameText.setLayout(pickerNameTextTextLayoutParamSample);
         pickerNameText.setText("PickerName: " + pdfModelResponse.getUsername()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
         verticalView1.addView(pickerNameText);
 
         PDFTextView areaText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
         LinearLayout.LayoutParams areaTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        areaTextLayoutParamSample.setMargins(0, 15, 0, 0);
+        areaTextLayoutParamSample.setMargins(0, 5, 0, 0);
         areaText.setLayout(areaTextLayoutParamSample);
         areaText.setText("AREA: " + pdfModelResponse.getAreaid()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
         verticalView1.addView(areaText);
 
         PDFTextView boxNoText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.HEADER);
         LinearLayout.LayoutParams boxNoTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        boxNoTextLayoutParamSample.setMargins(0, 15, 0, 0);
+        boxNoTextLayoutParamSample.setMargins(0, 5, 0, 0);
         boxNoText.setLayout(boxNoTextLayoutParamSample);
         boxNoText.setText("Box No: " + String.valueOf(pdfModelResponse.getNoofboxes())).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
         verticalView1.addView(boxNoText);
 
         PDFTextView routeText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.FORTY);
         LinearLayout.LayoutParams routeTextLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        routeTextLayout.setMargins(0, 15, 0, 0);
+        routeTextLayout.setMargins(0, 5, 0, 0);
         routeText.setText(pdfModelResponse.getRoutecode()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
         routeText.getView().setGravity(Gravity.CENTER_HORIZONTAL);
         verticalView1.addView(routeText);

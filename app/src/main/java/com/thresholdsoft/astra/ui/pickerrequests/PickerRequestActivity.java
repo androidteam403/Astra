@@ -1,12 +1,16 @@
 package com.thresholdsoft.astra.ui.pickerrequests;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,21 +30,30 @@ import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.menucallbacks.CustomMenuSupervisorCallback;
 import com.thresholdsoft.astra.ui.pickerrequests.adapter.PickerListAdapter;
 import com.thresholdsoft.astra.ui.pickerrequests.adapter.RequestTypeDropdownSpinner;
+import com.thresholdsoft.astra.ui.pickerrequests.adapter.SortbyDropDownSpinner;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
+import com.thresholdsoft.astra.utils.CommonUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class PickerRequestActivity extends BaseActivity implements PickerRequestCallback, CustomMenuSupervisorCallback {
     AlertBox alertBox;
     private ArrayList<WithHoldDataResponse.Withholddetail> withholddetailList = new ArrayList<>();
+    private List<WithHoldDataResponse.Withholddetail> withholddetailListTemp;
+    private List<WithHoldDataResponse.Withholddetail> withholddetailListList = new ArrayList<>();
 
     ActivityPickerRequestsBinding activityPickerRequestsBinding;
 
@@ -53,6 +66,11 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     private List<GetWithHoldRemarksResponse.Remarksdetail> remarksdetails;
 
     private String selectedRequestType = "All";
+    private String minDate, maxDate;
+
+    private boolean isRequestTypeSpinnerReset = false;
+    private boolean isSortbySpinnerReset = false;
+    private boolean isRefreshing = false;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -60,29 +78,6 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         super.onCreate(savedInstanceState);
         activityPickerRequestsBinding = DataBindingUtil.setContentView(this, R.layout.activity_picker_requests);
         setUp();
-        List<GetWithHoldRemarksResponse.Remarksdetail> remarksdetailsList = AppConstants.getWithHoldRemarksResponse.getRemarksdetails();
-        GetWithHoldRemarksResponse.Remarksdetail remarksdetail = new GetWithHoldRemarksResponse.Remarksdetail();
-        remarksdetail.setRemarkscode("All");
-        remarksdetail.setRemarksdesc("All");
-        remarksdetailsList.add(0, remarksdetail);
-        RequestTypeDropdownSpinner adapter = new RequestTypeDropdownSpinner(this, remarksdetailsList);
-        activityPickerRequestsBinding.requestCodeSpinner.setAdapter(adapter);
-        activityPickerRequestsBinding.requestCodeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (pickListHistoryAdapter != null) {
-//                    pickListHistoryAdapter.getFilter().filter(remarksdetailsList.get(position).getRemarkscode());
-                    selectedRequestType = remarksdetailsList.get(position).getRemarkscode();
-                    pickListHistoryAdapter.setRequestType(selectedRequestType);
-                    activityPickerRequestsBinding.pickerRequestSearchByText.setText("");
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
     }
 
 
@@ -136,9 +131,197 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         getController().getWithHoldApi();
         parentLayoutTouchListener();
         pickerRequestSearchByText();
+        setRequestTypeDropDown();
+        setSortbyDropDown();
+    }
+
+    private void setRequestTypeDropDown() {
+        List<GetWithHoldRemarksResponse.Remarksdetail> remarksdetailsList = AppConstants.getWithHoldRemarksResponse.getRemarksdetails();
+        GetWithHoldRemarksResponse.Remarksdetail remarksdetail = new GetWithHoldRemarksResponse.Remarksdetail();
+        remarksdetail.setRemarkscode("All");
+        remarksdetail.setRemarksdesc("All");
+        remarksdetailsList.add(0, remarksdetail);
+
+        remarksdetailsList.removeIf(s -> s.getRemarksdesc().equalsIgnoreCase("ByPass_Scan") || s.getRemarksdesc().equalsIgnoreCase("Quantity_Wise") || s.getRemarksdesc().equalsIgnoreCase("Area_Wise_ByPass"));
+
+        RequestTypeDropdownSpinner adapter = new RequestTypeDropdownSpinner(this, remarksdetailsList);
+        activityPickerRequestsBinding.requestCodeSpinner.setAdapter(adapter);
+        activityPickerRequestsBinding.requestCodeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (pickListHistoryAdapter != null) {
+//                    pickListHistoryAdapter.getFilter().filter(remarksdetailsList.get(position).getRemarkscode());
+                    selectedRequestType = remarksdetailsList.get(position).getRemarkscode();
+                    if (!isRequestTypeSpinnerReset) {
+                        pickListHistoryAdapter.setRequestType(selectedRequestType);
+                        activityPickerRequestsBinding.pickerRequestSearchByText.setText("");
+                    } else {
+                        isRequestTypeSpinnerReset = false;
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void setSortbyDropDown() {
+        List<String> sortbyDropDownList = new ArrayList<>();
+        sortbyDropDownList.add("Purchase Requisition");
+        sortbyDropDownList.add("Product Name");
+        sortbyDropDownList.add("Route");
+        sortbyDropDownList.add("Requested By");
+        sortbyDropDownList.add("Requested Date");
+
+        SortbyDropDownSpinner adapter = new SortbyDropDownSpinner(this, sortbyDropDownList);
+        activityPickerRequestsBinding.sortBySprinner.setAdapter(adapter);
+        activityPickerRequestsBinding.sortBySprinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (!isSortbySpinnerReset) {
+                    sortRequestList(sortbyDropDownList.get(position));
+                } else {
+                    isSortbySpinnerReset = false;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void sortRequestList(String sortVariable) {
+        if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
+            switch (sortVariable) {
+                case "Purchase Requisition":
+                    Collections.sort(withholddetailListTemp, new Comparator<WithHoldDataResponse.Withholddetail>() {
+                        public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                            return s1.getPurchreqid().compareToIgnoreCase(s2.getPurchreqid());
+                        }
+                    });
+                    if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
+//                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//                        pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, this);
+//                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+                        pickListHistoryAdapter.setWithholddetailList(withholddetailListTemp);
+                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+                        pickListHistoryAdapter.setRequestType(selectedRequestType);
+                        pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+
+                        noPickerRequestsFound(withholddetailListTemp.size());
+                    } else {
+                        noPickerRequestsFound(0);
+                    }
+                    break;
+                case "Product Name":
+                    Collections.sort(withholddetailListTemp, new Comparator<WithHoldDataResponse.Withholddetail>() {
+                        public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                            return s1.getItemname().compareToIgnoreCase(s2.getItemname());
+                        }
+                    });
+                    if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
+//                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//                        pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, this);
+//                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+                        pickListHistoryAdapter.setWithholddetailList(withholddetailListTemp);
+                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+                        pickListHistoryAdapter.setRequestType(selectedRequestType);
+                        pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+
+                        noPickerRequestsFound(withholddetailListTemp.size());
+                    } else {
+                        noPickerRequestsFound(0);
+                    }
+                    break;
+                case "Route":
+                    Collections.sort(withholddetailListTemp, new Comparator<WithHoldDataResponse.Withholddetail>() {
+                        public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                            return s1.getRoutecode().compareToIgnoreCase(s2.getRoutecode());
+                        }
+                    });
+                    if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
+//                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//                        pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, this);
+//                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+                        pickListHistoryAdapter.setWithholddetailList(withholddetailListTemp);
+                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+                        pickListHistoryAdapter.setRequestType(selectedRequestType);
+                        pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+
+                        noPickerRequestsFound(withholddetailListTemp.size());
+                    } else {
+                        noPickerRequestsFound(0);
+                    }
+                    break;
+                case "Requested By":
+                    Collections.sort(withholddetailListTemp, new Comparator<WithHoldDataResponse.Withholddetail>() {
+                        public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                            return s1.getUsername().compareToIgnoreCase(s2.getUsername());
+                        }
+                    });
+                    if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
+//                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//                        pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, this);
+//                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+                        pickListHistoryAdapter.setWithholddetailList(withholddetailListTemp);
+                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+                        pickListHistoryAdapter.setRequestType(selectedRequestType);
+                        pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+
+                        noPickerRequestsFound(withholddetailListTemp.size());
+                    } else {
+                        noPickerRequestsFound(0);
+                    }
+                    break;
+                case "Requested Date":
+                    Collections.sort(withholddetailListTemp, new Comparator<WithHoldDataResponse.Withholddetail>() {
+                        public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                            return s1.getOnholddatetime().compareToIgnoreCase(s2.getOnholddatetime());
+                        }
+                    });
+                    if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
+//                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//                        pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, this);
+//                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+                        pickListHistoryAdapter.setWithholddetailList(withholddetailListTemp);
+                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+                        pickListHistoryAdapter.setRequestType(selectedRequestType);
+                        pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+
+                        noPickerRequestsFound(withholddetailListTemp.size());
+                    } else {
+                        noPickerRequestsFound(0);
+                    }
+                    break;
+                default:
+            }
+        }
     }
 
     private void pickerRequestSearchByText() {
+        activityPickerRequestsBinding.pickerRequestSearchByText.setOnKeyListener((v, keyCode, event) -> {
+            if ((event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_ENTER) || keyCode == KeyEvent.KEYCODE_TAB) {
+                // handleInputScan();
+                new Handler().postDelayed(() -> activityPickerRequestsBinding.pickerRequestSearchByText.requestFocus(), 10); // Remove this Delay Handler IF requestFocus(); works just fine without delay
+                return true;
+            }
+            return false;
+        });
         activityPickerRequestsBinding.pickerRequestSearchByText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -174,20 +357,36 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     }
 
     @Override
-    public void onSuccessWithHoldApi(WithHoldDataResponse withHoldDataResponse) {
+    public void onSuccessWithHoldApi(WithHoldDataResponse withHoldDataResponse, String minDate, String maxDate) {
+        this.minDate = CommonUtils.parseDateToddMMyyyyNoTime(minDate);
+        this.maxDate = CommonUtils.parseDateToddMMyyyyNoTime(maxDate);
+        activityPickerRequestsBinding.setMinDate(this.minDate);
+        activityPickerRequestsBinding.setMaxDate(this.maxDate);
         activityPickerRequestsBinding.setIsSortByRouteWise(true);
         if (withHoldDataResponse != null && withHoldDataResponse.getRequeststatus()) {
             withholddetailList = (ArrayList<WithHoldDataResponse.Withholddetail>) withHoldDataResponse.getWithholddetails();
+            withholddetailListTemp = (ArrayList<WithHoldDataResponse.Withholddetail>) withHoldDataResponse.getWithholddetails();
 
-
-            if (withholddetailList != null && withholddetailList.size() > 0) {
+            if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-                pickListHistoryAdapter = new PickerListAdapter(this, withholddetailList, this);
+                pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, this);
+                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
                 pickListHistoryAdapter.setRequestType(selectedRequestType);
                 activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
                 activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
 
-                noPickerRequestsFound(withholddetailList.size());
+                noPickerRequestsFound(withholddetailListTemp.size());
+                if (isRefreshing) {
+                    isRefreshing = false;
+                    if (activityPickerRequestsBinding.requestCodeSpinner != null) {
+                        isRequestTypeSpinnerReset = true;
+                        activityPickerRequestsBinding.requestCodeSpinner.setSelection(0);
+                    }
+                    if (activityPickerRequestsBinding.sortBySprinner != null) {
+                        isSortbySpinnerReset = true;
+                        activityPickerRequestsBinding.sortBySprinner.setSelection(0);
+                    }
+                }
             } else {
                 noPickerRequestsFound(0);
 //                Toast.makeText(this, withHoldDataResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
@@ -207,6 +406,189 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             activityPickerRequestsBinding.pickerRequestRecycleview.setVisibility(View.VISIBLE);
             activityPickerRequestsBinding.noPickerRequestsFoundText.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onClickFromDate() {
+        String selectedFromDate = activityPickerRequestsBinding.getMinDate();
+
+        Calendar selectedFromDateCalender = Calendar.getInstance(Locale.ENGLISH);
+        int selectedFromDateCalendermYear;
+        int selectedFromDateCalendermMonth;
+        int selectedFromDateCalendermDay;
+        //Objects.requireNonNull(summaryBinding.fromDate).getText().toString().isEmpty()
+        if (selectedFromDate.isEmpty()) {
+            selectedFromDateCalendermYear = selectedFromDateCalender.get(Calendar.YEAR);
+            selectedFromDateCalendermMonth = selectedFromDateCalender.get(Calendar.MONTH);
+            selectedFromDateCalendermDay = selectedFromDateCalender.get(Calendar.DAY_OF_MONTH);
+        } else {
+
+            String selectedBirthDate = CommonUtils.getDateddMMyyyyToyyyyMMddNoTime(selectedFromDate);
+            String[] expDate = selectedBirthDate.split("-");
+            selectedFromDateCalendermYear = Integer.parseInt(expDate[0]);
+            selectedFromDateCalendermMonth = Integer.parseInt(expDate[1]) - 1;
+            selectedFromDateCalendermDay = Integer.parseInt(expDate[2]);
+        }
+
+
+        final DatePickerDialog dialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
+            selectedFromDateCalender.set(year, monthOfYear, dayOfMonth);
+            activityPickerRequestsBinding.setMinDate(CommonUtils.getDateFormatddmmyyyy(selectedFromDateCalender.getTimeInMillis()));
+            pickListHistoryAdapter.setRequestType(selectedRequestType);
+            pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+            pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+//            this.minDate = CommonUtils.getDateFormatddmmyyyy(c.getTimeInMillis());
+        }, selectedFromDateCalendermYear, selectedFromDateCalendermMonth, selectedFromDateCalendermDay);
+
+
+        Calendar minDateCalender = Calendar.getInstance(Locale.ENGLISH);
+        int minDateCalendermYear;
+        int minDateCalendermMonth;
+        int minDateCalendermDay;
+        //Objects.requireNonNull(summaryBinding.fromDate).getText().toString().isEmpty()
+        if (selectedFromDate.isEmpty()) {
+            minDateCalendermYear = selectedFromDateCalender.get(Calendar.YEAR);
+            minDateCalendermMonth = selectedFromDateCalender.get(Calendar.MONTH);
+            minDateCalendermDay = selectedFromDateCalender.get(Calendar.DAY_OF_MONTH);
+        } else {
+            String selectedBirthDate = CommonUtils.getDateddMMyyyyToyyyyMMddNoTime(minDate);
+            String[] expDate = selectedBirthDate.split("-");
+            minDateCalendermYear = Integer.parseInt(expDate[0]);
+            minDateCalendermMonth = Integer.parseInt(expDate[1]) - 1;
+            minDateCalendermDay = Integer.parseInt(expDate[2]);
+        }
+        minDateCalender.set(minDateCalendermYear, minDateCalendermMonth, minDateCalendermDay);
+        dialog.getDatePicker().setMinDate((long) (minDateCalender.getTimeInMillis()));// - (1000 * 60 * 60 * 24 * 365.25 * 18)
+
+        Calendar maxDateCalender = Calendar.getInstance(Locale.ENGLISH);
+        int maxDateCalendermYear;
+        int maxDateCalendermMonth;
+        int maxDateCalendermDay;
+        //Objects.requireNonNull(summaryBinding.fromDate).getText().toString().isEmpty()
+        if (selectedFromDate.isEmpty()) {
+            maxDateCalendermYear = selectedFromDateCalender.get(Calendar.YEAR);
+            maxDateCalendermMonth = selectedFromDateCalender.get(Calendar.MONTH);
+            maxDateCalendermDay = selectedFromDateCalender.get(Calendar.DAY_OF_MONTH);
+        } else {
+            String selectedBirthDate = CommonUtils.getDateddMMyyyyToyyyyMMddNoTime(activityPickerRequestsBinding.getMaxDate());
+            String[] expDate = selectedBirthDate.split("-");
+            maxDateCalendermYear = Integer.parseInt(expDate[0]);
+            maxDateCalendermMonth = Integer.parseInt(expDate[1]) - 1;
+            maxDateCalendermDay = Integer.parseInt(expDate[2]);
+        }
+        maxDateCalender.set(maxDateCalendermYear, maxDateCalendermMonth, maxDateCalendermDay);
+
+
+        dialog.getDatePicker().setMaxDate((long) (maxDateCalender.getTimeInMillis()));
+        dialog.show();
+    }
+
+    @Override
+    public void onClickToDate() {
+        String selectedFromDate = activityPickerRequestsBinding.getMaxDate();
+
+        Calendar selectedFromDateCalender = Calendar.getInstance(Locale.ENGLISH);
+        int selectedFromDateCalendermYear;
+        int selectedFromDateCalendermMonth;
+        int selectedFromDateCalendermDay;
+        //Objects.requireNonNull(summaryBinding.fromDate).getText().toString().isEmpty()
+        if (selectedFromDate.isEmpty()) {
+            selectedFromDateCalendermYear = selectedFromDateCalender.get(Calendar.YEAR);
+            selectedFromDateCalendermMonth = selectedFromDateCalender.get(Calendar.MONTH);
+            selectedFromDateCalendermDay = selectedFromDateCalender.get(Calendar.DAY_OF_MONTH);
+        } else {
+
+            String selectedBirthDate = CommonUtils.getDateddMMyyyyToyyyyMMddNoTime(selectedFromDate);
+            String[] expDate = selectedBirthDate.split("-");
+            selectedFromDateCalendermYear = Integer.parseInt(expDate[0]);
+            selectedFromDateCalendermMonth = Integer.parseInt(expDate[1]) - 1;
+            selectedFromDateCalendermDay = Integer.parseInt(expDate[2]);
+        }
+
+
+        final DatePickerDialog dialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
+            selectedFromDateCalender.set(year, monthOfYear, dayOfMonth);
+            activityPickerRequestsBinding.setMaxDate(CommonUtils.getDateFormatddmmyyyy(selectedFromDateCalender.getTimeInMillis()));
+            pickListHistoryAdapter.setRequestType(selectedRequestType);
+            pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+            pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+//            this.minDate = CommonUtils.getDateFormatddmmyyyy(c.getTimeInMillis());
+        }, selectedFromDateCalendermYear, selectedFromDateCalendermMonth, selectedFromDateCalendermDay);
+
+
+        Calendar minDateCalender = Calendar.getInstance(Locale.ENGLISH);
+        int minDateCalendermYear;
+        int minDateCalendermMonth;
+        int minDateCalendermDay;
+        //Objects.requireNonNull(summaryBinding.fromDate).getText().toString().isEmpty()
+        if (selectedFromDate.isEmpty()) {
+            minDateCalendermYear = selectedFromDateCalender.get(Calendar.YEAR);
+            minDateCalendermMonth = selectedFromDateCalender.get(Calendar.MONTH);
+            minDateCalendermDay = selectedFromDateCalender.get(Calendar.DAY_OF_MONTH);
+        } else {
+            String selectedBirthDate = CommonUtils.getDateddMMyyyyToyyyyMMddNoTime(activityPickerRequestsBinding.getMinDate());
+            String[] expDate = selectedBirthDate.split("-");
+            minDateCalendermYear = Integer.parseInt(expDate[0]);
+            minDateCalendermMonth = Integer.parseInt(expDate[1]) - 1;
+            minDateCalendermDay = Integer.parseInt(expDate[2]);
+        }
+        minDateCalender.set(minDateCalendermYear, minDateCalendermMonth, minDateCalendermDay);
+        dialog.getDatePicker().setMinDate((long) (minDateCalender.getTimeInMillis()));// - (1000 * 60 * 60 * 24 * 365.25 * 18)
+
+        Calendar maxDateCalender = Calendar.getInstance(Locale.ENGLISH);
+        int maxDateCalendermYear;
+        int maxDateCalendermMonth;
+        int maxDateCalendermDay;
+        //Objects.requireNonNull(summaryBinding.fromDate).getText().toString().isEmpty()
+        if (selectedFromDate.isEmpty()) {
+            maxDateCalendermYear = selectedFromDateCalender.get(Calendar.YEAR);
+            maxDateCalendermMonth = selectedFromDateCalender.get(Calendar.MONTH);
+            maxDateCalendermDay = selectedFromDateCalender.get(Calendar.DAY_OF_MONTH);
+        } else {
+            String selectedBirthDate = CommonUtils.getDateddMMyyyyToyyyyMMddNoTime(maxDate);
+            String[] expDate = selectedBirthDate.split("-");
+            maxDateCalendermYear = Integer.parseInt(expDate[0]);
+            maxDateCalendermMonth = Integer.parseInt(expDate[1]) - 1;
+            maxDateCalendermDay = Integer.parseInt(expDate[2]);
+        }
+        maxDateCalender.set(maxDateCalendermYear, maxDateCalendermMonth, maxDateCalendermDay);
+
+
+        dialog.getDatePicker().setMaxDate((long) (maxDateCalender.getTimeInMillis()));
+        dialog.show();
+    }
+
+    @Override
+    public void onClickDateApply() {
+        String date1 = activityPickerRequestsBinding.getMinDate();
+        String date2 = activityPickerRequestsBinding.getMaxDate();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+        try {
+            Date d1 = sdf.parse(date1);
+            Date d2 = sdf.parse(date2);
+            withholddetailListList.clear();
+            for (WithHoldDataResponse.Withholddetail w : withholddetailList) {
+                Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(w.getOnholddatetime());
+                if (!d3.before(d1) && !d3.after(d2)) {
+                    if (selectedRequestType.equalsIgnoreCase("All")) {
+                        withholddetailListList.add(w);
+                    } else {
+                        if ((w.getHoldreasoncode().toLowerCase().contains(selectedRequestType.toLowerCase()))) {
+                            withholddetailListList.add(w);
+                        }
+                    }
+                }
+            }
+            withholddetailListTemp = withholddetailListList;
+            pickListHistoryAdapter.setRequestType(selectedRequestType);
+            pickListHistoryAdapter.setNotifying(true);
+            pickListHistoryAdapter.setWithholddetailList(withholddetailListTemp);
+            pickListHistoryAdapter.notifyDataSetChanged();
+        } catch (ParseException ex) {
+            Log.v("Exception", ex.getLocalizedMessage());
+        }
+
     }
 
     @Override
@@ -233,31 +615,33 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
     @Override
     public void onClickRefreshRequest() {
+        isRefreshing = true;
         getController().getWithHoldApi();
     }
 
     @Override
     public void onClickSortByRoute() {
         activityPickerRequestsBinding.setIsSortByRouteWise(true);
-        if (withholddetailList != null && withholddetailList.size() > 0) {
-            Collections.sort(withholddetailList, new Comparator<WithHoldDataResponse.Withholddetail>() {
+        if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
+            Collections.sort(withholddetailListTemp, new Comparator<WithHoldDataResponse.Withholddetail>() {
                 public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
                     return s1.getPurchreqid().compareToIgnoreCase(s2.getPurchreqid());
                 }
             });
 
-            Collections.sort(withholddetailList, new Comparator<WithHoldDataResponse.Withholddetail>() {
+            Collections.sort(withholddetailListTemp, new Comparator<WithHoldDataResponse.Withholddetail>() {
                 public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
                     return s1.getRoutecode().compareToIgnoreCase(s2.getRoutecode());
                 }
             });
-            if (withholddetailList != null && withholddetailList.size() > 0) {
+            if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-                pickListHistoryAdapter = new PickerListAdapter(this, withholddetailList, this);
+                pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, this);
+                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
                 activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
                 activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
 
-                noPickerRequestsFound(withholddetailList.size());
+                noPickerRequestsFound(withholddetailListTemp.size());
             } else {
                 noPickerRequestsFound(0);
 //                Toast.makeText(this, withHoldDataResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
@@ -268,19 +652,20 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     @Override
     public void onClickSortByRequestedDate() {
         activityPickerRequestsBinding.setIsSortByRouteWise(false);
-        if (withholddetailList != null && withholddetailList.size() > 0) {
-            Collections.sort(withholddetailList, new Comparator<WithHoldDataResponse.Withholddetail>() {
+        if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
+            Collections.sort(withholddetailListTemp, new Comparator<WithHoldDataResponse.Withholddetail>() {
                 public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
                     return s1.getOnholddatetime().compareToIgnoreCase(s2.getOnholddatetime());
                 }
             });
-            if (withholddetailList != null && withholddetailList.size() > 0) {
+            if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-                pickListHistoryAdapter = new PickerListAdapter(this, withholddetailList, this);
+                pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, this);
+                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
                 activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
                 activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
 
-                noPickerRequestsFound(withholddetailList.size());
+                noPickerRequestsFound(withholddetailListTemp.size());
             } else {
                 noPickerRequestsFound(0);
 //                Toast.makeText(this, withHoldDataResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();

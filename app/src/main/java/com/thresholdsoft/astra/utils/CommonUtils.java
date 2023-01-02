@@ -3,6 +3,7 @@ package com.thresholdsoft.astra.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.widget.Toast;
 
 import com.thresholdsoft.astra.db.room.AppDatabase;
@@ -10,6 +11,8 @@ import com.thresholdsoft.astra.ui.picklist.model.OrderStatusTimeDateEntity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -43,6 +46,7 @@ public class CommonUtils {
             return "-";
         }
     }
+
     public static String parseDateToddMMyyyyNoTime(String time) {
         if (time != null && !time.isEmpty()) {
             String inputPattern = "";
@@ -66,6 +70,7 @@ public class CommonUtils {
             return "-";
         }
     }
+
     public static String parseDateToMMYYYY(String time) {
         if (time != null && !time.isEmpty()) {
             String inputPattern = "";
@@ -132,6 +137,61 @@ public class CommonUtils {
             android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text", text);
             clipboard.setPrimaryClip(clip);
             Toast.makeText(context, "Copied To Clipboard", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public static String getDateFormatddmmyyyy(long c) {
+        Calendar neededTime = Calendar.getInstance();
+        neededTime.setTimeInMillis(c);
+        return new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(neededTime.getTime());
+    }
+
+    public static String getDateddMMyyyyToyyyyMMddNoTime(String time) {
+        if (time != null && !time.isEmpty()) {
+            String inputPattern = "dd-MMM-yyyy";
+            String outputPattern = "yyyy-MM-dd";
+            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+            Date date = null;
+            String str = null;
+
+            try {
+                date = inputFormat.parse(time);
+                str = outputFormat.format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return str;
+        } else {
+            return "-";
+        }
+    }
+
+    public static Date parseDateToddMMyyyyNoTimeTDP(String time) {
+        if (time != null && !time.isEmpty()) {
+            String inputPattern = "";
+            if (time.contains("Z")) inputPattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+            else inputPattern = "yyyy-MM-dd'T'HH:mm:ss";
+            String outputPattern = "dd-MMM-yyyy";
+            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+            Date date = null;
+            String str = null;
+            Date date1 = null;
+
+            try {
+                date = inputFormat.parse(time);
+                str = outputFormat.format(date);
+                SimpleDateFormat inputFormattest = new SimpleDateFormat(outputPattern);
+                date1 = inputFormattest.parse(str);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return date1;
+        } else {
+            return new Date();
         }
     }
 }

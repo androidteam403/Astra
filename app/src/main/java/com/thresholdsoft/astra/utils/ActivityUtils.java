@@ -5,7 +5,14 @@ import android.graphics.drawable.ColorDrawable;
 
 import com.thresholdsoft.astra.R;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import dmax.dialog.SpotsDialog;
 
@@ -43,4 +50,7 @@ public class ActivityUtils {
     public static boolean isLoadingShowing() {
         return spotsDialog.isShowing();
     }
+
+
+
 }

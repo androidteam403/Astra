@@ -82,39 +82,39 @@
 
                 </RelativeLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
+                    android:layout_marginTop="@dimen/dimen10dp">
 
                     <EditText
                         android:id="@+id/search_by_item_id"
-                        android:layout_width="@dimen/dimen300dp"
-                        android:layout_height="@dimen/dimen40dp"
-                        android:hint="Search by Item ID"
-                        android:imeOptions="actionDone"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen35dp"
+                        android:layout_marginEnd="@dimen/dimen40dp"
+                        android:background="@drawable/bg_edit_text"
+                        android:drawableLeft="@drawable/search_icon"
+                        android:hint="@string/label_search_by_purchase_requisition"
                         android:importantForAutofill="no"
                         android:inputType="text"
+                        android:paddingStart="@dimen/dimen5dp"
                         android:text=""
-
-                        android:textSize="@dimen/dimen12sp" />
+                        android:textSize="@dimen/dimen10sp" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{()-> callback.onClickPickListClose()}"
-
-
-                        android:layout_marginStart="@dimen/dimen5dp"
+                        android:layout_width="@dimen/dimen35dp"
+                        android:layout_height="@dimen/dimen35dp"
+                        android:layout_alignParentEnd="true"
                         android:contentDescription="@string/app_name"
+                        android:onClick="@{()-> callback.onClickPickListClose()}"
                         android:src="@drawable/close_new" />
-                </LinearLayout>
+                </RelativeLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen5dp"
+                    android:layout_marginTop="@dimen/dimen10dp"
                     android:orientation="horizontal"
                     android:weightSum="1">
 
@@ -923,8 +923,8 @@
                             android:background="@color/lite_yellow"
                             android:gravity="center"
                             android:onClick="@{()-> callback.onClickPrint()}"
-                            android:orientation="horizontal"
-                            android:visibility="@{allocationData.scanstatus.equalsIgnoreCase(`Completed`) ? view.VISIBLE : orderStatusModel.status.equalsIgnoreCase(`Completed`) ? view.VISIBLE : view.GONE}">
+                            android:orientation="horizontal">
+<!--                            android:visibility="@{allocationData.scanstatus.equalsIgnoreCase(`Completed`) ? view.VISIBLE : orderStatusModel.status.equalsIgnoreCase(`Completed`) ? view.VISIBLE : view.GONE}">-->
 
                             <ImageView
                                 android:layout_width="@dimen/dimen40dp"
@@ -1217,6 +1217,7 @@
                                     android:layout_width="@dimen/dimen300dp"
                                     android:layout_height="@dimen/dimen40dp"
                                     android:hint="Search by Barcode or Item ID"
+                                    android:imeOptions="actionDone"
                                     android:importantForAutofill="no"
                                     android:inputType="text"
                                     android:textSize="@dimen/dimen12sp" />

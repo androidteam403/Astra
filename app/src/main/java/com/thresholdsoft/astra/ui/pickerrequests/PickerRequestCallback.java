@@ -9,7 +9,7 @@ import java.util.List;
 public interface PickerRequestCallback {
     void onClickApprove(String approvedQty, WithHoldDataResponse.Withholddetail pickListItems, int position, String purchaseId, String itemName, List<WithHoldDataResponse.Withholddetail> withholddetailArrayList);
 
-    void onSuccessWithHoldApi(WithHoldDataResponse withHoldDataResponse);
+    void onSuccessWithHoldApi(WithHoldDataResponse withHoldDataResponse, String minDate, String maxDate);
 
     void onFailureMessage(String message);
 
@@ -26,5 +26,11 @@ public interface PickerRequestCallback {
     void onClickSortByRequestedDate();
 
     void noPickerRequestsFound(int count);
+
+    void onClickFromDate();
+
+    void onClickToDate();
+
+    void onClickDateApply();
 
 }

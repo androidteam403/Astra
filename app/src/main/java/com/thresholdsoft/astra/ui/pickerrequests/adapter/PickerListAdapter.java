@@ -24,8 +24,12 @@ import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
 import com.thresholdsoft.astra.databinding.PickerrequestAdapterlayoutBinding;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestCallback;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
+import com.thresholdsoft.astra.utils.CommonUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.ViewHolder> implements Filterable {
@@ -37,16 +41,31 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
     private boolean isNotifying = false;
     private Dialog customDialog;
     private String requestType;
+    private String minDate, maxDate;
 
-    public PickerListAdapter(Activity activity, ArrayList<WithHoldDataResponse.Withholddetail> withholddetailList, PickerRequestCallback pickerRequestCallback) {
+    public PickerListAdapter(Activity activity, List<WithHoldDataResponse.Withholddetail> withholddetailList, PickerRequestCallback pickerRequestCallback) {
         this.activity = activity;
         this.withholddetailList = withholddetailList;
         this.withholddetailListList = withholddetailList;
         this.pickerRequestCallback = pickerRequestCallback;
     }
 
+    public void setWithholddetailList(List<WithHoldDataResponse.Withholddetail> withholddetailList) {
+        this.withholddetailList = withholddetailList;
+        this.withholddetailListList = withholddetailList;
+    }
+
+    public void setMinMaxDates(String minDate, String maxDate) {
+        this.minDate = minDate;
+        this.maxDate = maxDate;
+    }
+
     public void setRequestType(String requestType) {
         this.requestType = requestType;
+    }
+
+    public void setNotifying(boolean isNotifying) {
+        this.isNotifying = isNotifying;
     }
 
     @NonNull
@@ -146,14 +165,42 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String charString = charSequence.toString();
                 if (requestType.equals("All") && (charString.equals("All") || charString.isEmpty())) {
-                    withholddetailList = withholddetailListList;
-                    isNotifying = true;
+                    withholddetailfilteredList.clear();
+                    for (WithHoldDataResponse.Withholddetail row : withholddetailListList){
+                        String date1 = minDate;
+                        String date2 = maxDate;
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+                        try {
+                            Date d1 = sdf.parse(date1);
+                            Date d2 = sdf.parse(date2);
+                            Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
+                            if (!d3.before(d1) && !d3.after(d2)) {
+                                isNotifying = true;
+                                withholddetailfilteredList.add(row);
+                            }
+                        } catch (ParseException ex) {
+                            System.out.println(ex);
+                        }
+                    }
+                    withholddetailList = withholddetailfilteredList;
                 } else if (!requestType.equalsIgnoreCase("All") && charString.isEmpty()) {
                     withholddetailfilteredList.clear();
                     for (WithHoldDataResponse.Withholddetail row : withholddetailListList) {
                         if (!withholddetailfilteredList.contains(row) && (row.getHoldreasoncode().toLowerCase().contains(requestType.toLowerCase()))) {
-                            isNotifying = true;
-                            withholddetailfilteredList.add(row);
+                            String date1 = minDate;
+                            String date2 = maxDate;
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+                            try {
+                                Date d1 = sdf.parse(date1);
+                                Date d2 = sdf.parse(date2);
+                                Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
+                                if (!d3.before(d1) && !d3.after(d2)) {
+                                    isNotifying = true;
+                                    withholddetailfilteredList.add(row);
+                                }
+                            } catch (ParseException ex) {
+                                System.out.println(ex);
+                            }
                         }
                     }
                     withholddetailList = withholddetailfilteredList;
@@ -162,18 +209,43 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
                     for (WithHoldDataResponse.Withholddetail row : withholddetailListList) {
                         if (requestType.equalsIgnoreCase("All")) {
                             if (!withholddetailfilteredList.contains(row) && ((row.getHoldreasoncode().toLowerCase().contains(charString.toLowerCase())) || (row.getPurchreqid().toLowerCase().contains(charString.toLowerCase())) || (row.getItemname().toLowerCase().contains(charString.toLowerCase())) || (row.getRoutecode().toLowerCase().contains(charString.toLowerCase())))) {
-                                isNotifying = true;
-                                withholddetailfilteredList.add(row);
+                                String date1 = minDate;
+                                String date2 = maxDate;
+                                SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+                                try {
+                                    Date d1 = sdf.parse(date1);
+                                    Date d2 = sdf.parse(date2);
+                                    Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
+                                    if (!d3.before(d1) && !d3.after(d2)) {
+                                        isNotifying = true;
+                                        withholddetailfilteredList.add(row);
+                                    }
+                                } catch (ParseException ex) {
+                                    System.out.println(ex);
+                                }
                             }
                         } else {
                             if (!withholddetailfilteredList.contains(row) && ((row.getHoldreasoncode().toLowerCase().contains(charString.toLowerCase())) || (row.getPurchreqid().toLowerCase().contains(charString.toLowerCase()) && (row.getHoldreasoncode().toLowerCase().contains(requestType.toLowerCase()))) || (row.getItemname().toLowerCase().contains(charString.toLowerCase()) && (row.getHoldreasoncode().toLowerCase().contains(requestType.toLowerCase()))) || (row.getRoutecode().toLowerCase().contains(charString.toLowerCase())) && (row.getHoldreasoncode().toLowerCase().contains(requestType.toLowerCase())))) {
-                                isNotifying = true;
-                                withholddetailfilteredList.add(row);
+                                String date1 = minDate;
+                                String date2 = maxDate;
+                                SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+                                try {
+                                    Date d1 = sdf.parse(date1);
+                                    Date d2 = sdf.parse(date2);
+                                    Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
+                                    if (!d3.before(d1) && !d3.after(d2)) {
+                                        isNotifying = true;
+                                        withholddetailfilteredList.add(row);
+                                    }
+                                } catch (ParseException ex) {
+                                    System.out.println(ex);
+                                }
                             }
                         }
                     }
                     withholddetailList = withholddetailfilteredList;
                 }
+
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = withholddetailList;
                 return filterResults;
@@ -194,7 +266,9 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
                     notifyDataSetChanged();
                 }
             }
-        };
+        }
+
+                ;
     }
 
 
