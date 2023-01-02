@@ -239,6 +239,11 @@
             name="statusDateTime"
             type="String" />
 
+
+        <variable
+            name="itemId"
+            type="String" />
+
         <import type="com.thresholdsoft.astra.utils.CommonUtils" />
     </data>
 </layout>

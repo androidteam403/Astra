@@ -24,6 +24,7 @@ import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
 import com.thresholdsoft.astra.databinding.PickerrequestAdapterlayoutBinding;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestCallback;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
+import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
 import com.thresholdsoft.astra.utils.CommonUtils;
 
 import java.text.ParseException;
@@ -90,10 +91,13 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
         if (allocqty != null) {
             holder.pickerrequestAdapterlayoutBinding.allocationQty.setText(allocqty);
         }
+
         holder.pickerrequestAdapterlayoutBinding.route.setText(pickListItems.getRoutecode());
+
+
         holder.pickerrequestAdapterlayoutBinding.shortqty.setText(pickListItems.getShortqty().toString());
         holder.pickerrequestAdapterlayoutBinding.scannedQty.setText(pickListItems.getScannedqty().toString());
-        holder.pickerrequestAdapterlayoutBinding.requestedby.setText(pickListItems.getUsername() + " (" + pickListItems.getUserid() + " )");
+        holder.pickerrequestAdapterlayoutBinding.requestedby.setText(pickListItems.getUsername().replace(" ","") + " (" + pickListItems.getUserid() + " )");
         holder.pickerrequestAdapterlayoutBinding.approvalqty.setText(String.valueOf(pickListItems.getApprovalqty()));
 
 
@@ -183,7 +187,11 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
                         }
                     }
                     withholddetailList = withholddetailfilteredList;
-                } else if (!requestType.equalsIgnoreCase("All") && charString.isEmpty()) {
+                }
+
+
+
+                else if (!requestType.equalsIgnoreCase("All") && charString.isEmpty()) {
                     withholddetailfilteredList.clear();
                     for (WithHoldDataResponse.Withholddetail row : withholddetailListList) {
                         if (!withholddetailfilteredList.contains(row) && (row.getHoldreasoncode().toLowerCase().contains(requestType.toLowerCase()))) {
@@ -208,7 +216,7 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
                     withholddetailfilteredList.clear();
                     for (WithHoldDataResponse.Withholddetail row : withholddetailListList) {
                         if (requestType.equalsIgnoreCase("All")) {
-                            if (!withholddetailfilteredList.contains(row) && ((row.getHoldreasoncode().toLowerCase().contains(charString.toLowerCase())) || (row.getPurchreqid().toLowerCase().contains(charString.toLowerCase())) || (row.getItemname().toLowerCase().contains(charString.toLowerCase())) || (row.getRoutecode().toLowerCase().contains(charString.toLowerCase())))) {
+                            if (!withholddetailfilteredList.contains(row) && ((row.getHoldreasoncode().toLowerCase().contains(charString.toLowerCase())) || (row.getPurchreqid().toLowerCase().contains(charString.toLowerCase())) ||  (row.getUserid().replace(" ","").toLowerCase().contains(charString.toLowerCase())) ||(row.getUsername().replace(" ","").toLowerCase().contains(charString.toLowerCase())) || (row.getItemname().toLowerCase().contains(charString.toLowerCase())) || (row.getRoutecode().toLowerCase().contains(charString.toLowerCase())))) {
                                 String date1 = minDate;
                                 String date2 = maxDate;
                                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
@@ -225,7 +233,7 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
                                 }
                             }
                         } else {
-                            if (!withholddetailfilteredList.contains(row) && ((row.getHoldreasoncode().toLowerCase().contains(charString.toLowerCase())) || (row.getPurchreqid().toLowerCase().contains(charString.toLowerCase()) && (row.getHoldreasoncode().toLowerCase().contains(requestType.toLowerCase()))) || (row.getItemname().toLowerCase().contains(charString.toLowerCase()) && (row.getHoldreasoncode().toLowerCase().contains(requestType.toLowerCase()))) || (row.getRoutecode().toLowerCase().contains(charString.toLowerCase())) && (row.getHoldreasoncode().toLowerCase().contains(requestType.toLowerCase())))) {
+                            if (!withholddetailfilteredList.contains(row) && ((row.getHoldreasoncode().toLowerCase().contains(charString.toLowerCase())) || (row.getPurchreqid().toLowerCase().contains(charString.toLowerCase())) ||  (row.getUserid().replace(" ","").toLowerCase().contains(charString.toLowerCase())) ||(row.getUsername().replace(" ","").toLowerCase().contains(charString.toLowerCase())) || (row.getItemname().toLowerCase().contains(charString.toLowerCase())) || (row.getRoutecode().toLowerCase().contains(charString.toLowerCase())))) {
                                 String date1 = minDate;
                                 String date2 = maxDate;
                                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");

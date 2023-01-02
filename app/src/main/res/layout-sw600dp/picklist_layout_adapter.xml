@@ -234,7 +234,9 @@
         <variable
             name="callback"
             type="com.thresholdsoft.astra.ui.picklist.PickListActivityCallback" />
-
+        <variable
+            name="itemId"
+            type="String" />
         <variable
             name="statusDateTime"
             type="String" />
