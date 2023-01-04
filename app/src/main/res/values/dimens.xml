@@ -48,16 +48,26 @@
 
     <dimen name="pdf_width">240px</dimen>
     <dimen name="pdf_height">360px</dimen>
-<!--    <dimen name="pdf_width">595px</dimen>-->
-<!--    <dimen name="pdf_height">842px</dimen>-->
-    <dimen name="pdf_margin_horizontal">20px</dimen>
-    <dimen name="pdf_margin_vertical">30px</dimen>
-    <dimen name="text_size_large">20sp</dimen>
-    <dimen name="margin_small">4dp</dimen>
-    <dimen name="margin_normal">8dp</dimen>
+    <dimen name="pdf_margin_horizontal">10px</dimen>
+    <dimen name="pdf_margin_vertical">15px</dimen>
+    <dimen name="text_size_large">10sp</dimen>
+    <dimen name="margin_small">2dp</dimen>
+    <dimen name="margin_normal">4dp</dimen>
     <dimen name="dimen16dp">16dp</dimen>
     <dimen name="dimen6sp">6sp</dimen>
     <dimen name="dimen70dp">70dp</dimen>
     <dimen name="dimen25sp">25sp</dimen>
     <dimen name="dimen250dp">250dp</dimen>
+    <!--    <dimen name="pdf_width">595px</dimen>-->
+    <!--    <dimen name="pdf_height">842px</dimen>-->
+<!--    <dimen name="pdf_margin_horizontal">20px</dimen>-->
+<!--    <dimen name="pdf_margin_vertical">30px</dimen>-->
+<!--    <dimen name="text_size_large">20sp</dimen>-->
+<!--    <dimen name="margin_small">4dp</dimen>-->
+<!--    <dimen name="margin_normal">8dp</dimen>-->
+<!--    <dimen name="dimen16dp">16dp</dimen>-->
+<!--    <dimen name="dimen6sp">6sp</dimen>-->
+<!--    <dimen name="dimen70dp">70dp</dimen>-->
+<!--    <dimen name="dimen25sp">25sp</dimen>-->
+<!--    <dimen name="dimen250dp">250dp</dimen>-->
 </resources>

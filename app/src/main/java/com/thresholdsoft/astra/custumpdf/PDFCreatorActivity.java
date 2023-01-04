@@ -111,7 +111,8 @@ public abstract class PDFCreatorActivity extends BaseActivity {
                 fileManager.cleanTempFolder(getApplicationContext());
 
                 // get height per page
-                final int HEIGHT_ALLOTTED_PER_PAGE = (getResources().getDimensionPixelSize(R.dimen.pdf_height) - (getResources().getDimensionPixelSize(R.dimen.pdf_margin_vertical) * 2));
+                final int HEIGHT_ALLOTTED_PER_PAGE = 392; //426;
+                        //(getResources().getDimensionPixelSize(R.dimen.pdf_height) - (getResources().getDimensionPixelSize(R.dimen.pdf_margin_vertical) * 2));
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -135,7 +136,9 @@ public abstract class PDFCreatorActivity extends BaseActivity {
                         }
 
                         LinearLayout currentPDFView = new PDFVerticalView(getApplicationContext()).getView();
-                        final LinearLayout.LayoutParams verticalPageLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0);
+                        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, 240, getResources().getDisplayMetrics());
+                        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, 360, getResources().getDisplayMetrics());
+                        final LinearLayout.LayoutParams verticalPageLayoutParams = new LinearLayout.LayoutParams(width, height, 0);
                         currentPDFView.setLayoutParams(verticalPageLayoutParams);
                         currentPDFLayout.addView(currentPDFView);
 
