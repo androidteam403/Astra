@@ -350,8 +350,8 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:visibility="gone"
                             android:orientation="horizontal"
+                            android:visibility="gone"
                             android:weightSum="4">
 
                             <EditText
@@ -924,7 +924,8 @@
                             android:background="@color/lite_yellow"
                             android:gravity="center"
                             android:onClick="@{()-> callback.onClickPrint()}"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="visible">
 <!--                            android:visibility="@{allocationData.scanstatus.equalsIgnoreCase(`Completed`) ? view.VISIBLE : orderStatusModel.status.equalsIgnoreCase(`Completed`) ? view.VISIBLE : view.GONE}">-->
 
                             <ImageView

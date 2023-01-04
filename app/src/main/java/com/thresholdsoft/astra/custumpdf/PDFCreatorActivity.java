@@ -111,7 +111,7 @@ public abstract class PDFCreatorActivity extends BaseActivity {
                 fileManager.cleanTempFolder(getApplicationContext());
 
                 // get height per page
-                final int HEIGHT_ALLOTTED_PER_PAGE = 392;
+                final int HEIGHT_ALLOTTED_PER_PAGE = 392; //426;
                         //(getResources().getDimensionPixelSize(R.dimen.pdf_height) - (getResources().getDimensionPixelSize(R.dimen.pdf_margin_vertical) * 2));
 
                 runOnUiThread(new Runnable() {
@@ -120,8 +120,8 @@ public abstract class PDFCreatorActivity extends BaseActivity {
                         final List<View> pdfPageViewList = new ArrayList<>();
                         FrameLayout currentPDFLayout = (FrameLayout) getLayoutInflater().inflate(R.layout.item_pdf_page, layoutPageParent, false);
                         currentPDFLayout.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
-                        if (allocationhddata.getNoofboxes()+3 > 0) {
-                            for (int i = 0; i < allocationhddata.getNoofboxes()+3; i++) {
+                        if (allocationhddata.getNoofboxes() > 0) {
+                            for (int i = 0; i < allocationhddata.getNoofboxes(); i++) {
                                 pdfPageViewList.add(currentPDFLayout);
                             }
                         } else {
@@ -136,7 +136,9 @@ public abstract class PDFCreatorActivity extends BaseActivity {
                         }
 
                         LinearLayout currentPDFView = new PDFVerticalView(getApplicationContext()).getView();
-                        final LinearLayout.LayoutParams verticalPageLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0);
+                        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, 240, getResources().getDisplayMetrics());
+                        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, 360, getResources().getDisplayMetrics());
+                        final LinearLayout.LayoutParams verticalPageLayoutParams = new LinearLayout.LayoutParams(width, height, 0);
                         currentPDFView.setLayoutParams(verticalPageLayoutParams);
                         currentPDFLayout.addView(currentPDFView);
 
@@ -165,8 +167,8 @@ public abstract class PDFCreatorActivity extends BaseActivity {
                                 // this will be exceed current page, create a new page and add this view to that page
                                 currentPDFLayout = (FrameLayout) getLayoutInflater().inflate(R.layout.item_pdf_page, layoutPageParent, false);
                                 currentPDFLayout.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
-                                if (allocationhddata.getNoofboxes()+3 > 0) {
-                                    for (int j = 0; j < allocationhddata.getNoofboxes()+3; j++) {
+                                if (allocationhddata.getNoofboxes() > 0) {
+                                    for (int j = 0; j < allocationhddata.getNoofboxes(); j++) {
                                         pdfPageViewList.add(currentPDFLayout);
                                     }
                                 } else {

@@ -35,14 +35,15 @@ public class PDFTextView extends PDFView implements Serializable {
 //    private static final float TEXT_SIZE_FORTY = 10;
 
 
-    private static final float TEXT_SIZE_HEADER = 18;
-    private static final float TEXT_SIZE_H1 = 13;
-    private static final float TEXT_SIZE_H2 = 11;
-    private static final float TEXT_SIZE_H3 = 8;
-    private static final float TEXT_SIZE_P = 6;
-    private static final float TEXT_SIZE_SMALL = 4;
-    private static final float TEXT_SIZE_FIFTY = 38;
-    private static final float TEXT_SIZE_FORTY = 23;
+    private static final float TEXT_SIZE_HEADER = 13;
+    private static final float TEXT_SIZE_H1 = 11;
+    private static final float TEXT_SIZE_H2 = 9;
+    private static final float TEXT_SIZE_H0 = 7;
+    private static final float TEXT_SIZE_H3 = 5;
+    private static final float TEXT_SIZE_P = 3;
+    private static final float TEXT_SIZE_SMALL = 2;
+    private static final float TEXT_SIZE_FIFTY = 35;
+    private static final float TEXT_SIZE_FORTY = 19;
     private SpannableString text = new SpannableString("");
 
     public PDFTextView(Context context, PDF_TEXT_SIZE size) {
@@ -106,6 +107,7 @@ public class PDFTextView extends PDFView implements Serializable {
         HEADER(TEXT_SIZE_HEADER),
         H1(TEXT_SIZE_H1),
         H2(TEXT_SIZE_H2),
+        H0(TEXT_SIZE_H0),
         H3(TEXT_SIZE_H3),
         P(TEXT_SIZE_P),
         SMALL(TEXT_SIZE_SMALL),

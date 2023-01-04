@@ -62,6 +62,8 @@ import com.thresholdsoft.astra.custumpdf.views.PDFFooterView;
 import com.thresholdsoft.astra.custumpdf.views.PDFHeaderView;
 import com.thresholdsoft.astra.custumpdf.views.basic.PDFHorizontalView;
 import com.thresholdsoft.astra.custumpdf.views.basic.PDFImageView;
+import com.thresholdsoft.astra.custumpdf.views.basic.PDFLineSeparatorView;
+import com.thresholdsoft.astra.custumpdf.views.basic.PDFLineVerticalView;
 import com.thresholdsoft.astra.custumpdf.views.basic.PDFTextView;
 import com.thresholdsoft.astra.custumpdf.views.basic.PDFVerticalView;
 import com.thresholdsoft.astra.databinding.ActivityPickListBinding;
@@ -292,8 +294,6 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         });
 
 
-
-
         activityPickListBinding.searchByText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -347,9 +347,6 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 if (editable.length() >= 2) {
                     if (pickListAdapter != null) {
                         pickListAdapter.getFilter().filter(editable);
-                        activityPickListBinding.layoutPicklist.setVisibility(View.GONE);
-
-
                     }
                 } else if (activityPickListBinding.searchByItemId.getText().toString().equals("")) {
                     if (pickListAdapter != null) {
@@ -410,7 +407,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 activityPickListBinding.setPickListSelectedStatus(0);
                 onClickCompletedPickList();
             } else {
-                pickListAdapter = new PickListAdapter(this, allocationhddataList, this,activityPickListBinding.searchByItemId.getText().toString());
+                pickListAdapter = new PickListAdapter(this, allocationhddataList, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
                 activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
@@ -1360,7 +1357,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         if (activityPickListBinding.getPickListSelectedStatus() == 1) {
             activityPickListBinding.setPickListSelectedStatus(0);
             if (allocationhddataList != null && !allocationhddataList.isEmpty()) {
-                pickListAdapter = new PickListAdapter(this, allocationhddataList, this,activityPickListBinding.searchByItemId.getText().toString());
+                pickListAdapter = new PickListAdapter(this, allocationhddataList, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
                 activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
@@ -1371,7 +1368,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         } else {
             activityPickListBinding.setPickListSelectedStatus(1);
             if (assignedAllocationData != null && !assignedAllocationData.isEmpty()) {
-                pickListAdapter = new PickListAdapter(this, assignedAllocationData, this,activityPickListBinding.searchByItemId.getText().toString());
+                pickListAdapter = new PickListAdapter(this, assignedAllocationData, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
                 activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
@@ -1387,7 +1384,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         if (activityPickListBinding.getPickListSelectedStatus() == 2) {
             activityPickListBinding.setPickListSelectedStatus(0);
             if (allocationhddataList != null && !allocationhddataList.isEmpty()) {
-                pickListAdapter = new PickListAdapter(this, allocationhddataList, this,activityPickListBinding.searchByItemId.getText().toString());
+                pickListAdapter = new PickListAdapter(this, allocationhddataList, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
                 activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
@@ -1398,7 +1395,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         } else {
             activityPickListBinding.setPickListSelectedStatus(2);
             if (inProgressAllocationData != null && !inProgressAllocationData.isEmpty()) {
-                pickListAdapter = new PickListAdapter(this, inProgressAllocationData, this,activityPickListBinding.searchByItemId.getText().toString());
+                pickListAdapter = new PickListAdapter(this, inProgressAllocationData, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
                 activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
@@ -1414,7 +1411,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         if (activityPickListBinding.getPickListSelectedStatus() == 3) {
             activityPickListBinding.setPickListSelectedStatus(0);
             if (allocationhddataList != null && !allocationhddataList.isEmpty()) {
-                pickListAdapter = new PickListAdapter(this, allocationhddataList, this,activityPickListBinding.searchByItemId.getText().toString());
+                pickListAdapter = new PickListAdapter(this, allocationhddataList, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
                 activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
@@ -1425,7 +1422,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         } else {
             activityPickListBinding.setPickListSelectedStatus(3);
             if (completedAllocationData != null && !completedAllocationData.isEmpty()) {
-                pickListAdapter = new PickListAdapter(this, completedAllocationData, this,activityPickListBinding.searchByItemId.getText().toString());
+                pickListAdapter = new PickListAdapter(this, completedAllocationData, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
                 activityPickListBinding.picklistrecycleview.setAdapter(pickListAdapter);
@@ -1553,6 +1550,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     @Override
     public void onClickSearchItem() {
         getFilter().filter(activityPickListBinding.searchByBarcodeOrid.getText().toString().toString());
+        activityPickListBinding.setIsBarcodeDetailsAvailavble(false);
     }
 
     @Override
@@ -1776,6 +1774,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         if (barcodeAllocationDetailList != null && !barcodeAllocationDetailList.isEmpty() && (barcodeAllocationDetailList.get(0).getAllocatedPackscompleted() - barcodeAllocationDetailList.get(0).getSupervisorApprovedQty()) == 0) {
             isItemListRefreshRequired = true;
             activityPickListBinding.searchByBarcodeOrid.setText("");
+            hideKeyboard();
+            activityPickListBinding.barcodeScanEdittext.requestFocus();
         }
     }
 
@@ -2049,135 +2049,216 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     protected PDFHeaderView getHeaderView(int forPage, GetAllocationDataResponse.Allocationhddata pdfModelResponse) {
         PDFHeaderView headerView = new PDFHeaderView(getApplicationContext());
 
+        PDFHorizontalView pdfHorizontalViewParent = new PDFHorizontalView(getContext());
+        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, 240, getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, 360, getResources().getDisplayMetrics());
+
+
+        LinearLayout.LayoutParams pdfHorizontalViewParentLayout = new LinearLayout.LayoutParams(width, height, 1);
+        pdfHorizontalViewParentLayout.setMargins(0, 0, 0, 0);
+        pdfHorizontalViewParent.setLayout(pdfHorizontalViewParentLayout);
+
+
+        PDFLineVerticalView PDFLineVerticalViewSubParent = new PDFLineVerticalView(getContext());
+        int height2 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, 219, getResources().getDisplayMetrics());
+        LinearLayout.LayoutParams PDFLineVerticalViewSubParentLayout = new LinearLayout.LayoutParams(0, height2, (float) 0.005);
+        PDFLineVerticalViewSubParent.setBackgroundColor(Color.BLACK);
+        PDFLineVerticalViewSubParent.setLayout(PDFLineVerticalViewSubParentLayout);
+        pdfHorizontalViewParent.addView(PDFLineVerticalViewSubParent);
+
 
         PDFVerticalView verticalView2 = new PDFVerticalView(getApplicationContext());
-        LinearLayout.LayoutParams verticalLayoutParamSamples2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        LinearLayout.LayoutParams verticalLayoutParamSamples2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, (float) 0.98);
+//        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, 240, getResources().getDisplayMetrics());
+        int height1 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, 360, getResources().getDisplayMetrics());
+        LinearLayout.LayoutParams verticalLayoutParamSamples2 = new LinearLayout.LayoutParams(0, height1, (float) 0.98);
         verticalLayoutParamSamples2.setMargins(0, 0, 0, 0);
-
         verticalView2.setLayout(verticalLayoutParamSamples2);
 
+        PDFLineSeparatorView seperaterLineTen = new PDFLineSeparatorView(getContext());
+        seperaterLineTen.setBackgroundColor(Color.BLACK);
+        verticalView2.addView(seperaterLineTen);
 
         PDFHorizontalView horizontalView = new PDFHorizontalView(getApplicationContext());
-        LinearLayout.LayoutParams verticalLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams verticalLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 //        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, 240, getResources().getDisplayMetrics());
-//
 //        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, 360, getResources().getDisplayMetrics());
 //        LinearLayout.LayoutParams verticalLayoutParamSample = new LinearLayout.LayoutParams(width, height);
-
         verticalLayoutParamSample.setMargins(0, 0, 0, 0);
 
         PDFImageView apolloLogo = new PDFImageView(getContext());
-        LinearLayout.LayoutParams headerImageLayoutParam = new LinearLayout.LayoutParams(50, 50, 0);
+        LinearLayout.LayoutParams headerImageLayoutParam = new LinearLayout.LayoutParams(40, 40, 0);
         apolloLogo.setLayout(headerImageLayoutParam);
 
         apolloLogo.setImageScale(ImageView.ScaleType.FIT_XY);
         apolloLogo.setImageResource(R.drawable.apollo_healthco_logo);
-
         horizontalView.addView(apolloLogo);
         headerView.setLayout(verticalLayoutParamSample);
 
+        PDFVerticalView headerTitleHorizontalView = new PDFVerticalView(getApplicationContext());
+
         PDFTextView apolloHealthColtdText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
-        apolloHealthColtdText.setPadding(10, 0, 0, 0);
         apolloHealthColtdText.setText("APOLLO HEALTHCO LIMITED").setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_bold));
-        LinearLayout.LayoutParams apolloHealthColtdTextlayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        apolloHealthColtdTextlayout.setMargins(0, 0, 0, 0);
-        apolloHealthColtdText.setLayout(apolloHealthColtdTextlayout);
-        horizontalView.addView(apolloHealthColtdText);
-        horizontalView.getView().setGravity(Gravity.CENTER_VERTICAL);
-
-        verticalView2.addView(horizontalView);
-//        headerView.addView(horizontalView);
-
-        PDFVerticalView verticalView1 = new PDFVerticalView(getApplicationContext());
-        LinearLayout.LayoutParams verticalLayoutParamSamples = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        verticalLayoutParamSamples.setMargins(0, 5, 0, 0);
-
-        verticalView1.setLayout(verticalLayoutParamSamples);
+        headerTitleHorizontalView.addView(apolloHealthColtdText);
 
         PDFTextView dcText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
         dcText.setText("DC: " + getSessionManager().getDcName()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
-        verticalView1.addView(dcText);
+        headerTitleHorizontalView.addView(dcText);
+
+        horizontalView.addView(headerTitleHorizontalView);
+        horizontalView.getView().setGravity(Gravity.CENTER_VERTICAL);
+
+        verticalView2.addView(horizontalView);
+
+        PDFVerticalView verticalView1 = new PDFVerticalView(getApplicationContext());
+        LinearLayout.LayoutParams verticalLayoutParamSamples = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        verticalView1.setLayout(verticalLayoutParamSamples);
+
+        PDFLineSeparatorView seperaterLineEight = new PDFLineSeparatorView(getContext());
+        seperaterLineEight.setBackgroundColor(Color.BLACK);
+        verticalView1.addView(seperaterLineEight);
 
         PDFImageView barcodeImageView = new PDFImageView(getApplicationContext());
-        LinearLayout.LayoutParams headerImageLayoutParams = new LinearLayout.LayoutParams(150, 20, 0);
-        headerImageLayoutParams.setMargins(0, 5, 0, 0);
+        LinearLayout.LayoutParams headerImageLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 25, 0);
         barcodeImageView.setLayout(headerImageLayoutParams);
-        barcodeImageView.setImageScale(ImageView.ScaleType.FIT_XY);
+        headerImageLayoutParams.gravity = Gravity.START;
         barcodeImageView.setImageBitmap(generateBarcode(pdfModelResponse.getPurchreqid()));
+        barcodeImageView.setImageScale(ImageView.ScaleType.FIT_XY);
         verticalView1.addView(barcodeImageView);
 
-        PDFTextView custIdText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
-        LinearLayout.LayoutParams custIdTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        custIdTextLayoutParamSample.setMargins(0, 5, 0, 0);
-        custIdText.setLayout(custIdTextLayoutParamSample);
-        custIdText.setText("Cust ID : " + pdfModelResponse.getCustaccount()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
-        verticalView1.addView(custIdText);
+        PDFLineSeparatorView seperaterLineNine = new PDFLineSeparatorView(getContext());
+        seperaterLineNine.setBackgroundColor(Color.BLACK);
+        verticalView1.addView(seperaterLineNine);
 
-        PDFTextView custNameText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
-        LinearLayout.LayoutParams custNameTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        custNameTextLayoutParamSample.setMargins(0, 5, 0, 0);
-        custNameText.setLayout(custNameTextLayoutParamSample);
-        custNameText.setText("Cust Name: " + pdfModelResponse.getCustname()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
-        verticalView1.addView(custNameText);
-
-        PDFTextView rpdNoText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
-        LinearLayout.LayoutParams rpdNoTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        rpdNoTextLayoutParamSample.setMargins(0, 5, 0, 0);
+        PDFTextView rpdNoText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.HEADER);
+        LinearLayout.LayoutParams rpdNoTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         rpdNoText.setLayout(rpdNoTextLayoutParamSample);
-        rpdNoText.setText("RPR.No: " + pdfModelResponse.getPurchreqid()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        rpdNoText.setText(pdfModelResponse.getPurchreqid()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        rpdNoText.getView().setGravity(Gravity.CENTER);
         verticalView1.addView(rpdNoText);
 
-        PDFTextView rprDateText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
-        LinearLayout.LayoutParams rprDateTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        rprDateTextLayoutParamSample.setMargins(0, 5, 0, 0);
-        rprDateText.setLayout(rprDateTextLayoutParamSample);
-        rprDateText.setText("RPR Date: " + CommonUtils.parseDateToddMMyyyyNoTime(pdfModelResponse.getTransdate())).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
-        verticalView1.addView(rprDateText);
+        PDFLineSeparatorView seperaterLineOne = new PDFLineSeparatorView(getContext());
+        seperaterLineOne.setBackgroundColor(Color.BLACK);
+        verticalView1.addView(seperaterLineOne);
 
-        PDFTextView applicationDateText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
-        LinearLayout.LayoutParams applicationDateTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        applicationDateTextLayoutParamSample.setMargins(0, 5, 0, 0);
-        applicationDateText.setLayout(applicationDateTextLayoutParamSample);
-        applicationDateText.setText("Allocation Date: " + CommonUtils.parseDateToddMMyyyyNoTime(pdfModelResponse.getTransdate())).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
-        verticalView1.addView(applicationDateText);
 
-        PDFTextView pickerIdText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
-        LinearLayout.LayoutParams pickerIdTextTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        pickerIdTextTextLayoutParamSample.setMargins(0, 5, 0, 0);
-        pickerIdText.setLayout(pickerIdTextTextLayoutParamSample);
-        pickerIdText.setText("Picker ID: " + getSessionManager().getEmplId()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
-        verticalView1.addView(pickerIdText);
+        PDFHorizontalView custidAreaidHorizontalView = new PDFHorizontalView(getApplicationContext());
+        LinearLayout.LayoutParams custidAreaidHorizontalViewParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 2);
+        custidAreaidHorizontalViewParam.setMargins(5, 0, 0, 0);
+        custidAreaidHorizontalView.setLayout(custidAreaidHorizontalViewParam);
 
-        PDFTextView pickerNameText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
-        LinearLayout.LayoutParams pickerNameTextTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        pickerNameTextTextLayoutParamSample.setMargins(0, 5, 0, 0);
-        pickerNameText.setLayout(pickerNameTextTextLayoutParamSample);
-        pickerNameText.setText("Picker Name: " + pdfModelResponse.getUsername()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
-        verticalView1.addView(pickerNameText);
+        PDFTextView custIdText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.HEADER);
+        LinearLayout.LayoutParams custidTextViewParam = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+        custidTextViewParam.weight = 1;
+        custIdText.setLayout(custidTextViewParam);
+        custIdText.setText("Cust ID : " + pdfModelResponse.getCustaccount()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        custidAreaidHorizontalView.addView(custIdText);
 
         PDFTextView areaText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
-        LinearLayout.LayoutParams areaTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        areaTextLayoutParamSample.setMargins(0, 5, 0, 0);
-        areaText.setLayout(areaTextLayoutParamSample);
+        LinearLayout.LayoutParams areaTextViewParam = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+        areaTextViewParam.weight = 1;
+        areaText.setLayout(areaTextViewParam);
         areaText.setText("AREA: " + pdfModelResponse.getAreaid()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
-        verticalView1.addView(areaText);
+        custidAreaidHorizontalView.addView(areaText);
 
-        PDFTextView boxNoText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.HEADER);
-        LinearLayout.LayoutParams boxNoTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        boxNoTextLayoutParamSample.setMargins(0, 5, 0, 0);
-        boxNoText.setLayout(boxNoTextLayoutParamSample);
-        boxNoText.setText("Box No: " + String.valueOf(pdfModelResponse.getNoofboxes())).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
-        verticalView1.addView(boxNoText);
+        verticalView1.addView(custidAreaidHorizontalView);
+
+
+        PDFLineSeparatorView seperaterLineTwo = new PDFLineSeparatorView(getContext());
+        seperaterLineTwo.setBackgroundColor(Color.BLACK);
+        verticalView1.addView(seperaterLineTwo);
+
+        PDFTextView custNameText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+        LinearLayout.LayoutParams custNameTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        custNameTextLayoutParamSample.setMargins(5, 0, 0, 0);
+        custNameTextLayoutParamSample.gravity = Gravity.START;
+        custNameText.setLayout(custNameTextLayoutParamSample);
+        custNameText.setText("Name: " + pdfModelResponse.getCustname()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+
+        verticalView1.addView(custNameText);
+
+
+        PDFLineSeparatorView seperaterLineThree = new PDFLineSeparatorView(getContext());
+        seperaterLineThree.setBackgroundColor(Color.BLACK);
+        verticalView1.addView(seperaterLineThree);
+
+        PDFHorizontalView rprAllocationDateHorizontalView = new PDFHorizontalView(getApplicationContext());
+        LinearLayout.LayoutParams rprAllocationDateHorizontalViewParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 2);
+        rprAllocationDateHorizontalViewParam.setMargins(5, 0, 0, 0);
+        rprAllocationDateHorizontalView.setLayout(rprAllocationDateHorizontalViewParam);
+
+        PDFTextView rprDateText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H0);
+        LinearLayout.LayoutParams rprDateTextViewParam = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+        rprDateTextViewParam.weight = (float) 0.99;
+        rprDateText.setLayout(rprDateTextViewParam);
+        rprDateText.setText("RPR Date: " + CommonUtils.parseDateToddMMyyyyNoTime(pdfModelResponse.getTransdate())).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        rprAllocationDateHorizontalView.addView(rprDateText);
+
+
+        PDFLineVerticalView rprAllocationDateHorizontalViewDevider = new PDFLineVerticalView(getContext());
+        LinearLayout.LayoutParams rprAllocationDateHorizontalViewParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, (float) 0.01);
+        rprAllocationDateHorizontalViewDevider.setBackgroundColor(Color.BLACK);
+        rprAllocationDateHorizontalViewDevider.setLayout(rprAllocationDateHorizontalViewParams);
+        rprAllocationDateHorizontalView.addView(rprAllocationDateHorizontalViewDevider);
+
+
+        PDFTextView applicationDateText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H0);
+        LinearLayout.LayoutParams applicationDateTextViewParam = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+        applicationDateTextViewParam.setMargins(5, 0, 0, 0);
+        applicationDateTextViewParam.weight = 1;
+        applicationDateText.setLayout(applicationDateTextViewParam);
+        applicationDateText.setText("Allocation Date: " + CommonUtils.parseDateToddMMyyyyNoTime(pdfModelResponse.getTransdate())).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        rprAllocationDateHorizontalView.addView(applicationDateText);
+
+        verticalView1.addView(rprAllocationDateHorizontalView);
+
+
+        PDFLineSeparatorView seperaterLineFour = new PDFLineSeparatorView(getContext());
+        seperaterLineFour.setBackgroundColor(Color.BLACK);
+        verticalView1.addView(seperaterLineFour);
+
+        PDFTextView pickerIdText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H0);
+        LinearLayout.LayoutParams pickerIdTextTextLayoutParamSample = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        pickerIdTextTextLayoutParamSample.setMargins(5, 0, 0, 0);
+        pickerIdText.setLayout(pickerIdTextTextLayoutParamSample);
+        pickerIdTextTextLayoutParamSample.gravity = Gravity.START;
+        pickerIdText.setText("Picker : " + getSessionManager().getEmplId() + "-" + pdfModelResponse.getUsername()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        verticalView1.addView(pickerIdText);
+
+        PDFLineSeparatorView seperaterLineFive = new PDFLineSeparatorView(getContext());
+        seperaterLineFive.setBackgroundColor(Color.BLACK);
+        verticalView1.addView(seperaterLineFive);
 
         PDFTextView routeText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.FORTY);
-        LinearLayout.LayoutParams routeTextLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        routeTextLayout.setMargins(0, 5, 0, 0);
         routeText.setText(pdfModelResponse.getRoutecode()).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
         routeText.getView().setGravity(Gravity.CENTER_HORIZONTAL);
         verticalView1.addView(routeText);
-        verticalView2.addView(verticalView1);
-        headerView.addView(verticalView2);
 
+
+        PDFLineSeparatorView seperaterLineSix = new PDFLineSeparatorView(getContext());
+        seperaterLineSix.setBackgroundColor(Color.BLACK);
+        verticalView1.addView(seperaterLineSix);
+
+        PDFTextView boxNoText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.HEADER);
+        boxNoText.setText("Box No: " + String.valueOf(pdfModelResponse.getNoofboxes())).setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_semibold));
+        boxNoText.getView().setGravity(Gravity.CENTER_HORIZONTAL);
+        verticalView1.addView(boxNoText);
+
+        PDFLineSeparatorView seperaterLineSeven = new PDFLineSeparatorView(getContext());
+        seperaterLineSeven.setBackgroundColor(Color.BLACK);
+        verticalView1.addView(seperaterLineSeven);
+
+        verticalView2.addView(verticalView1);
+        pdfHorizontalViewParent.addView(verticalView2);
+
+
+        PDFLineVerticalView PDFLineVerticalViewSubParentRight = new PDFLineVerticalView(getContext());
+        LinearLayout.LayoutParams PDFLineVerticalViewSubParentRightParams = new LinearLayout.LayoutParams(0, height2, (float) 0.001);
+        PDFLineVerticalViewSubParentRight.setBackgroundColor(Color.BLACK);
+        PDFLineVerticalViewSubParentRight.setLayout(PDFLineVerticalViewSubParentRightParams);
+        pdfHorizontalViewParent.addView(PDFLineVerticalViewSubParentRight);
+
+        headerView.addView(pdfHorizontalViewParent);
 
         return headerView;
     }
@@ -2313,7 +2394,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             //Button To start print
 
             PrintAttributes.Builder builder = new PrintAttributes.Builder();
-//            builder.setMediaSize(PrintAttributes.MediaSize.ISO_A4);
+            builder.setMediaSize(PrintAttributes.MediaSize.NA_INDEX_4X6);
             builder.setColorMode(PrintAttributes.COLOR_MODE_MONOCHROME);
 
             PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);

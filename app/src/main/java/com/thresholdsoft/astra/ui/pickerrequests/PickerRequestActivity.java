@@ -72,10 +72,12 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     private List<GetWithHoldRemarksResponse.Remarksdetail> remarksdetails;
 
     private String selectedRequestType = "All";
+    private String selectedRoute = "All";
     private String minDate, maxDate;
 
     private boolean isRequestTypeSpinnerReset = false;
     private boolean isSortbySpinnerReset = false;
+    private boolean isRouteSpinnerReset = false;
     private boolean isRefreshing = false;
 
     @SuppressLint("ResourceAsColor")
@@ -217,25 +219,24 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void sortRequestList(String sortVariable) {
 
-        if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
-
-
-
-            List<WithHoldDataResponse.Withholddetail> withholddetailList = new ArrayList<>();
-
-            withholddetailList = withholddetailListTemp.stream().filter(i -> i.getRoutecode().equalsIgnoreCase(sortVariable)).collect(Collectors.toList());
-            if (withholddetailList != null && withholddetailList.size() > 0) {
-
-                pickListHistoryAdapter.setWithholddetailList(withholddetailList);
-                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
-                pickListHistoryAdapter.setRequestType(selectedRequestType);
-                pickListHistoryAdapter.getFilter().filter(selectedRequestType);
-
-                noPickerRequestsFound(withholddetailListTemp.size());
-            } else {
-                noPickerRequestsFound(0);
-            }
-        }
+//        if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
+//
+//
+//            List<WithHoldDataResponse.Withholddetail> withholddetailList = new ArrayList<>();
+//
+//            withholddetailList = withholddetailListTemp.stream().filter(i -> i.getRoutecode().equalsIgnoreCase(sortVariable)).collect(Collectors.toList());
+//            if (withholddetailList != null && withholddetailList.size() > 0) {
+//
+//                pickListHistoryAdapter.setWithholddetailList(withholddetailList);
+//                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//                pickListHistoryAdapter.setRequestType(selectedRequestType);
+//                pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+//
+//                noPickerRequestsFound(withholddetailListTemp.size());
+//            } else {
+//                noPickerRequestsFound(0);
+//            }
+//        }
 
 
         if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
@@ -410,16 +411,19 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
             withholddetailListTemp = (ArrayList<WithHoldDataResponse.Withholddetail>) withHoldDataResponse.getWithholddetails();
             routeList = withholddetailListTemp.stream().map(WithHoldDataResponse.Withholddetail::getRoutecode).distinct().collect(Collectors.toList());
-
+            routeList.add(0, "All");
             RouteTypeDropdownSpinner adapter = new RouteTypeDropdownSpinner(this, routeList);
             activityPickerRequestsBinding.routeSprinner.setAdapter(adapter);
             activityPickerRequestsBinding.routeSprinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (!isSortbySpinnerReset) {
-                        sortRequestList(routeList.get(position));
+                    if (!isRouteSpinnerReset) {
+                        selectedRoute = routeList.get(position);
+                        pickListHistoryAdapter.setRoute(routeList.get(position));
+                        pickListHistoryAdapter.getFilter().filter(routeList.get(position));
+//                        sortRequestList(routeList.get(position));
                     } else {
-                        isSortbySpinnerReset = false;
+                        isRouteSpinnerReset = false;
                     }
                 }
 
@@ -446,6 +450,10 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
                     if (activityPickerRequestsBinding.sortBySprinner != null) {
                         isSortbySpinnerReset = true;
                         activityPickerRequestsBinding.sortBySprinner.setSelection(0);
+                    }
+                    if (activityPickerRequestsBinding.routeSprinner != null) {
+                        isRouteSpinnerReset = true;
+                        activityPickerRequestsBinding.routeSprinner.setSelection(0);
                     }
                 }
             } else {
