@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_rounded_corner_dialog"
+        android:backgroundTint="@color/white"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen5dp">
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen10dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="center"
+            android:paddingTop="@dimen/dimen20dp"
+            android:paddingBottom="@dimen/dimen20dp"
+            android:text="@string/label_do_you_want_to_reset_the_item"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen1dp"
+            android:layout_marginTop="@dimen/dimen10dp"
+            android:background="@color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".499"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center"
+                android:onClick="@{()-> callback.onClickDenyResetItem()}"
+                android:paddingTop="@dimen/dimen5dp"
+                android:paddingBottom="@dimen/dimen5dp"
+                android:text="@string/label_cancel"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen14sp" />
+
+            <View
+                android:layout_width="@dimen/dimen1dp"
+                android:layout_height="match_parent"
+                android:background="@color/black" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".499"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center"
+                android:onClick="@{()-> callback.onClickAllowResetItem(allocationdetail)}"
+                android:paddingTop="@dimen/dimen5dp"
+                android:paddingBottom="@dimen/dimen5dp"
+                android:text="@string/label_ok"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen14sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <data>
+
+        <variable
+            name="callback"
+            type="com.thresholdsoft.astra.ui.picklist.PickListActivityCallback" />
+
+        <variable
+            name="allocationdetail"
+            type="com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse.Allocationdetail" />
+    </data>
+</layout>
