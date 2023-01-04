@@ -17,16 +17,20 @@ import com.thresholdsoft.astra.ui.picklist.model.GetModeofDeliveryResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldStatusRequest;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldStatusResponse;
+import com.thresholdsoft.astra.ui.picklist.model.PackingLabelRequest;
+import com.thresholdsoft.astra.ui.picklist.model.PackingLabelResponse;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateRequest;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
 
 import java.util.ArrayList;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Url;
 
 public interface ApiInterface {
 
@@ -62,5 +66,11 @@ public interface ApiInterface {
 
     @GET("https://jsonblob.com/api/jsonBlob/1041677549033504768")
     Call<WithHoldDataResponse> GET_JSON_WITH_HOLD_RESPONSE(@Header("Auth-Token") String authToken);
+
+    @POST("https://online.apollopharmacy.org/ASTRAUAT/Apollo/SAVEPDF/GENERATEPDFBYPRNOFORASTHRA")
+    Call<PackingLabelResponse> PACKING_LABEL_RESPONSE_CALL(@Header("token") String authToken, @Body PackingLabelRequest packingLabelRequest);
+
+    @GET
+    Call<ResponseBody> doDownloadFile(@Url String fileUrl);
 
 }

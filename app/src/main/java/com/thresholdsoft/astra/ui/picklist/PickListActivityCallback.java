@@ -8,6 +8,7 @@ import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetModeofDeliveryResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldStatusResponse;
+import com.thresholdsoft.astra.ui.picklist.model.PackingLabelResponse;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
 
 public interface PickListActivityCallback {
@@ -67,6 +68,8 @@ public interface PickListActivityCallback {
     void onClickUpdateEditScannedPack(int editedScannedPack);
 
     void onClickSubmitBarcodeorId();
+    void onSucessPackingLabelResponse(PackingLabelResponse packingLabelResponse);
+              void  showPdf();
 
     void onClickCheckStatus(GetAllocationLineResponse.Allocationdetail allocationdetail, boolean isItemClick);
 

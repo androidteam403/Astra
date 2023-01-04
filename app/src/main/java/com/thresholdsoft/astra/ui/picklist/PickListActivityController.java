@@ -1,6 +1,7 @@
 package com.thresholdsoft.astra.ui.picklist;
 
 import android.content.Context;
+import android.util.Pair;
 
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.network.ApiClient;
@@ -15,6 +16,8 @@ import com.thresholdsoft.astra.ui.picklist.model.GetModeofDeliveryResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldStatusRequest;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldStatusResponse;
+import com.thresholdsoft.astra.ui.picklist.model.PackingLabelRequest;
+import com.thresholdsoft.astra.ui.picklist.model.PackingLabelResponse;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateRequest;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
@@ -23,22 +26,120 @@ import com.thresholdsoft.astra.utils.NetworkUtils;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.Collections;
 import java.util.Comparator;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PickListActivityController {
+public class PickListActivityController implements PdfCallBack {
     private Context mContext;
     private PickListActivityCallback mCallback;
-
+    PackingLabelResponse packingLabelResponse;
     public PickListActivityController(Context mContext, PickListActivityCallback mCallback) {
         this.mContext = mContext;
         this.mCallback = mCallback;
     }
 
+    public void getPackingLabelResponseApiCall(File file) {
+        if (NetworkUtils.isNetworkConnected(mContext)) {
+            ActivityUtils.showDialog(mContext, "Please wait.");
+
+            PackingLabelRequest packingLabelRequest = new PackingLabelRequest("14999-AHL WAREHOUSE","AHLIR122RPR-C0000000386","16001","POS TESTING","Zone-1","04-JAN-2023","04-JAN-2023","AP5946-Ganesan","12345678912","2");
+//            packingLabelRequest.setDcName("14099-AHL WHAREHOSE");
+//            packingLabelRequest.setPrNo("AHLIR122RPR-C0000000388");
+//            packingLabelRequest.setPrDate("04-JAN-2023");
+//            packingLabelRequest.setAllocateDate("04-JAN-2023");
+//            packingLabelRequest.setArea("Z001");
+//            packingLabelRequest.setBoxNo("2/2");
+//
+//            packingLabelRequest.setCustId("14068");
+//            packingLabelRequest.setCustName("FILM NAGER BRACNH");
+//            packingLabelRequest.setPickerName("APL49392-RAGHUNATH");
+
+//            "dcName":"14099-AHL WHAREHOSE",
+//                    "prNo":"AHLIR122RPR-C0000000388",
+//                    "custId":"14068",
+//                    "custName":"FILM NAGER BRACNH",
+//                    "area":"Z001",
+//                    "prDate":"04-JAN-2023",
+//                    "allocateDate":"04-JAN-2023",
+//                    "pickerName":"APL49392-RAGHUNATH",
+//                    "routeNo":"12345678912",
+//                    "boxNo":"2/2"
+
+
+            ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
+            Call<PackingLabelResponse> call = apiInterface.PACKING_LABEL_RESPONSE_CALL("h72genrSSNFivOi/cfiX3A==", packingLabelRequest);
+            call.enqueue(new Callback<PackingLabelResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<PackingLabelResponse> call, @NotNull Response<PackingLabelResponse> response) {
+                    ActivityUtils.hideDialog();
+                    if (response.code() == 200 && response.body() != null) {
+                        mCallback.onSucessPackingLabelResponse(response.body());
+                        packingLabelResponse=response.body();
+
+
+
+
+
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<PackingLabelResponse> call, @NotNull Throwable t) {
+                    ActivityUtils.hideDialog();
+
+                    mCallback.onFailureMessage(t.getMessage());
+                }
+            });
+        } else {
+            mCallback.onFailureMessage("Something went wrong.");
+        }
+    }
+
+    public void createFilePath(ResponseBody body, File destinationFile) {
+        try {
+            // File destinationFile = new File(FileUtil.createMediaFilePath(fileName, getMvpView().getContext()));
+            InputStream inputStream = null;
+            OutputStream outputStream = null;
+            try {
+                inputStream = body.byteStream();
+                outputStream = new FileOutputStream(destinationFile);
+                byte data[] = new byte[4096];
+                int count;
+                int progress = 0;
+                long fileSize = body.contentLength();
+                //  Log.d(TAG, "File Size=" + fileSize);
+                while ((count = inputStream.read(data)) != -1) {
+                    outputStream.write(data, 0, count);
+                    progress += count;
+                }
+                outputStream.flush();
+                //  Log.d(TAG, destinationFile.getParent());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Pair<Integer, Long> pairs = new Pair<>(-1, Long.valueOf(-1));
+                // Log.d(TAG, "Failed to save the file!");
+            } finally {
+                if (inputStream != null) inputStream.close();
+                if (outputStream != null) outputStream.close();
+              mCallback.showPdf();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            //  Log.d(TAG, "Failed to save the file!");
+        }
+    }
     public void getAllocationDataApiCall(boolean isRequestToSupervisior, boolean isCompletedStatus) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
@@ -295,4 +396,36 @@ public class PickListActivityController {
         }
 
     }
-}
+
+    @Override
+    public void doDownloadPdf(String pdfUrl, File file) {
+
+        if (NetworkUtils.isNetworkConnected(mContext)) {
+
+
+                ApiInterface api = ApiClient.getApiServiceAds();
+                Call<ResponseBody> call = api.doDownloadFile(pdfUrl);
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+
+                            createFilePath(response.body(), file);
+                        } else {
+
+                            if (response.body() != null) {
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+
+                    }
+                });
+            } else {
+            }
+        }
+
+    }
+

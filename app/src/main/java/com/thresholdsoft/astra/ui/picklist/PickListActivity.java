@@ -95,6 +95,7 @@ import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldStatusRequest;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldStatusResponse;
 import com.thresholdsoft.astra.ui.picklist.model.OrderStatusTimeDateEntity;
+import com.thresholdsoft.astra.ui.picklist.model.PackingLabelResponse;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateRequest;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
 import com.thresholdsoft.astra.ui.picklisthistory.PickListHistoryActivity;
@@ -120,6 +121,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     // made changes by naveen
     private ActivityPickListBinding activityPickListBinding;
     private PickListAdapter pickListAdapter;
+    private PdfCallBack mCallback;
+
     private ItemListAdapter itemListAdapter;
     private List<GetAllocationDataResponse.Allocationhddata> allocationhddataList;
     private List<GetAllocationDataResponse.Allocationhddata> tempAllocationhddataList = new ArrayList<>();
@@ -1195,6 +1198,49 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     }
 
     @Override
+    public void onSucessPackingLabelResponse(PackingLabelResponse packingLabelResponse) {
+
+
+
+
+        if (packingLabelResponse != null ) {
+            if (packingLabelResponse != null && packingLabelResponse.getStatus()) {
+                String extStorageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+                File folder = new File(extStorageDirectory, "shipping");
+                folder.mkdir();
+                File file = new File(folder, this.activityPickListBinding.purchaseRequisition + ".pdf");
+                try {
+                    file.createNewFile();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                getController().doDownloadPdf(packingLabelResponse.getPickeingLabel().getUrl(), file);
+            } else if (packingLabelResponse != null && !packingLabelResponse.getStatus()) {
+                Toast.makeText(getContext(), packingLabelResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }else {
+            Toast.makeText(PickListActivity.this, packingLabelResponse.getStatus().toString() + " , "+ packingLabelResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+    @Override
+    public void showPdf() {
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/shipping/" + activityPickListBinding.purchaseRequisition + ".pdf");
+        if (file.exists()) {
+            PrintAttributes.Builder builder = new PrintAttributes.Builder();
+
+                builder.setMediaSize(PrintAttributes.MediaSize.NA_INDEX_4X6);
+
+//            builder.setColorMode(PrintAttributes.COLOR_MODE_MONOCHROME);
+            PrintManager printManager = (PrintManager) getSystemService(Context.PRINT_SERVICE);
+            String jobName = this.getString(R.string.app_name) + " Document";
+
+            printManager.print(jobName, pda, builder.build());
+        }
+    }
+
+    @Override
     public void onClickCheckStatus(GetAllocationLineResponse.Allocationdetail allocationdetail, boolean isItemClick) {
         GetWithHoldStatusRequest getWithHoldStatusRequest = new GetWithHoldStatusRequest();
         getWithHoldStatusRequest.setId(allocationdetail.getId());
@@ -1444,24 +1490,30 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     @Override
     public void onClickPrint() {
-        if (activityPickListBinding.layoutPdfPreview != null) {
-            activityPickListBinding.layoutPdfPreview.removeAllViews();
-        }
-        String fileName = activityPickListBinding.getAllocationData().getPurchreqid() + activityPickListBinding.getAllocationData().getAreaid();
-        if (isStoragePermissionGranted()) {
-            createPDF(fileName, activityPickListBinding.layoutPdfPreview, activityPickListBinding.getAllocationData(), new PDFUtil.PDFUtilListener() {
-                @Override
-                public void pdfGenerationSuccess(File savedPDFFile) {
-                    Toast.makeText(PickListActivity.this, "PDF Created", Toast.LENGTH_SHORT).show();
-                    openPdf();
-                }
+        String extStorageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
 
-                @Override
-                public void pdfGenerationFailure(Exception exception) {
-                    Toast.makeText(PickListActivity.this, "PDF NOT Created", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+        File folder = new File(extStorageDirectory, "shipping");
+        folder.mkdir();
+        File file = new File(folder, this.activityPickListBinding.purchaseRequisition + ".pdf");
+        getController().getPackingLabelResponseApiCall(file);
+//        if (activityPickListBinding.layoutPdfPreview != null) {
+//            activityPickListBinding.layoutPdfPreview.removeAllViews();
+//        }
+//        String fileName = activityPickListBinding.getAllocationData().getPurchreqid() + activityPickListBinding.getAllocationData().getAreaid();
+//        if (isStoragePermissionGranted()) {
+//            createPDF(fileName, activityPickListBinding.layoutPdfPreview, activityPickListBinding.getAllocationData(), new PDFUtil.PDFUtilListener() {
+//                @Override
+//                public void pdfGenerationSuccess(File savedPDFFile) {
+//                    Toast.makeText(PickListActivity.this, "PDF Created", Toast.LENGTH_SHORT).show();
+//                    openPdf();
+//                }
+//
+//                @Override
+//                public void pdfGenerationFailure(Exception exception) {
+//                    Toast.makeText(PickListActivity.this, "PDF NOT Created", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        }
     }
 
     @Override
@@ -2419,8 +2471,60 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 //            Toast.makeText(this, "File not exist", Toast.LENGTH_SHORT).show();
         }
     }
-
     PrintDocumentAdapter pda = new PrintDocumentAdapter() {
+
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        @Override
+        public void onWrite(PageRange[] pages, ParcelFileDescriptor destination, CancellationSignal cancellationSignal, WriteResultCallback callback) {
+            InputStream input = null;
+            OutputStream output = null;
+            try {
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/shipping/" + activityPickListBinding.purchaseRequisition + ".pdf");
+
+                input = new FileInputStream(file);//"/storage/emulated/0/Documents/my-document-1656940186153.pdf"
+                output = new FileOutputStream(destination.getFileDescriptor());
+                byte[] buf = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = input.read(buf)) > 0) {
+                    output.write(buf, 0, bytesRead);
+                }
+            } catch (Exception e) {
+
+            } finally {
+                try {
+                    if (input != null) {
+                        input.close();
+                    } else {
+                        Toast.makeText(getContext(), "FileInputStream getting null", Toast.LENGTH_SHORT).show();
+                    }
+
+                    if (output != null) {
+                        output.close();
+                    } else {
+                        Toast.makeText(getContext(), "FileOutStream getting null", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            callback.onWriteFinished(new PageRange[]{PageRange.ALL_PAGES});
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        @Override
+        public void onLayout(PrintAttributes oldAttributes, PrintAttributes newAttributes, CancellationSignal cancellationSignal, LayoutResultCallback callback, Bundle extras) {
+            if (cancellationSignal.isCanceled()) {
+                callback.onLayoutCancelled();
+                return;
+            }
+            //int pages = computePageCount(newAttributes);
+            PrintDocumentInfo pdi = new PrintDocumentInfo.Builder("file_name.pdf").setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT).build();
+            callback.onLayoutFinished(pdi, true);
+        }
+
+    };
+
+    PrintDocumentAdapter pdas = new PrintDocumentAdapter() {
 
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
