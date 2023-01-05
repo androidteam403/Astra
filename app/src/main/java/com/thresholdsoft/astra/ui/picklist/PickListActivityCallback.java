@@ -68,8 +68,10 @@ public interface PickListActivityCallback {
     void onClickUpdateEditScannedPack(int editedScannedPack);
 
     void onClickSubmitBarcodeorId();
+
     void onSucessPackingLabelResponse(PackingLabelResponse packingLabelResponse);
-              void  showPdf();
+
+    void showPdf();
 
     void onClickCheckStatus(GetAllocationLineResponse.Allocationdetail allocationdetail, boolean isItemClick);
 

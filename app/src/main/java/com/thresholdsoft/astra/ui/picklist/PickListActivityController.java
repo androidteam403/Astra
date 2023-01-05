@@ -3,6 +3,7 @@ package com.thresholdsoft.astra.ui.picklist;
 import android.content.Context;
 import android.util.Pair;
 
+import com.thresholdsoft.astra.BuildConfig;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.network.ApiClient;
 import com.thresholdsoft.astra.network.ApiInterface;
@@ -31,7 +32,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -40,43 +40,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PickListActivityController implements PdfCallBack {
+public class PickListActivityController {
     private Context mContext;
     private PickListActivityCallback mCallback;
-    PackingLabelResponse packingLabelResponse;
+
     public PickListActivityController(Context mContext, PickListActivityCallback mCallback) {
         this.mContext = mContext;
         this.mCallback = mCallback;
     }
 
-    public void getPackingLabelResponseApiCall(File file) {
+    public void getPackingLabelResponseApiCall(PackingLabelRequest packingLabelRequest) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
-
-            PackingLabelRequest packingLabelRequest = new PackingLabelRequest("14999-AHL WAREHOUSE","AHLIR122RPR-C0000000386","16001","POS TESTING","Zone-1","04-JAN-2023","04-JAN-2023","AP5946-Ganesan","12345678912","2");
-//            packingLabelRequest.setDcName("14099-AHL WHAREHOSE");
-//            packingLabelRequest.setPrNo("AHLIR122RPR-C0000000388");
-//            packingLabelRequest.setPrDate("04-JAN-2023");
-//            packingLabelRequest.setAllocateDate("04-JAN-2023");
-//            packingLabelRequest.setArea("Z001");
-//            packingLabelRequest.setBoxNo("2/2");
-//
-//            packingLabelRequest.setCustId("14068");
-//            packingLabelRequest.setCustName("FILM NAGER BRACNH");
-//            packingLabelRequest.setPickerName("APL49392-RAGHUNATH");
-
-//            "dcName":"14099-AHL WHAREHOSE",
-//                    "prNo":"AHLIR122RPR-C0000000388",
-//                    "custId":"14068",
-//                    "custName":"FILM NAGER BRACNH",
-//                    "area":"Z001",
-//                    "prDate":"04-JAN-2023",
-//                    "allocateDate":"04-JAN-2023",
-//                    "pickerName":"APL49392-RAGHUNATH",
-//                    "routeNo":"12345678912",
-//                    "boxNo":"2/2"
-
-
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
             Call<PackingLabelResponse> call = apiInterface.PACKING_LABEL_RESPONSE_CALL("h72genrSSNFivOi/cfiX3A==", packingLabelRequest);
             call.enqueue(new Callback<PackingLabelResponse>() {
@@ -85,19 +60,12 @@ public class PickListActivityController implements PdfCallBack {
                     ActivityUtils.hideDialog();
                     if (response.code() == 200 && response.body() != null) {
                         mCallback.onSucessPackingLabelResponse(response.body());
-                        packingLabelResponse=response.body();
-
-
-
-
-
                     }
                 }
 
                 @Override
                 public void onFailure(@NotNull Call<PackingLabelResponse> call, @NotNull Throwable t) {
                     ActivityUtils.hideDialog();
-
                     mCallback.onFailureMessage(t.getMessage());
                 }
             });
@@ -133,13 +101,14 @@ public class PickListActivityController implements PdfCallBack {
             } finally {
                 if (inputStream != null) inputStream.close();
                 if (outputStream != null) outputStream.close();
-              mCallback.showPdf();
+                mCallback.showPdf();
             }
         } catch (IOException e) {
             e.printStackTrace();
             //  Log.d(TAG, "Failed to save the file!");
         }
     }
+
     public void getAllocationDataApiCall(boolean isRequestToSupervisior, boolean isCompletedStatus) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
@@ -148,7 +117,7 @@ public class PickListActivityController implements PdfCallBack {
             getAllocationDataRequest.setUserId(getDataManager().getEmplId());
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<GetAllocationDataResponse> call = apiInterface.GET_ALLOCATION_DATA_API_CALL("yvEoG+8MvYiOfhV2wb5jw", getAllocationDataRequest);
+            Call<GetAllocationDataResponse> call = apiInterface.GET_ALLOCATION_DATA_API_CALL(BuildConfig.BASE_TOKEN, getAllocationDataRequest);
             call.enqueue(new Callback<GetAllocationDataResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetAllocationDataResponse> call, @NotNull Response<GetAllocationDataResponse> response) {
@@ -188,7 +157,7 @@ public class PickListActivityController implements PdfCallBack {
             getAllocationLineRequest.setUserid(allocationhddata.getUserid());
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<GetAllocationLineResponse> call = apiInterface.GET_ALLOCATION_LINE_API_CALL("yvEoG+8MvYiOfhV2wb5jw", getAllocationLineRequest);
+            Call<GetAllocationLineResponse> call = apiInterface.GET_ALLOCATION_LINE_API_CALL(BuildConfig.BASE_TOKEN, getAllocationLineRequest);
             call.enqueue(new Callback<GetAllocationLineResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetAllocationLineResponse> call, @NotNull Response<GetAllocationLineResponse> response) {
@@ -203,12 +172,11 @@ public class PickListActivityController implements PdfCallBack {
 
                             }
 
-                            Collections.sort(response.body().getAllocationdetails(), new Comparator<GetAllocationLineResponse.Allocationdetail>(){
+                            Collections.sort(response.body().getAllocationdetails(), new Comparator<GetAllocationLineResponse.Allocationdetail>() {
                                 public int compare(GetAllocationLineResponse.Allocationdetail s1, GetAllocationLineResponse.Allocationdetail s2) {
                                     return s1.getRackshelf().compareToIgnoreCase(s2.getRackshelf());
                                 }
                             });
-
 
 
                             mCallback.onSuccessGetAllocationLineApi(response.body());
@@ -238,7 +206,7 @@ public class PickListActivityController implements PdfCallBack {
             ActivityUtils.showDialog(mContext, "Please wait.");
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<StatusUpdateResponse> call = apiInterface.STATUS_UPDATE_API_CALL("yvEoG+8MvYiOfhV2wb5jw", statusUpdateRequest);
+            Call<StatusUpdateResponse> call = apiInterface.STATUS_UPDATE_API_CALL(BuildConfig.BASE_TOKEN, statusUpdateRequest);
             call.enqueue(new Callback<StatusUpdateResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<StatusUpdateResponse> call, @NotNull Response<StatusUpdateResponse> response) {
@@ -271,7 +239,7 @@ public class PickListActivityController implements PdfCallBack {
             ActivityUtils.showDialog(mContext, "Please wait.");
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<GetModeofDeliveryResponse> call = apiInterface.GET_MODEOF_DELIVERY_API_CALL("yvEoG+8MvYiOfhV2wb5jw");
+            Call<GetModeofDeliveryResponse> call = apiInterface.GET_MODEOF_DELIVERY_API_CALL(BuildConfig.BASE_TOKEN);
             call.enqueue(new Callback<GetModeofDeliveryResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetModeofDeliveryResponse> call, @NotNull Response<GetModeofDeliveryResponse> response) {
@@ -303,7 +271,7 @@ public class PickListActivityController implements PdfCallBack {
             ActivityUtils.showDialog(mContext, "Please wait.");
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<GetWithHoldRemarksResponse> call = apiInterface.GET_WITH_HOLD_REMARKS_API_CALL("yvEoG+8MvYiOfhV2wb5jw");
+            Call<GetWithHoldRemarksResponse> call = apiInterface.GET_WITH_HOLD_REMARKS_API_CALL(BuildConfig.BASE_TOKEN);
             call.enqueue(new Callback<GetWithHoldRemarksResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetWithHoldRemarksResponse> call, @NotNull Response<GetWithHoldRemarksResponse> response) {
@@ -335,7 +303,7 @@ public class PickListActivityController implements PdfCallBack {
             ActivityUtils.showDialog(mContext, "Please wait.");
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<GetWithHoldStatusResponse> call = apiInterface.GET_WITH_HOLD_STATUS_API_CALL("yvEoG+8MvYiOfhV2wb5jw", getWithHoldStatusRequest);
+            Call<GetWithHoldStatusResponse> call = apiInterface.GET_WITH_HOLD_STATUS_API_CALL(BuildConfig.BASE_TOKEN, getWithHoldStatusRequest);
             call.enqueue(new Callback<GetWithHoldStatusResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetWithHoldStatusResponse> call, @NotNull Response<GetWithHoldStatusResponse> response) {
@@ -371,7 +339,7 @@ public class PickListActivityController implements PdfCallBack {
             logoutRequest.setUserid(AppConstants.userId);
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<LogoutResponse> call = apiInterface.LOGOUT_API_CALL("yvEoG+8MvYiOfhV2wb5jw", logoutRequest);
+            Call<LogoutResponse> call = apiInterface.LOGOUT_API_CALL(BuildConfig.BASE_TOKEN, logoutRequest);
 
             call.enqueue(new Callback<LogoutResponse>() {
                 @Override
@@ -397,35 +365,27 @@ public class PickListActivityController implements PdfCallBack {
 
     }
 
-    @Override
     public void doDownloadPdf(String pdfUrl, File file) {
-
         if (NetworkUtils.isNetworkConnected(mContext)) {
-
-
-                ApiInterface api = ApiClient.getApiServiceAds();
-                Call<ResponseBody> call = api.doDownloadFile(pdfUrl);
-                call.enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-
-                            createFilePath(response.body(), file);
-                        } else {
-
-                            if (response.body() != null) {
-                            }
-                        }
+            ActivityUtils.showDialog(mContext, "Please wait.");
+            ApiInterface api = ApiClient.getApiServiceAds();
+            Call<ResponseBody> call = api.doDownloadFile(pdfUrl);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                    ActivityUtils.hideDialog();
+                    if (response.isSuccessful() && response.body() != null) {
+                        createFilePath(response.body(), file);
                     }
+                }
 
-                    @Override
-                    public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-
-                    }
-                });
-            } else {
-            }
+                @Override
+                public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                    ActivityUtils.hideDialog();
+                }
+            });
         }
-
     }
+
+}
 

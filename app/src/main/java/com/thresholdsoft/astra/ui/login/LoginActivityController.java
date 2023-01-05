@@ -2,6 +2,7 @@ package com.thresholdsoft.astra.ui.login;
 
 import android.content.Context;
 
+import com.thresholdsoft.astra.BuildConfig;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.network.ApiClient;
 import com.thresholdsoft.astra.network.ApiInterface;
@@ -38,7 +39,7 @@ public class LoginActivityController {
             reqModel.setUserid(userId);
             reqModel.setPassword(password);
 
-            Call<ValidateUserModelResponse> call = apiInterface.VALIDATE_USER_API_CALL("yvEoG+8MvYiOfhV2wb5jw", reqModel);
+            Call<ValidateUserModelResponse> call = apiInterface.VALIDATE_USER_API_CALL(BuildConfig.BASE_TOKEN, reqModel);
             call.enqueue(new Callback<ValidateUserModelResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<ValidateUserModelResponse> call, @NotNull Response<ValidateUserModelResponse> response) {
@@ -70,7 +71,7 @@ public class LoginActivityController {
             ActivityUtils.showDialog(mContext, "Please wait.");
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<GetModeofDeliveryResponse> call = apiInterface.GET_MODEOF_DELIVERY_API_CALL("yvEoG+8MvYiOfhV2wb5jw");
+            Call<GetModeofDeliveryResponse> call = apiInterface.GET_MODEOF_DELIVERY_API_CALL(BuildConfig.BASE_TOKEN);
             call.enqueue(new Callback<GetModeofDeliveryResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetModeofDeliveryResponse> call, @NotNull Response<GetModeofDeliveryResponse> response) {
@@ -107,7 +108,7 @@ public class LoginActivityController {
 //            ActivityUtils.showDialog(mContext, "Please wait.");
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<GetWithHoldRemarksResponse> call = apiInterface.GET_WITH_HOLD_REMARKS_API_CALL("yvEoG+8MvYiOfhV2wb5jw");
+            Call<GetWithHoldRemarksResponse> call = apiInterface.GET_WITH_HOLD_REMARKS_API_CALL(BuildConfig.BASE_TOKEN);
             call.enqueue(new Callback<GetWithHoldRemarksResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetWithHoldRemarksResponse> call, @NotNull Response<GetWithHoldRemarksResponse> response) {

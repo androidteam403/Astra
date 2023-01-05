@@ -2,6 +2,7 @@ package com.thresholdsoft.astra.ui.pickerrequests;
 
 import android.content.Context;
 
+import com.thresholdsoft.astra.BuildConfig;
 import com.thresholdsoft.astra.network.ApiClient;
 import com.thresholdsoft.astra.network.ApiInterface;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutRequest;
@@ -41,13 +42,14 @@ public class PickerRequestController {
             withHoldDataRequest.setUserid(AppConstants.userId);
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<WithHoldDataResponse> call = apiInterface.WITH_HOLD_DATA_RESPONSE_CALL("yvEoG+8MvYiOfhV2wb5jw", withHoldDataRequest);
+            Call<WithHoldDataResponse> call = apiInterface.WITH_HOLD_DATA_RESPONSE_CALL(BuildConfig.BASE_TOKEN, withHoldDataRequest);
 
             call.enqueue(new Callback<WithHoldDataResponse>() {
                 @Override
                 public void onResponse(Call<WithHoldDataResponse> call, Response<WithHoldDataResponse> response) {
                     ActivityUtils.hideDialog();
                     if (response.code() == 200 && response.body() != null) {
+                        if (response.body().getWithholddetails() != null && response.body().getWithholddetails().size() > 0) {
 //                        Collections.sort(response.body().getWithholddetails(), new Comparator<WithHoldDataResponse.Withholddetail>() {
 //                            public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
 //                                return s1.getPurchreqid().compareToIgnoreCase(s2.getPurchreqid());
@@ -60,21 +62,22 @@ public class PickerRequestController {
 //                            }
 //                        });
 
-                        Collections.sort(response.body().getWithholddetails(), new Comparator<WithHoldDataResponse.Withholddetail>() {
-                            public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
-                                return s1.getOnholddatetime().compareToIgnoreCase(s2.getOnholddatetime());
-                            }
-                        });
-                        String minDate = response.body().getWithholddetails().get(0).getOnholddatetime();
-                        String maxDate = response.body().getWithholddetails().get(response.body().getWithholddetails().size() - 1).getOnholddatetime();
-                        Collections.sort(response.body().getWithholddetails(), new Comparator<WithHoldDataResponse.Withholddetail>() {
-                            public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
-                                return s1.getPurchreqid().compareToIgnoreCase(s2.getPurchreqid());
-                            }
-                        });
+                            Collections.sort(response.body().getWithholddetails(), new Comparator<WithHoldDataResponse.Withholddetail>() {
+                                public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                                    return s1.getOnholddatetime().compareToIgnoreCase(s2.getOnholddatetime());
+                                }
+                            });
+                            String minDate = response.body().getWithholddetails().get(0).getOnholddatetime();
+                            String maxDate = response.body().getWithholddetails().get(response.body().getWithholddetails().size() - 1).getOnholddatetime();
+                            Collections.sort(response.body().getWithholddetails(), new Comparator<WithHoldDataResponse.Withholddetail>() {
+                                public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                                    return s1.getPurchreqid().compareToIgnoreCase(s2.getPurchreqid());
+                                }
+                            });
 
 
-                        mCallback.onSuccessWithHoldApi(response.body(), minDate, maxDate);
+                            mCallback.onSuccessWithHoldApi(response.body(), minDate, maxDate);
+                        }
                     } else {
                         mCallback.onFailureMessage("Something went wrong.");
                     }
@@ -136,7 +139,7 @@ public class PickerRequestController {
 //            withHoldApprovalRequest.setId(withholddetail.getId());
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<WithHoldApprovalResponse> call = apiInterface.WITH_HOLD_APPROVAL_API_CALL("yvEoG+8MvYiOfhV2wb5jw", withHoldApprovalRequestList);
+            Call<WithHoldApprovalResponse> call = apiInterface.WITH_HOLD_APPROVAL_API_CALL(BuildConfig.BASE_TOKEN, withHoldApprovalRequestList);
 
             call.enqueue(new Callback<WithHoldApprovalResponse>() {
                 @Override
@@ -178,7 +181,7 @@ public class PickerRequestController {
             logoutRequest.setUserid(AppConstants.userId);
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<LogoutResponse> call = apiInterface.LOGOUT_API_CALL("yvEoG+8MvYiOfhV2wb5jw", logoutRequest);
+            Call<LogoutResponse> call = apiInterface.LOGOUT_API_CALL(BuildConfig.BASE_TOKEN, logoutRequest);
 
             call.enqueue(new Callback<LogoutResponse>() {
                 @Override

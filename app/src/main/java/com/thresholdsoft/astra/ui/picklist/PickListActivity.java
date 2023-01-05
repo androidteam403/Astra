@@ -56,7 +56,6 @@ import com.google.zxing.oned.Code128Writer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.custumpdf.PDFCreatorActivity;
-import com.thresholdsoft.astra.custumpdf.utils.PDFUtil;
 import com.thresholdsoft.astra.custumpdf.views.PDFBody;
 import com.thresholdsoft.astra.custumpdf.views.PDFFooterView;
 import com.thresholdsoft.astra.custumpdf.views.PDFHeaderView;
@@ -95,6 +94,7 @@ import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldStatusRequest;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldStatusResponse;
 import com.thresholdsoft.astra.ui.picklist.model.OrderStatusTimeDateEntity;
+import com.thresholdsoft.astra.ui.picklist.model.PackingLabelRequest;
 import com.thresholdsoft.astra.ui.picklist.model.PackingLabelResponse;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateRequest;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
@@ -121,7 +121,6 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     // made changes by naveen
     private ActivityPickListBinding activityPickListBinding;
     private PickListAdapter pickListAdapter;
-    private PdfCallBack mCallback;
 
     private ItemListAdapter itemListAdapter;
     private List<GetAllocationDataResponse.Allocationhddata> allocationhddataList;
@@ -1199,43 +1198,30 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     @Override
     public void onSucessPackingLabelResponse(PackingLabelResponse packingLabelResponse) {
-
-
-
-
-        if (packingLabelResponse != null ) {
-            if (packingLabelResponse != null && packingLabelResponse.getStatus()) {
-                String extStorageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-                File folder = new File(extStorageDirectory, "shipping");
-                folder.mkdir();
-                File file = new File(folder, this.activityPickListBinding.purchaseRequisition + ".pdf");
-                try {
-                    file.createNewFile();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-                getController().doDownloadPdf(packingLabelResponse.getPickeingLabel().getUrl(), file);
-            } else if (packingLabelResponse != null && !packingLabelResponse.getStatus()) {
-                Toast.makeText(getContext(), packingLabelResponse.getMessage(), Toast.LENGTH_SHORT).show();
+        if (packingLabelResponse != null && packingLabelResponse.getStatus()) {
+            String extStorageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+            File folder = new File(extStorageDirectory, "shipping");
+            folder.mkdir();
+            File file = new File(folder, activityPickListBinding.getAllocationData().getPurchreqid() + ".pdf");
+            try {
+                file.createNewFile();
+            } catch (IOException e1) {
+                e1.printStackTrace();
             }
-        }else {
-            Toast.makeText(PickListActivity.this, packingLabelResponse.getStatus().toString() + " , "+ packingLabelResponse.getMessage(), Toast.LENGTH_SHORT).show();
-
+            getController().doDownloadPdf(packingLabelResponse.getPickeingLabel().getUrl(), file);
+        } else if (packingLabelResponse != null && !packingLabelResponse.getStatus()) {
+            Toast.makeText(getContext(), packingLabelResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public void showPdf() {
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/shipping/" + activityPickListBinding.purchaseRequisition + ".pdf");
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/shipping/" + activityPickListBinding.getAllocationData().getPurchreqid() + ".pdf");
         if (file.exists()) {
             PrintAttributes.Builder builder = new PrintAttributes.Builder();
-
-                builder.setMediaSize(PrintAttributes.MediaSize.NA_INDEX_4X6);
-
-//            builder.setColorMode(PrintAttributes.COLOR_MODE_MONOCHROME);
+            builder.setMediaSize(PrintAttributes.MediaSize.NA_INDEX_4X6);
             PrintManager printManager = (PrintManager) getSystemService(Context.PRINT_SERVICE);
             String jobName = this.getString(R.string.app_name) + " Document";
-
             printManager.print(jobName, pda, builder.build());
         }
     }
@@ -1490,12 +1476,28 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     @Override
     public void onClickPrint() {
-        String extStorageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+        if (isStoragePermissionGranted()) {
+            PackingLabelRequest packingLabelRequest = new PackingLabelRequest();
+            packingLabelRequest.setDcName(activityPickListBinding.getDcName());
+            packingLabelRequest.setPrNo(activityPickListBinding.getAllocationData().getPurchreqid());
+            packingLabelRequest.setCustId(activityPickListBinding.getAllocationData().getCustaccount());
+            packingLabelRequest.setCustName(activityPickListBinding.getAllocationData().getCustname());
+            packingLabelRequest.setArea(activityPickListBinding.getAllocationData().getAreaid());
+            packingLabelRequest.setPrDate(CommonUtils.parseDateToddMMyyyyNoTime(activityPickListBinding.getAllocationData().getTransdate()));
+            packingLabelRequest.setAllocateDate(CommonUtils.parseDateToddMMyyyyNoTime(activityPickListBinding.getAllocationData().getTransdate()));
+            packingLabelRequest.setPickerName(getSessionManager().getEmplId() + "-" + activityPickListBinding.getAllocationData().getUsername());
+            packingLabelRequest.setRouteNo(activityPickListBinding.getAllocationData().getRoutecode());
+            packingLabelRequest.setBoxNo(String.valueOf(activityPickListBinding.getAllocationData().getNoofboxes()));
+            getController().getPackingLabelResponseApiCall(packingLabelRequest);
+        }
 
-        File folder = new File(extStorageDirectory, "shipping");
-        folder.mkdir();
-        File file = new File(folder, this.activityPickListBinding.purchaseRequisition + ".pdf");
-        getController().getPackingLabelResponseApiCall(file);
+
+//        String extStorageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+//
+//        File folder = new File(extStorageDirectory, "shipping");
+//        folder.mkdir();
+//        File file = new File(folder, this.activityPickListBinding.purchaseRequisition + ".pdf");
+//        getController().getPackingLabelResponseApiCall(file);
 //        if (activityPickListBinding.layoutPdfPreview != null) {
 //            activityPickListBinding.layoutPdfPreview.removeAllViews();
 //        }
@@ -2471,6 +2473,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 //            Toast.makeText(this, "File not exist", Toast.LENGTH_SHORT).show();
         }
     }
+
     PrintDocumentAdapter pda = new PrintDocumentAdapter() {
 
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -2479,7 +2482,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             InputStream input = null;
             OutputStream output = null;
             try {
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/shipping/" + activityPickListBinding.purchaseRequisition + ".pdf");
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/shipping/" + activityPickListBinding.getAllocationData().getPurchreqid() + ".pdf");
 
                 input = new FileInputStream(file);//"/storage/emulated/0/Documents/my-document-1656940186153.pdf"
                 output = new FileOutputStream(destination.getFileDescriptor());

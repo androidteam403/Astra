@@ -479,185 +479,194 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
     @Override
     public void onClickFromDate() {
-        String selectedFromDate = activityPickerRequestsBinding.getMinDate();
+        if (activityPickerRequestsBinding.fromDate.getText().toString().trim() != null && !activityPickerRequestsBinding.fromDate.getText().toString().trim().isEmpty()) {
+            String selectedFromDate = activityPickerRequestsBinding.getMinDate();
 
-        Calendar selectedFromDateCalender = Calendar.getInstance(Locale.ENGLISH);
-        int selectedFromDateCalendermYear;
-        int selectedFromDateCalendermMonth;
-        int selectedFromDateCalendermDay;
-        //Objects.requireNonNull(summaryBinding.fromDate).getText().toString().isEmpty()
-        if (selectedFromDate.isEmpty()) {
-            selectedFromDateCalendermYear = selectedFromDateCalender.get(Calendar.YEAR);
-            selectedFromDateCalendermMonth = selectedFromDateCalender.get(Calendar.MONTH);
-            selectedFromDateCalendermDay = selectedFromDateCalender.get(Calendar.DAY_OF_MONTH);
-        } else {
+            Calendar selectedFromDateCalender = Calendar.getInstance(Locale.ENGLISH);
+            int selectedFromDateCalendermYear;
+            int selectedFromDateCalendermMonth;
+            int selectedFromDateCalendermDay;
+            //Objects.requireNonNull(summaryBinding.fromDate).getText().toString().isEmpty()
+            if (selectedFromDate.isEmpty()) {
+                selectedFromDateCalendermYear = selectedFromDateCalender.get(Calendar.YEAR);
+                selectedFromDateCalendermMonth = selectedFromDateCalender.get(Calendar.MONTH);
+                selectedFromDateCalendermDay = selectedFromDateCalender.get(Calendar.DAY_OF_MONTH);
+            } else {
 
-            String selectedBirthDate = CommonUtils.getDateddMMyyyyToyyyyMMddNoTime(selectedFromDate);
-            String[] expDate = selectedBirthDate.split("-");
-            selectedFromDateCalendermYear = Integer.parseInt(expDate[0]);
-            selectedFromDateCalendermMonth = Integer.parseInt(expDate[1]) - 1;
-            selectedFromDateCalendermDay = Integer.parseInt(expDate[2]);
-        }
+                String selectedBirthDate = CommonUtils.getDateddMMyyyyToyyyyMMddNoTime(selectedFromDate);
+                String[] expDate = selectedBirthDate.split("-");
+                selectedFromDateCalendermYear = Integer.parseInt(expDate[0]);
+                selectedFromDateCalendermMonth = Integer.parseInt(expDate[1]) - 1;
+                selectedFromDateCalendermDay = Integer.parseInt(expDate[2]);
+            }
 
 
-        final DatePickerDialog dialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
-            selectedFromDateCalender.set(year, monthOfYear, dayOfMonth);
-            activityPickerRequestsBinding.setMinDate(CommonUtils.getDateFormatddmmyyyy(selectedFromDateCalender.getTimeInMillis()));
-            pickListHistoryAdapter.setRequestType(selectedRequestType);
-            pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
-            pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+            final DatePickerDialog dialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
+                selectedFromDateCalender.set(year, monthOfYear, dayOfMonth);
+                activityPickerRequestsBinding.setMinDate(CommonUtils.getDateFormatddmmyyyy(selectedFromDateCalender.getTimeInMillis()));
+                pickListHistoryAdapter.setRequestType(selectedRequestType);
+                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+                pickListHistoryAdapter.getFilter().filter(selectedRequestType);
 //            this.minDate = CommonUtils.getDateFormatddmmyyyy(c.getTimeInMillis());
-        }, selectedFromDateCalendermYear, selectedFromDateCalendermMonth, selectedFromDateCalendermDay);
+            }, selectedFromDateCalendermYear, selectedFromDateCalendermMonth, selectedFromDateCalendermDay);
 
 
-        Calendar minDateCalender = Calendar.getInstance(Locale.ENGLISH);
-        int minDateCalendermYear;
-        int minDateCalendermMonth;
-        int minDateCalendermDay;
-        //Objects.requireNonNull(summaryBinding.fromDate).getText().toString().isEmpty()
-        if (selectedFromDate.isEmpty()) {
-            minDateCalendermYear = selectedFromDateCalender.get(Calendar.YEAR);
-            minDateCalendermMonth = selectedFromDateCalender.get(Calendar.MONTH);
-            minDateCalendermDay = selectedFromDateCalender.get(Calendar.DAY_OF_MONTH);
-        } else {
-            String selectedBirthDate = CommonUtils.getDateddMMyyyyToyyyyMMddNoTime(minDate);
-            String[] expDate = selectedBirthDate.split("-");
-            minDateCalendermYear = Integer.parseInt(expDate[0]);
-            minDateCalendermMonth = Integer.parseInt(expDate[1]) - 1;
-            minDateCalendermDay = Integer.parseInt(expDate[2]);
+            Calendar minDateCalender = Calendar.getInstance(Locale.ENGLISH);
+            int minDateCalendermYear;
+            int minDateCalendermMonth;
+            int minDateCalendermDay;
+            //Objects.requireNonNull(summaryBinding.fromDate).getText().toString().isEmpty()
+            if (selectedFromDate.isEmpty()) {
+                minDateCalendermYear = selectedFromDateCalender.get(Calendar.YEAR);
+                minDateCalendermMonth = selectedFromDateCalender.get(Calendar.MONTH);
+                minDateCalendermDay = selectedFromDateCalender.get(Calendar.DAY_OF_MONTH);
+            } else {
+                String selectedBirthDate = CommonUtils.getDateddMMyyyyToyyyyMMddNoTime(minDate);
+                String[] expDate = selectedBirthDate.split("-");
+                minDateCalendermYear = Integer.parseInt(expDate[0]);
+                minDateCalendermMonth = Integer.parseInt(expDate[1]) - 1;
+                minDateCalendermDay = Integer.parseInt(expDate[2]);
+            }
+            minDateCalender.set(minDateCalendermYear, minDateCalendermMonth, minDateCalendermDay);
+            dialog.getDatePicker().setMinDate((long) (minDateCalender.getTimeInMillis()));// - (1000 * 60 * 60 * 24 * 365.25 * 18)
+
+            Calendar maxDateCalender = Calendar.getInstance(Locale.ENGLISH);
+            int maxDateCalendermYear;
+            int maxDateCalendermMonth;
+            int maxDateCalendermDay;
+            //Objects.requireNonNull(summaryBinding.fromDate).getText().toString().isEmpty()
+            if (selectedFromDate.isEmpty()) {
+                maxDateCalendermYear = selectedFromDateCalender.get(Calendar.YEAR);
+                maxDateCalendermMonth = selectedFromDateCalender.get(Calendar.MONTH);
+                maxDateCalendermDay = selectedFromDateCalender.get(Calendar.DAY_OF_MONTH);
+            } else {
+                String selectedBirthDate = CommonUtils.getDateddMMyyyyToyyyyMMddNoTime(activityPickerRequestsBinding.getMaxDate());
+                String[] expDate = selectedBirthDate.split("-");
+                maxDateCalendermYear = Integer.parseInt(expDate[0]);
+                maxDateCalendermMonth = Integer.parseInt(expDate[1]) - 1;
+                maxDateCalendermDay = Integer.parseInt(expDate[2]);
+            }
+            maxDateCalender.set(maxDateCalendermYear, maxDateCalendermMonth, maxDateCalendermDay);
+
+
+            dialog.getDatePicker().setMaxDate((long) (maxDateCalender.getTimeInMillis()));
+            dialog.show();
         }
-        minDateCalender.set(minDateCalendermYear, minDateCalendermMonth, minDateCalendermDay);
-        dialog.getDatePicker().setMinDate((long) (minDateCalender.getTimeInMillis()));// - (1000 * 60 * 60 * 24 * 365.25 * 18)
-
-        Calendar maxDateCalender = Calendar.getInstance(Locale.ENGLISH);
-        int maxDateCalendermYear;
-        int maxDateCalendermMonth;
-        int maxDateCalendermDay;
-        //Objects.requireNonNull(summaryBinding.fromDate).getText().toString().isEmpty()
-        if (selectedFromDate.isEmpty()) {
-            maxDateCalendermYear = selectedFromDateCalender.get(Calendar.YEAR);
-            maxDateCalendermMonth = selectedFromDateCalender.get(Calendar.MONTH);
-            maxDateCalendermDay = selectedFromDateCalender.get(Calendar.DAY_OF_MONTH);
-        } else {
-            String selectedBirthDate = CommonUtils.getDateddMMyyyyToyyyyMMddNoTime(activityPickerRequestsBinding.getMaxDate());
-            String[] expDate = selectedBirthDate.split("-");
-            maxDateCalendermYear = Integer.parseInt(expDate[0]);
-            maxDateCalendermMonth = Integer.parseInt(expDate[1]) - 1;
-            maxDateCalendermDay = Integer.parseInt(expDate[2]);
-        }
-        maxDateCalender.set(maxDateCalendermYear, maxDateCalendermMonth, maxDateCalendermDay);
-
-
-        dialog.getDatePicker().setMaxDate((long) (maxDateCalender.getTimeInMillis()));
-        dialog.show();
     }
 
     @Override
     public void onClickToDate() {
-        String selectedFromDate = activityPickerRequestsBinding.getMaxDate();
+        if (activityPickerRequestsBinding.toDate.getText().toString().trim() != null && !activityPickerRequestsBinding.toDate.getText().toString().trim().isEmpty()) {
 
-        Calendar selectedFromDateCalender = Calendar.getInstance(Locale.ENGLISH);
-        int selectedFromDateCalendermYear;
-        int selectedFromDateCalendermMonth;
-        int selectedFromDateCalendermDay;
-        //Objects.requireNonNull(summaryBinding.fromDate).getText().toString().isEmpty()
-        if (selectedFromDate.isEmpty()) {
-            selectedFromDateCalendermYear = selectedFromDateCalender.get(Calendar.YEAR);
-            selectedFromDateCalendermMonth = selectedFromDateCalender.get(Calendar.MONTH);
-            selectedFromDateCalendermDay = selectedFromDateCalender.get(Calendar.DAY_OF_MONTH);
-        } else {
+            String selectedFromDate = activityPickerRequestsBinding.getMaxDate();
 
-            String selectedBirthDate = CommonUtils.getDateddMMyyyyToyyyyMMddNoTime(selectedFromDate);
-            String[] expDate = selectedBirthDate.split("-");
-            selectedFromDateCalendermYear = Integer.parseInt(expDate[0]);
-            selectedFromDateCalendermMonth = Integer.parseInt(expDate[1]) - 1;
-            selectedFromDateCalendermDay = Integer.parseInt(expDate[2]);
-        }
+            Calendar selectedFromDateCalender = Calendar.getInstance(Locale.ENGLISH);
+            int selectedFromDateCalendermYear;
+            int selectedFromDateCalendermMonth;
+            int selectedFromDateCalendermDay;
+            //Objects.requireNonNull(summaryBinding.fromDate).getText().toString().isEmpty()
+            if (selectedFromDate.isEmpty()) {
+                selectedFromDateCalendermYear = selectedFromDateCalender.get(Calendar.YEAR);
+                selectedFromDateCalendermMonth = selectedFromDateCalender.get(Calendar.MONTH);
+                selectedFromDateCalendermDay = selectedFromDateCalender.get(Calendar.DAY_OF_MONTH);
+            } else {
+
+                String selectedBirthDate = CommonUtils.getDateddMMyyyyToyyyyMMddNoTime(selectedFromDate);
+                String[] expDate = selectedBirthDate.split("-");
+                selectedFromDateCalendermYear = Integer.parseInt(expDate[0]);
+                selectedFromDateCalendermMonth = Integer.parseInt(expDate[1]) - 1;
+                selectedFromDateCalendermDay = Integer.parseInt(expDate[2]);
+            }
 
 
-        final DatePickerDialog dialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
-            selectedFromDateCalender.set(year, monthOfYear, dayOfMonth);
-            activityPickerRequestsBinding.setMaxDate(CommonUtils.getDateFormatddmmyyyy(selectedFromDateCalender.getTimeInMillis()));
-            pickListHistoryAdapter.setRequestType(selectedRequestType);
-            pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
-            pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+            final DatePickerDialog dialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
+                selectedFromDateCalender.set(year, monthOfYear, dayOfMonth);
+                activityPickerRequestsBinding.setMaxDate(CommonUtils.getDateFormatddmmyyyy(selectedFromDateCalender.getTimeInMillis()));
+                pickListHistoryAdapter.setRequestType(selectedRequestType);
+                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+                pickListHistoryAdapter.getFilter().filter(selectedRequestType);
 //            this.minDate = CommonUtils.getDateFormatddmmyyyy(c.getTimeInMillis());
-        }, selectedFromDateCalendermYear, selectedFromDateCalendermMonth, selectedFromDateCalendermDay);
+            }, selectedFromDateCalendermYear, selectedFromDateCalendermMonth, selectedFromDateCalendermDay);
 
 
-        Calendar minDateCalender = Calendar.getInstance(Locale.ENGLISH);
-        int minDateCalendermYear;
-        int minDateCalendermMonth;
-        int minDateCalendermDay;
-        //Objects.requireNonNull(summaryBinding.fromDate).getText().toString().isEmpty()
-        if (selectedFromDate.isEmpty()) {
-            minDateCalendermYear = selectedFromDateCalender.get(Calendar.YEAR);
-            minDateCalendermMonth = selectedFromDateCalender.get(Calendar.MONTH);
-            minDateCalendermDay = selectedFromDateCalender.get(Calendar.DAY_OF_MONTH);
-        } else {
-            String selectedBirthDate = CommonUtils.getDateddMMyyyyToyyyyMMddNoTime(activityPickerRequestsBinding.getMinDate());
-            String[] expDate = selectedBirthDate.split("-");
-            minDateCalendermYear = Integer.parseInt(expDate[0]);
-            minDateCalendermMonth = Integer.parseInt(expDate[1]) - 1;
-            minDateCalendermDay = Integer.parseInt(expDate[2]);
+            Calendar minDateCalender = Calendar.getInstance(Locale.ENGLISH);
+            int minDateCalendermYear;
+            int minDateCalendermMonth;
+            int minDateCalendermDay;
+            //Objects.requireNonNull(summaryBinding.fromDate).getText().toString().isEmpty()
+            if (selectedFromDate.isEmpty()) {
+                minDateCalendermYear = selectedFromDateCalender.get(Calendar.YEAR);
+                minDateCalendermMonth = selectedFromDateCalender.get(Calendar.MONTH);
+                minDateCalendermDay = selectedFromDateCalender.get(Calendar.DAY_OF_MONTH);
+            } else {
+                String selectedBirthDate = CommonUtils.getDateddMMyyyyToyyyyMMddNoTime(activityPickerRequestsBinding.getMinDate());
+                String[] expDate = selectedBirthDate.split("-");
+                minDateCalendermYear = Integer.parseInt(expDate[0]);
+                minDateCalendermMonth = Integer.parseInt(expDate[1]) - 1;
+                minDateCalendermDay = Integer.parseInt(expDate[2]);
+            }
+            minDateCalender.set(minDateCalendermYear, minDateCalendermMonth, minDateCalendermDay);
+            dialog.getDatePicker().setMinDate((long) (minDateCalender.getTimeInMillis()));// - (1000 * 60 * 60 * 24 * 365.25 * 18)
+
+            Calendar maxDateCalender = Calendar.getInstance(Locale.ENGLISH);
+            int maxDateCalendermYear;
+            int maxDateCalendermMonth;
+            int maxDateCalendermDay;
+            //Objects.requireNonNull(summaryBinding.fromDate).getText().toString().isEmpty()
+            if (selectedFromDate.isEmpty()) {
+                maxDateCalendermYear = selectedFromDateCalender.get(Calendar.YEAR);
+                maxDateCalendermMonth = selectedFromDateCalender.get(Calendar.MONTH);
+                maxDateCalendermDay = selectedFromDateCalender.get(Calendar.DAY_OF_MONTH);
+            } else {
+                String selectedBirthDate = CommonUtils.getDateddMMyyyyToyyyyMMddNoTime(maxDate);
+                String[] expDate = selectedBirthDate.split("-");
+                maxDateCalendermYear = Integer.parseInt(expDate[0]);
+                maxDateCalendermMonth = Integer.parseInt(expDate[1]) - 1;
+                maxDateCalendermDay = Integer.parseInt(expDate[2]);
+            }
+            maxDateCalender.set(maxDateCalendermYear, maxDateCalendermMonth, maxDateCalendermDay);
+
+
+            dialog.getDatePicker().setMaxDate((long) (maxDateCalender.getTimeInMillis()));
+            dialog.show();
         }
-        minDateCalender.set(minDateCalendermYear, minDateCalendermMonth, minDateCalendermDay);
-        dialog.getDatePicker().setMinDate((long) (minDateCalender.getTimeInMillis()));// - (1000 * 60 * 60 * 24 * 365.25 * 18)
-
-        Calendar maxDateCalender = Calendar.getInstance(Locale.ENGLISH);
-        int maxDateCalendermYear;
-        int maxDateCalendermMonth;
-        int maxDateCalendermDay;
-        //Objects.requireNonNull(summaryBinding.fromDate).getText().toString().isEmpty()
-        if (selectedFromDate.isEmpty()) {
-            maxDateCalendermYear = selectedFromDateCalender.get(Calendar.YEAR);
-            maxDateCalendermMonth = selectedFromDateCalender.get(Calendar.MONTH);
-            maxDateCalendermDay = selectedFromDateCalender.get(Calendar.DAY_OF_MONTH);
-        } else {
-            String selectedBirthDate = CommonUtils.getDateddMMyyyyToyyyyMMddNoTime(maxDate);
-            String[] expDate = selectedBirthDate.split("-");
-            maxDateCalendermYear = Integer.parseInt(expDate[0]);
-            maxDateCalendermMonth = Integer.parseInt(expDate[1]) - 1;
-            maxDateCalendermDay = Integer.parseInt(expDate[2]);
-        }
-        maxDateCalender.set(maxDateCalendermYear, maxDateCalendermMonth, maxDateCalendermDay);
-
-
-        dialog.getDatePicker().setMaxDate((long) (maxDateCalender.getTimeInMillis()));
-        dialog.show();
     }
 
     @Override
     public void onClickDateApply() {
-        String date1 = activityPickerRequestsBinding.getMinDate();
-        String date2 = activityPickerRequestsBinding.getMaxDate();
+        if (activityPickerRequestsBinding.getMinDate() != null
+                && !activityPickerRequestsBinding.getMinDate().isEmpty()
+                && activityPickerRequestsBinding.getMaxDate() != null
+                && !activityPickerRequestsBinding.getMaxDate().isEmpty()) {
+            String date1 = activityPickerRequestsBinding.getMinDate();
+            String date2 = activityPickerRequestsBinding.getMaxDate();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
-        try {
-            Date d1 = sdf.parse(date1);
-            Date d2 = sdf.parse(date2);
-            withholddetailListList.clear();
-            for (WithHoldDataResponse.Withholddetail w : withholddetailList) {
-                Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(w.getOnholddatetime());
-                if (!d3.before(d1) && !d3.after(d2)) {
-                    if (selectedRequestType.equalsIgnoreCase("All")) {
-                        withholddetailListList.add(w);
-                    } else {
-                        if ((w.getHoldreasoncode().toLowerCase().contains(selectedRequestType.toLowerCase()))) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+            try {
+                Date d1 = sdf.parse(date1);
+                Date d2 = sdf.parse(date2);
+                withholddetailListList.clear();
+                for (WithHoldDataResponse.Withholddetail w : withholddetailList) {
+                    Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(w.getOnholddatetime());
+                    if (!d3.before(d1) && !d3.after(d2)) {
+                        if (selectedRequestType.equalsIgnoreCase("All")) {
                             withholddetailListList.add(w);
+                        } else {
+                            if ((w.getHoldreasoncode().toLowerCase().contains(selectedRequestType.toLowerCase()))) {
+                                withholddetailListList.add(w);
+                            }
                         }
                     }
                 }
+                withholddetailListTemp = withholddetailListList;
+                pickListHistoryAdapter.setRequestType(selectedRequestType);
+                pickListHistoryAdapter.setNotifying(true);
+                pickListHistoryAdapter.setWithholddetailList(withholddetailListTemp);
+                pickListHistoryAdapter.notifyDataSetChanged();
+            } catch (ParseException ex) {
+                Log.v("Exception", ex.getLocalizedMessage());
             }
-            withholddetailListTemp = withholddetailListList;
-            pickListHistoryAdapter.setRequestType(selectedRequestType);
-            pickListHistoryAdapter.setNotifying(true);
-            pickListHistoryAdapter.setWithholddetailList(withholddetailListTemp);
-            pickListHistoryAdapter.notifyDataSetChanged();
-        } catch (ParseException ex) {
-            Log.v("Exception", ex.getLocalizedMessage());
         }
-
     }
 
     @Override

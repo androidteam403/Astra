@@ -1,8 +1,6 @@
 //applicationId "com.example.astra"
 
 
-
-
 plugins {
     id 'com.android.application'
 
@@ -30,14 +28,22 @@ android {
         versionName "1.0.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/Apollo/AHL/\"")
+//        buildConfigField("String", "BASE_TOKEN", "\"prdyvEoG+8MvYiOfhV2wb5j\"")
+
         buildConfigField("String", "BASE_URL", "\"https://online.apollopharmacy.org/Digital/Apollo/AHL/\"")
+        buildConfigField("String", "BASE_TOKEN", "\"yvEoG+8MvYiOfhV2wb5jw\"")
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "BASE_URL", "\"http://online.apollopharmacy.org:8033/Digital/Apollo/AHL/\"")
+//            buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/Apollo/AHL/\"")
+//            buildConfigField("String", "BASE_TOKEN", "\"prdyvEoG+8MvYiOfhV2wb5j\"")
+
+            buildConfigField("String", "BASE_URL", "\"https://online.apollopharmacy.org/Digital/Apollo/AHL/\"")
+            buildConfigField("String", "BASE_TOKEN", "\"yvEoG+8MvYiOfhV2wb5jw\"")
         }
     }
     compileOptions {
