@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="layout_weight_point_nine" format="float" type="integer">.9</item>
+    <item name="layout_weight_point_seven" format="float" type="integer">.7</item>
+
+</resources>

@@ -1,4 +1,4 @@
-package com.example.astra.utils;
+package com.thresholdsoft.astra.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
