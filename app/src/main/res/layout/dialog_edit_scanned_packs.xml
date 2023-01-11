@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen10dp">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen10dp"
+                android:layout_marginEnd="@dimen/dimen30dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="@{allocationedDetail.itemname + `(`+allocationedDetail.itembarcode+`)`}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen14sp" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen40dp"
+                    android:layout_height="@dimen/dimen40dp"
+                    android:contentDescription="@string/app_name"
+                    android:onClick="@{()-> callback.onClickEditScannedPackDecrease(editedScannedPack)}"
+                    android:src="@drawable/ic_circle_decrement"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Change Qty."
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen14sp" />
+
+
+                <EditText
+                    android:id="@+id/edit_scanned_packs"
+                    android:layout_width="@dimen/dimen60dp"
+                    android:layout_height="@dimen/dimen60dp"
+                    android:layout_marginStart="@dimen/dimen10dp"
+                    android:background="@drawable/bg_edit_text"
+                    android:gravity="center"
+                    android:importantForAutofill="no"
+                    android:inputType="number"
+                    android:text="@{String.valueOf(editedScannedPack)}" />
+
+                <ImageView
+                    android:layout_width="@dimen/dimen40dp"
+                    android:layout_height="@dimen/dimen40dp"
+                    android:layout_marginStart="@dimen/dimen10dp"
+                    android:contentDescription="@string/app_name"
+                    android:onClick="@{()-> callback.onClickEditScannedPackIncrease(editedScannedPack)}"
+                    android:src="@drawable/ic_circle_increment"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen20dp"
+                android:layout_marginBottom="@dimen/dimen10dp"
+                android:background="@drawable/rounded_corner_bg"
+                android:backgroundTint="@color/lite_yellow"
+                android:fontFamily="@font/poppins_semibold"
+                android:onClick="@{()-> callback.onClickUpdateEditScannedPack(editedScannedPack)}"
+                android:paddingStart="@dimen/dimen10dp"
+                android:paddingTop="@dimen/dimen5dp"
+                android:paddingEnd="@dimen/dimen10dp"
+                android:paddingBottom="@dimen/dimen5dp"
+                android:text="@string/label_update"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/dimen30dp"
+            android:layout_height="@dimen/dimen30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/dimen10dp"
+            android:contentDescription="@string/app_name"
+            android:onClick="@{()-> callback.onClickEditScannedPackDialogDismiss()}"
+            android:src="@drawable/ic_baseline_close_24" />
+
+    </RelativeLayout>
+
+    <data>
+
+        <variable
+            name="callback"
+            type="com.thresholdsoft.astra.ui.picklist.PickListActivityCallback" />
+
+        <variable
+            name="editedScannedPack"
+            type="Integer" />
+
+        <variable
+            name="allocationedDetail"
+            type="com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse.Allocationdetail" />
+    </data>
+</layout>

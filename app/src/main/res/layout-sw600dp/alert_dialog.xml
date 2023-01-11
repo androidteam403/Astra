@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dialog_background"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen10dp"
+        android:stateListAnimator="@null">
+
+
+        <RelativeLayout
+            android:id="@+id/titlelayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Picker Request"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen16sp" />
+
+            <ImageView
+                android:id="@+id/close"
+                android:layout_width="@dimen/dimen40dp"
+                android:layout_height="@dimen/dimen40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/dimen10dp"
+                android:src="@drawable/ic_baseline_close_24" />
+
+
+        </RelativeLayout>
+
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/dimen5dp"
+            android:background="#cdced2" />
+
+        <LinearLayout
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Purchase Requisition"
+                    android:textSize="@dimen/dimen14sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Product name"
+                    android:textSize="@dimen/dimen14sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@{model.purchreqid}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen14sp" />
+
+                <TextView
+                    android:id="@+id/itemname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@{model.itemname+`(`+model.itemid+`)`}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen14sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Request by"
+                    android:textSize="@dimen/dimen14sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Request Reason"
+                    android:textSize="@dimen/dimen14sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@{model.username+`(`+model.userid+`)`}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen14sp" />
+
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@{model.holdreasoncode.substring(model.holdreasoncode.indexOf(`-`)+1)}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen5dp"
+                android:background="@drawable/dialog_background"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Status Update"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <LinearLayout
+                        android:layout_width="@dimen/dimen0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Requested Date Time:"
+                            android:textSize="@dimen/dimen14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen5dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="@{CommonUtils.parseDateToddMMyyyy(model.onholddatetime)}"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen14sp" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/grey"
+                    android:padding="@dimen/dimen5dp">
+
+                    <Spinner
+                        android:id="@+id/area_name"
+                        style="@style/spinner_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dropdown"
+                        android:textSize="@dimen/dimen14sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/remarks"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen50dp"
+                android:layout_marginTop="@dimen/dimen10sp"
+                android:background="@drawable/custom_dialog_background"
+                android:hint="Remarks"
+                android:importantForAutofill="no"
+                android:maxLength="50"
+                android:paddingStart="@dimen/dimen10sp"
+                android:paddingEnd="@dimen/dimen10sp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/dimen14sp" />
+
+            <Button
+                android:id="@+id/checkqoh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:paddingStart="@dimen/dimen10sp"
+                android:paddingEnd="@dimen/dimen10sp"
+                android:layout_marginTop="@dimen/dimen10dp"
+                android:backgroundTint="@color/cart_tax_bg"
+
+                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
+                android:text="Check QOH"
+                android:textColor="@color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/qohlayout"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen5dp"
+                android:orientation="horizontal"
+                android:weightSum="4">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:orientation="horizontal"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="ITEMID  :"
+                        android:textAlignment="center"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/dimen14sp" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/itemId"
+                        android:textSize="@dimen/dimen14sp"
+                        android:layout_weight=".5"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="DOLO"
+                        android:textColor="@color/green" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:orientation="horizontal"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="BATCH  :"
+                        android:textAlignment="center"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/dimen14sp" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:id="@+id/batch"
+                        android:textSize="@dimen/dimen14sp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="ADFSD"
+                        android:textColor="@color/green" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:orientation="horizontal"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="QTY  :"
+                        android:textAlignment="center"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/dimen14sp" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:id="@+id/qty"
+                        android:textSize="@dimen/dimen14sp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="21"
+                        android:textColor="@color/green" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:orientation="horizontal"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="MRP  :"
+
+                        android:textAlignment="center"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/dimen14sp" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="35"
+                        android:textSize="@dimen/dimen14sp"
+                        android:id="@+id/mrp"
+                        android:textColor="@color/green" />
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/dialogButtonNO"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_weight="1"-->
+            <!--                android:fontFamily="@font/montserrat_bold"-->
+            <!--                android:paddingTop="12dp"-->
+            <!--                android:paddingBottom="12dp"-->
+            <!--                android:stateListAnimator="@null"-->
+            <!--                android:text="@string/label_no"-->
+            <!--                android:textAlignment="center"-->
+            <!--                android:textColor="#007aff"-->
+            <!--                android:textSize="@dimen/dimen14sp" />-->
+
+            <!--            <View-->
+            <!--                android:id="@+id/separator"-->
+            <!--                android:layout_width="1dp"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:background="#cdced2" />-->
+
+            <TextView
+                android:id="@+id/dialogButtonOK"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen10dp"
+                android:background="@drawable/rounded_corner_bg"
+                android:backgroundTint="@color/lite_yellow"
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingStart="@dimen/dimen10dp"
+                android:paddingTop="@dimen/dimen5dp"
+                android:paddingEnd="@dimen/dimen10dp"
+                android:paddingBottom="@dimen/dimen5dp"
+                android:text="@string/label_update"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse.Withholddetail" />
+
+        <import type="com.thresholdsoft.astra.utils.CommonUtils" />
+
+    </data>
+</layout>
