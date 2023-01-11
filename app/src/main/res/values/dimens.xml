@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dimen5dp">5dp</dimen>
+    <dimen name="dimen150dp">150dp</dimen>
+    <dimen name="dimen10sp">10sp</dimen>
+    <dimen name="dimen10dp">10dp</dimen>
+    <dimen name="dimen200dp">200dp</dimen>
+    <dimen name="dimen225dp">225dp</dimen>
+    <dimen name="dimen12sp">12sp</dimen>
+    <dimen name="dimen280dp">280dp</dimen>
+    <dimen name="dimen20sp">20sp</dimen>
+    <dimen name="dimen100dp">100dp</dimen>
+    <dimen name="dimen17sp">17sp</dimen>
+    <dimen name="dimen25dp">25dp</dimen>
+    <dimen name="dimen20dp">20dp</dimen>
+    <dimen name="dimen50dp">50dp</dimen>
+    <dimen name="dimen30dp">30dp</dimen>
+    <dimen name="dimen40dp">40dp</dimen>
+    <dimen name="dimen15dp">15dp</dimen>
+    <dimen name="dimen14sp">14sp</dimen>
+    <dimen name="dimen8sp">8sp</dimen>
+    <dimen name="dimen7sp">7sp</dimen>
+    <dimen name="dimen3dp">3dp</dimen>
+    <dimen name="dimen400dp">400dp</dimen>
+    <dimen name="dimen8dp">8dp</dimen>
+    <dimen name="dimen500dp">500dp</dimen>
+    <dimen name="dimen16sp">16sp</dimen>
+    <dimen name="dimen18sp">18sp</dimen>
+    <dimen name="dimen385dp">385dp</dimen>
+    <dimen name="dimen1dp">1dp</dimen>
+    <dimen name="dimen35dp">35dp</dimen>
+    <dimen name="dimen2dp">2dp</dimen>
+    <dimen name="dimen60dp">60dp</dimen>
+    <dimen name="dimen9sp">9sp</dimen>
+    <dimen name="dimen65dp">65dp</dimen>
+    <dimen name="dimen6dp">6dp</dimen>
+    <dimen name="dimen22dp">22dp</dimen>
+    <dimen name="dimen23dp">23dp</dimen>
+    <dimen name="dimen300dp">300dp</dimen>
+    <dimen name="dimen45dp">45dp</dimen>
+    <dimen name="dimen0dp">0dp</dimen>
+    <dimen name="diman250dp">250dp</dimen>
+    <dimen name="diman30sp">30sp</dimen>
+
+    //pdf dimen
+    <dimen name="pdf_width_customize">300px</dimen>
+    <dimen name="pdf_height_customize">500px</dimen>
+
+    <dimen name="pdf_width">240px</dimen>
+    <dimen name="pdf_height">360px</dimen>
+    <dimen name="pdf_margin_horizontal">10px</dimen>
+    <dimen name="pdf_margin_vertical">15px</dimen>
+    <dimen name="text_size_large">10sp</dimen>
+    <dimen name="margin_small">2dp</dimen>
+    <dimen name="margin_normal">4dp</dimen>
+    <dimen name="dimen16dp">16dp</dimen>
+    <dimen name="dimen6sp">6sp</dimen>
+    <dimen name="dimen70dp">70dp</dimen>
+    <dimen name="dimen25sp">25sp</dimen>
+    <dimen name="dimen250dp">250dp</dimen>
+    <!--    <dimen name="pdf_width">595px</dimen>-->
+    <!--    <dimen name="pdf_height">842px</dimen>-->
+<!--    <dimen name="pdf_margin_horizontal">20px</dimen>-->
+<!--    <dimen name="pdf_margin_vertical">30px</dimen>-->
+<!--    <dimen name="text_size_large">20sp</dimen>-->
+<!--    <dimen name="margin_small">4dp</dimen>-->
+<!--    <dimen name="margin_normal">8dp</dimen>-->
+<!--    <dimen name="dimen16dp">16dp</dimen>-->
+<!--    <dimen name="dimen6sp">6sp</dimen>-->
+<!--    <dimen name="dimen70dp">70dp</dimen>-->
+<!--    <dimen name="dimen25sp">25sp</dimen>-->
+<!--    <dimen name="dimen250dp">250dp</dimen>-->
+</resources>
