@@ -24,6 +24,7 @@ public class SessionManager {
     private static final String PREF_KEY_GET_MODEOF_DELIVERY_RESPONSE = "PREF_KEY_GET_MODEOF_DELIVERY_RESPONSE";
     private static final String PREF_KEY_GET_WITHHOLD_REMARKS_RESPONSE = "PREF_KEY_GET_WITHHOLD_REMARKS_RESPONSE";
     private static final String PREF_KEY_LOGGED_IN = "PREF_KEY_LOGGED_IN";
+    private static final String PREF_KEY_PERMISSIONS= "PREF_KEY_PERMISSIONS";
 
     public SessionManager(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -37,9 +38,19 @@ public class SessionManager {
         preferences.edit().putBoolean(PREF_KEY_LOGGED_IN, isLoggedIn).apply();
     }
 
+    public void setIsPermissionGranted(boolean isPermissionGranted) {
+        preferences.edit().putBoolean(PREF_KEY_PERMISSIONS, isPermissionGranted).apply();
+    }
+
+    public Boolean isPermissionGranted() {
+        return preferences.getBoolean(PREF_KEY_PERMISSIONS, false);
+    }
+
     public Boolean isLoggedIn() {
         return preferences.getBoolean(PREF_KEY_LOGGED_IN, false);
     }
+
+
 
     public void setEmplRole(String empRole) {
         preferences.edit().putString(PREF_KEY_EMP_ROLE, empRole).apply();

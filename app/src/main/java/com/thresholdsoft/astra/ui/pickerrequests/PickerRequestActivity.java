@@ -59,7 +59,9 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     private List<WithHoldDataResponse.Withholddetail> withholddetailListTemp;
     private List<WithHoldDataResponse.Withholddetail> withholddetailListList = new ArrayList<>();
     private List<String> routeList = new ArrayList<>();
+    List<WithHoldDataResponse.Withholddetail> noStockItemList=new ArrayList<>();
 
+    List<WithHoldDataResponse.Withholddetail> damageItemList=new ArrayList<>();
 
     ActivityPickerRequestsBinding activityPickerRequestsBinding;
 
@@ -140,7 +142,6 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         getController().getWithHoldApi();
         parentLayoutTouchListener();
         pickerRequestSearchByText();
-        setRequestTypeDropDown();
         setSortbyDropDown();
         setRouteDropDown();
 
@@ -157,13 +158,29 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
         remarksdetailsList.removeIf(s -> s.getRemarksdesc().equalsIgnoreCase("ByPass_Scan") || s.getRemarksdesc().equalsIgnoreCase("Quantity_Wise") || s.getRemarksdesc().equalsIgnoreCase("Area_Wise_ByPass"));
 
+
+        for (int i=0;i<remarksdetailsList.size();i++){
+            if (remarksdetailsList.get(i).getRemarksdesc().contains("NO_STOCK")){
+
+                remarksdetailsList.get(i).setRemarksdesc(remarksdetailsList.get(i).getRemarksdesc()+" ("+noStockItemList.size()+" )");
+            }else  if (remarksdetailsList.get(i).getRemarksdesc().contains("DAMAGE_ITEM")){
+
+                remarksdetailsList.get(i).setRemarksdesc(remarksdetailsList.get(i).getRemarksdesc()+" ("+damageItemList.size()+" )");
+            }
+
+
+        }
+
+
+
+
         RequestTypeDropdownSpinner adapter = new RequestTypeDropdownSpinner(this, remarksdetailsList);
         activityPickerRequestsBinding.requestCodeSpinner.setAdapter(adapter);
         activityPickerRequestsBinding.requestCodeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (pickListHistoryAdapter != null) {
-//                    pickListHistoryAdapter.getFilter().filter(remarksdetailsList.get(position).getRemarkscode());
+
                     selectedRequestType = remarksdetailsList.get(position).getRemarkscode();
                     if (!isRequestTypeSpinnerReset) {
                         pickListHistoryAdapter.setRequestType(selectedRequestType);
@@ -409,6 +426,11 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         if (withHoldDataResponse != null && withHoldDataResponse.getRequeststatus()) {
             withholddetailList = (ArrayList<WithHoldDataResponse.Withholddetail>) withHoldDataResponse.getWithholddetails();
 
+            noStockItemList=withholddetailList.stream().filter(a->a.getHoldreasoncode().contains("NO_STOCK")).collect(Collectors.toList());
+
+            damageItemList=withholddetailList.stream().filter(a->a.getHoldreasoncode().contains("DAMAGE_ITEM")).collect(Collectors.toList());
+            setRequestTypeDropDown();
+
             withholddetailListTemp = (ArrayList<WithHoldDataResponse.Withholddetail>) withHoldDataResponse.getWithholddetails();
             routeList = withholddetailListTemp.stream().map(WithHoldDataResponse.Withholddetail::getRoutecode).distinct().collect(Collectors.toList());
             routeList.add(0, "All");
@@ -432,6 +454,10 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
                 }
             });
+
+
+
+
             if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
                 pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, this);
@@ -677,6 +703,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
     @Override
     public void onSuccessWithHoldApprovalApi(WithHoldApprovalResponse withHoldApprovalResponse) {
+
         getController().getWithHoldApi();
     }
 

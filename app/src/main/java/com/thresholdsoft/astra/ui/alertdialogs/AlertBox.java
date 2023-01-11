@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.thresholdsoft.astra.R;
@@ -28,6 +29,7 @@ public class AlertBox {
     CountDownTimer yourOtpVarifyTimer = null;
     private boolean negativeExist = false;
     private Context context;
+    private boolean isClick = false;
     Intent intent;
 
     private PickerRequestCallback mCallback;
@@ -47,9 +49,33 @@ public class AlertBox {
         arrayList.add("Reject");
 
         if (dialog != null) {
+            alertDialogBoxBinding.checkqoh.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!isClick) {
+                        isClick = true;
+                        alertDialogBoxBinding.checkqoh.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+                        alertDialogBoxBinding.qohlayout.setVisibility(View.VISIBLE);
+                    } else {
+                        isClick = false;
+                        alertDialogBoxBinding.checkqoh.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_right_24, 0);
+                        alertDialogBoxBinding.qohlayout.setVisibility(View.GONE);
+
+                    }
+
+
+                }
+            });
+
+
             alertDialogBoxBinding.itemname.setText(itemname + " - " + id);
             PickerRequestSpinnerAdapter adapter = new PickerRequestSpinnerAdapter(activity, arrayList);
             alertDialogBoxBinding.areaName.setAdapter(adapter);
+            alertDialogBoxBinding.itemId.setText(pickListItems.getItemid());
+            alertDialogBoxBinding.batch.setText(pickListItems.getInventbatchid());
+            alertDialogBoxBinding.qty.setText(pickListItems.getScannedqty().toString());
+            alertDialogBoxBinding.mrp.setText(pickListItems.getMrp());
+
             alertDialogBoxBinding.areaName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

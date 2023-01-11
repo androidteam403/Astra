@@ -26,7 +26,7 @@
                 android:text="Picker Request"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="@dimen/dimen16sp" />
+                android:textSize="14sp" />
 
             <ImageView
                 android:id="@+id/close"
@@ -51,7 +51,6 @@
             android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimen10sp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -66,7 +65,7 @@
                     android:layout_weight=".5"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Purchase Requisition"
-                    android:textSize="@dimen/dimen14sp" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -74,7 +73,7 @@
                     android:layout_weight=".5"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Product name"
-                    android:textSize="@dimen/dimen14sp" />
+                    android:textSize="@dimen/dimen12sp" />
 
 
             </LinearLayout>
@@ -92,7 +91,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="@{model.purchreqid}"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dimen14sp" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/itemname"
@@ -102,7 +101,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="@{model.itemname+`(`+model.itemid+`)`}"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dimen14sp" />
+                    android:textSize="@dimen/dimen12sp" />
 
 
             </LinearLayout>
@@ -119,15 +118,14 @@
                     android:layout_weight=".5"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Request by"
-                    android:textSize="@dimen/dimen14sp" />
-
+                    android:textSize="12sp"/>
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Request Reason"
-                    android:textSize="@dimen/dimen14sp" />
+                    android:textSize="@dimen/dimen12sp"/>
 
 
             </LinearLayout>
@@ -145,7 +143,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="@{model.username+`(`+model.userid+`)`}"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dimen14sp" />
+                    android:textSize="@dimen/dimen12sp" />
 
 
                 <TextView
@@ -155,7 +153,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="@{model.holdreasoncode.substring(model.holdreasoncode.indexOf(`-`)+1)}"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dimen14sp" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -178,7 +176,7 @@
                         android:layout_weight=".5"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Status Update"
-                        android:textSize="@dimen/dimen14sp" />
+                        android:textSize="@dimen/dimen12sp" />
 
                     <LinearLayout
                         android:layout_width="@dimen/dimen0dp"
@@ -191,7 +189,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_semibold"
                             android:text="Requested Date Time:"
-                            android:textSize="@dimen/dimen14sp" />
+                            android:textSize="@dimen/dimen12sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -200,7 +198,7 @@
                             android:fontFamily="@font/poppins_semibold"
                             android:text="@{CommonUtils.parseDateToddMMyyyy(model.onholddatetime)}"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/dimen14sp" />
+                            android:textSize="@dimen/dimen12sp" />
 
                     </LinearLayout>
 
@@ -237,7 +235,141 @@
                 android:paddingEnd="@dimen/dimen10sp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
-                android:textSize="@dimen/dimen14sp" />
+                android:textSize="12sp" />
+
+ <Button
+                android:id="@+id/checkqoh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen10dp"
+                android:paddingStart="@dimen/dimen10sp"
+                android:paddingEnd="@dimen/dimen10sp"
+
+                android:backgroundTint="@color/cart_tax_bg"
+                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
+                android:text="Check QOH"
+                android:textColor="@color/black" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen5dp"
+                android:id="@+id/qohlayout"
+                android:visibility="gone"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight=".5"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="ITEMID  :"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <TextView
+                        android:id="@+id/itemId"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="DOLO"
+                        android:textColor="@color/green" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight=".5"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="BATCH  :"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <TextView
+                        android:id="@+id/batch"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="ADFSD"
+                        android:textColor="@color/green" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight=".5"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="QTY  :"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <TextView
+                        android:id="@+id/qty"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="21"
+                        android:textColor="@color/green" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight=".5"
+                        android:fontFamily="@font/poppins_semibold"
+
+                        android:text="MRP  :"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <TextView
+                        android:id="@+id/mrp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:fontFamily="@font/poppins_bold"
+
+                        android:text="35"
+                        android:textColor="@color/green" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 

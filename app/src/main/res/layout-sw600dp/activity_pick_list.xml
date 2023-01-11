@@ -1651,7 +1651,7 @@
                                                                 android:paddingStart="4dp"
                                                                 android:paddingTop="2dp"
                                                                 android:paddingBottom="3dp"
-                                                                android:text="@{String.valueOf(Math.round(barcodeScannedItem.allocatedpacks - barcodeScannedItem.allocatedPackscompleted))}"
+                                                                android:text="@{String.valueOf(Math.round(barcodeScannedItem.scannedqty))}"
                                                                 android:textColor="@color/black"
                                                                 android:textSize="@dimen/dimen18sp" />
 

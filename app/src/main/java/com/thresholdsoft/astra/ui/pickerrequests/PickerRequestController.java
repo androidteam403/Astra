@@ -49,6 +49,10 @@ public class PickerRequestController {
                 public void onResponse(Call<WithHoldDataResponse> call, Response<WithHoldDataResponse> response) {
                     ActivityUtils.hideDialog();
                     if (response.code() == 200 && response.body() != null) {
+                        if (response.body().getWithholddetails().size()==0){
+                            mCallback.noPickerRequestsFound(0);
+                        }
+
                         if (response.body().getWithholddetails() != null && response.body().getWithholddetails().size() > 0) {
 //                        Collections.sort(response.body().getWithholddetails(), new Comparator<WithHoldDataResponse.Withholddetail>() {
 //                            public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {

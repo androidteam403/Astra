@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
@@ -22,6 +23,7 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintDocumentInfo;
 import android.print.PrintManager;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -41,15 +43,18 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.util.StringUtil;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.Writer;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.common.StringUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.google.zxing.oned.Code128Writer;
@@ -103,6 +108,7 @@ import com.thresholdsoft.astra.ui.requesthistory.RequestHistoryActivity;
 import com.thresholdsoft.astra.ui.scanner.ScannerActivity;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.CommonUtils;
+import com.thresholdsoft.astra.utils.Utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -110,6 +116,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -363,6 +371,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         });
     }
 
+    @SuppressLint({"RestrictedApi", "NewApi"})
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSuccessGetAllocationDataApi(GetAllocationDataResponse getAllocationDataResponse, boolean isRequestToSupervisior, boolean isCompletedStatus) {
@@ -394,8 +403,17 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             for (GetAllocationDataResponse.Allocationhddata allocationhddataAssignedLine : allocationhddataList) {
                 assignedLinesCount = assignedLinesCount + allocationhddataAssignedLine.getAllocatedlines();
             }
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd");
+
+
+
+            List<GetAllocationDataResponse.Allocationhddata> completedAllocationDataCount=new ArrayList<>();
+           completedAllocationDataCount= completedAllocationData.stream().filter(i->CommonUtils.getConvertStringToDate(i.getTransdate().substring(0,10)).before(CommonUtils.getConvertStringToDate(CommonUtils.getCurrentDate()))).collect(Collectors.toList());
+
+
+
             activityPickListBinding.setAssignedLines(String.valueOf(assignedLinesCount));
-            activityPickListBinding.setAssignedOrdersCount(String.valueOf(allocationhddataList.size()));
+            activityPickListBinding.setAssignedOrdersCount(String.valueOf((allocationhddataList.size())-completedAllocationDataCount.size()));
             activityPickListBinding.pendingOrdersCount.setText(String.valueOf(assignedAllocationData.size()));
             activityPickListBinding.progressCount.setText(String.valueOf(inProgressAllocationData.size()));
             activityPickListBinding.completecount.setText(String.valueOf(completedAllocationData.size()));
@@ -409,6 +427,10 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 activityPickListBinding.setPickListSelectedStatus(0);
                 onClickCompletedPickList();
             } else {
+
+                allocationhddataList.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getRoutecode));
+                allocationhddataList.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getCustname));
+
                 pickListAdapter = new PickListAdapter(this, allocationhddataList, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
@@ -1200,7 +1222,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     public void onSucessPackingLabelResponse(PackingLabelResponse packingLabelResponse) {
         if (packingLabelResponse != null && packingLabelResponse.getStatus()) {
             String extStorageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-            File folder = new File(extStorageDirectory, "shipping");
+            File folder = new File(extStorageDirectory, "packinglabel");
             folder.mkdir();
             File file = new File(folder, activityPickListBinding.getAllocationData().getPurchreqid() + ".pdf");
             try {
@@ -1216,7 +1238,11 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     @Override
     public void showPdf() {
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/shipping/" + activityPickListBinding.getAllocationData().getPurchreqid() + ".pdf");
+        String extStorageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+        File folder = new File(extStorageDirectory, "packinglabel");
+        File file = new File(folder, activityPickListBinding.getAllocationData().getPurchreqid() + ".pdf");
+
+//        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/packinglabel/" + activityPickListBinding.getAllocationData().getPurchreqid() + ".pdf");
         if (file.exists()) {
             PrintAttributes.Builder builder = new PrintAttributes.Builder();
             builder.setMediaSize(PrintAttributes.MediaSize.NA_INDEX_4X6);
@@ -1389,6 +1415,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         if (activityPickListBinding.getPickListSelectedStatus() == 1) {
             activityPickListBinding.setPickListSelectedStatus(0);
             if (allocationhddataList != null && !allocationhddataList.isEmpty()) {
+                allocationhddataList.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getRoutecode));
+                allocationhddataList.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getCustname));
                 pickListAdapter = new PickListAdapter(this, allocationhddataList, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
@@ -1400,6 +1428,9 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         } else {
             activityPickListBinding.setPickListSelectedStatus(1);
             if (assignedAllocationData != null && !assignedAllocationData.isEmpty()) {
+
+                assignedAllocationData.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getRoutecode));
+                assignedAllocationData.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getCustname));
                 pickListAdapter = new PickListAdapter(this, assignedAllocationData, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
@@ -1416,6 +1447,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         if (activityPickListBinding.getPickListSelectedStatus() == 2) {
             activityPickListBinding.setPickListSelectedStatus(0);
             if (allocationhddataList != null && !allocationhddataList.isEmpty()) {
+                allocationhddataList.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getRoutecode));
+                allocationhddataList.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getCustname));
                 pickListAdapter = new PickListAdapter(this, allocationhddataList, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
@@ -1427,6 +1460,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         } else {
             activityPickListBinding.setPickListSelectedStatus(2);
             if (inProgressAllocationData != null && !inProgressAllocationData.isEmpty()) {
+                inProgressAllocationData.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getRoutecode));
+                inProgressAllocationData.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getCustname));
                 pickListAdapter = new PickListAdapter(this, inProgressAllocationData, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
@@ -1443,6 +1478,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         if (activityPickListBinding.getPickListSelectedStatus() == 3) {
             activityPickListBinding.setPickListSelectedStatus(0);
             if (allocationhddataList != null && !allocationhddataList.isEmpty()) {
+                allocationhddataList.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getRoutecode));
+                allocationhddataList.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getCustname));
                 pickListAdapter = new PickListAdapter(this, allocationhddataList, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
@@ -1454,6 +1491,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         } else {
             activityPickListBinding.setPickListSelectedStatus(3);
             if (completedAllocationData != null && !completedAllocationData.isEmpty()) {
+                completedAllocationData.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getRoutecode));
+                completedAllocationData.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getCustname));
                 pickListAdapter = new PickListAdapter(this, completedAllocationData, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
@@ -1474,6 +1513,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         itemListAdapter.notifyDataSetChanged();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     public void onClickPrint() {
         if (isStoragePermissionGranted()) {
@@ -2482,7 +2522,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             InputStream input = null;
             OutputStream output = null;
             try {
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/shipping/" + activityPickListBinding.getAllocationData().getPurchreqid() + ".pdf");
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/packinglabel/" + activityPickListBinding.getAllocationData().getPurchreqid() + ".pdf");
 
                 input = new FileInputStream(file);//"/storage/emulated/0/Documents/my-document-1656940186153.pdf"
                 output = new FileOutputStream(destination.getFileDescriptor());
@@ -2582,14 +2622,47 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     };
 
+    private void requestPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.CALL_PHONE,
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.READ_LOGS,
+                        Manifest.permission.SEND_SMS,
+                        Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.READ_SMS,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.INTERNET,
+                        Manifest.permission.RECEIVE_SMS
+
+
+                }, 0);
+            }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                if (!getSessionManager().isPermissionGranted()){
+                    isReadStoragePermissionGranted();
+
+                }
 //                Log.v(TAG,"Permission is granted");
                 return true;
             } else {
 
 //                Log.v(TAG,"Permission is revoked");
+
+
+
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 return false;
             }
@@ -2599,6 +2672,58 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         }
     }
 
+
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public void isReadStoragePermissionGranted() {
+        getSessionManager().setIsPermissionGranted(true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Environment.isExternalStorageManager()) {
+//                startActivity(new Intent(this, MainActivity.class));
+            } else { //request for the permission
+
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+            }
+        } else {
+            //below android 11=======
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }
+
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//
+//
+//            PackageManager packageManager = getPackageManager();
+//            Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+//
+//            if (intent.resolveActivity(packageManager) != null) {
+//                startActivity(intent);
+//            } else {
+//                Log.d("", "Cannot handle this intent");
+//            }
+//
+//
+////                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+////                Uri uri = Uri.fromParts("package", getPackageName(), null);
+////                intent.setData(uri);
+////                startActivity(intent);
+//
+//
+//
+//
+////                Log.v(TAG,"Permission is granted");
+//
+//        }else {
+//
+//        }
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

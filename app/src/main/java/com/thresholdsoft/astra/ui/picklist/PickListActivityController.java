@@ -1,6 +1,7 @@
 package com.thresholdsoft.astra.ui.picklist;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Pair;
 
 import com.thresholdsoft.astra.BuildConfig;
@@ -25,6 +26,7 @@ import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.NetworkUtils;
 
+import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -59,6 +61,22 @@ public class PickListActivityController {
                 public void onResponse(@NotNull Call<PackingLabelResponse> call, @NotNull Response<PackingLabelResponse> response) {
                     ActivityUtils.hideDialog();
                     if (response.code() == 200 && response.body() != null) {
+
+//                        String extStorageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+//                        File f = new File(extStorageDirectory);
+//                        if (f.isDirectory()) {
+//
+//                            for (File sub : f.listFiles()) {
+//
+//                                if (sub.toString().contains("packinglabel")) {
+//                                    try {
+//                                        FileUtils.deleteDirectory(sub);
+//                                    } catch (IOException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                            }
+//                        }
                         mCallback.onSucessPackingLabelResponse(response.body());
                     }
                 }

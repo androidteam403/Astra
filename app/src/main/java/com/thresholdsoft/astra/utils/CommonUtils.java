@@ -22,6 +22,35 @@ public class CommonUtils {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
         return sdf.format(new Date());
     }
+    public static String getCurrentDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        return sdf.format(new Date());
+    }
+    public static Date getConvertStringToDate(String date) {
+        Date date1 = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        try {
+             date1 = sdf.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date1;
+    }
+    public static String  getLastDay() {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+//        Date date = new Date();
+//        String todate = sdf.format(date);
+
+        Calendar cal;
+       cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        Date todate1 = cal.getTime();
+        return sdf.format(todate1);
+    }
+
 
     public static String parseDateToddMMyyyy(String time) {
         if (time != null && !time.isEmpty()) {
