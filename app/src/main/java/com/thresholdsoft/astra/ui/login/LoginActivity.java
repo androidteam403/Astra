@@ -8,8 +8,7 @@ import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityLoginBinding;
@@ -25,7 +24,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     private String loginOtp;
     private String empRole;
     private String pickerName;
-    FirebaseAuth firebaseAuth;
     private String dcName;
 
     public static Intent getStartIntent(Context mContext) {
@@ -67,13 +65,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
                     getDataManager().setPickerName(pickerName);
                     getDataManager().setDcName(dcName);
                     getDataManager().setIsLoggedIn(true);
-                    firebaseAuth=FirebaseAuth.getInstance();
-                    FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
-                    if (firebaseUser!=null){
 
-                    }else {
-
-                    }
                     if (empRole.equals("Supervisor")) {
 
 

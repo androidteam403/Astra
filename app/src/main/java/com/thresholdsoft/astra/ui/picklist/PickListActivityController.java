@@ -26,7 +26,6 @@ import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.NetworkUtils;
 
-import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
