@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardview"
+            android:layout_width="225dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="3dp"
+            android:visibility="visible"
+            app:cardCornerRadius="6sp"
+            app:cardElevation="7dp">
+
+            <LinearLayout
+                android:id="@+id/orderHead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/pendingLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="5dp"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="AHLI22RR-007122 "
+                            android:id="@+id/order_id"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="5dp"
+                        android:orientation="horizontal"
+                        android:layout_marginRight="5dp">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="AREA: "
+                            android:fontFamily="@font/poppins_semibold"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2"
+                            android:id="@+id/area"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="45dp"
+                            android:text="REQUIRE: "
+                            android:fontFamily="@font/poppins_semibold"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:id="@+id/require"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="5dp"
+                        android:orientation="horizontal"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ROUTE: "
+                            android:fontFamily="@font/poppins_semibold"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:id="@+id/route"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="38dp"
+                            android:text="COLLECTED: "
+                            android:fontFamily="@font/poppins_semibold"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:id="@+id/collected"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="3dp"
+                        android:orientation="horizontal"
+                        android:layout_marginRight="5dp"
+                        >
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Status: "
+                            android:fontFamily="@font/poppins_semibold"
+
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:gravity="center_horizontal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="COMPLETED"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:id="@+id/status"
+                            android:textAlignment="center"
+                            android:textColor="@color/Light_green"
+                            android:textSize="12sp"
+                            android:gravity="center_horizontal"
+                            android:layout_marginLeft="5dp" />
+
+                    </LinearLayout>
+                    <LinearLayout
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="105dp"
+                        android:layout_marginEnd="5dp"
+                        android:orientation="horizontal"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="10dp">
+
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:background="#FF8C00"
+                            android:src="@drawable/check_mark_icon"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="00:01:025 "
+                            android:id="@+id/time"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:textSize="13sp"
+                            android:gravity="center_horizontal"
+                            android:layout_marginLeft="5dp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+</layout>

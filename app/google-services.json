@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "150622752312",
+    "project_id": "apolloastra-55f6d",
+    "storage_bucket": "apolloastra-55f6d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:150622752312:android:a7cc12860b0c2a64cfa0cd",
+        "android_client_info": {
+          "package_name": "com.thresholdsoft.astra"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "150622752312-3tv85e1gaf970fef4eggtgqage93qlcj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDS6MLtvM16-cvpFz20nsgXpgtcULqEpfo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "150622752312-3tv85e1gaf970fef4eggtgqage93qlcj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

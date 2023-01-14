@@ -1,10 +1,10 @@
-package com.example.astra.network;
+package com.thresholdsoft.astra.network;
 
 
-import com.thresholdsoft.astra.BuildConfig;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor;
+import com.thresholdsoft.astra.BuildConfig;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,12 +15,35 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-//
+    //
 //    public static ApiInterface getApiService(String baseUrl) {
 //        return getRetrofitInstance(baseUrl).create(ApiInterface.class);
 //    }
+    private static Retrofit retrofit = null;
 
-    private static Retrofit getRetrofitInstance(String baseUrl) {
+    public static ApiInterface getApiServiceAds() {
+        return getRetrofitInstanceAds().create(ApiInterface.class);
+    }
+
+    private static Retrofit getRetrofitInstanceAds() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (BuildConfig.DEBUG) {
+            builder.addInterceptor(new OkHttpProfilerInterceptor());
+        }
+        OkHttpClient client = builder
+                .connectTimeout(3, TimeUnit.MINUTES)
+                .writeTimeout(3, TimeUnit.MINUTES)
+                .readTimeout(3, TimeUnit.MINUTES)
+                .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                .build();
+        return new Retrofit.Builder()
+                .baseUrl(BuildConfig.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+    }
+
+    public static Retrofit getRetrofitInstance() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         if (BuildConfig.DEBUG) {
             builder.addInterceptor(new OkHttpProfilerInterceptor());
@@ -35,13 +58,9 @@ public class ApiClient {
                 .setLenient()
                 .create();
         return new Retrofit.Builder()
-                .baseUrl(baseUrl)
+                .baseUrl(BuildConfig.BASE_URL)//"https://online.apollopharmacy.org/Digital/Apollo/AHL/"
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(client)
                 .build();
     }
-
-//    public static ApiInterface getApiService2(String baseUrl) {
-//        return getRetrofitInstance(baseUrl).create(ApiInterface.class);
-//    }
 }

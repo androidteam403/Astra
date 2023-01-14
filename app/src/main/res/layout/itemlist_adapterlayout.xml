@@ -1,133 +1,361 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <RelativeLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardview"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{()-> callback.onClickItemListItem(allocationdetail)}">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6sp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="3dp"
-            android:visibility="visible"
-            app:cardCornerRadius="6sp"
-            app:cardElevation="7dp">
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/orderHead"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:orientation="vertical">
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="3dp"
+                android:visibility="visible"
+                app:cardCornerRadius="6sp"
+                app:cardElevation="7dp">
 
                 <LinearLayout
-                    android:id="@+id/pendingLayout"
+                    android:id="@+id/orderHead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:orientation="vertical">
+                    android:background="@{allocationdetail.isSelected ? @drawable/bg_itemlist_adapter_selected : @drawable/bg_itemlist_adapter_unselected}"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dimen5dp">
 
                     <LinearLayout
+                        android:id="@+id/pendingLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="5dp"
-                        android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="5dp">
+                        android:orientation="vertical">
 
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="Product Name "
+                                android:textSize="@dimen/dimen8sp" />
+
+                            <ImageView
+                                android:id="@+id/edit_view"
+                                android:layout_width="@dimen/dimen15dp"
+                                android:layout_height="@dimen/dimen15dp"
+                                android:layout_alignParentEnd="true"
+                                android:contentDescription="@string/app_name"
+                                android:src="@drawable/edit_view"
+                                android:visibility="gone" />
+
+                        </RelativeLayout>
 
                         <TextView
+                            android:id="@+id/product_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Product Name "
-                            android:textSize="12sp" />
-                        <!--<ImageView-->
-                        <!--    android:layout_width="25dp"-->
-                        <!--    android:layout_height="25dp"-->
-                        <!--    android:src="@drawable/open"-->
-                        <!--    android:background="@color/green"-->
-                        <!--    android:layout_marginStart="260dp"/>-->
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="@{allocationdetail.itemname}"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen8sp" />
 
-                    </LinearLayout>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="HIMALAYA DRYNESS DEFENSE "
-                        android:textColor="@color/black"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="12sp" />
-
-                    <LinearLayout
-
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="5dp"
-                        android:orientation="horizontal"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginLeft="10dp">
                         <LinearLayout
+                            android:id="@+id/rackshelf_layout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginRight="5dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Rack Shelf "
-                                android:textColor="@color/silver"
-                                android:textSize="12sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="Barcode "
+                                    android:textSize="@dimen/dimen8sp" />
+
+                                <TextView
+                                    android:id="@+id/barcode"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:paddingStart="1dp"
+                                    android:text="@{allocationdetail.itembarcode}"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/dimen8sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="F0206 A050D"
-                                android:textColor="@color/black"
-                                android:textSize="12sp"
-                                android:paddingStart="1dp"
-                                />
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="20dp"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="Item Number "
+                                    android:textSize="@dimen/dimen8sp" />
+
+                                <TextView
+                                    android:id="@+id/itemnumber"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="40dp"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="-"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/dimen8sp" />
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="18sp"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="Expiry Date"
+                                    android:textSize="@dimen/dimen8sp" />
+
+                                <TextView
+                                    android:id="@+id/expiredate"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="40dp"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="-"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/dimen8sp" />
+
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="Rack Shelf "
+                                    android:textSize="@dimen/dimen8sp" />
+
+                                <TextView
+                                    android:id="@+id/rackshelf_no"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="@{allocationdetail.rackshelf}"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/dimen8sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="Allocated Qty "
+                                    android:textSize="@dimen/dimen8sp" />
+
+                                <TextView
+                                    android:id="@+id/allocation_qty"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="@{String.valueOf(allocationdetail.allocatedqty)}"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/dimen8sp" />
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="Allocated Packs"
+                                    android:textSize="@dimen/dimen8sp" />
+
+                                <TextView
+                                    android:id="@+id/allocation_packs"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="@{String.valueOf(allocationdetail.allocatedpacks)}"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/dimen8sp" />
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="gone">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="18sp"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="Short Scan Qty "
+                                    android:textSize="@dimen/dimen8sp" />
+
+
+                                <TextView
+                                    android:id="@+id/scanqty"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="54dp"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="@{String.valueOf(allocationdetail.shortqty)}"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/dimen8sp" />
+
+
+                            </LinearLayout>
+
 
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="40dp"
-                                android:text="Allocated Qty "
-                                android:textColor="@color/silver"
-                                android:textSize="12sp" />
+                                android:layout_weight=".7"
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="3.00"
-                                android:textColor="@color/black"
-                                android:textSize="12sp"
-                                android:layout_marginLeft="40dp"
-                                />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="Status"
+                                    android:textSize="@dimen/dimen8sp" />
+
+                                <TextView
+                                    android:id="@+id/status"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="@{(allocationdetail.getAllocatedPackscompleted() - allocationdetail.getSupervisorApprovedQty()) == 0 ? `completed` : isOrderCompleted ? `Completed` : `pending`}"
+                                    android:textAllCaps="true"
+                                    android:textColor="@{(allocationdetail.getAllocatedPackscompleted() - allocationdetail.getSupervisorApprovedQty()) == 0 ? @color/green : isOrderCompleted ? @color/green : @color/colorPrimaryDarker}"
+                                    android:textSize="@dimen/dimen8sp" />
 
 
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".3"
+                                android:gravity="end|center_vertical"
+                                android:visibility="@{isOrderCompleted ? view.GONE : (allocationdetail.allocatedPackscompleted != allocationdetail.allocatedpacks)  ? view.VISIBLE : view.GONE}">
+                                <!--                                android:visibility="@{isOrderCompleted ? view.GONE : (allocationdetail.allocatedPackscompleted - allocationdetail.supervisorApprovedQty) == 0 &amp;&amp; (allocationdetail.allocatedpacks != allocationdetail.supervisorApprovedQty)  ? view.VISIBLE : view.GONE}">-->
+
+                                <ImageView
+                                    android:layout_width="@dimen/dimen15dp"
+                                    android:layout_height="@dimen/dimen15dp"
+                                    android:contentDescription="@string/app_name"
+                                    android:onClick="@{()-> callback.onClickResetItemDetails(allocationdetail)}"
+                                    android:src="@drawable/ic_baseline_delete_24" />
+                            </RelativeLayout>
                         </LinearLayout>
 
 
-
                     </LinearLayout>
-
                 </LinearLayout>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen30dp"
+                android:visibility="@{isLastPos ? view.VISIBLE : view.GONE}" />
+        </LinearLayout>
     </RelativeLayout>
 
+    <data>
+
+        <variable
+            name="allocationdetail"
+            type="com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse.Allocationdetail" />
+
+        <variable
+            name="callback"
+            type="com.thresholdsoft.astra.ui.picklist.PickListActivityCallback" />
+
+        <variable
+            name="isOrderCompleted"
+            type="Boolean" />
+
+        <variable
+            name="view"
+            type="android.view.View" />
+
+        <variable
+            name="isLastPos"
+            type="Boolean" />
+
+        <variable
+            name="isDetailsViewExpanded"
+            type="Boolean" />
+    </data>
 </layout>
