@@ -283,7 +283,7 @@
                         android:layout_weight=".5"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="DOLO"
-                        android:textColor="@color/green" />
+                        android:textColor="@color/inprogress_color" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -306,9 +306,9 @@
                         android:layout_weight=".5"
                         android:id="@+id/batch"
                         android:textSize="@dimen/dimen14sp"
-                        android:fontFamily="@font/poppins_bold"
+                        android:fontFamily="@font/poppins_semibold"
                         android:text="ADFSD"
-                        android:textColor="@color/green" />
+                        android:textColor="@color/inprogress_color" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -331,9 +331,9 @@
                         android:layout_weight=".5"
                         android:id="@+id/qty"
                         android:textSize="@dimen/dimen14sp"
-                        android:fontFamily="@font/poppins_bold"
+                        android:fontFamily="@font/poppins_semibold"
                         android:text="21"
-                        android:textColor="@color/green" />
+                        android:textColor="@color/inprogress_color" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -355,11 +355,11 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".5"
-                        android:fontFamily="@font/poppins_bold"
+                        android:fontFamily="@font/poppins_semibold"
                         android:text="35"
                         android:textSize="@dimen/dimen14sp"
                         android:id="@+id/mrp"
-                        android:textColor="@color/green" />
+                        android:textColor="@color/inprogress_color" />
 
                 </LinearLayout>
 

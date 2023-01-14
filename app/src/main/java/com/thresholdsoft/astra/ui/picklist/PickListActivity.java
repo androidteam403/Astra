@@ -428,8 +428,9 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 onClickCompletedPickList();
             } else {
 
-                allocationhddataList.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getRoutecode));
-                allocationhddataList.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getCustname));
+
+           allocationhddataList.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getRoutecode));
+
 
                 pickListAdapter = new PickListAdapter(this, allocationhddataList, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -1062,7 +1063,9 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         editScanPackDialog.setContentView(dialogEditScannedPacksBinding.getRoot());
         dialogEditScannedPacksBinding.setCallback(this);
         dialogEditScannedPacksBinding.setAllocationedDetail(barcodeAllocationDetailList.get(0));
-        this.editedScannedPack = barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted();
+        this.editedScannedPack = barcodeAllocationDetailList.get(0).getShortqty();
+
+//        this.editedScannedPack = barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted();
         dialogEditScannedPacksBinding.setEditedScannedPack(this.editedScannedPack);
         editScanPackDialog.show();
     }
@@ -1416,7 +1419,6 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             activityPickListBinding.setPickListSelectedStatus(0);
             if (allocationhddataList != null && !allocationhddataList.isEmpty()) {
                 allocationhddataList.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getRoutecode));
-                allocationhddataList.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getCustname));
                 pickListAdapter = new PickListAdapter(this, allocationhddataList, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
@@ -1429,7 +1431,6 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             activityPickListBinding.setPickListSelectedStatus(1);
             if (assignedAllocationData != null && !assignedAllocationData.isEmpty()) {
 
-                assignedAllocationData.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getRoutecode));
                 assignedAllocationData.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getCustname));
                 pickListAdapter = new PickListAdapter(this, assignedAllocationData, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -1492,7 +1493,6 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             activityPickListBinding.setPickListSelectedStatus(3);
             if (completedAllocationData != null && !completedAllocationData.isEmpty()) {
                 completedAllocationData.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getRoutecode));
-                completedAllocationData.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getCustname));
                 pickListAdapter = new PickListAdapter(this, completedAllocationData, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);

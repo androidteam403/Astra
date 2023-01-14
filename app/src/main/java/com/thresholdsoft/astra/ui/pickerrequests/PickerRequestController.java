@@ -3,6 +3,7 @@ package com.thresholdsoft.astra.ui.pickerrequests;
 import android.content.Context;
 
 import com.thresholdsoft.astra.BuildConfig;
+import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.network.ApiClient;
 import com.thresholdsoft.astra.network.ApiInterface;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutRequest;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,6 +56,10 @@ public class PickerRequestController {
                         }
 
                         if (response.body().getWithholddetails() != null && response.body().getWithholddetails().size() > 0) {
+
+
+
+
 //                        Collections.sort(response.body().getWithholddetails(), new Comparator<WithHoldDataResponse.Withholddetail>() {
 //                            public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
 //                                return s1.getPurchreqid().compareToIgnoreCase(s2.getPurchreqid());
@@ -97,7 +103,9 @@ public class PickerRequestController {
         }
 
     }
-
+    private SessionManager getSessionManager() {
+        return new SessionManager(mContext);
+    }
     public void getWithHoldApprovalApi(String approvedQty, List<WithHoldDataResponse.Withholddetail> withholddetailArrayList, int pos, String approvalReasonCode, String remarks) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ArrayList<WithHoldApprovalRequest> withHoldApprovalRequestList = new ArrayList<>();
