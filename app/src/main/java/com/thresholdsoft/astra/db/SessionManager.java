@@ -25,6 +25,8 @@ public class SessionManager {
     private static final String PREF_KEY_GET_WITHHOLD_REMARKS_RESPONSE = "PREF_KEY_GET_WITHHOLD_REMARKS_RESPONSE";
     private static final String PREF_KEY_LOGGED_IN = "PREF_KEY_LOGGED_IN";
     private static final String PREF_KEY_PERMISSIONS= "PREF_KEY_PERMISSIONS";
+    private static final String PREF_KEY_DAMAGE_ITEM = "PREF_KEY_DAMAGE_ITEM";
+    private static final String PREF_KEY_NO_STOCK = "PREF_KEY_NO_STOCK";
 
     public SessionManager(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -75,6 +77,32 @@ public class SessionManager {
     public String getPickerName() {
         return preferences.getString(PREF_KEY_PICKER_NAME, "");
     }
+
+
+
+
+
+    public void setDamageCount(String empRole) {
+        preferences.edit().putString(PREF_KEY_DAMAGE_ITEM, empRole).apply();
+    }
+
+    public String getDamageCount() {
+        return preferences.getString(PREF_KEY_DAMAGE_ITEM, "");
+    }
+
+
+
+
+    public void setNoStockCount(String empRole) {
+        preferences.edit().putString(PREF_KEY_NO_STOCK, empRole).apply();
+    }
+
+    public String getNoStockCount() {
+        return preferences.getString(PREF_KEY_NO_STOCK, "");
+    }
+
+
+
 
     public void setDcName(String empRole) {
         preferences.edit().putString(PREF_KEY_DC_NAME, empRole).apply();
