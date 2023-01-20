@@ -43,6 +43,7 @@ import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.CommonUtils;
+import com.thresholdsoft.astra.utils.NetworkUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -64,6 +65,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     private List<WithHoldDataResponse.Withholddetail> withholddetailListList = new ArrayList<>();
     private List<String> routeList = new ArrayList<>();
     public List<WithHoldDataResponse.Withholddetail> noStockItemList = new ArrayList<>();
+    Handler handler = new Handler();
 
     List<GetWithHoldRemarksResponse.Remarksdetail> remarksdetailsList = new ArrayList<>();
     public List<WithHoldDataResponse.Withholddetail> damageItemList = new ArrayList<>();
@@ -147,6 +149,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         activityPickerRequestsBinding.setDcName(getSessionManager().getDcName());
 
         getController().getWithHoldApi();
+        timeHandler();
         parentLayoutTouchListener();
         pickerRequestSearchByText();
         setSortbyDropDown();
@@ -155,6 +158,36 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
     }
 
+    private void timeHandler() {
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.e("Connected","Connected");
+                start();
+                timeHandler();
+
+
+            }
+        },3000);
+
+    }
+
+
+    public void start() {
+        if (NetworkUtils.isNetworkConnected(this)) {
+            if (getSessionManager().getWithHoldApproval()!=null) {
+                List<WithHoldDataResponse.Withholddetail> withholddetailArrayList=new ArrayList<>();
+
+                if (getSessionManager().getWithHoldApproval().getPurchreqid() != null && getSessionManager().getWithHoldApproval().getItemname() != null) {
+
+                    getController().getWithHoldApprovalApi(" ", withholddetailArrayList, 0, "", "");
+
+
+                }
+            }
+        }
+    }
 
     private void setRequestTypeDropDown() {
         String noStockLength;
