@@ -284,7 +284,7 @@
                         android:layout_weight=".5"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="DOLO"
-                        android:textColor="@color/green" />
+                        android:textColor="@color/inprogress_color" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -311,7 +311,7 @@
 
                         android:fontFamily="@font/poppins_bold"
                         android:text="ADFSD"
-                        android:textColor="@color/green" />
+                        android:textColor="@color/inprogress_color" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -337,7 +337,7 @@
                         android:layout_weight=".5"
                         android:fontFamily="@font/poppins_bold"
                         android:text="21"
-                        android:textColor="@color/green" />
+                        android:textColor="@color/inprogress_color" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -365,7 +365,7 @@
                         android:fontFamily="@font/poppins_bold"
 
                         android:text="35"
-                        android:textColor="@color/green" />
+                        android:textColor="@color/inprogress_color" />
 
                 </LinearLayout>
 

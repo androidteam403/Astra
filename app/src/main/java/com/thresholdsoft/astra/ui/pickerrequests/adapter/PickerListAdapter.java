@@ -41,7 +41,7 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
     private boolean isNotifying = false;
     private Dialog customDialog;
     private String requestType;
-    private String route;
+    private String route="All";
     private String minDate, maxDate;
 
     public PickerListAdapter(Activity activity, List<WithHoldDataResponse.Withholddetail> withholddetailList, PickerRequestCallback pickerRequestCallback) {
@@ -84,6 +84,7 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull PickerListAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         WithHoldDataResponse.Withholddetail pickListItems = withholddetailList.get(position);
+
         String holdres = pickListItems.getHoldreasoncode();
 
 //        var reqDate = approvedOrders.requesteddate.toString()!!

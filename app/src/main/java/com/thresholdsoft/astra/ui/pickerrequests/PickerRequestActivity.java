@@ -20,7 +20,9 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.room.util.StringUtil;
 
+import com.google.zxing.common.StringUtils;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityPickerRequestsBinding;
@@ -41,6 +43,7 @@ import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.CommonUtils;
+import com.thresholdsoft.astra.utils.NetworkUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,6 +54,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class PickerRequestActivity extends BaseActivity implements PickerRequestCallback, CustomMenuSupervisorCallback {
@@ -59,9 +64,11 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     private List<WithHoldDataResponse.Withholddetail> withholddetailListTemp;
     private List<WithHoldDataResponse.Withholddetail> withholddetailListList = new ArrayList<>();
     private List<String> routeList = new ArrayList<>();
-    List<WithHoldDataResponse.Withholddetail> noStockItemList=new ArrayList<>();
+    public List<WithHoldDataResponse.Withholddetail> noStockItemList = new ArrayList<>();
+    Handler handler = new Handler();
 
-    List<WithHoldDataResponse.Withholddetail> damageItemList=new ArrayList<>();
+    List<GetWithHoldRemarksResponse.Remarksdetail> remarksdetailsList = new ArrayList<>();
+    public List<WithHoldDataResponse.Withholddetail> damageItemList = new ArrayList<>();
 
     ActivityPickerRequestsBinding activityPickerRequestsBinding;
 
@@ -76,6 +83,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     private String selectedRequestType = "All";
     private String selectedRoute = "All";
     private String minDate, maxDate;
+    public boolean status = false;
 
     private boolean isRequestTypeSpinnerReset = false;
     private boolean isSortbySpinnerReset = false;
@@ -87,6 +95,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityPickerRequestsBinding = DataBindingUtil.setContentView(this, R.layout.activity_picker_requests);
+
         setUp();
     }
 
@@ -140,6 +149,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         activityPickerRequestsBinding.setDcName(getSessionManager().getDcName());
 
         getController().getWithHoldApi();
+        timeHandler();
         parentLayoutTouchListener();
         pickerRequestSearchByText();
         setSortbyDropDown();
@@ -148,30 +158,82 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
     }
 
+    private void timeHandler() {
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.e("Connected","Connected");
+                start();
+                timeHandler();
+
+
+            }
+        },3000);
+
+    }
+
+
+    public void start() {
+        if (NetworkUtils.isNetworkConnected(this)) {
+            if (getSessionManager().getWithHoldApproval()!=null) {
+                List<WithHoldDataResponse.Withholddetail> withholddetailArrayList=new ArrayList<>();
+
+                if (getSessionManager().getWithHoldApproval().getPurchreqid() != null && getSessionManager().getWithHoldApproval().getItemname() != null) {
+
+                    getController().getWithHoldApprovalApi(" ", withholddetailArrayList, 0, "", "");
+
+
+                }
+            }
+        }
+    }
 
     private void setRequestTypeDropDown() {
-        List<GetWithHoldRemarksResponse.Remarksdetail> remarksdetailsList = AppConstants.getWithHoldRemarksResponse.getRemarksdetails();
+        String noStockLength;
+        String damageItemsLength;
+
         GetWithHoldRemarksResponse.Remarksdetail remarksdetail = new GetWithHoldRemarksResponse.Remarksdetail();
+
+
+        remarksdetailsList = AppConstants.getWithHoldRemarksResponse.getRemarksdetails();
         remarksdetail.setRemarkscode("All");
         remarksdetail.setRemarksdesc("All");
         remarksdetailsList.add(0, remarksdetail);
 
+        for (int i=1;i<remarksdetailsList.size();i++){
+            if (remarksdetailsList.get(i).getRemarksdesc().contains("All")){
+                remarksdetailsList.remove(i);
+            }
+        }
+
+
+
         remarksdetailsList.removeIf(s -> s.getRemarksdesc().equalsIgnoreCase("ByPass_Scan") || s.getRemarksdesc().equalsIgnoreCase("Quantity_Wise") || s.getRemarksdesc().equalsIgnoreCase("Area_Wise_ByPass"));
 
+//Set<GetWithHoldRemarksResponse.Remarksdetail> set=remarksdetailsList.stream().collect(Collectors.toCollection(()->new TreeSet<>(Comparator.comparing(GetWithHoldRemarksResponse.Remarksdetail::getRemarkscode))));
 
-        for (int i=0;i<remarksdetailsList.size();i++){
-            if (remarksdetailsList.get(i).getRemarksdesc().contains("NO_STOCK")){
 
-                remarksdetailsList.get(i).setRemarksdesc(remarksdetailsList.get(i).getRemarksdesc()+" ("+noStockItemList.size()+" )");
-            }else  if (remarksdetailsList.get(i).getRemarksdesc().contains("DAMAGE_ITEM")){
 
-                remarksdetailsList.get(i).setRemarksdesc(remarksdetailsList.get(i).getRemarksdesc()+" ("+damageItemList.size()+" )");
+        for (int i = 0; i < remarksdetailsList.size(); i++) {
+            if (remarksdetailsList.get(i).getRemarksdesc().contains("NO_STOCK")) {
+                if (noStockItemList.size() > 0) {
+                    noStockLength=String.valueOf(noStockItemList.size());
+
+                    remarksdetailsList.get(i).setRemarksdesc(StringUtils.GB2312.replace("GB2312",remarksdetailsList.get(i).getRemarksdesc() + " (" + noStockItemList.size() + ")").substring(0,11+noStockLength.length()));
+                }
+
+
+            } else if (remarksdetailsList.get(i).getRemarksdesc().contains("DAMAGE_ITEM")) {
+                if (damageItemList.size() > 0) {
+                    damageItemsLength=String.valueOf(damageItemList.size());
+                    remarksdetailsList.get(i).setRemarksdesc(StringUtils.GB2312.replace("GB2312",remarksdetailsList.get(i).getRemarksdesc() + " (" + damageItemList.size() + ")").substring(0,14+damageItemsLength.length()));
+
+                }
             }
 
 
         }
-
-
 
 
         RequestTypeDropdownSpinner adapter = new RequestTypeDropdownSpinner(this, remarksdetailsList);
@@ -180,8 +242,12 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (pickListHistoryAdapter != null) {
-
+//                    if (remarksdetailsList.get(position).getRemarksdesc().contains("NO_STOCk")){
+//
+//                    }
                     selectedRequestType = remarksdetailsList.get(position).getRemarkscode();
+
+
                     if (!isRequestTypeSpinnerReset) {
                         pickListHistoryAdapter.setRequestType(selectedRequestType);
                         activityPickerRequestsBinding.pickerRequestSearchByText.setText("");
@@ -418,6 +484,8 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSuccessWithHoldApi(WithHoldDataResponse withHoldDataResponse, String minDate, String maxDate) {
+
+
         this.minDate = CommonUtils.parseDateToddMMyyyyNoTime(minDate);
         this.maxDate = CommonUtils.parseDateToddMMyyyyNoTime(maxDate);
         activityPickerRequestsBinding.setMinDate(this.minDate);
@@ -425,13 +493,15 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         activityPickerRequestsBinding.setIsSortByRouteWise(true);
         if (withHoldDataResponse != null && withHoldDataResponse.getRequeststatus()) {
             withholddetailList = (ArrayList<WithHoldDataResponse.Withholddetail>) withHoldDataResponse.getWithholddetails();
+            withholddetailListTemp = withHoldDataResponse.getWithholddetails();
 
-            noStockItemList=withholddetailList.stream().filter(a->a.getHoldreasoncode().contains("NO_STOCK")).collect(Collectors.toList());
+            noStockItemList = withholddetailList.stream().filter(a -> a.getHoldreasoncode().contains("NO_STOCK")).collect(Collectors.toList());
 
-            damageItemList=withholddetailList.stream().filter(a->a.getHoldreasoncode().contains("DAMAGE_ITEM")).collect(Collectors.toList());
+            damageItemList = withholddetailList.stream().filter(a -> a.getHoldreasoncode().contains("DAMAGE_ITEM")).collect(Collectors.toList());
             setRequestTypeDropDown();
 
-            withholddetailListTemp = (ArrayList<WithHoldDataResponse.Withholddetail>) withHoldDataResponse.getWithholddetails();
+
+
             routeList = withholddetailListTemp.stream().map(WithHoldDataResponse.Withholddetail::getRoutecode).distinct().collect(Collectors.toList());
             routeList.add(0, "All");
             RouteTypeDropdownSpinner adapter = new RouteTypeDropdownSpinner(this, routeList);
@@ -454,8 +524,6 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
                 }
             });
-
-
 
 
             if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
