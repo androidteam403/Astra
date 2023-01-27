@@ -24,6 +24,7 @@ import com.thresholdsoft.astra.ui.picklist.model.OrderStatusTimeDateEntity;
 import com.thresholdsoft.astra.utils.CommonUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,10 +57,11 @@ public class PickListAdapter extends RecyclerView.Adapter<PickListAdapter.ViewHo
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+
+        Collections.sort(allocationhddataList,Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getRoutecode).thenComparing(GetAllocationDataResponse.Allocationhddata::getCustname));
         GetAllocationDataResponse.Allocationhddata allocationhddata = allocationhddataList.get(position);
 
-        allocationhddataList.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getRoutecode));
-        allocationhddataList.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getCustname));
         List<GetAllocationLineResponse> getAllocationLineResponse = AppDatabase.getDatabaseInstance(mContext).dbDao().getAllAllocationLineByPurchreqid(allocationhddata.getPurchreqid(), allocationhddata.getAreaid());
         if (getAllocationLineResponse != null && getAllocationLineResponse.size() > 0) {
             List<GetAllocationLineResponse.Allocationdetail> completedAllocationLineList = getAllocationLineResponse.get(0).getAllocationdetails().stream()
