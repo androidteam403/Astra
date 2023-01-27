@@ -160,8 +160,8 @@ public class PickListActivityController {
                 }
             });
         } else if (!NetworkUtils.isNetworkConnected(mContext)) {
-            if (getDataManager().getAllocationDataResponse()!=null)
-            mCallback.onSuccessGetAllocationDataApi(getDataManager().getAllocationDataResponse(), isRequestToSupervisior, isCompletedStatus);
+            if (getDataManager().getAllocationDataResponse() != null)
+                mCallback.onSuccessGetAllocationDataApi(getDataManager().getAllocationDataResponse(), isRequestToSupervisior, isCompletedStatus);
 
         } else {
             mCallback.onFailureMessage("Something went wrong.");
@@ -234,22 +234,21 @@ public class PickListActivityController {
                     ActivityUtils.hideDialog();
                     if (response.code() == 200 && response.body() != null) {
                         if (response.body().getRequeststatus()) {
-                            if(!isRefreshInternetClick){
+                            if (!isRefreshInternetClick) {
                                 getDataManager().setStatusUpdateRequest(null);
-                                mCallback.onSuccessStatusUpdateApi(response.body(), status, ismanuallyEditedScannedPacks, isRequestToSupervisior, getInProcessPendingDataFromDb,isRefreshInternetClick);
+                                mCallback.onSuccessStatusUpdateApi(response.body(), status, ismanuallyEditedScannedPacks, isRequestToSupervisior, getInProcessPendingDataFromDb, isRefreshInternetClick);
 
-                            }else{
-                                if(isRequestToSupervisior){
+                            } else {
+                                if (isRequestToSupervisior) {
                                     mCallback.onSuccessStatusUpdateApiIsRefreshInternetReqSup(statusUpdateRequest);
-                                }else{
+                                } else {
                                     mCallback.onSuccessStatusApiIsRefreshInternetPendingInprocess(statusUpdateRequest);
                                 }
 
                             }
-                                           } else {
+                        } else {
                             mCallback.onFailureMessage(response.body().getRequestmessage());
-                                getDataManager().setStatusUpdateRequest(null);
-
+                            getDataManager().setStatusUpdateRequest(null);
 
 
                         }//Success!!!  Failed to Update-Current status:COMPLETED
@@ -264,7 +263,7 @@ public class PickListActivityController {
                     mCallback.onFailureMessage(t.getMessage());
                 }
             });
-        }  else {
+        } else {
 
             StatusUpdateResponse statusUpdateResponse = new StatusUpdateResponse();
             statusUpdateResponse.setRequestmessage("Success!!!");
