@@ -3,6 +3,7 @@ package com.thresholdsoft.astra.ui.pickerrequests;
 import android.content.Context;
 
 import com.thresholdsoft.astra.BuildConfig;
+import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.network.ApiClient;
 import com.thresholdsoft.astra.network.ApiInterface;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutRequest;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,11 +51,13 @@ public class PickerRequestController {
                 public void onResponse(Call<WithHoldDataResponse> call, Response<WithHoldDataResponse> response) {
                     ActivityUtils.hideDialog();
                     if (response.code() == 200 && response.body() != null) {
-                        if (response.body().getWithholddetails().size()==0){
+                        if (response.body().getWithholddetails().size() == 0) {
                             mCallback.noPickerRequestsFound(0);
                         }
 
                         if (response.body().getWithholddetails() != null && response.body().getWithholddetails().size() > 0) {
+
+
 //                        Collections.sort(response.body().getWithholddetails(), new Comparator<WithHoldDataResponse.Withholddetail>() {
 //                            public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
 //                                return s1.getPurchreqid().compareToIgnoreCase(s2.getPurchreqid());
@@ -98,9 +102,15 @@ public class PickerRequestController {
 
     }
 
+    private SessionManager getSessionManager() {
+        return new SessionManager(mContext);
+    }
+
     public void getWithHoldApprovalApi(String approvedQty, List<WithHoldDataResponse.Withholddetail> withholddetailArrayList, int pos, String approvalReasonCode, String remarks) {
-        if (NetworkUtils.isNetworkConnected(mContext)) {
-            ArrayList<WithHoldApprovalRequest> withHoldApprovalRequestList = new ArrayList<>();
+        ArrayList<WithHoldApprovalRequest> withHoldApprovalRequestList = new ArrayList<>();
+
+
+        if (getSessionManager().getWithHoldApproval()==null) {
             ActivityUtils.showDialog(mContext, "Please wait.");
             WithHoldApprovalRequest withholddetail = new WithHoldApprovalRequest();
             withholddetail.setPurchreqid(withholddetailArrayList.get(pos).getPurchreqid());
@@ -121,7 +131,10 @@ public class PickerRequestController {
             withholddetail.setApprovalqty(withholddetailArrayList.get(pos).getApprovalqty());
             withholddetail.setApprovedqty(Integer.parseInt(approvedQty));
             withholddetail.setRemarks(remarks);
-            withHoldApprovalRequestList.add(withholddetail);
+
+            getSessionManager().setWithHoldApproval(withholddetail);
+        }
+        withHoldApprovalRequestList.add(getSessionManager().getWithHoldApproval());
 
 //
 //            WithHoldApprovalRequest withHoldApprovalRequest = new WithHoldApprovalRequest();
@@ -141,7 +154,7 @@ public class PickerRequestController {
 //            withHoldApprovalRequest.setApprovalreasoncode(withholddetail.getApprovalreasoncode());
 //            withHoldApprovalRequest.setComments("approved");
 //            withHoldApprovalRequest.setId(withholddetail.getId());
-
+        if (NetworkUtils.isNetworkConnected(mContext)) {
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
             Call<WithHoldApprovalResponse> call = apiInterface.WITH_HOLD_APPROVAL_API_CALL(BuildConfig.BASE_TOKEN, withHoldApprovalRequestList);
 
@@ -151,9 +164,12 @@ public class PickerRequestController {
                     if (response.code() == 200 && response.body() != null) {
                         if (response.body().getRequeststatus()) {
                             ActivityUtils.hideDialog();
+                            getSessionManager().setWithHoldApproval(null);
                             mCallback.onSuccessWithHoldApprovalApi(response.body());
                         } else {
                             ActivityUtils.hideDialog();
+                            getSessionManager().setWithHoldApproval(null);
+
                             mCallback.onFailureMessage(response.body().getRequestmessage());
                         }
                     } else {
@@ -173,6 +189,9 @@ public class PickerRequestController {
 
                 }
             });
+        } else if (!NetworkUtils.isNetworkConnected(mContext)) {
+            ActivityUtils.hideDialog();
+
         }
 
     }

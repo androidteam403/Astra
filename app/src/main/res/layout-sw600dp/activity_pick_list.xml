@@ -1297,6 +1297,22 @@
                                             android:textSize="@dimen/dimen12sp" />
                                     </LinearLayout>
                                 </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_marginStart="@dimen/dimen5dp"
+                                    android:layout_width="@dimen/dimen30dp"
+                                    android:layout_height="@dimen/dimen30dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:gravity="center"
+                                    android:onClick="@{()-> callback.onClickRefreshForInternet()}"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:contentDescription="@string/app_name"
+                                        android:src="@drawable/refresh_icon" />
+                                </LinearLayout>
                             </LinearLayout>
 
                             <LinearLayout
@@ -1835,7 +1851,22 @@
                                                                     android:textSize="@dimen/dimen14sp" />
 
                                                             </LinearLayout>
+                                                            <LinearLayout
+                                                                android:layout_marginStart="@dimen/dimen3dp"
+                                                                android:layout_width="@dimen/dimen30dp"
+                                                                android:layout_marginEnd="@dimen/dimen3dp"
+                                                                android:layout_height="@dimen/dimen30dp"
+                                                                android:layout_alignParentEnd="true"
+                                                                android:gravity="center"
+                                                                android:onClick="@{()-> callback.onClickRefreshForInternetSup()}"
+                                                                android:orientation="horizontal">
 
+                                                                <ImageView
+                                                                    android:layout_width="wrap_content"
+                                                                    android:layout_height="wrap_content"
+                                                                    android:contentDescription="@string/app_name"
+                                                                    android:src="@drawable/refresh_icon" />
+                                                            </LinearLayout>
                                                         </LinearLayout>
                                                     </LinearLayout>
 

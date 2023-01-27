@@ -1,7 +1,6 @@
 package com.thresholdsoft.astra.ui.picklist;
 
 import android.content.Context;
-import android.os.Environment;
 import android.util.Pair;
 
 import com.thresholdsoft.astra.BuildConfig;
@@ -141,6 +140,7 @@ public class PickListActivityController {
                     ActivityUtils.hideDialog();
                     if (response.code() == 200 && response.body() != null) {
                         if (response.body().getRequeststatus()) {
+                            getDataManager().setALlocationDataResponse(response.body());
                             mCallback.onSuccessGetAllocationDataApi(response.body(), isRequestToSupervisior, isCompletedStatus);
                         } else {
                             mCallback.noPickListFound(0);
@@ -159,6 +159,10 @@ public class PickListActivityController {
                     mCallback.onFailureMessage(t.getMessage());
                 }
             });
+        } else if (!NetworkUtils.isNetworkConnected(mContext)) {
+            if (getDataManager().getAllocationDataResponse()!=null)
+            mCallback.onSuccessGetAllocationDataApi(getDataManager().getAllocationDataResponse(), isRequestToSupervisior, isCompletedStatus);
+
         } else {
             mCallback.onFailureMessage("Something went wrong.");
         }
@@ -218,7 +222,7 @@ public class PickListActivityController {
         }
     }
 
-    public void statusUpdateApiCall(StatusUpdateRequest statusUpdateRequest, String status, boolean ismanuallyEditedScannedPacks, boolean isRequestToSupervisior) {
+    public void statusUpdateApiCall(int getInProcessPendingDataFromDb, StatusUpdateRequest statusUpdateRequest, String status, boolean ismanuallyEditedScannedPacks, boolean isRequestToSupervisior, boolean isRefreshInternetClick) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
 
@@ -230,10 +234,25 @@ public class PickListActivityController {
                     ActivityUtils.hideDialog();
                     if (response.code() == 200 && response.body() != null) {
                         if (response.body().getRequeststatus()) {
-                            mCallback.onSuccessStatusUpdateApi(response.body(), status, ismanuallyEditedScannedPacks, isRequestToSupervisior);
-                        } else {
+                            if(!isRefreshInternetClick){
+                                getDataManager().setStatusUpdateRequest(null);
+                                mCallback.onSuccessStatusUpdateApi(response.body(), status, ismanuallyEditedScannedPacks, isRequestToSupervisior, getInProcessPendingDataFromDb,isRefreshInternetClick);
+
+                            }else{
+                                if(isRequestToSupervisior){
+                                    mCallback.onSuccessStatusUpdateApiIsRefreshInternetReqSup(statusUpdateRequest);
+                                }else{
+                                    mCallback.onSuccessStatusApiIsRefreshInternetPendingInprocess(statusUpdateRequest);
+                                }
+
+                            }
+                                           } else {
                             mCallback.onFailureMessage(response.body().getRequestmessage());
-                        }
+                                getDataManager().setStatusUpdateRequest(null);
+
+
+
+                        }//Success!!!  Failed to Update-Current status:COMPLETED
                     } else {
                         mCallback.onFailureMessage("Something went wrong.");
                     }
@@ -245,8 +264,12 @@ public class PickListActivityController {
                     mCallback.onFailureMessage(t.getMessage());
                 }
             });
-        } else {
-            mCallback.onFailureMessage("Something went wrong.");
+        }  else {
+
+            StatusUpdateResponse statusUpdateResponse = new StatusUpdateResponse();
+            statusUpdateResponse.setRequestmessage("Success!!!");
+            mCallback.onSuccessStatusUpdateApiWithoutInternet(statusUpdateResponse, status, ismanuallyEditedScannedPacks, isRequestToSupervisior, statusUpdateRequest);
+
         }
 
     }

@@ -8,7 +8,11 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse;
+import com.thresholdsoft.astra.ui.picklist.model.InprocessPendingData;
 import com.thresholdsoft.astra.ui.picklist.model.OrderStatusTimeDateEntity;
+import com.thresholdsoft.astra.ui.picklist.model.RequestSupervisorPendingData;
+import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateRequest;
+import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
 import com.thresholdsoft.astra.utils.AppConstants;
 
 import java.util.List;
@@ -18,7 +22,8 @@ import java.util.List;
  * Created on : Nov 1, 2022
  * Author     : NAVEEN.M
  */
-@Database(entities = {GetAllocationLineResponse.class, OrderStatusTimeDateEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {GetAllocationLineResponse.class, OrderStatusTimeDateEntity.class, InprocessPendingData.class, RequestSupervisorPendingData.class
+}, version = 5, exportSchema = false)
 @TypeConverters({DataConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase mInstance;
@@ -54,6 +59,46 @@ public abstract class AppDatabase extends RoomDatabase {
         } else {
             dbDao().getAllocationLineInsert(getAllocationLineResponse);
         }
+    }
+
+    public void insertOrUpdateStatusUpdateList(InprocessPendingData inprocessPendingData) {
+
+        InprocessPendingData inprocessPendingData1 = dbDao().getAllStatusUpdateReqPurchreqid(inprocessPendingData.getPurchreqid(), inprocessPendingData.getAreaid());
+        if (inprocessPendingData1 != null) {
+            inprocessPendingData.setStatusUpdateRequest((inprocessPendingData1.getStatusUpdateRequest() != null)
+                    ? inprocessPendingData1.getStatusUpdateRequest()
+                    : inprocessPendingData.getStatusUpdateRequest());
+            inprocessPendingData.setUniqueKey(inprocessPendingData1.getUniqueKey());
+            dbDao().getStatusUpdateRequestUpdate(inprocessPendingData);
+        } else {
+            dbDao().getStatusUpdateRequestInsert(inprocessPendingData);
+        }
+    }
+
+    public void insertOrUpdateRequestSupervisorList(RequestSupervisorPendingData requestSupervisorPendingData) {
+
+        RequestSupervisorPendingData requestSupervisorPendingData1 = dbDao().getReqSuperVisorReqPurchreqid(requestSupervisorPendingData.getPurchreqid(), requestSupervisorPendingData.getAreaid(), requestSupervisorPendingData.getItemid());
+        if (requestSupervisorPendingData1 != null) {
+            requestSupervisorPendingData.setStatusUpdateRequest((requestSupervisorPendingData1.getStatusUpdateRequest() != null)
+                    ? requestSupervisorPendingData1.getStatusUpdateRequest()
+                    : requestSupervisorPendingData.getStatusUpdateRequest());
+            requestSupervisorPendingData.setUniqueKey(requestSupervisorPendingData1.getUniqueKey());
+            dbDao().getStatusUpdateRequestSupervisorUpdate(requestSupervisorPendingData);
+        } else {
+            dbDao().getStatusUpdateRequestSupervisorInsert(requestSupervisorPendingData);
+        }
+    }
+
+    public void onSuccessStatusUpdateApiIsRefreshInternetReqSup(RequestSupervisorPendingData requestSupervisorPendingData){
+        RequestSupervisorPendingData requestSupervisorPendingData1 = dbDao().getReqSuperVisorReqPurchreqid(requestSupervisorPendingData.getPurchreqid(), requestSupervisorPendingData.getAreaid(), requestSupervisorPendingData.getItemid());
+        requestSupervisorPendingData.setUniqueKey(requestSupervisorPendingData1.getUniqueKey());
+       dbDao().reqSupervisorDeleteRow(requestSupervisorPendingData.getUniqueKey());
+    }
+
+    public void onSuccessStatusUpdateApiIsRefreshInternetInprocessPending(InprocessPendingData inprocessPendingData){
+        InprocessPendingData inprocessPendingData1 = dbDao().getAllStatusUpdateReqPurchreqid(inprocessPendingData.getPurchreqid(), inprocessPendingData.getAreaid());
+        inprocessPendingData.setUniqueKey(inprocessPendingData1.getUniqueKey());
+        dbDao().assignedInProcessDeleteRow(inprocessPendingData.getUniqueKey());
     }
 
     public String getScanStartedTimeAndDate(String purchId, String areaId) {
