@@ -11,7 +11,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
@@ -32,10 +36,8 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Chronometer;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -50,13 +52,11 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.util.StringUtil;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.Writer;
 import com.google.zxing.common.BitMatrix;
-import com.google.zxing.common.StringUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.google.zxing.oned.Code128Writer;
@@ -100,9 +100,11 @@ import com.thresholdsoft.astra.ui.picklist.model.GetModeofDeliveryResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldStatusRequest;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldStatusResponse;
+import com.thresholdsoft.astra.ui.picklist.model.InprocessPendingData;
 import com.thresholdsoft.astra.ui.picklist.model.OrderStatusTimeDateEntity;
 import com.thresholdsoft.astra.ui.picklist.model.PackingLabelRequest;
 import com.thresholdsoft.astra.ui.picklist.model.PackingLabelResponse;
+import com.thresholdsoft.astra.ui.picklist.model.RequestSupervisorPendingData;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateRequest;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
 import com.thresholdsoft.astra.ui.picklisthistory.PickListHistoryActivity;
@@ -111,8 +113,9 @@ import com.thresholdsoft.astra.ui.scanner.ScannerActivity;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.CommonUtils;
 import com.thresholdsoft.astra.utils.NetworkUtils;
-import com.thresholdsoft.astra.utils.Utils;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -120,14 +123,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.stream.Collectors;
 
 public class PickListActivity extends PDFCreatorActivity implements PickListActivityCallback, CustomMenuCallback, Filterable {
@@ -151,6 +151,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     private String latestScanDateTime;
     private String orderCompletedDateTime;
     private String modeofDelivery;
+
+
     private SupervisorRequestRemarksAdapter supervisorRequestRemarksAdapter;
     private List<GetWithHoldRemarksResponse.Remarksdetail> supervisorHoldRemarksdetailsList;
     private GetWithHoldRemarksResponse.Remarksdetail selectedSupervisorRemarksdetail;
@@ -172,6 +174,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     //For pagination
     private int startIndex = 0;
     private int endIndex = 0;
+    private int getInProcessPendingDataFromDbPos = 0;
     private static int pageSize = 15;
 
 
@@ -257,8 +260,6 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     }
 
 
-
-
     @SuppressLint("ClickableViewAccessibility")
     private void parentLayoutTouchListener() {
         activityPickListBinding.parentLayout.setOnTouchListener((view, motionEvent) -> {
@@ -311,15 +312,15 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     private void timeHandler() {
 
-       handler.postDelayed(new Runnable() {
-           @Override
-           public void run() {
-              start();
-                  timeHandler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                start();
+                timeHandler();
 
 
-           }
-       },3000);
+            }
+        }, 3000);
 
     }
 
@@ -607,8 +608,12 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     }
 
     @Override
-    public void onSuccessStatusUpdateApi(StatusUpdateResponse statusUpdateResponse, String status, boolean ismanuallyEditedScannedPacks, boolean isRequestToSupervisior) {
+    public void onSuccessStatusUpdateApi(StatusUpdateResponse statusUpdateResponse, String status, boolean ismanuallyEditedScannedPacks, boolean isRequestToSupervisior, int getInProcessPendingDataFromDbPos, boolean isRefreshInternetClick) {
         if (status.equals("INPROCESS")) {
+//            if(isRefreshInternetClick && getInProcessPendingDataFromDblist!=null && !isRequestToSupervisior){
+//                StatusUpdateRequest statusUpdateRequest = new StatusUpdateRequest();
+//                getInProcessPendingDataFromDblist.get(getInProcessPendingDataFromDbPos).setStatusUpdateRequest(statusUpdateRequest);
+//            }
             if (isRequestToSupervisior) {
 
                 activityPickListBinding.getOrderStatusModel().setStatus("INPROCESS");
@@ -621,6 +626,10 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 insertOrUpdateAllocationLineList();
                 insertOrUpdateOrderStatusTimeDateEntity();
                 setOrderCompletedPending("INPROCESS");
+//                if(isRefreshInternetClick && getInProcessPendingDataReqSupFromDblist!=null){
+//                    StatusUpdateRequest statusUpdateRequest = new StatusUpdateRequest();
+//                    getInProcessPendingDataReqSupFromDblist.get(getInProcessPendingDataFromDbPos).setStatusUpdateRequest(statusUpdateRequest);
+//                }
 
                 getController().getAllocationDataApiCall(true, false);
 
@@ -771,6 +780,23 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         AppDatabase.getDatabaseInstance(this).insertOrUpdateGetAllocationLineList(getAllocationLineResponse);
     }
 
+    private void insertOrUpdateStatusUpdateList(StatusUpdateRequest statusUpdateRequest) {
+        InprocessPendingData inprocessPendingData = new InprocessPendingData();
+        inprocessPendingData.setPurchreqid(statusUpdateRequest.getPurchreqid());
+        inprocessPendingData.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
+        inprocessPendingData.setStatusUpdateRequest(statusUpdateRequest);
+        AppDatabase.getDatabaseInstance(this).insertOrUpdateStatusUpdateList(inprocessPendingData);
+    }
+
+    private void insertOrUpdateRequestSupervisorList(StatusUpdateRequest statusUpdateRequest) {
+        RequestSupervisorPendingData requestSupervisorPendingData = new RequestSupervisorPendingData();
+        requestSupervisorPendingData.setPurchreqid(statusUpdateRequest.getPurchreqid());
+        requestSupervisorPendingData.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
+        requestSupervisorPendingData.setItemid((activityPickListBinding.getBarcodeScannedItem().getId()));
+        requestSupervisorPendingData.setStatusUpdateRequest(statusUpdateRequest);
+        AppDatabase.getDatabaseInstance(this).insertOrUpdateRequestSupervisorList(requestSupervisorPendingData);
+    }
+
     private void insertOrUpdateOrderStatusTimeDateEntity() {
         OrderStatusTimeDateEntity orderStatusTimeDateEntity = new OrderStatusTimeDateEntity();
         orderStatusTimeDateEntity.setScanStartDateTime(this.scanStartDateTime);
@@ -877,7 +903,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
         getSessionManager().setStatusUpdateRequest(statusUpdateRequest);
 
-        getController().statusUpdateApiCall(statusUpdateRequest, "COMPLETED", false, false);
+        getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, statusUpdateRequest, "COMPLETED", false, false, false);
     }
 
     @Override
@@ -900,7 +926,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             statusUpdateRequest.setScanstatus("INPROCESS");
             statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
             statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
-            getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", false, true);
+            getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, statusUpdateRequest, "INPROCESS", false, true, false);
         } else {
             onSuccessGetWithHoldRemarksApi(AppConstants.getWithHoldRemarksResponse);
         }
@@ -988,7 +1014,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             statusUpdateAllocationdetailList.add(statusUpdateAllocationDetail);
         }
         statusUpdateRequest.setAllocationdetails(statusUpdateAllocationdetailList);
-        getController().statusUpdateApiCall(statusUpdateRequest, "WITHHOLD", false, false);
+        getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, statusUpdateRequest, "WITHHOLD", false, false, false);
 //        } else {
 //            Toast.makeText(this, "Select hold  remark ", Toast.LENGTH_SHORT).show();
 //        }
@@ -1146,7 +1172,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 statusUpdateRequest.setScanstatus("INPROCESS");
                 statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
                 statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
-                getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", true, false);
+                getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, statusUpdateRequest, "INPROCESS", true, false, false);
             } else {
                 this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
                 this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
@@ -1204,7 +1230,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                                         statusUpdateRequest.setScanstatus("INPROCESS");
                                         statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
                                         statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
-                                        getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", false, false);
+                                        getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, statusUpdateRequest, "INPROCESS", false, false, false);
                                     }
                                 } else {
                                     if (barcodeAllocationDetailList.get(0).isRequestAccepted()) {
@@ -1690,6 +1716,242 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         activityPickListBinding.searchByText.setText("");
     }
 
+    @Override
+    public void onClickRefreshForInternet() {
+        if(NetworkUtils.isNetworkConnected(getApplicationContext())){
+            List<InprocessPendingData> getInProcessPendingDataFromDblist = AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqPurchreqidAll();
+            if(getInProcessPendingDataFromDblist!=null && getInProcessPendingDataFromDblist.size()>0){
+                for(int i =0; i<getInProcessPendingDataFromDblist.size(); i++){
+                    getController().statusUpdateApiCall(getInProcessPendingDataFromDblist.indexOf(i) ,getInProcessPendingDataFromDblist.get(i).getStatusUpdateRequest(), "INPROCESS", false, false, true);
+                }
+            }else{
+                Toast.makeText(this, "No Pending Orders Found", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
+    }
+
+    @Override
+    public void onClickRefreshForInternetSup() {
+        if (NetworkUtils.isNetworkConnected(getApplicationContext())) {
+
+            List<RequestSupervisorPendingData> getInProcessPendingDataReqSupFromDblist = AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqSuperVisorPurchreqidAll();
+            if (getInProcessPendingDataReqSupFromDblist != null && getInProcessPendingDataReqSupFromDblist.size() > 0) {
+                for (int i = 0; i < getInProcessPendingDataReqSupFromDblist.size(); i++) {
+                    getController().statusUpdateApiCall(getInProcessPendingDataReqSupFromDblist.indexOf(i), getInProcessPendingDataReqSupFromDblist.get(i).getStatusUpdateRequest(), "INPROCESS", false, true, true);
+                }
+            } else {
+                Toast.makeText(this, "No Pending Orders Found", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onSuccessStatusUpdateApiIsRefreshInternetReqSup(StatusUpdateRequest statusUpdateRequest) {
+        List<RequestSupervisorPendingData> getInProcessPendingDataReqSupFromDblist = AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqSuperVisorPurchreqidAll();
+
+        if(getInProcessPendingDataReqSupFromDblist!=null){
+               for(int i =0; i<getInProcessPendingDataReqSupFromDblist.size(); i++){
+            if(statusUpdateRequest.getPurchreqid().equalsIgnoreCase(getInProcessPendingDataReqSupFromDblist.get(i).getPurchreqid()) && statusUpdateRequest.getAllocationdetails().get(0).getId()==getInProcessPendingDataReqSupFromDblist.get(i).getItemid() && activityPickListBinding.getAllocationData().getAreaid().equalsIgnoreCase(getInProcessPendingDataReqSupFromDblist.get(i).getAreaid())){
+                AppDatabase.getDatabaseInstance(this).onSuccessStatusUpdateApiIsRefreshInternetReqSup(getInProcessPendingDataReqSupFromDblist.get(i));
+            }
+
+        }
+        }
+
+
+    }
+
+    @Override
+    public void onSuccessStatusApiIsRefreshInternetPendingInprocess(StatusUpdateRequest statusUpdateRequest) {
+        List<InprocessPendingData> getInProcessPendingDataFromDblist = AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqPurchreqidAll();
+        if(getInProcessPendingDataFromDblist!=null){
+            for(int i =0; i<getInProcessPendingDataFromDblist.size(); i++){
+                if(statusUpdateRequest.getPurchreqid().equalsIgnoreCase(getInProcessPendingDataFromDblist.get(i).getPurchreqid())  && activityPickListBinding.getAllocationData().getAreaid().equalsIgnoreCase(getInProcessPendingDataFromDblist.get(i).getAreaid())){
+                    AppDatabase.getDatabaseInstance(this).onSuccessStatusUpdateApiIsRefreshInternetInprocessPending(getInProcessPendingDataFromDblist.get(i));
+                }
+
+            }
+        }
+    }
+
+
+    @Override
+    public void onClickShowSpeed() {
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if(cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED){
+            WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            int linkSpeed = wifiManager.getConnectionInfo().getRssi();
+            int level = WifiManager.calculateSignalLevel(linkSpeed, 5);
+//            Toast.makeText(getApplicationContext(),
+//                    "level: "+level,
+//                    Toast.LENGTH_LONG).show();
+            if(level<1){
+                activityPickListBinding.customMenuLayout.redSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                activityPickListBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                activityPickListBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+            }else if(level<2){
+                activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+                activityPickListBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                activityPickListBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+            }else if(level<3){
+                activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
+                activityPickListBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
+                activityPickListBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+            }else if(level<4){
+                activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
+                activityPickListBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
+                activityPickListBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
+                activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+            }else if(level<5){
+                activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                activityPickListBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                activityPickListBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                activityPickListBinding.customMenuLayout.greenSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+            }
+        }else if(cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ){
+
+            //should check null because in airplane mode it will be null
+            NetworkCapabilities nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
+            int downSpeed = nc.getLinkDownstreamBandwidthKbps()/1000;
+            int upSpeed = nc.getLinkUpstreamBandwidthKbps()/1000;
+//            Toast.makeText(getApplicationContext(),
+//                    "Up Speed: "+upSpeed,
+//                    Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(),
+//                    "Down Speed: "+downSpeed,
+//                    Toast.LENGTH_LONG).show();
+            if(downSpeed<=0){
+                activityPickListBinding.customMenuLayout.redSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                activityPickListBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                activityPickListBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+            }else if(downSpeed<15){
+                activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+                activityPickListBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                activityPickListBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+            }else if(downSpeed<30){
+                activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
+                activityPickListBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
+                activityPickListBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+            }else if(downSpeed<40){
+                activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
+                activityPickListBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
+                activityPickListBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
+                activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+            }else if(downSpeed>50){
+                activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                activityPickListBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                activityPickListBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                activityPickListBinding.customMenuLayout.greenSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+            }
+        }
+        else{
+            activityPickListBinding.customMenuLayout.redSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+            activityPickListBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+            activityPickListBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+            activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+        }
+
+    }
+
+
+    @Override
+    public void onSuccessStatusUpdateApiWithoutInternet(StatusUpdateResponse statusUpdateResponse, String status, boolean ismanuallyEditedScannedPacks, boolean isRequestToSupervisior, StatusUpdateRequest statusUpdateRequest) {
+        if (status.equals("INPROCESS")) {
+
+            activityPickListBinding.getOrderStatusModel().setStatus("INPROCESS");
+            activityPickListBinding.setOrderStatusModel(activityPickListBinding.getOrderStatusModel());
+
+            this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
+            this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
+            barcodeAllocationDetailList.get(0).setScannedDateTime(this.scanStartDateTime);
+
+
+
+            insertOrUpdateAllocationLineList();
+            insertOrUpdateOrderStatusTimeDateEntity();
+            setOrderCompletedPending("INPROCESS");
+
+            insertOrUpdateStatusUpdateList(statusUpdateRequest);
+//
+            for(int i=0; i<allocationhddataList.size();i++){
+                if(activityPickListBinding.getAllocationData().getAreaid().equalsIgnoreCase(allocationhddataList.get(i).getAreaid()) && activityPickListBinding.getAllocationData().getPurchreqid().equalsIgnoreCase(allocationhddataList.get(i).getPurchreqid())){
+                    allocationhddataList.get(i).setScanstatus("INPROCESS");
+                    pickListAdapter.notifyDataSetChanged();
+                }
+            }
+
+
+//            getController().getAllocationDataApiCall(true, false);
+
+//            if (isRequestToSupervisior) {
+//
+//                activityPickListBinding.getOrderStatusModel().setStatus("INPROCESS");
+//                activityPickListBinding.setOrderStatusModel(activityPickListBinding.getOrderStatusModel());
+//
+//                this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
+//                this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
+//                barcodeAllocationDetailList.get(0).setScannedDateTime(this.scanStartDateTime);
+//
+//                insertOrUpdateAllocationLineList();
+//                insertOrUpdateOrderStatusTimeDateEntity();
+//                setOrderCompletedPending("INPROCESS");
+//
+//                insertOrUpdateRequestSupervisorList(statusUpdateRequest);
+//
+//                getController().getAllocationDataApiCall(true, false);
+//
+//
+//            }else{
+//                activityPickListBinding.getOrderStatusModel().setStatus("INPROCESS");
+//                activityPickListBinding.setOrderStatusModel(activityPickListBinding.getOrderStatusModel());
+//
+//                this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
+//                this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
+//                barcodeAllocationDetailList.get(0).setScannedDateTime(this.scanStartDateTime);
+//
+//
+//
+//                insertOrUpdateAllocationLineList();
+//                insertOrUpdateOrderStatusTimeDateEntity();
+//                setOrderCompletedPending("INPROCESS");
+//
+//                insertOrUpdateStatusUpdateList(statusUpdateRequest);
+//
+//                getController().getAllocationDataApiCall(true, false);
+//
+//
+//
+//            }
+
+
+
+        }else if (status.equals("WITHHOLD")) {
+            this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
+            this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
+            this.barcodeAllocationDetailList.get(0).setSelectedSupervisorRemarksdetail(this.selectedSupervisorRemarksdetail);
+            this.barcodeAllocationDetailList.get(0).setRequestRejected(false);
+            this.barcodeAllocationDetailList.get(0).setRequestAccepted(false);
+            activityPickListBinding.setBarcodeScannedItem(this.barcodeAllocationDetailList.get(0));
+            insertOrUpdateAllocationLineList();
+            insertOrUpdateOrderStatusTimeDateEntity();
+            insertOrUpdateRequestSupervisorList(statusUpdateRequest);
+            setOrderCompletedPending(activityPickListBinding.getOrderStatusModel().getStatus());
+            setPendingMoveToFirst();
+
+            pickListAdapter.notifyDataSetChanged();
+        }
+    }
+
 
     private void requestApprovalPopup(GetWithHoldStatusResponse getWithHoldStatusResponse, boolean isApproved) {
         Dialog requestApprovalPopup = new Dialog(this);
@@ -1766,7 +2028,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                                     statusUpdateRequest.setScanstatus("INPROCESS");
                                     statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
                                     statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
-                                    getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", false, false);
+                                    getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, statusUpdateRequest, "INPROCESS", false, false, false);
                                 }
 
                             } else {
@@ -2030,13 +2292,15 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     }
 
     public void start() {
+        onClickShowSpeed();
         if (NetworkUtils.isNetworkConnected(this)) {
-            if (getSessionManager().getStatusUpdateRequest()!=null) {
+
+            if (getSessionManager().getStatusUpdateRequest() != null) {
 
                 if (getSessionManager().getStatusUpdateRequest().getPurchreqid() != null && getSessionManager().getStatusUpdateRequest().getAllocationdetails() != null) {
 
 
-                    getController().statusUpdateApiCall(getSessionManager().getStatusUpdateRequest(), "COMPLETED", false, false);
+                    getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, getSessionManager().getStatusUpdateRequest(), "COMPLETED", false, false, false);
                 }
             }
         }
