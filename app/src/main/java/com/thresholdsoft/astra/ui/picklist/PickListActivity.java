@@ -114,8 +114,6 @@ import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.CommonUtils;
 import com.thresholdsoft.astra.utils.NetworkUtils;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -483,25 +481,50 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    private boolean isPickListItemClick = false;
+    private GetAllocationDataResponse.Allocationhddata allocationhddata;
+
     @Override
     public void onClickPickListItem(GetAllocationDataResponse.Allocationhddata allocationhddata) {
-        startIndex = 0;
-        endIndex = 0;
-        activityPickListBinding.setAllocationData(allocationhddata);
+
+
         if (allocationhddata.getScanstatus().equals("INPROCESS") || allocationhddata.getScanstatus().equalsIgnoreCase("Completed")) {
             List<GetAllocationLineResponse> getAllocationLineResponseFromDb = AppDatabase.getDatabaseInstance(this).dbDao().getAllAllocationLineByPurchreqid(allocationhddata.getPurchreqid(), allocationhddata.getAreaid());
             if (getAllocationLineResponseFromDb != null && getAllocationLineResponseFromDb.size() > 0) {
+                startIndex = 0;
+                endIndex = 0;
+                activityPickListBinding.setAllocationData(allocationhddata);
                 onSuccessGetAllocationLineApi(getAllocationLineResponseFromDb.get(0));
             } else {
-                getController().getAllocationLineApiCall(allocationhddata);
+                if (NetworkUtils.isNetworkConnected(this)) {
+                    startIndex = 0;
+                    endIndex = 0;
+                    activityPickListBinding.setAllocationData(allocationhddata);
+                    getController().getAllocationLineApiCall(allocationhddata);
+                } else {
+                    Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+                }
             }
         } else {
-            getController().getAllocationLineApiCall(allocationhddata);
+            if (NetworkUtils.isNetworkConnected(this)) {
+                startIndex = 0;
+                endIndex = 0;
+                activityPickListBinding.setAllocationData(allocationhddata);
+                getController().getAllocationLineApiCall(allocationhddata);
+            } else {
+                Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     @Override
     public void onSuccessGetAllocationLineApi(GetAllocationLineResponse getAllocationLineResponse) {
+//        if (isPickListItemClick) {
+//            isPickListItemClick = false;
+//            startIndex = 0;
+//            endIndex = 0;
+//            activityPickListBinding.setAllocationData(allocationhddata);
+//        }
         for (GetAllocationDataResponse.Allocationhddata allocationhddata : allocationhddataList) {
             allocationhddata.setSelected(allocationhddata.getPurchreqid().equalsIgnoreCase(activityPickListBinding.getAllocationData().getPurchreqid()));
         }
@@ -809,10 +832,30 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     @Override
     public void onClickProcessDocument() {
-        if (activityPickListBinding.getOrderStatusModel().getToDoQty() == 0) {
-            onSuccessGetModeofDeliveryApi(AppConstants.getModeofDeliveryResponse);
+        if (NetworkUtils.isNetworkConnected(this)) {
+            if (activityPickListBinding.getOrderStatusModel().getToDoQty() == 0) {
+                List<InprocessPendingData> getInProcessPendingDataFromDblist = AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqPurchreqidAll();
+                List<RequestSupervisorPendingData> getInProcessPendingDataReqSupFromDblist = AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqSuperVisorPurchreqidAll();
+
+                if (getInProcessPendingDataFromDblist != null && getInProcessPendingDataFromDblist.size() > 0) {
+                    for (int i = 0; i < getInProcessPendingDataFromDblist.size(); i++) {
+                        isAnyApiPendingDialog();
+                    }
+                } else if (getInProcessPendingDataReqSupFromDblist != null && getInProcessPendingDataReqSupFromDblist.size() > 0) {
+                    for (int i = 0; i < getInProcessPendingDataReqSupFromDblist.size(); i++) {
+                        isAnyApiPendingDialog();
+                    }
+                } else {
+                    if (activityPickListBinding.getOrderStatusModel().getToDoQty() == 0) {
+                        onSuccessGetModeofDeliveryApi(AppConstants.getModeofDeliveryResponse);
 //            getController().getDeliveryofModeApiCall();
+                    }
+                }
+            }
+        } else {
+            Toast.makeText(this, "No internet connection.", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override
@@ -1718,15 +1761,17 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     @Override
     public void onClickRefreshForInternet() {
-        if(NetworkUtils.isNetworkConnected(getApplicationContext())){
+        if (NetworkUtils.isNetworkConnected(getApplicationContext())) {
             List<InprocessPendingData> getInProcessPendingDataFromDblist = AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqPurchreqidAll();
-            if(getInProcessPendingDataFromDblist!=null && getInProcessPendingDataFromDblist.size()>0){
-                for(int i =0; i<getInProcessPendingDataFromDblist.size(); i++){
-                    getController().statusUpdateApiCall(getInProcessPendingDataFromDblist.indexOf(i) ,getInProcessPendingDataFromDblist.get(i).getStatusUpdateRequest(), "INPROCESS", false, false, true);
+            if (getInProcessPendingDataFromDblist != null && getInProcessPendingDataFromDblist.size() > 0) {
+                for (int i = 0; i < getInProcessPendingDataFromDblist.size(); i++) {
+                    getController().statusUpdateApiCall(getInProcessPendingDataFromDblist.indexOf(i), getInProcessPendingDataFromDblist.get(i).getStatusUpdateRequest(), "INPROCESS", false, false, true);
                 }
-            }else{
+            } else {
                 Toast.makeText(this, "No Pending Orders Found", Toast.LENGTH_SHORT).show();
             }
+        } else {
+            Toast.makeText(this, "No internet connection.", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -1744,6 +1789,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             } else {
                 Toast.makeText(this, "No Pending Orders Found", Toast.LENGTH_SHORT).show();
             }
+        } else {
+            Toast.makeText(this, "No internet connection.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -1751,13 +1798,13 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     public void onSuccessStatusUpdateApiIsRefreshInternetReqSup(StatusUpdateRequest statusUpdateRequest) {
         List<RequestSupervisorPendingData> getInProcessPendingDataReqSupFromDblist = AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqSuperVisorPurchreqidAll();
 
-        if(getInProcessPendingDataReqSupFromDblist!=null){
-               for(int i =0; i<getInProcessPendingDataReqSupFromDblist.size(); i++){
-            if(statusUpdateRequest.getPurchreqid().equalsIgnoreCase(getInProcessPendingDataReqSupFromDblist.get(i).getPurchreqid()) && statusUpdateRequest.getAllocationdetails().get(0).getId()==getInProcessPendingDataReqSupFromDblist.get(i).getItemid() && activityPickListBinding.getAllocationData().getAreaid().equalsIgnoreCase(getInProcessPendingDataReqSupFromDblist.get(i).getAreaid())){
-                AppDatabase.getDatabaseInstance(this).onSuccessStatusUpdateApiIsRefreshInternetReqSup(getInProcessPendingDataReqSupFromDblist.get(i));
-            }
+        if (getInProcessPendingDataReqSupFromDblist != null) {
+            for (int i = 0; i < getInProcessPendingDataReqSupFromDblist.size(); i++) {
+                if (statusUpdateRequest.getPurchreqid().equalsIgnoreCase(getInProcessPendingDataReqSupFromDblist.get(i).getPurchreqid()) && statusUpdateRequest.getAllocationdetails().get(0).getId() == getInProcessPendingDataReqSupFromDblist.get(i).getItemid() && activityPickListBinding.getAllocationData().getAreaid().equalsIgnoreCase(getInProcessPendingDataReqSupFromDblist.get(i).getAreaid())) {
+                    AppDatabase.getDatabaseInstance(this).onSuccessStatusUpdateApiIsRefreshInternetReqSup(getInProcessPendingDataReqSupFromDblist.get(i));
+                }
 
-        }
+            }
         }
 
 
@@ -1766,9 +1813,9 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     @Override
     public void onSuccessStatusApiIsRefreshInternetPendingInprocess(StatusUpdateRequest statusUpdateRequest) {
         List<InprocessPendingData> getInProcessPendingDataFromDblist = AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqPurchreqidAll();
-        if(getInProcessPendingDataFromDblist!=null){
-            for(int i =0; i<getInProcessPendingDataFromDblist.size(); i++){
-                if(statusUpdateRequest.getPurchreqid().equalsIgnoreCase(getInProcessPendingDataFromDblist.get(i).getPurchreqid())  && activityPickListBinding.getAllocationData().getAreaid().equalsIgnoreCase(getInProcessPendingDataFromDblist.get(i).getAreaid())){
+        if (getInProcessPendingDataFromDblist != null) {
+            for (int i = 0; i < getInProcessPendingDataFromDblist.size(); i++) {
+                if (statusUpdateRequest.getPurchreqid().equalsIgnoreCase(getInProcessPendingDataFromDblist.get(i).getPurchreqid()) && activityPickListBinding.getAllocationData().getAreaid().equalsIgnoreCase(getInProcessPendingDataFromDblist.get(i).getAreaid())) {
                     AppDatabase.getDatabaseInstance(this).onSuccessStatusUpdateApiIsRefreshInternetInprocessPending(getInProcessPendingDataFromDblist.get(i));
                 }
 
@@ -1782,79 +1829,78 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
-        if(cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED){
+        if (cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
             WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             int linkSpeed = wifiManager.getConnectionInfo().getRssi();
             int level = WifiManager.calculateSignalLevel(linkSpeed, 5);
 //            Toast.makeText(getApplicationContext(),
 //                    "level: "+level,
 //                    Toast.LENGTH_LONG).show();
-            if(level<1){
+            if (level < 1) {
                 activityPickListBinding.customMenuLayout.redSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
                 activityPickListBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
                 activityPickListBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
                 activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
-            }else if(level<2){
+            } else if (level < 2) {
                 activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
                 activityPickListBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
                 activityPickListBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
                 activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
-            }else if(level<3){
+            } else if (level < 3) {
                 activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
                 activityPickListBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
                 activityPickListBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
                 activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
-            }else if(level<4){
+            } else if (level < 4) {
                 activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
                 activityPickListBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
                 activityPickListBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
                 activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
-            }else if(level<5){
+            } else if (level < 5) {
                 activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
                 activityPickListBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
                 activityPickListBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
                 activityPickListBinding.customMenuLayout.greenSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
             }
-        }else if(cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ){
+        } else if (cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED) {
 
             //should check null because in airplane mode it will be null
             NetworkCapabilities nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
-            int downSpeed = nc.getLinkDownstreamBandwidthKbps()/1000;
-            int upSpeed = nc.getLinkUpstreamBandwidthKbps()/1000;
+            int downSpeed = nc.getLinkDownstreamBandwidthKbps() / 1000;
+            int upSpeed = nc.getLinkUpstreamBandwidthKbps() / 1000;
 //            Toast.makeText(getApplicationContext(),
 //                    "Up Speed: "+upSpeed,
 //                    Toast.LENGTH_LONG).show();
 //            Toast.makeText(getApplicationContext(),
 //                    "Down Speed: "+downSpeed,
 //                    Toast.LENGTH_LONG).show();
-            if(downSpeed<=0){
+            if (downSpeed <= 0) {
                 activityPickListBinding.customMenuLayout.redSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
                 activityPickListBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
                 activityPickListBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
                 activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
-            }else if(downSpeed<15){
+            } else if (downSpeed < 15) {
                 activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
                 activityPickListBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
                 activityPickListBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
                 activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
-            }else if(downSpeed<30){
+            } else if (downSpeed < 30) {
                 activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
                 activityPickListBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
                 activityPickListBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
                 activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
-            }else if(downSpeed<40){
+            } else if (downSpeed < 40) {
                 activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
                 activityPickListBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
                 activityPickListBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
                 activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
-            }else if(downSpeed>50){
+            } else if (downSpeed > 50) {
                 activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
                 activityPickListBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
                 activityPickListBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
                 activityPickListBinding.customMenuLayout.greenSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
             }
-        }
-        else{
+        } else {
             activityPickListBinding.customMenuLayout.redSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
             activityPickListBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
             activityPickListBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
@@ -1876,15 +1922,14 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             barcodeAllocationDetailList.get(0).setScannedDateTime(this.scanStartDateTime);
 
 
-
             insertOrUpdateAllocationLineList();
             insertOrUpdateOrderStatusTimeDateEntity();
             setOrderCompletedPending("INPROCESS");
 
             insertOrUpdateStatusUpdateList(statusUpdateRequest);
 //
-            for(int i=0; i<allocationhddataList.size();i++){
-                if(activityPickListBinding.getAllocationData().getAreaid().equalsIgnoreCase(allocationhddataList.get(i).getAreaid()) && activityPickListBinding.getAllocationData().getPurchreqid().equalsIgnoreCase(allocationhddataList.get(i).getPurchreqid())){
+            for (int i = 0; i < allocationhddataList.size(); i++) {
+                if (activityPickListBinding.getAllocationData().getAreaid().equalsIgnoreCase(allocationhddataList.get(i).getAreaid()) && activityPickListBinding.getAllocationData().getPurchreqid().equalsIgnoreCase(allocationhddataList.get(i).getPurchreqid())) {
                     allocationhddataList.get(i).setScanstatus("INPROCESS");
                     pickListAdapter.notifyDataSetChanged();
                 }
@@ -1934,8 +1979,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 //            }
 
 
-
-        }else if (status.equals("WITHHOLD")) {
+        } else if (status.equals("WITHHOLD")) {
             this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
             this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
             this.barcodeAllocationDetailList.get(0).setSelectedSupervisorRemarksdetail(this.selectedSupervisorRemarksdetail);
@@ -2946,22 +2990,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     private void requestPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(getApplicationContext(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.CALL_PHONE,
-                        Manifest.permission.READ_PHONE_STATE,
-                        Manifest.permission.READ_LOGS,
-                        Manifest.permission.SEND_SMS,
-                        Manifest.permission.RECORD_AUDIO,
-                        Manifest.permission.READ_SMS,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.INTERNET,
-                        Manifest.permission.RECEIVE_SMS
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_LOGS, Manifest.permission.SEND_SMS, Manifest.permission.RECORD_AUDIO, Manifest.permission.READ_SMS, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET, Manifest.permission.RECEIVE_SMS
 
 
                 }, 0);
@@ -3187,4 +3217,21 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 //        layoutParams.height = height;
 //        view.setLayoutParams(layoutParams);
 //    }
+
+    private void isAnyApiPendingDialog() {
+        Dialog customDialog = new Dialog(this);
+        DialogCustomAlertBinding dialogCustomAlertBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_custom_alert, null, false);
+        customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        customDialog.setContentView(dialogCustomAlertBinding.getRoot());
+        customDialog.setCancelable(false);
+        dialogCustomAlertBinding.cancel.setVisibility(View.GONE);
+        dialogCustomAlertBinding.message.setText("Please complete pending apis first.");
+        dialogCustomAlertBinding.okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDialog.dismiss();
+            }
+        });
+        customDialog.show();
+    }
 }

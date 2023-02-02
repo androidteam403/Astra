@@ -2,6 +2,7 @@ package com.thresholdsoft.astra.ui.picklist;
 
 import android.content.Context;
 import android.util.Pair;
+import android.widget.Toast;
 
 import com.thresholdsoft.astra.BuildConfig;
 import com.thresholdsoft.astra.db.SessionManager;
@@ -32,6 +33,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.SocketTimeoutException;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -160,8 +162,8 @@ public class PickListActivityController {
                 }
             });
         } else if (!NetworkUtils.isNetworkConnected(mContext)) {
-            if (getDataManager().getAllocationDataResponse()!=null)
-            mCallback.onSuccessGetAllocationDataApi(getDataManager().getAllocationDataResponse(), isRequestToSupervisior, isCompletedStatus);
+            if (getDataManager().getAllocationDataResponse() != null)
+                mCallback.onSuccessGetAllocationDataApi(getDataManager().getAllocationDataResponse(), isRequestToSupervisior, isCompletedStatus);
 
         } else {
             mCallback.onFailureMessage("Something went wrong.");
@@ -234,22 +236,21 @@ public class PickListActivityController {
                     ActivityUtils.hideDialog();
                     if (response.code() == 200 && response.body() != null) {
                         if (response.body().getRequeststatus()) {
-                            if(!isRefreshInternetClick){
+                            if (!isRefreshInternetClick) {
                                 getDataManager().setStatusUpdateRequest(null);
-                                mCallback.onSuccessStatusUpdateApi(response.body(), status, ismanuallyEditedScannedPacks, isRequestToSupervisior, getInProcessPendingDataFromDb,isRefreshInternetClick);
+                                mCallback.onSuccessStatusUpdateApi(response.body(), status, ismanuallyEditedScannedPacks, isRequestToSupervisior, getInProcessPendingDataFromDb, isRefreshInternetClick);
 
-                            }else{
-                                if(isRequestToSupervisior){
+                            } else {
+                                if (isRequestToSupervisior) {
                                     mCallback.onSuccessStatusUpdateApiIsRefreshInternetReqSup(statusUpdateRequest);
-                                }else{
+                                } else {
                                     mCallback.onSuccessStatusApiIsRefreshInternetPendingInprocess(statusUpdateRequest);
                                 }
 
                             }
-                                           } else {
+                        } else {
                             mCallback.onFailureMessage(response.body().getRequestmessage());
-                                getDataManager().setStatusUpdateRequest(null);
-
+                            getDataManager().setStatusUpdateRequest(null);
 
 
                         }//Success!!!  Failed to Update-Current status:COMPLETED
@@ -260,11 +261,26 @@ public class PickListActivityController {
 
                 @Override
                 public void onFailure(@NotNull Call<StatusUpdateResponse> call, @NotNull Throwable t) {
-                    ActivityUtils.hideDialog();
-                    mCallback.onFailureMessage(t.getMessage());
+                    if (t instanceof SocketTimeoutException) {
+                        // "Connection Timeout";
+                        Toast.makeText(mContext, "Socket timeout exception!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
+                        StatusUpdateResponse statusUpdateResponse = new StatusUpdateResponse();
+                        statusUpdateResponse.setRequestmessage("Success!!!");
+                        mCallback.onSuccessStatusUpdateApiWithoutInternet(statusUpdateResponse, status, ismanuallyEditedScannedPacks, isRequestToSupervisior, statusUpdateRequest);
+                    } else if (t instanceof IOException) {
+                        // "Timeout";
+                        Toast.makeText(mContext, "IOException!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
+                        StatusUpdateResponse statusUpdateResponse = new StatusUpdateResponse();
+                        statusUpdateResponse.setRequestmessage("Success!!!");
+                        mCallback.onSuccessStatusUpdateApiWithoutInternet(statusUpdateResponse, status, ismanuallyEditedScannedPacks, isRequestToSupervisior, statusUpdateRequest);
+                    } else {
+                        ActivityUtils.hideDialog();
+                        mCallback.onFailureMessage(t.getMessage());
+                    }
+
                 }
             });
-        }  else {
+        } else {
 
             StatusUpdateResponse statusUpdateResponse = new StatusUpdateResponse();
             statusUpdateResponse.setRequestmessage("Success!!!");
