@@ -426,20 +426,20 @@
                         android:id="@+id/pick_list_menu_stroke"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight=".15"
+                        android:layout_weight=".2"
                         android:background="@{selectedMenu == 1 ? @color/yellow : @color/transperancy}" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight=".15"
+                        android:layout_weight=".2"
                         android:background="@{selectedMenu == 2 ? @color/yellow : @color/transperancy}"
                         android:visibility="gone" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight=".15"
+                        android:layout_weight=".2"
                         android:background="@{selectedMenu == 3 ? @color/yellow : @color/transperancy}"
                         android:visibility="gone" />
 
