@@ -22,7 +22,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="0.45"
+                    android:layout_weight="0.35"
                     android:gravity="center">
 
                     <LinearLayout
@@ -38,36 +38,6 @@
                             android:contentDescription="@string/app_name"
                             android:src="@drawable/apollo_healthco_logo" />
 
-
-                        <!--                        <TextView-->
-                        <!--                            android:layout_width="wrap_content"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:layout_marginTop="@dimen/dimen5dp"-->
-                        <!--                            android:fontFamily="@font/poppins_bold"-->
-                        <!--                            android:gravity="center"-->
-                        <!--                            android:text="@{userId}"-->
-                        <!--                            android:textColor="@color/white"-->
-                        <!--                            android:textSize="@dimen/dimen14sp" />-->
-
-                        <!--                        <TextView-->
-                        <!--                            android:layout_width="wrap_content"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:layout_marginTop="@dimen/dimen5dp"-->
-                        <!--                            android:fontFamily="@font/poppins_bold"-->
-                        <!--                            android:gravity="center"-->
-                        <!--                            android:text="@{empRole}"-->
-                        <!--                            android:textColor="@color/white"-->
-                        <!--                            android:textSize="@dimen/dimen12sp" />-->
-
-                        <!--                        <TextView-->
-                        <!--                            android:layout_width="wrap_content"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:layout_marginTop="@dimen/dimen5dp"-->
-                        <!--                            android:fontFamily="@font/poppins_bold"-->
-                        <!--                            android:gravity="center"-->
-                        <!--                            android:text="@{pickerName}"-->
-                        <!--                            android:textColor="@color/white"-->
-                        <!--                            android:textSize="@dimen/dimen12sp" />-->
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -90,9 +60,9 @@
                             android:textSize="@dimen/dimen12sp" />
 
                         <LinearLayout
-                            android:layout_marginTop="@dimen/dimen3dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen3dp"
                             android:gravity="center_vertical"
                             android:orientation="vertical">
 
@@ -102,7 +72,6 @@
                                 android:orientation="horizontal">
 
                                 <LinearLayout
-                                    android:padding="5dp"
                                     android:layout_width="@dimen/dimen70dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/dimen2dp"
@@ -110,7 +79,8 @@
                                     android:backgroundTint="@color/lite_yellow"
                                     android:gravity="center"
                                     android:onClick="@{()-> customMenuCallback.onClickRefreshForInternet()}"
-                                    android:orientation="horizontal">
+                                    android:orientation="horizontal"
+                                    android:padding="5dp">
 
 
                                     <TextView
@@ -121,32 +91,31 @@
                                         android:gravity="center"
                                         android:text="Inprocess"
                                         android:textAllCaps="true"
-                                        android:textStyle="bold"
                                         android:textColor="@color/black"
-                                        android:textSize="@dimen/dimen9sp" />
+                                        android:textSize="@dimen/dimen9sp"
+                                        android:textStyle="bold" />
                                 </LinearLayout>
 
                                 <TextView
                                     android:id="@+id/inprocessOrdersLeft"
-                                    android:layout_marginStart="@dimen/dimen3dp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textStyle="bold"
-                                    android:text="0"
                                     android:layout_gravity="center"
+                                    android:layout_marginStart="@dimen/dimen3dp"
+                                    android:text="0"
                                     android:textColor="@color/white"
-                                    android:textSize="@dimen/dimen14sp"/>
+                                    android:textSize="@dimen/dimen14sp"
+                                    android:textStyle="bold" />
                             </LinearLayout>
 
 
                             <LinearLayout
-                                android:layout_marginTop="@dimen/dimen5dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dimen5dp"
                                 android:orientation="horizontal">
 
                                 <LinearLayout
-                                    android:padding="@dimen/dimen5dp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/dimen2dp"
@@ -154,7 +123,8 @@
                                     android:backgroundTint="@color/color_takeprint"
                                     android:gravity="center"
                                     android:onClick="@{()-> customMenuCallback.onClickRefreshForInternetSup()}"
-                                    android:orientation="horizontal">
+                                    android:orientation="horizontal"
+                                    android:padding="@dimen/dimen5dp">
 
 
                                     <TextView
@@ -163,77 +133,77 @@
                                         android:gravity="center"
                                         android:text="Withhold"
                                         android:textAllCaps="true"
-                                        android:textStyle="bold"
                                         android:textColor="@color/white"
-                                        android:textSize="@dimen/dimen9sp" />
+                                        android:textSize="@dimen/dimen9sp"
+                                        android:textStyle="bold" />
                                 </LinearLayout>
 
                                 <TextView
                                     android:id="@+id/withHoldOrdersLeft"
-                                    android:layout_marginStart="@dimen/dimen3dp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textStyle="bold"
-                                    android:text="0"
-                                    android:gravity="center"
                                     android:layout_gravity="center"
+                                    android:layout_marginStart="@dimen/dimen3dp"
+                                    android:gravity="center"
+                                    android:text="0"
                                     android:textColor="@color/white"
-                                    android:textSize="@dimen/dimen12sp"/>
+                                    android:textSize="@dimen/dimen12sp"
+                                    android:textStyle="bold" />
                             </LinearLayout>
 
                         </LinearLayout>
-<!--                        <LinearLayout-->
-<!--                            android:layout_marginStart="@dimen/dimen2dp"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:orientation="vertical">-->
-<!--                            -->
-<!--                            <LinearLayout-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:orientation="horizontal"-->
-<!--                                android:layout_height="wrap_content">-->
-<!--                                -->
+                        <!--                        <LinearLayout-->
+                        <!--                            android:layout_marginStart="@dimen/dimen2dp"-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:orientation="vertical">-->
+                        <!--                            -->
+                        <!--                            <LinearLayout-->
+                        <!--                                android:layout_width="wrap_content"-->
+                        <!--                                android:orientation="horizontal"-->
+                        <!--                                android:layout_height="wrap_content">-->
+                        <!--                                -->
 
-<!--                                <TextView-->
-<!--                                    android:background="@drawable/rounded_corner_bg"-->
-<!--                                    android:backgroundTint="@color/lite_yellow"-->
-<!--                                    android:padding="4dp"-->
-<!--                                    android:textAlignment="center"-->
-<!--                                    android:onClick="@{()-> callback.onClickRefreshForInternet()}"-->
-<!--                                    android:layout_width="wrap_content"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:textSize="@dimen/dimen10sp"-->
-<!--                                    android:textColor="@color/black"-->
-<!--                                    android:textStyle="bold"-->
-<!--                                    android:text="Inprocess"/>-->
-<!--                                -->
-<!--                                <TextView-->
-<!--                                    android:layout_width="wrap_content"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:text="2"-->
-<!--                                    android:textStyle="bold"-->
-<!--                                    android:textSize="11sp"-->
-<!--                                    android:textColor="@color/white"-->
-<!--                                    android:layout_marginStart="@dimen/dimen3dp"/>-->
-<!--                            </LinearLayout>-->
-
-
-<!--                           -->
-<!--                            <TextView-->
-<!--                                android:layout_marginTop="5dp"-->
-<!--                                android:padding="@dimen/dimen2dp"-->
-<!--                                android:textAlignment="center"-->
-<!--                                android:background="@color/green"-->
-<!--                                android:onClick="@{()-> callback.onClickRefreshForInternetSup()}"-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:textSize="@dimen/dimen10sp"-->
-<!--                                android:textColor="@color/white"-->
-<!--                                android:textStyle="bold"-->
-<!--                                android:text="Withhold"/>-->
+                        <!--                                <TextView-->
+                        <!--                                    android:background="@drawable/rounded_corner_bg"-->
+                        <!--                                    android:backgroundTint="@color/lite_yellow"-->
+                        <!--                                    android:padding="4dp"-->
+                        <!--                                    android:textAlignment="center"-->
+                        <!--                                    android:onClick="@{()-> callback.onClickRefreshForInternet()}"-->
+                        <!--                                    android:layout_width="wrap_content"-->
+                        <!--                                    android:layout_height="wrap_content"-->
+                        <!--                                    android:textSize="@dimen/dimen10sp"-->
+                        <!--                                    android:textColor="@color/black"-->
+                        <!--                                    android:textStyle="bold"-->
+                        <!--                                    android:text="Inprocess"/>-->
+                        <!--                                -->
+                        <!--                                <TextView-->
+                        <!--                                    android:layout_width="wrap_content"-->
+                        <!--                                    android:layout_height="wrap_content"-->
+                        <!--                                    android:text="2"-->
+                        <!--                                    android:textStyle="bold"-->
+                        <!--                                    android:textSize="11sp"-->
+                        <!--                                    android:textColor="@color/white"-->
+                        <!--                                    android:layout_marginStart="@dimen/dimen3dp"/>-->
+                        <!--                            </LinearLayout>-->
 
 
-<!--                        </LinearLayout>-->
+                        <!--                           -->
+                        <!--                            <TextView-->
+                        <!--                                android:layout_marginTop="5dp"-->
+                        <!--                                android:padding="@dimen/dimen2dp"-->
+                        <!--                                android:textAlignment="center"-->
+                        <!--                                android:background="@color/green"-->
+                        <!--                                android:onClick="@{()-> callback.onClickRefreshForInternetSup()}"-->
+                        <!--                                android:layout_width="wrap_content"-->
+                        <!--                                android:layout_height="wrap_content"-->
+                        <!--                                android:textSize="@dimen/dimen10sp"-->
+                        <!--                                android:textColor="@color/white"-->
+                        <!--                                android:textStyle="bold"-->
+                        <!--                                android:text="Withhold"/>-->
+
+
+                        <!--                        </LinearLayout>-->
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -241,7 +211,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight=".55"
+                    android:layout_weight=".65"
                     android:orientation="vertical"
                     android:weightSum="1">
 
@@ -249,7 +219,7 @@
                         android:id="@+id/pick_list_menu"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight=".25"
+                        android:layout_weight=".2"
                         android:background="@{selectedMenu == 1 ? @color/yellow : @color/transperancy}"
                         android:gravity="center"
                         android:onClick="@{()-> customMenuCallback.onClickPickList()}"
@@ -272,125 +242,16 @@
                             android:textSize="@dimen/dimen12sp" />
                     </LinearLayout>
 
-                    <!--                    <LinearLayout-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="0dp"-->
-                    <!--                        android:layout_weight=".2"-->
-                    <!--                        android:background="@{selectedMenu == 2 ? @color/yellow : @color/transperancy}"-->
-                    <!--                        android:gravity="center"-->
-                    <!--                        android:onClick="@{()-> customMenuCallback.onClickPickListHistory()}"-->
-                    <!--                        android:orientation="vertical">-->
-
-                    <!--                        <ImageView-->
-                    <!--                            android:layout_width="@dimen/dimen50dp"-->
-                    <!--                            android:layout_height="@dimen/dimen50dp"-->
-                    <!--                            android:contentDescription="@string/app_name"-->
-                    <!--                            android:src="@drawable/ic_baseline_receipt_long_24"-->
-                    <!--                            android:tint="@{selectedMenu == 2 ? @color/black : @color/white}"-->
-                    <!--                            android:visibility="gone" />-->
-
-                    <!--                        <TextView-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:fontFamily="@font/poppins_bold"-->
-                    <!--                            android:gravity="center"-->
-                    <!--                            android:text="@string/label_pick_list_nhistory"-->
-                    <!--                            android:textColor="@{selectedMenu == 2 ? @color/black : @color/white}"-->
-                    <!--                            android:textSize="@dimen/dimen12sp"-->
-                    <!--                            android:visibility="gone" />-->
-                    <!--                    </LinearLayout>-->
-
-                    <!--                    <LinearLayout-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="0dp"-->
-                    <!--                        android:layout_weight=".2"-->
-                    <!--                        android:background="@{selectedMenu == 3 ? @color/yellow : @color/transperancy}"-->
-                    <!--                        android:gravity="center"-->
-                    <!--                        android:onClick="@{()-> customMenuCallback.onClickRequestHistory()}"-->
-                    <!--                        android:orientation="vertical">-->
-
-                    <!--                        <ImageView-->
-                    <!--                            android:layout_width="@dimen/dimen50dp"-->
-                    <!--                            android:layout_height="@dimen/dimen50dp"-->
-                    <!--                            android:contentDescription="@string/app_name"-->
-                    <!--                            android:src="@drawable/ic_baseline_feed_24"-->
-                    <!--                            android:tint="@{selectedMenu == 3 ? @color/black : @color/white}"-->
-                    <!--                            android:visibility="gone" />-->
-
-                    <!--                        <TextView-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:fontFamily="@font/poppins_bold"-->
-                    <!--                            android:gravity="center"-->
-                    <!--                            android:text="@string/label_request_nhistory"-->
-                    <!--                            android:textColor="@{selectedMenu == 3 ? @color/black : @color/white}"-->
-                    <!--                            android:textSize="@dimen/dimen12sp"-->
-                    <!--                            android:visibility="gone" />-->
-                    <!--                    </LinearLayout>-->
-
-                    <!--                    <LinearLayout-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="0dp"-->
-                    <!--                        android:layout_weight=".2"-->
-                    <!--                        android:background="@{selectedMenu == 4 ? @color/yellow : @color/transperancy}"-->
-                    <!--                        android:gravity="center"-->
-                    <!--                        android:onClick="@{()-> customMenuCallback.onClickDashboard()}"-->
-                    <!--                        android:orientation="vertical">-->
-
-                    <!--                        <ImageView-->
-                    <!--                            android:layout_width="@dimen/dimen50dp"-->
-                    <!--                            android:layout_height="@dimen/dimen50dp"-->
-                    <!--                            android:contentDescription="@string/app_name"-->
-                    <!--                            android:src="@drawable/ic_baseline_analytics_24"-->
-                    <!--                            android:tint="@{selectedMenu == 4 ? @color/black : @color/white}"-->
-                    <!--                            android:visibility="gone" />-->
-
-                    <!--                        <TextView-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:fontFamily="@font/poppins_bold"-->
-                    <!--                            android:gravity="center"-->
-                    <!--                            android:text="@string/label_dashboard"-->
-                    <!--                            android:textColor="@{selectedMenu == 4 ? @color/black : @color/white}"-->
-                    <!--                            android:textSize="@dimen/dimen12sp"-->
-                    <!--                            android:visibility="gone" />-->
-                    <!--                    </LinearLayout>-->
-
-                    <!--                    <LinearLayout-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="0dp"-->
-                    <!--                        android:layout_weight=".2"-->
-                    <!--                        android:background="@{selectedMenu == 5 ? @color/yellow : @color/transperancy}"-->
-                    <!--                        android:gravity="center"-->
-                    <!--                        android:onClick="@{()-> customMenuCallback.onClickPickerRequest()}"-->
-                    <!--                        android:orientation="vertical"-->
-                    <!--                        android:visibility="gone">-->
-
-                    <!--                        <ImageView-->
-                    <!--                            android:layout_width="@dimen/dimen50dp"-->
-                    <!--                            android:layout_height="@dimen/dimen50dp"-->
-                    <!--                            android:contentDescription="@string/app_name"-->
-                    <!--                            android:src="@drawable/ic_baseline_hail_24"-->
-                    <!--                            android:tint="@{selectedMenu == 5 ? @color/black : @color/white}" />-->
-
-                    <!--                        <TextView-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:fontFamily="@font/poppins_bold"-->
-                    <!--                            android:gravity="center"-->
-                    <!--                            android:text="@string/label_picker_nrequest"-->
-                    <!--                            android:textColor="@{selectedMenu == 5 ? @color/black : @color/white}"-->
-                    <!--                            android:textSize="@dimen/dimen12sp" />-->
-                    <!--                    </LinearLayout>-->
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height=".0dp"
-                        android:layout_weight=".1" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height=".0dp"
-                        android:layout_weight=".1" />
+                        android:layout_weight=".2" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height=".0dp"
+                        android:layout_weight=".2" />
 
                     <View
                         android:layout_width="match_parent"
@@ -401,106 +262,99 @@
                         android:id="@+id/logout_menu"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight=".45"
+                        android:layout_weight=".25"
                         android:gravity="center"
-
                         android:orientation="vertical">
 
 
                         <LinearLayout
-                            android:padding="@dimen/dimen5dp"
-                            android:background="@drawable/bg_for_signall"
-                            android:visibility="visible"
-                            android:layout_marginBottom="@dimen/dimen5dp"
-                            android:gravity="center"
-                            android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <LinearLayout
+                            android:background="@drawable/bg_for_signall"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="@dimen/dimen5dp"
+                            android:visibility="visible">
 
-                                android:layout_gravity="center"
-                                android:gravity="center"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:gravity="center"
                                 android:orientation="horizontal">
 
                                 <LinearLayout
-
-                                    android:gravity="bottom"
-                                    android:layout_gravity="bottom"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="match_parent">
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="bottom"
+                                    android:gravity="bottom">
 
                                     <TextView
                                         android:id="@+id/red_signal"
-                                        android:background="@drawable/bg_signal"
-                                        android:paddingLeft="@dimen/dimen3dp"
-                                        android:paddingRight="@dimen/dimen3dp"
-                                        android:gravity="bottom"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="@dimen/dimen15dp"/>
+                                        android:layout_height="@dimen/dimen15dp"
+                                        android:background="@drawable/bg_signal"
+                                        android:gravity="bottom"
+                                        android:paddingLeft="@dimen/dimen3dp"
+                                        android:paddingRight="@dimen/dimen3dp" />
 
                                 </LinearLayout>
 
                                 <LinearLayout
-                                    android:layout_marginStart="@dimen/dimen3dp"
-                                    android:gravity="bottom"
-                                    android:layout_gravity="bottom"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="match_parent">
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="bottom"
+                                    android:layout_marginStart="@dimen/dimen3dp"
+                                    android:gravity="bottom">
 
                                     <TextView
                                         android:id="@+id/orange_signal"
-                                        android:background="@drawable/bg_signal"
-                                        android:padding="@dimen/dimen3dp"
-                                        android:gravity="bottom"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="@dimen/dimen20dp"/>
+                                        android:layout_height="@dimen/dimen20dp"
+                                        android:background="@drawable/bg_signal"
+                                        android:gravity="bottom"
+                                        android:padding="@dimen/dimen3dp" />
 
                                 </LinearLayout>
 
                                 <LinearLayout
-                                    android:layout_marginStart="@dimen/dimen3dp"
-                                    android:gravity="bottom"
-                                    android:layout_gravity="bottom"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="match_parent">
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="bottom"
+                                    android:layout_marginStart="@dimen/dimen3dp"
+                                    android:gravity="bottom">
 
                                     <TextView
                                         android:id="@+id/blue_signal"
-                                        android:paddingLeft="@dimen/dimen3dp"
-                                        android:paddingRight="@dimen/dimen3dp"
-                                        android:gravity="bottom"
                                         android:layout_width="wrap_content"
+                                        android:layout_height="@dimen/dimen25dp"
                                         android:background="@drawable/bg_signal"
-                                        android:layout_height="@dimen/dimen25dp"/>
+                                        android:gravity="bottom"
+                                        android:paddingLeft="@dimen/dimen3dp"
+                                        android:paddingRight="@dimen/dimen3dp" />
 
                                 </LinearLayout>
 
                                 <LinearLayout
-                                    android:layout_marginStart="@dimen/dimen3dp"
-                                    android:gravity="bottom"
-                                    android:layout_gravity="bottom"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="match_parent">
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="bottom"
+                                    android:layout_marginStart="@dimen/dimen3dp"
+                                    android:gravity="bottom">
 
                                     <TextView
                                         android:id="@+id/green_signal"
-                                        android:paddingLeft="@dimen/dimen3dp"
-                                        android:paddingRight="@dimen/dimen3dp"
-                                        android:gravity="bottom"
                                         android:layout_width="wrap_content"
+                                        android:layout_height="@dimen/dimen30dp"
                                         android:background="@drawable/bg_signal"
-                                        android:layout_height="@dimen/dimen30dp"/>
+                                        android:gravity="bottom"
+                                        android:paddingLeft="@dimen/dimen3dp"
+                                        android:paddingRight="@dimen/dimen3dp" />
 
                                 </LinearLayout>
 
 
-
                             </LinearLayout>
-
-
 
 
                             <!--                    <TextView-->
@@ -521,14 +375,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/white"
-                                android:textSize="@dimen/dimen10sp"/>
+                                android:textSize="@dimen/dimen10sp" />
                         </LinearLayout>
+
                         <LinearLayout
-                            android:onClick="@{()-> customMenuCallback.onClickLogout()}"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:onClick="@{()-> customMenuCallback.onClickLogout()}"
+                            android:orientation="vertical">
 
                             <ImageView
                                 android:layout_width="@dimen/dimen30dp"
@@ -573,12 +428,12 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="0.45"  />
+                    android:layout_weight="0.35" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight=".7"
+                    android:layout_weight=".65"
                     android:orientation="vertical"
                     android:weightSum="1">
 
