@@ -1870,7 +1870,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 activityPickListBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
                 activityPickListBinding.customMenuLayout.greenSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
             }
-        } else if (cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED) {
+        }
+        else if (cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED) {
 
             //should check null because in airplane mode it will be null
             NetworkCapabilities nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
@@ -1913,7 +1914,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 activityPickListBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
                 activityPickListBinding.customMenuLayout.greenSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
             }
-        } else {
+        }
+        else {
             activityPickListBinding.customMenuLayout.internetSpeedText.setText("");
             activityPickListBinding.customMenuLayout.redSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
             activityPickListBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
