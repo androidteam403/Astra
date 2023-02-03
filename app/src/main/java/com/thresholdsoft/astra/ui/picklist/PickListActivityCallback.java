@@ -118,9 +118,9 @@ public interface PickListActivityCallback {
 
     void onClickPurchaseRequisitionClose();
 
-    void onClickRefreshForInternet();
-
-    void onClickRefreshForInternetSup();
+//    void onClickRefreshForInternet();
+//
+//    void  onClickRefreshForInternetSup();
 
     void onSuccessStatusUpdateApiIsRefreshInternetReqSup(StatusUpdateRequest statusUpdateRequest, boolean isNetworkStateChange);
 
