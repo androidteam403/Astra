@@ -122,12 +122,14 @@ public interface PickListActivityCallback {
 //
 //    void  onClickRefreshForInternetSup();
 
-    void onSuccessStatusUpdateApiIsRefreshInternetReqSup(StatusUpdateRequest statusUpdateRequest);
+    void onSuccessStatusUpdateApiIsRefreshInternetReqSup(StatusUpdateRequest statusUpdateRequest, boolean isNetworkStateChange);
 
-    void onSuccessStatusApiIsRefreshInternetPendingInprocess(StatusUpdateRequest statusUpdateRequest);
+    void onSuccessStatusApiIsRefreshInternetPendingInprocess(StatusUpdateRequest statusUpdateRequest, boolean isNetworkStateChange);
 
     void onClickShowSpeed();
 
 
     void onSuccessStatusUpdateApiWithoutInternet(StatusUpdateResponse statusUpdateResponse, String status, boolean ismanuallyEditedScannedPacks, boolean isRequestToSupervisior, StatusUpdateRequest statusUpdateRequest);
+
+    void onNetworkStateChange();
 }

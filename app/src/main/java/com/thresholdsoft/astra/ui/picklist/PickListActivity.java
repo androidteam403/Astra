@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -82,6 +83,7 @@ import com.thresholdsoft.astra.databinding.DialogScannedBarcodeItemListBinding;
 import com.thresholdsoft.astra.databinding.DialogSupervisorRequestRemarksBinding;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.db.room.AppDatabase;
+import com.thresholdsoft.astra.receiver.NetworkChangeReceiver;
 import com.thresholdsoft.astra.ui.CustomMenuCallback;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
@@ -178,6 +180,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     private boolean isItemListRefreshRequired = false;
 
+    private NetworkChangeReceiver mNetworkReceiver;
+
     public static Intent getStartActivity(Context mContext) {
         Intent intent = new Intent(mContext, PickListActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -200,8 +204,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
 
     private void setUp() {
-
-
+        mNetworkReceiver = new NetworkChangeReceiver();
+        mNetworkReceiver.setmCallback(this);
 //        this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
         activityPickListBinding.setAssignedOrdersCount("0");
         activityPickListBinding.setAssignedLines("0");
@@ -257,6 +261,28 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     }
 
+    private void registerNetworkBroadcast() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+//        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+//        }
+    }
+
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        registerNetworkBroadcast();
+        super.onResume();
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     private void parentLayoutTouchListener() {
@@ -950,7 +976,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
         getSessionManager().setStatusUpdateRequest(statusUpdateRequest);
 
-        getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, statusUpdateRequest, "COMPLETED", false, false, false);
+        getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, statusUpdateRequest, "COMPLETED", false, false, false, false);
     }
 
     @Override
@@ -973,7 +999,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             statusUpdateRequest.setScanstatus("INPROCESS");
             statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
             statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
-            getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, statusUpdateRequest, "INPROCESS", false, true, false);
+            getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, statusUpdateRequest, "INPROCESS", false, true, false, false);
         } else {
             onSuccessGetWithHoldRemarksApi(AppConstants.getWithHoldRemarksResponse);
         }
@@ -1061,7 +1087,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             statusUpdateAllocationdetailList.add(statusUpdateAllocationDetail);
         }
         statusUpdateRequest.setAllocationdetails(statusUpdateAllocationdetailList);
-        getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, statusUpdateRequest, "WITHHOLD", false, false, false);
+        getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, statusUpdateRequest, "WITHHOLD", false, false, false, false);
 //        } else {
 //            Toast.makeText(this, "Select hold  remark ", Toast.LENGTH_SHORT).show();
 //        }
@@ -1219,7 +1245,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 statusUpdateRequest.setScanstatus("INPROCESS");
                 statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
                 statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
-                getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, statusUpdateRequest, "INPROCESS", true, false, false);
+                getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, statusUpdateRequest, "INPROCESS", true, false, false, false);
             } else {
                 this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
                 this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
@@ -1277,7 +1303,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                                         statusUpdateRequest.setScanstatus("INPROCESS");
                                         statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
                                         statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
-                                        getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, statusUpdateRequest, "INPROCESS", false, false, false);
+                                        getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, statusUpdateRequest, "INPROCESS", false, false, false, false);
                                     }
                                 } else {
                                     if (barcodeAllocationDetailList.get(0).isRequestAccepted()) {
@@ -1769,7 +1795,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             List<InprocessPendingData> getInProcessPendingDataFromDblist = AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqPurchreqidAll();
             if (getInProcessPendingDataFromDblist != null && getInProcessPendingDataFromDblist.size() > 0) {
                 for (int i = 0; i < getInProcessPendingDataFromDblist.size(); i++) {
-                    getController().statusUpdateApiCall(getInProcessPendingDataFromDblist.indexOf(i), getInProcessPendingDataFromDblist.get(i).getStatusUpdateRequest(), "INPROCESS", false, false, true);
+                    getController().statusUpdateApiCall(getInProcessPendingDataFromDblist.indexOf(i), getInProcessPendingDataFromDblist.get(i).getStatusUpdateRequest(), "INPROCESS", false, false, true, false);
                 }
             } else {
                 Toast.makeText(this, "No Pending Orders Found", Toast.LENGTH_SHORT).show();
@@ -1788,7 +1814,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             List<RequestSupervisorPendingData> getInProcessPendingDataReqSupFromDblist = AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqSuperVisorPurchreqidAll();
             if (getInProcessPendingDataReqSupFromDblist != null && getInProcessPendingDataReqSupFromDblist.size() > 0) {
                 for (int i = 0; i < getInProcessPendingDataReqSupFromDblist.size(); i++) {
-                    getController().statusUpdateApiCall(getInProcessPendingDataReqSupFromDblist.indexOf(i), getInProcessPendingDataReqSupFromDblist.get(i).getStatusUpdateRequest(), "INPROCESS", false, true, true);
+                    getController().statusUpdateApiCall(getInProcessPendingDataReqSupFromDblist.indexOf(i), getInProcessPendingDataReqSupFromDblist.get(i).getStatusUpdateRequest(), "INPROCESS", false, true, true, false);
                 }
             } else {
                 Toast.makeText(this, "No Pending Orders Found", Toast.LENGTH_SHORT).show();
@@ -1799,33 +1825,43 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     }
 
     @Override
-    public void onSuccessStatusUpdateApiIsRefreshInternetReqSup(StatusUpdateRequest statusUpdateRequest) {
-        List<RequestSupervisorPendingData> getInProcessPendingDataReqSupFromDblist = AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqSuperVisorPurchreqidAll();
+    public void onSuccessStatusUpdateApiIsRefreshInternetReqSup(StatusUpdateRequest statusUpdateRequest, boolean isNetworkStateChange) {
+        if (isNetworkStateChange) {
+            RequestSupervisorPendingData requestSupervisorPendingData = AppDatabase.getDatabaseInstance(this).getRequestSupervisorPendingData(statusUpdateRequest.getPurchreqid(), getAreaId, statusUpdateRequest.getAllocationdetails().get(0).getId());
+            AppDatabase.getDatabaseInstance(this).onSuccessStatusUpdateApiIsRefreshInternetReqSup(requestSupervisorPendingData);
+            onNetworkStateChange();
+        } else {
+            List<RequestSupervisorPendingData> getInProcessPendingDataReqSupFromDblist = AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqSuperVisorPurchreqidAll();
+            if (getInProcessPendingDataReqSupFromDblist != null) {
+                for (int i = 0; i < getInProcessPendingDataReqSupFromDblist.size(); i++) {
+                    if (statusUpdateRequest.getPurchreqid().equalsIgnoreCase(getInProcessPendingDataReqSupFromDblist.get(i).getPurchreqid()) && statusUpdateRequest.getAllocationdetails().get(0).getId() == getInProcessPendingDataReqSupFromDblist.get(i).getItemid() && activityPickListBinding.getAllocationData().getAreaid().equalsIgnoreCase(getInProcessPendingDataReqSupFromDblist.get(i).getAreaid())) {
+                        AppDatabase.getDatabaseInstance(this).onSuccessStatusUpdateApiIsRefreshInternetReqSup(getInProcessPendingDataReqSupFromDblist.get(i));
+                        activityPickListBinding.customMenuLayout.withHoldOrdersLeft.setText(String.valueOf(getInProcessPendingDataReqSupFromDblist.size()));
+                    }
 
-        if (getInProcessPendingDataReqSupFromDblist != null) {
-            for (int i = 0; i < getInProcessPendingDataReqSupFromDblist.size(); i++) {
-                if (statusUpdateRequest.getPurchreqid().equalsIgnoreCase(getInProcessPendingDataReqSupFromDblist.get(i).getPurchreqid()) && statusUpdateRequest.getAllocationdetails().get(0).getId() == getInProcessPendingDataReqSupFromDblist.get(i).getItemid() && activityPickListBinding.getAllocationData().getAreaid().equalsIgnoreCase(getInProcessPendingDataReqSupFromDblist.get(i).getAreaid())) {
-                    AppDatabase.getDatabaseInstance(this).onSuccessStatusUpdateApiIsRefreshInternetReqSup(getInProcessPendingDataReqSupFromDblist.get(i));
-                    activityPickListBinding.customMenuLayout.withHoldOrdersLeft.setText(String.valueOf(getInProcessPendingDataReqSupFromDblist.size()));
                 }
-
             }
         }
-
         activityPickListBinding.customMenuLayout.withHoldOrdersLeft.setText(String.valueOf(AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqSuperVisorPurchreqidAll().size()));
-
     }
 
     @Override
-    public void onSuccessStatusApiIsRefreshInternetPendingInprocess(StatusUpdateRequest statusUpdateRequest) {
-        List<InprocessPendingData> getInProcessPendingDataFromDblist = AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqPurchreqidAll();
-        if (getInProcessPendingDataFromDblist != null) {
-            for (int i = 0; i < getInProcessPendingDataFromDblist.size(); i++) {
-                if (statusUpdateRequest.getPurchreqid().equalsIgnoreCase(getInProcessPendingDataFromDblist.get(i).getPurchreqid()) && activityPickListBinding.getAllocationData().getAreaid().equalsIgnoreCase(getInProcessPendingDataFromDblist.get(i).getAreaid())) {
-                    AppDatabase.getDatabaseInstance(this).onSuccessStatusUpdateApiIsRefreshInternetInprocessPending(getInProcessPendingDataFromDblist.get(i));
-                    activityPickListBinding.customMenuLayout.inprocessOrdersLeft.setText(String.valueOf(getInProcessPendingDataFromDblist.size()));
-                }
+    public void onSuccessStatusApiIsRefreshInternetPendingInprocess(StatusUpdateRequest statusUpdateRequest, boolean isNetworkStateChange) {
+        if (isNetworkStateChange) {
+            InprocessPendingData inprocessPendingData = AppDatabase.getDatabaseInstance(this).getInprocessPendingData(statusUpdateRequest.getPurchreqid(), getAreaId);
+            AppDatabase.getDatabaseInstance(this).onSuccessStatusUpdateApiIsRefreshInternetInprocessPending(inprocessPendingData);
+            onNetworkStateChange();
+        } else {
+            List<InprocessPendingData> getInProcessPendingDataFromDblist = AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqPurchreqidAll();
+            if (getInProcessPendingDataFromDblist != null) {
+                for (int i = 0; i < getInProcessPendingDataFromDblist.size(); i++) {
+                    if (statusUpdateRequest.getPurchreqid().equalsIgnoreCase(getInProcessPendingDataFromDblist.get(i).getPurchreqid()) && activityPickListBinding.getAllocationData().getAreaid().equalsIgnoreCase(getInProcessPendingDataFromDblist.get(i).getAreaid())) {
+                        AppDatabase.getDatabaseInstance(this).onSuccessStatusUpdateApiIsRefreshInternetInprocessPending(getInProcessPendingDataFromDblist.get(i));
+                        activityPickListBinding.customMenuLayout.inprocessOrdersLeft.setText(String.valueOf(getInProcessPendingDataFromDblist.size()));
 
+                    }
+
+                }
             }
         }
         activityPickListBinding.customMenuLayout.inprocessOrdersLeft.setText(String.valueOf(AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqPurchreqidAll().size()));
@@ -2012,6 +2048,23 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         }
     }
 
+    private String getAreaId = null;
+
+    @Override
+    public void onNetworkStateChange() {
+        List<InprocessPendingData> getInProcessPendingDataFromDblist = AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqPurchreqidAll();
+        if (getInProcessPendingDataFromDblist != null && getInProcessPendingDataFromDblist.size() > 0) {
+            this.getAreaId = getInProcessPendingDataFromDblist.get(0).getAreaid();
+            getController().statusUpdateApiCall(getInProcessPendingDataFromDblist.indexOf(0), getInProcessPendingDataFromDblist.get(0).getStatusUpdateRequest(), "INPROCESS", false, false, true, true);
+        } else {
+            List<RequestSupervisorPendingData> getInProcessPendingDataReqSupFromDblist = AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqSuperVisorPurchreqidAll();
+            if (getInProcessPendingDataReqSupFromDblist != null && getInProcessPendingDataReqSupFromDblist.size() > 0) {
+                this.getAreaId = getInProcessPendingDataReqSupFromDblist.get(0).getAreaid();
+                getController().statusUpdateApiCall(getInProcessPendingDataReqSupFromDblist.indexOf(0), getInProcessPendingDataReqSupFromDblist.get(0).getStatusUpdateRequest(), "INPROCESS", false, true, true, true);
+            }
+        }
+    }
+
 
     private void requestApprovalPopup(GetWithHoldStatusResponse getWithHoldStatusResponse, boolean isApproved) {
         Dialog requestApprovalPopup = new Dialog(this);
@@ -2088,7 +2141,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                                     statusUpdateRequest.setScanstatus("INPROCESS");
                                     statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
                                     statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
-                                    getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, statusUpdateRequest, "INPROCESS", false, false, false);
+                                    getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, statusUpdateRequest, "INPROCESS", false, false, false, false);
                                 }
 
                             } else {
@@ -2360,7 +2413,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 if (getSessionManager().getStatusUpdateRequest().getPurchreqid() != null && getSessionManager().getStatusUpdateRequest().getAllocationdetails() != null) {
 
 
-                    getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, getSessionManager().getStatusUpdateRequest(), "COMPLETED", false, false, false);
+                    getController().statusUpdateApiCall(getInProcessPendingDataFromDbPos, getSessionManager().getStatusUpdateRequest(), "COMPLETED", false, false, false, false);
                 }
             }
         }
@@ -2377,6 +2430,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     @Override
     protected void onPause() {
+        unregisterNetworkChanges();
         barcodeScanHandler.removeCallbacks(barcodeScanRunnable);
 
         activityPickListBinding.barcodeScanEdittext.setText("");

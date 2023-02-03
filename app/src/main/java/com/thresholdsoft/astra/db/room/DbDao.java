@@ -10,8 +10,6 @@ import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse;
 import com.thresholdsoft.astra.ui.picklist.model.InprocessPendingData;
 import com.thresholdsoft.astra.ui.picklist.model.OrderStatusTimeDateEntity;
 import com.thresholdsoft.astra.ui.picklist.model.RequestSupervisorPendingData;
-import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateRequest;
-import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
 
 import java.util.List;
 
@@ -37,16 +35,13 @@ public interface DbDao {
     void getStatusUpdateRequestUpdate(InprocessPendingData statusUpdateRequest);
 
     @Delete
-    void  getStatusUpdateRequestDelete(RequestSupervisorPendingData requestSupervisorPendingData);
+    void getStatusUpdateRequestDelete(RequestSupervisorPendingData requestSupervisorPendingData);
 
     @Insert
     void getStatusUpdateRequestSupervisorInsert(RequestSupervisorPendingData requestSupervisorPendingData);
 
     @Update
     void getStatusUpdateRequestSupervisorUpdate(RequestSupervisorPendingData requestSupervisorPendingData);
-
-
-
 
 
     @Query("SELECT * FROM allocation_line_data WHERE purchreqid == :purchreqid AND areaid == :areaid")
@@ -58,6 +53,9 @@ public interface DbDao {
 
     @Query("DELETE FROM request_supervisor_pending_data WHERE uniquekey == :uniqueId")
     void reqSupervisorDeleteRow(int uniqueId);
+
+    @Query("SELECT * FROM request_supervisor_pending_data WHERE purchreqid == :purchreqid AND areaid == :areaid AND itemid == :itemId")
+    RequestSupervisorPendingData getRequestSupervisorPendingData(String purchreqid, String areaid, int itemId);
 
     @Query("DELETE FROM inprocess_pending_data WHERE uniquekey == :uniqueId")
     void assignedInProcessDeleteRow(int uniqueId);

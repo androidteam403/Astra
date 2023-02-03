@@ -224,7 +224,7 @@ public class PickListActivityController {
         }
     }
 
-    public void statusUpdateApiCall(int getInProcessPendingDataFromDb, StatusUpdateRequest statusUpdateRequest, String status, boolean ismanuallyEditedScannedPacks, boolean isRequestToSupervisior, boolean isRefreshInternetClick) {
+    public void statusUpdateApiCall(int getInProcessPendingDataFromDb, StatusUpdateRequest statusUpdateRequest, String status, boolean ismanuallyEditedScannedPacks, boolean isRequestToSupervisior, boolean isRefreshInternetClick, boolean isNetworkStateChenge) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
 
@@ -242,9 +242,9 @@ public class PickListActivityController {
 
                             } else {
                                 if (isRequestToSupervisior) {
-                                    mCallback.onSuccessStatusUpdateApiIsRefreshInternetReqSup(statusUpdateRequest);
+                                    mCallback.onSuccessStatusUpdateApiIsRefreshInternetReqSup(statusUpdateRequest, isNetworkStateChenge);
                                 } else {
-                                    mCallback.onSuccessStatusApiIsRefreshInternetPendingInprocess(statusUpdateRequest);
+                                    mCallback.onSuccessStatusApiIsRefreshInternetPendingInprocess(statusUpdateRequest, isNetworkStateChenge);
                                 }
 
                             }

@@ -11,8 +11,6 @@ import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse;
 import com.thresholdsoft.astra.ui.picklist.model.InprocessPendingData;
 import com.thresholdsoft.astra.ui.picklist.model.OrderStatusTimeDateEntity;
 import com.thresholdsoft.astra.ui.picklist.model.RequestSupervisorPendingData;
-import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateRequest;
-import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
 import com.thresholdsoft.astra.utils.AppConstants;
 
 import java.util.List;
@@ -75,6 +73,10 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     }
 
+    public InprocessPendingData getInprocessPendingData(String purchId, String areaId) {
+        return dbDao().getAllStatusUpdateReqPurchreqid(purchId, areaId);
+    }
+
     public void insertOrUpdateRequestSupervisorList(RequestSupervisorPendingData requestSupervisorPendingData) {
 
         RequestSupervisorPendingData requestSupervisorPendingData1 = dbDao().getReqSuperVisorReqPurchreqid(requestSupervisorPendingData.getPurchreqid(), requestSupervisorPendingData.getAreaid(), requestSupervisorPendingData.getItemid());
@@ -89,13 +91,17 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     }
 
-    public void onSuccessStatusUpdateApiIsRefreshInternetReqSup(RequestSupervisorPendingData requestSupervisorPendingData){
+    public void onSuccessStatusUpdateApiIsRefreshInternetReqSup(RequestSupervisorPendingData requestSupervisorPendingData) {
         RequestSupervisorPendingData requestSupervisorPendingData1 = dbDao().getReqSuperVisorReqPurchreqid(requestSupervisorPendingData.getPurchreqid(), requestSupervisorPendingData.getAreaid(), requestSupervisorPendingData.getItemid());
         requestSupervisorPendingData.setUniqueKey(requestSupervisorPendingData1.getUniqueKey());
-       dbDao().reqSupervisorDeleteRow(requestSupervisorPendingData.getUniqueKey());
+        dbDao().reqSupervisorDeleteRow(requestSupervisorPendingData.getUniqueKey());
     }
 
-    public void onSuccessStatusUpdateApiIsRefreshInternetInprocessPending(InprocessPendingData inprocessPendingData){
+    public RequestSupervisorPendingData getRequestSupervisorPendingData(String purchId, String areaId, int itemUniqueId) {
+        return dbDao().getRequestSupervisorPendingData(purchId, areaId, itemUniqueId);
+    }
+
+    public void onSuccessStatusUpdateApiIsRefreshInternetInprocessPending(InprocessPendingData inprocessPendingData) {
         InprocessPendingData inprocessPendingData1 = dbDao().getAllStatusUpdateReqPurchreqid(inprocessPendingData.getPurchreqid(), inprocessPendingData.getAreaid());
         inprocessPendingData.setUniqueKey(inprocessPendingData1.getUniqueKey());
         dbDao().assignedInProcessDeleteRow(inprocessPendingData.getUniqueKey());
@@ -123,6 +129,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public OrderStatusTimeDateEntity getOrderStatusTimeDateEntity(String purchId, String areaId) {
         return dbDao().getOrderStatusTimeDateByPurchId(purchId, areaId);
     }
+
 
     public abstract DbDao dbDao();
 }
