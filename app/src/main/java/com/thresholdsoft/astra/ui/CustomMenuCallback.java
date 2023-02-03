@@ -12,4 +12,8 @@ public interface CustomMenuCallback {
     void onClickPickerRequest();
 
     void onClickLogout();
+
+    void onClickRefreshForInternetSup();
+
+    void onClickRefreshForInternet();
 }

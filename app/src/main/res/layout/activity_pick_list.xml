@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:id="@+id/parent_layout"
@@ -81,6 +82,41 @@
                     </LinearLayout>
 
                 </RelativeLayout>
+
+
+<!--                <LinearLayout-->
+<!--                    android:layout_marginStart="@dimen/dimen2dp"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical">-->
+
+
+<!--                    <TextView-->
+<!--                        android:padding="@dimen/dimen2dp"-->
+<!--                        android:textAlignment="center"-->
+<!--                        android:background="@color/bg_assigned_orders_count"-->
+<!--                        android:onClick="@{()-> callback.onClickRefreshForInternet()}"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textSize="@dimen/dimen10sp"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:text="Check inprocess pending"/>-->
+<!--                    <TextView-->
+<!--                        android:layout_marginTop="5dp"-->
+<!--                        android:padding="@dimen/dimen2dp"-->
+<!--                        android:textAlignment="center"-->
+<!--                        android:background="@color/green"-->
+<!--                        android:onClick="@{()-> callback.onClickRefreshForInternetSup()}"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textSize="@dimen/dimen10sp"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:text="Check withhold pending"/>-->
+
+
+<!--                </LinearLayout>-->
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -374,6 +410,7 @@
                                 android:layout_weight=".3"
                                 android:onClick="@{()-> callback.onClickPurchaseRequisitionClose()}"
                                 android:src="@drawable/close_new" />
+
                         </LinearLayout>
 
 
@@ -1229,6 +1266,24 @@
                                     </LinearLayout>
 
                                 </LinearLayout>
+
+<!--                                <LinearLayout-->
+<!--                                    android:layout_marginStart="@dimen/dimen5dp"-->
+<!--                                    android:layout_width="@dimen/dimen15dp"-->
+<!--                                    android:layout_height="@dimen/dimen15dp"-->
+<!--                                    android:layout_alignParentEnd="true"-->
+<!--                                    android:gravity="center"-->
+<!--                                    android:onClick="@{()-> callback.onClickRefreshForInternet()}"-->
+<!--                                    android:orientation="horizontal">-->
+
+<!--                                    <ImageView-->
+<!--                                        android:layout_width="wrap_content"-->
+<!--                                        android:layout_height="wrap_content"-->
+<!--                                        android:contentDescription="@string/app_name"-->
+<!--                                        android:src="@drawable/refresh_icon" />-->
+<!--                                </LinearLayout>-->
+
+
                             </LinearLayout>
 
                             <LinearLayout
@@ -1574,6 +1629,7 @@
                                                             <LinearLayout
                                                                 android:layout_width="wrap_content"
                                                                 android:layout_height="wrap_content"
+
                                                                 android:gravity="center_vertical"
                                                                 android:orientation="horizontal">
 
@@ -1771,6 +1827,8 @@
                                                                         android:textSize="@dimen/dimen8sp" />
 
                                                                 </LinearLayout>
+
+
 
                                                             </LinearLayout>
                                                         </LinearLayout>

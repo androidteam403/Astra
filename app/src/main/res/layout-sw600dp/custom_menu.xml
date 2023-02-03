@@ -22,7 +22,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="0.3"
+                    android:layout_weight="0.45"
                     android:gravity="center">
 
                     <LinearLayout
@@ -89,6 +89,151 @@
                             android:textColor="@color/white"
                             android:textSize="@dimen/dimen12sp" />
 
+                        <LinearLayout
+                            android:layout_marginTop="@dimen/dimen3dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:padding="5dp"
+                                    android:layout_width="@dimen/dimen70dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen2dp"
+                                    android:background="@drawable/rounded_corner_bg"
+                                    android:backgroundTint="@color/lite_yellow"
+                                    android:gravity="center"
+                                    android:onClick="@{()-> customMenuCallback.onClickRefreshForInternet()}"
+                                    android:orientation="horizontal">
+
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:background="@drawable/rounded_corner_bg"
+                                        android:backgroundTint="@color/lite_yellow"
+                                        android:gravity="center"
+                                        android:text="Inprocess"
+                                        android:textAllCaps="true"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/dimen9sp" />
+                                </LinearLayout>
+
+                                <TextView
+                                    android:id="@+id/inprocessOrdersLeft"
+                                    android:layout_marginStart="@dimen/dimen3dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textStyle="bold"
+                                    android:text="0"
+                                    android:layout_gravity="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/dimen14sp"/>
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_marginTop="@dimen/dimen5dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:padding="@dimen/dimen5dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen2dp"
+                                    android:background="@drawable/rounded_corner_bg"
+                                    android:backgroundTint="@color/color_takeprint"
+                                    android:gravity="center"
+                                    android:onClick="@{()-> customMenuCallback.onClickRefreshForInternetSup()}"
+                                    android:orientation="horizontal">
+
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:text="Withhold"
+                                        android:textAllCaps="true"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/dimen9sp" />
+                                </LinearLayout>
+
+                                <TextView
+                                    android:id="@+id/withHoldOrdersLeft"
+                                    android:layout_marginStart="@dimen/dimen3dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textStyle="bold"
+                                    android:text="0"
+                                    android:gravity="center"
+                                    android:layout_gravity="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/dimen12sp"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+<!--                        <LinearLayout-->
+<!--                            android:layout_marginStart="@dimen/dimen2dp"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="vertical">-->
+<!--                            -->
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:orientation="horizontal"-->
+<!--                                android:layout_height="wrap_content">-->
+<!--                                -->
+
+<!--                                <TextView-->
+<!--                                    android:background="@drawable/rounded_corner_bg"-->
+<!--                                    android:backgroundTint="@color/lite_yellow"-->
+<!--                                    android:padding="4dp"-->
+<!--                                    android:textAlignment="center"-->
+<!--                                    android:onClick="@{()-> callback.onClickRefreshForInternet()}"-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:textSize="@dimen/dimen10sp"-->
+<!--                                    android:textColor="@color/black"-->
+<!--                                    android:textStyle="bold"-->
+<!--                                    android:text="Inprocess"/>-->
+<!--                                -->
+<!--                                <TextView-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:text="2"-->
+<!--                                    android:textStyle="bold"-->
+<!--                                    android:textSize="11sp"-->
+<!--                                    android:textColor="@color/white"-->
+<!--                                    android:layout_marginStart="@dimen/dimen3dp"/>-->
+<!--                            </LinearLayout>-->
+
+
+<!--                           -->
+<!--                            <TextView-->
+<!--                                android:layout_marginTop="5dp"-->
+<!--                                android:padding="@dimen/dimen2dp"-->
+<!--                                android:textAlignment="center"-->
+<!--                                android:background="@color/green"-->
+<!--                                android:onClick="@{()-> callback.onClickRefreshForInternetSup()}"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:textSize="@dimen/dimen10sp"-->
+<!--                                android:textColor="@color/white"-->
+<!--                                android:textStyle="bold"-->
+<!--                                android:text="Withhold"/>-->
+
+
+<!--                        </LinearLayout>-->
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -96,7 +241,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight=".7"
+                    android:layout_weight=".55"
                     android:orientation="vertical"
                     android:weightSum="1">
 
@@ -104,7 +249,7 @@
                         android:id="@+id/pick_list_menu"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight=".2"
+                        android:layout_weight=".25"
                         android:background="@{selectedMenu == 1 ? @color/yellow : @color/transperancy}"
                         android:gravity="center"
                         android:onClick="@{()-> customMenuCallback.onClickPickList()}"
@@ -240,41 +385,168 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height=".0dp"
-                        android:layout_weight=".2" />
+                        android:layout_weight=".1" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height=".0dp"
-                        android:layout_weight=".2" />
+                        android:layout_weight=".1" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height=".0dp"
-                        android:layout_weight=".2" />
+                        android:layout_weight=".1" />
 
                     <LinearLayout
                         android:id="@+id/logout_menu"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight=".15"
+                        android:layout_weight=".45"
                         android:gravity="center"
-                        android:onClick="@{()-> customMenuCallback.onClickLogout()}"
+
                         android:orientation="vertical">
 
-                        <ImageView
-                            android:layout_width="@dimen/dimen30dp"
-                            android:layout_height="@dimen/dimen30dp"
-                            android:contentDescription="@string/app_name"
-                            android:src="@drawable/ic_logout" />
 
-                        <TextView
+                        <LinearLayout
+                            android:padding="@dimen/dimen5dp"
+                            android:background="@drawable/bg_for_signall"
+                            android:visibility="visible"
+                            android:layout_marginBottom="@dimen/dimen5dp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_bold"
-                            android:gravity="center"
-                            android:text="Logout"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/dimen12sp" />
+                            android:orientation="vertical">
+                            <LinearLayout
+
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+
+                                    android:gravity="bottom"
+                                    android:layout_gravity="bottom"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent">
+
+                                    <TextView
+                                        android:id="@+id/red_signal"
+                                        android:background="@drawable/bg_signal"
+                                        android:paddingLeft="@dimen/dimen3dp"
+                                        android:paddingRight="@dimen/dimen3dp"
+                                        android:gravity="bottom"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="@dimen/dimen15dp"/>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_marginStart="@dimen/dimen3dp"
+                                    android:gravity="bottom"
+                                    android:layout_gravity="bottom"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent">
+
+                                    <TextView
+                                        android:id="@+id/orange_signal"
+                                        android:background="@drawable/bg_signal"
+                                        android:padding="@dimen/dimen3dp"
+                                        android:gravity="bottom"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="@dimen/dimen20dp"/>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_marginStart="@dimen/dimen3dp"
+                                    android:gravity="bottom"
+                                    android:layout_gravity="bottom"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent">
+
+                                    <TextView
+                                        android:id="@+id/blue_signal"
+                                        android:paddingLeft="@dimen/dimen3dp"
+                                        android:paddingRight="@dimen/dimen3dp"
+                                        android:gravity="bottom"
+                                        android:layout_width="wrap_content"
+                                        android:background="@drawable/bg_signal"
+                                        android:layout_height="@dimen/dimen25dp"/>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_marginStart="@dimen/dimen3dp"
+                                    android:gravity="bottom"
+                                    android:layout_gravity="bottom"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent">
+
+                                    <TextView
+                                        android:id="@+id/green_signal"
+                                        android:paddingLeft="@dimen/dimen3dp"
+                                        android:paddingRight="@dimen/dimen3dp"
+                                        android:gravity="bottom"
+                                        android:layout_width="wrap_content"
+                                        android:background="@drawable/bg_signal"
+                                        android:layout_height="@dimen/dimen30dp"/>
+
+                                </LinearLayout>
+
+
+
+                            </LinearLayout>
+
+
+
+
+                            <!--                    <TextView-->
+                            <!--                        android:layout_marginStart="@dimen/dimen3dp"-->
+                            <!--                        android:padding="@dimen/dimen3dp"-->
+                            <!--                        android:gravity="center"-->
+                            <!--                        android:layout_width="wrap_content"-->
+                            <!--                        android:background="@color/black"-->
+                            <!--                        android:layout_height="@dimen/dimen15dp"/>-->
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/internetSpeedText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/dimen10sp"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:onClick="@{()-> customMenuCallback.onClickLogout()}"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="@dimen/dimen30dp"
+                                android:layout_height="@dimen/dimen30dp"
+                                android:contentDescription="@string/app_name"
+                                android:src="@drawable/ic_logout" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_bold"
+                                android:gravity="center"
+                                android:text="Logout"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/dimen12sp" />
+                        </LinearLayout>
+
+
                     </LinearLayout>
 
 
@@ -301,7 +573,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight=".3" />
+                    android:layout_weight="0.45"  />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -334,14 +606,14 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight=".2"
+                        android:layout_weight=".15"
                         android:background="@{selectedMenu == 4 ? @color/yellow : @color/transperancy}"
                         android:visibility="gone" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight=".2"
+                        android:layout_weight=".15"
                         android:background="@{selectedMenu == 5 ? @color/yellow : @color/transperancy}"
                         android:visibility="gone" />
 
