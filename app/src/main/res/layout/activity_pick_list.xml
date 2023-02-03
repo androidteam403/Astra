@@ -84,39 +84,39 @@
                 </RelativeLayout>
 
 
-                <LinearLayout
-                    android:layout_marginStart="@dimen/dimen2dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+<!--                <LinearLayout-->
+<!--                    android:layout_marginStart="@dimen/dimen2dp"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical">-->
 
 
-                    <TextView
-                        android:padding="@dimen/dimen2dp"
-                        android:textAlignment="center"
-                        android:background="@color/bg_assigned_orders_count"
-                        android:onClick="@{()-> callback.onClickRefreshForInternet()}"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/dimen10sp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:text="Check inprocess pending"/>
-                    <TextView
-                        android:layout_marginTop="5dp"
-                        android:padding="@dimen/dimen2dp"
-                        android:textAlignment="center"
-                        android:background="@color/green"
-                        android:onClick="@{()-> callback.onClickRefreshForInternetSup()}"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/dimen10sp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:text="Check withhold pending"/>
+<!--                    <TextView-->
+<!--                        android:padding="@dimen/dimen2dp"-->
+<!--                        android:textAlignment="center"-->
+<!--                        android:background="@color/bg_assigned_orders_count"-->
+<!--                        android:onClick="@{()-> callback.onClickRefreshForInternet()}"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textSize="@dimen/dimen10sp"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:text="Check inprocess pending"/>-->
+<!--                    <TextView-->
+<!--                        android:layout_marginTop="5dp"-->
+<!--                        android:padding="@dimen/dimen2dp"-->
+<!--                        android:textAlignment="center"-->
+<!--                        android:background="@color/green"-->
+<!--                        android:onClick="@{()-> callback.onClickRefreshForInternetSup()}"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textSize="@dimen/dimen10sp"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:text="Check withhold pending"/>-->
 
 
-                </LinearLayout>
+<!--                </LinearLayout>-->
 
                 <RelativeLayout
                     android:layout_width="match_parent"

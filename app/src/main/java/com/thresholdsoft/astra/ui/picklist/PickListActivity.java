@@ -809,6 +809,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         inprocessPendingData.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
         inprocessPendingData.setStatusUpdateRequest(statusUpdateRequest);
         AppDatabase.getDatabaseInstance(this).insertOrUpdateStatusUpdateList(inprocessPendingData);
+        List<InprocessPendingData> getInProcessPendingDataFromDblist = AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqPurchreqidAll();
+        activityPickListBinding.customMenuLayout.inprocessOrdersLeft.setText(String.valueOf(getInProcessPendingDataFromDblist.size()));
     }
 
     private void insertOrUpdateRequestSupervisorList(StatusUpdateRequest statusUpdateRequest) {
@@ -818,6 +820,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         requestSupervisorPendingData.setItemid((activityPickListBinding.getBarcodeScannedItem().getId()));
         requestSupervisorPendingData.setStatusUpdateRequest(statusUpdateRequest);
         AppDatabase.getDatabaseInstance(this).insertOrUpdateRequestSupervisorList(requestSupervisorPendingData);
+        List<RequestSupervisorPendingData> getInProcessPendingDataReqSupFromDblist = AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqSuperVisorPurchreqidAll();
+        activityPickListBinding.customMenuLayout.withHoldOrdersLeft.setText(String.valueOf(getInProcessPendingDataReqSupFromDblist.size()));
     }
 
     private void insertOrUpdateOrderStatusTimeDateEntity() {
@@ -1802,11 +1806,13 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             for (int i = 0; i < getInProcessPendingDataReqSupFromDblist.size(); i++) {
                 if (statusUpdateRequest.getPurchreqid().equalsIgnoreCase(getInProcessPendingDataReqSupFromDblist.get(i).getPurchreqid()) && statusUpdateRequest.getAllocationdetails().get(0).getId() == getInProcessPendingDataReqSupFromDblist.get(i).getItemid() && activityPickListBinding.getAllocationData().getAreaid().equalsIgnoreCase(getInProcessPendingDataReqSupFromDblist.get(i).getAreaid())) {
                     AppDatabase.getDatabaseInstance(this).onSuccessStatusUpdateApiIsRefreshInternetReqSup(getInProcessPendingDataReqSupFromDblist.get(i));
+                    activityPickListBinding.customMenuLayout.withHoldOrdersLeft.setText(String.valueOf(getInProcessPendingDataReqSupFromDblist.size()));
                 }
 
             }
         }
 
+        activityPickListBinding.customMenuLayout.withHoldOrdersLeft.setText(String.valueOf(AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqSuperVisorPurchreqidAll().size()));
 
     }
 
@@ -1817,10 +1823,12 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             for (int i = 0; i < getInProcessPendingDataFromDblist.size(); i++) {
                 if (statusUpdateRequest.getPurchreqid().equalsIgnoreCase(getInProcessPendingDataFromDblist.get(i).getPurchreqid()) && activityPickListBinding.getAllocationData().getAreaid().equalsIgnoreCase(getInProcessPendingDataFromDblist.get(i).getAreaid())) {
                     AppDatabase.getDatabaseInstance(this).onSuccessStatusUpdateApiIsRefreshInternetInprocessPending(getInProcessPendingDataFromDblist.get(i));
+                    activityPickListBinding.customMenuLayout.inprocessOrdersLeft.setText(String.valueOf(getInProcessPendingDataFromDblist.size()));
                 }
 
             }
         }
+        activityPickListBinding.customMenuLayout.inprocessOrdersLeft.setText(String.valueOf(AppDatabase.getDatabaseInstance(this).dbDao().getAllStatusUpdateReqPurchreqidAll().size()));
     }
 
 
@@ -1875,32 +1883,38 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 //                    "Down Speed: "+downSpeed,
 //                    Toast.LENGTH_LONG).show();
             if (downSpeed <= 0) {
+                activityPickListBinding.customMenuLayout.internetSpeedText.setText(String.valueOf(downSpeed) + "Mbps");
                 activityPickListBinding.customMenuLayout.redSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
                 activityPickListBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
                 activityPickListBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
                 activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
             } else if (downSpeed < 15) {
+                activityPickListBinding.customMenuLayout.internetSpeedText.setText(String.valueOf(downSpeed) + "Mbps");
                 activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
                 activityPickListBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
                 activityPickListBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
                 activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
             } else if (downSpeed < 30) {
+                activityPickListBinding.customMenuLayout.internetSpeedText.setText(String.valueOf(downSpeed) + "Mbps");
                 activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
                 activityPickListBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
                 activityPickListBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
                 activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
             } else if (downSpeed < 40) {
+                activityPickListBinding.customMenuLayout.internetSpeedText.setText(String.valueOf(downSpeed) + "Mbps");
                 activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
                 activityPickListBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
                 activityPickListBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
                 activityPickListBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
             } else if (downSpeed > 50) {
+                activityPickListBinding.customMenuLayout.internetSpeedText.setText(String.valueOf(downSpeed) + "Mbps");
                 activityPickListBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
                 activityPickListBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
                 activityPickListBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
                 activityPickListBinding.customMenuLayout.greenSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
             }
         } else {
+            activityPickListBinding.customMenuLayout.internetSpeedText.setText("");
             activityPickListBinding.customMenuLayout.redSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
             activityPickListBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
             activityPickListBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
