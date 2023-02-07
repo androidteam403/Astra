@@ -25,16 +25,16 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Production
-        buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/Apollo/AHL/\"")
-        buildConfigField("String", "BASE_TOKEN", "\"prdyvEoG+8MvYiOfhV2wb5j\"")
+//        buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/Apollo/AHL/\"")
+//        buildConfigField("String", "BASE_TOKEN", "\"prdyvEoG+8MvYiOfhV2wb5j\"")
 
         //Pre Production
 //        buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/preprod/Apollo/AHL/\"")
 //        buildConfigField("String", "BASE_TOKEN", "\"prdyvEoG+8MvYiOfhV2wb5j\"")
 
         //Dev
-//        buildConfigField("String", "BASE_URL", "\"https://online.apollopharmacy.org/Digital/Apollo/AHL/\"")
-//        buildConfigField("String", "BASE_TOKEN", "\"yvEoG+8MvYiOfhV2wb5jw\"")
+        buildConfigField("String", "BASE_URL", "\"https://online.apollopharmacy.org/Digital/Apollo/AHL/\"")
+        buildConfigField("String", "BASE_TOKEN", "\"yvEoG+8MvYiOfhV2wb5jw\"")
     }
 
     buildTypes {
@@ -83,6 +83,13 @@ dependencies {
 
     implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    compile 'com.facebook.network.connectionclass:connectionclass:1.0.1'
+    implementation 'com.github.oatrice:internet-speed-testing:1.0.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'fr.bmartel:jspeedtest:1.32.1'
+    implementation 'com.github.anastr:speedviewlib:1.3.0'
+    implementation 'com.github.oatrice:internet-speed-testing:1.0.1'
 
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'

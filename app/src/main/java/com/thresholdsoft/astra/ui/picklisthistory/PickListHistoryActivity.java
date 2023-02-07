@@ -220,4 +220,19 @@ public class PickListHistoryActivity extends BaseActivity implements CustomMenuC
 
     }
 
+    @Override
+    public void onClickRefreshForInternetSup() {
+
+    }
+
+    @Override
+    public void onClickRefreshForInternet() {
+
+    }
+
+    @Override
+    public void onClickLogcat() {
+
+    }
+
 }

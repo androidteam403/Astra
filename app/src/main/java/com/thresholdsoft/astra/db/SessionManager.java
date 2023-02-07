@@ -6,8 +6,11 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
+import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalRequest;
+import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetModeofDeliveryResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
+import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateRequest;
 
 /**
  * Created on : Nov 1, 2022
@@ -27,6 +30,9 @@ public class SessionManager {
     private static final String PREF_KEY_PERMISSIONS= "PREF_KEY_PERMISSIONS";
     private static final String PREF_KEY_DAMAGE_ITEM = "PREF_KEY_DAMAGE_ITEM";
     private static final String PREF_KEY_NO_STOCK = "PREF_KEY_NO_STOCK";
+    private static final String PREF_KEY_GET_ALLOCATION_DATA= "PREF_KEY_GET_ALLOCATION_DATA";
+    private static final String PREF_KEY_STATUS_UPDATE_REQUEST= "PREF_KEY_STATUS_UPDATE_REQUEST";
+    private static final String PREF_KEY_WITHHOLDAPPROVAL_REQUEST= "PREF_KEY_WITHHOLDAPPROVAL_REQUEST";
 
     public SessionManager(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -116,6 +122,42 @@ public class SessionManager {
         String getModeofDeliveryResponseJsonString = new Gson().toJson(getModeofDeliveryResponse);
         preferences.edit().putString(PREF_KEY_GET_MODEOF_DELIVERY_RESPONSE, getModeofDeliveryResponseJsonString).apply();
     }
+
+    public void setALlocationDataResponse(GetAllocationDataResponse getALlocationDataResponse) {
+        String getALlocationDataResponseJsonString = new Gson().toJson(getALlocationDataResponse);
+        preferences.edit().putString(PREF_KEY_GET_ALLOCATION_DATA, getALlocationDataResponseJsonString).apply();
+    }
+    public GetAllocationDataResponse getAllocationDataResponse() {
+        String getALlocationDataResponseJsonString = preferences.getString(PREF_KEY_GET_ALLOCATION_DATA, "");
+        return new Gson().fromJson(getALlocationDataResponseJsonString, GetAllocationDataResponse.class);
+    }
+    public void setStatusUpdateRequest(StatusUpdateRequest getStatusUpdateRequest) {
+        String getStatusUpdateRequestJsonString = new Gson().toJson(getStatusUpdateRequest);
+        preferences.edit().putString(PREF_KEY_STATUS_UPDATE_REQUEST, getStatusUpdateRequestJsonString).apply();
+    }
+    public StatusUpdateRequest getStatusUpdateRequest() {
+        String getStatusUpdateRequestJsonString = preferences.getString(PREF_KEY_STATUS_UPDATE_REQUEST, "");
+        return new Gson().fromJson(getStatusUpdateRequestJsonString, StatusUpdateRequest.class);
+    }
+
+
+
+
+    public void setWithHoldApproval(WithHoldApprovalRequest withHoldApprovalRequest) {
+        String getwithHoldApprovalRequestJsonString = new Gson().toJson(withHoldApprovalRequest);
+        preferences.edit().putString(PREF_KEY_WITHHOLDAPPROVAL_REQUEST, getwithHoldApprovalRequestJsonString).apply();
+    }
+    public WithHoldApprovalRequest getWithHoldApproval() {
+        String getwithHoldApprovalRequestJsonStringJsonString = preferences.getString(PREF_KEY_WITHHOLDAPPROVAL_REQUEST, "");
+        return new Gson().fromJson(getwithHoldApprovalRequestJsonStringJsonString, WithHoldApprovalRequest.class);
+    }
+
+
+
+
+
+
+
 
     public GetModeofDeliveryResponse getGetModeofDeliveryResponse() {
         String getModeofDeliveryResponseJsonString = preferences.getString(PREF_KEY_GET_MODEOF_DELIVERY_RESPONSE, "");
