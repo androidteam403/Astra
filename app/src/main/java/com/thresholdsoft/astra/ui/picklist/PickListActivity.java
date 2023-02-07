@@ -14,9 +14,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
 import android.net.Uri;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
@@ -112,6 +110,7 @@ import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
 import com.thresholdsoft.astra.ui.picklisthistory.PickListHistoryActivity;
 import com.thresholdsoft.astra.ui.requesthistory.RequestHistoryActivity;
 import com.thresholdsoft.astra.ui.scanner.ScannerActivity;
+import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.CommonUtils;
 import com.thresholdsoft.astra.utils.NetworkUtils;
@@ -427,13 +426,50 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         });
     }
 
+    private List<GetAllocationDataResponse.Allocationhddata> allocationhddatasDownLoadAllLineItems = null;
+
     @SuppressLint({"RestrictedApi", "NewApi"})
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSuccessGetAllocationDataApi(GetAllocationDataResponse getAllocationDataResponse, boolean isRequestToSupervisior, boolean isCompletedStatus) {
         if (getSessionManager().getAllocationDataResponse() != null) {
-            allocationdata(isRequestToSupervisior, isCompletedStatus);
+            allocationhddatasDownLoadAllLineItems = getSessionManager().getAllocationDataResponse().getAllocationhddatas();
+            downloadAllLineItems();
+        }
 
+
+        //        if (getSessionManager().getAllocationDataResponse() != null) {
+//            allocationdata(isRequestToSupervisior, isCompletedStatus);
+//
+//        }
+    }
+
+    private int allocationhddatasDownLoadAllLineItemsPos = -1;
+
+    private void downloadAllLineItems() {
+        if (allocationhddatasDownLoadAllLineItems != null && allocationhddatasDownLoadAllLineItems.size() > 0) {
+            int pos = -1;
+            for (GetAllocationDataResponse.Allocationhddata allocationhddata : allocationhddatasDownLoadAllLineItems) {
+                if (!allocationhddata.isDownloaded()) {
+                    List<GetAllocationLineResponse> getAllocationLineResponseFromDb = AppDatabase.getDatabaseInstance(this).dbDao().getAllAllocationLineByPurchreqid(allocationhddata.getPurchreqid(), allocationhddata.getAreaid());
+                    if (getAllocationLineResponseFromDb == null || getAllocationLineResponseFromDb.size() == 0) {
+                        pos = allocationhddatasDownLoadAllLineItems.indexOf(allocationhddata);
+                        break;
+                    }
+                }
+            }
+            if (pos != -1) {
+                if (!ActivityUtils.isLoadingShowing())
+                    ActivityUtils.showDialog(this, "Items Downloading...");
+                allocationhddatasDownLoadAllLineItemsPos = pos;
+                getController().getAllocationLineApiCall(allocationhddatasDownLoadAllLineItems.get(pos), true);
+            } else {
+                GetAllocationDataResponse getAllocationDataResponse2 = getDataManager().getAllocationDataResponse();
+                getAllocationDataResponse2.setAllocationhddatas(allocationhddatasDownLoadAllLineItems);
+                getSessionManager().setALlocationDataResponse(getAllocationDataResponse2);
+                ActivityUtils.hideDialog();
+                allocationdata(false, false);
+            }
         }
     }
 
@@ -512,21 +548,19 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     @Override
     public void onClickPickListItem(GetAllocationDataResponse.Allocationhddata allocationhddata) {
-
-
-        if (allocationhddata.getScanstatus().equals("INPROCESS") || allocationhddata.getScanstatus().equalsIgnoreCase("Completed")) {
+        if (allocationhddata.getScanstatus().equals("INPROCESS") || allocationhddata.getScanstatus().equalsIgnoreCase("Completed") || allocationhddata.getScanstatus().equals("Assigned")) {
             List<GetAllocationLineResponse> getAllocationLineResponseFromDb = AppDatabase.getDatabaseInstance(this).dbDao().getAllAllocationLineByPurchreqid(allocationhddata.getPurchreqid(), allocationhddata.getAreaid());
             if (getAllocationLineResponseFromDb != null && getAllocationLineResponseFromDb.size() > 0) {
                 startIndex = 0;
                 endIndex = 0;
                 activityPickListBinding.setAllocationData(allocationhddata);
-                onSuccessGetAllocationLineApi(getAllocationLineResponseFromDb.get(0));
+                onSuccessGetAllocationLineApi(getAllocationLineResponseFromDb.get(0), false, allocationhddata.getPurchreqid(), allocationhddata.getAreaid());
             } else {
                 if (NetworkUtils.isNetworkConnected(this)) {
                     startIndex = 0;
                     endIndex = 0;
                     activityPickListBinding.setAllocationData(allocationhddata);
-                    getController().getAllocationLineApiCall(allocationhddata);
+                    getController().getAllocationLineApiCall(allocationhddata, false);
                 } else {
                     Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
                 }
@@ -536,7 +570,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 startIndex = 0;
                 endIndex = 0;
                 activityPickListBinding.setAllocationData(allocationhddata);
-                getController().getAllocationLineApiCall(allocationhddata);
+                getController().getAllocationLineApiCall(allocationhddata, false);
             } else {
                 Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
             }
@@ -544,90 +578,102 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     }
 
     @Override
-    public void onSuccessGetAllocationLineApi(GetAllocationLineResponse getAllocationLineResponse) {
+    public void onSuccessGetAllocationLineApi(GetAllocationLineResponse getAllocationLineResponse, boolean isAllLineItemsDownload, String purchId, String areaId) {
+        if (isAllLineItemsDownload) {
+            GetAllocationLineResponse getAllocationLineResponse1 = new GetAllocationLineResponse();
+            getAllocationLineResponse1.setRequestmessage("");
+            getAllocationLineResponse1.setScanStartDateTime(null);
+            getAllocationLineResponse1.setPurchreqid(purchId);
+            getAllocationLineResponse1.setAreaid(areaId);
+            getAllocationLineResponse1.setRequeststatus(true);
+            getAllocationLineResponse1.setAllocationdetails(getAllocationLineResponse.getAllocationdetails());
+            AppDatabase.getDatabaseInstance(this).insertOrUpdateGetAllocationLineList(getAllocationLineResponse1);
+            allocationhddatasDownLoadAllLineItems.get(allocationhddatasDownLoadAllLineItemsPos).setDownloaded(true);
+            downloadAllLineItems();
+        } else {
 //        if (isPickListItemClick) {
 //            isPickListItemClick = false;
 //            startIndex = 0;
 //            endIndex = 0;
 //            activityPickListBinding.setAllocationData(allocationhddata);
 //        }
-        for (GetAllocationDataResponse.Allocationhddata allocationhddata : allocationhddataList) {
-            allocationhddata.setSelected(allocationhddata.getPurchreqid().equalsIgnoreCase(activityPickListBinding.getAllocationData().getPurchreqid()));
-        }
-        pickListAdapter.notifyDataSetChanged();
+            for (GetAllocationDataResponse.Allocationhddata allocationhddata : allocationhddataList) {
+                allocationhddata.setSelected(allocationhddata.getPurchreqid().equalsIgnoreCase(activityPickListBinding.getAllocationData().getPurchreqid()));
+            }
+            pickListAdapter.notifyDataSetChanged();
 
 
 //        activityPickListBinding.setIsBarcodeDetailsAvailavble(true);
-        activityPickListBinding.clickOrderToScan.setVisibility(View.GONE);
-        activityPickListBinding.layoutPicklist.setVisibility(View.VISIBLE);
-        activityPickListBinding.setIsBarcodeDetailsAvailavble(false);
+            activityPickListBinding.clickOrderToScan.setVisibility(View.GONE);
+            activityPickListBinding.layoutPicklist.setVisibility(View.VISIBLE);
+            activityPickListBinding.setIsBarcodeDetailsAvailavble(false);
 //        viewGoneAnimator(activityPickListBinding.productdetails);
 //        activityPickListBinding.productdetails.setVisibility(View.GONE);
 //        activityPickListBinding.scanLayout.setVisibility(View.VISIBLE);
-        if (getAllocationLineResponse != null && getAllocationLineResponse.getAllocationdetails() != null && getAllocationLineResponse.getAllocationdetails().size() > 0) {
             if (getAllocationLineResponse != null && getAllocationLineResponse.getAllocationdetails() != null && getAllocationLineResponse.getAllocationdetails().size() > 0) {
-                for (GetAllocationLineResponse.Allocationdetail allocationdetail : getAllocationLineResponse.getAllocationdetails()) {
-                    allocationdetail.setSelected(false);
+                if (getAllocationLineResponse != null && getAllocationLineResponse.getAllocationdetails() != null && getAllocationLineResponse.getAllocationdetails().size() > 0) {
+                    for (GetAllocationLineResponse.Allocationdetail allocationdetail : getAllocationLineResponse.getAllocationdetails()) {
+                        allocationdetail.setSelected(false);
+                    }
                 }
-            }
 
-            List<GetAllocationLineResponse.Allocationdetail> allocationdetailListSort = new ArrayList<>();
+                List<GetAllocationLineResponse.Allocationdetail> allocationdetailListSort = new ArrayList<>();
 
-            List<GetAllocationLineResponse.Allocationdetail> pendingAllocationdetailList = getAllocationLineResponse.getAllocationdetails().stream().filter(e -> (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) != 0 && !e.isRequestAccepted() && (e.getSelectedSupervisorRemarksdetail() == null)).collect(Collectors.toList());
-            allocationdetailListSort.addAll(pendingAllocationdetailList);
+                List<GetAllocationLineResponse.Allocationdetail> pendingAllocationdetailList = getAllocationLineResponse.getAllocationdetails().stream().filter(e -> (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) != 0 && !e.isRequestAccepted() && (e.getSelectedSupervisorRemarksdetail() == null)).collect(Collectors.toList());
+                allocationdetailListSort.addAll(pendingAllocationdetailList);
 
-            List<GetAllocationLineResponse.Allocationdetail> requestPendingAllocationDetailsLIst = getAllocationLineResponse.getAllocationdetails().stream().filter(e -> (e.getSelectedSupervisorRemarksdetail() != null)).collect(Collectors.toList());
-            allocationdetailListSort.addAll(requestPendingAllocationDetailsLIst);
+                List<GetAllocationLineResponse.Allocationdetail> requestPendingAllocationDetailsLIst = getAllocationLineResponse.getAllocationdetails().stream().filter(e -> (e.getSelectedSupervisorRemarksdetail() != null)).collect(Collectors.toList());
+                allocationdetailListSort.addAll(requestPendingAllocationDetailsLIst);
 
-            List<GetAllocationLineResponse.Allocationdetail> completedAllocationdetailList = getAllocationLineResponse.getAllocationdetails().stream().filter(e -> (e.getSelectedSupervisorRemarksdetail() == null && (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) == 0 || e.isRequestAccepted())).collect(Collectors.toList());
-            allocationdetailListSort.addAll(completedAllocationdetailList);
+                List<GetAllocationLineResponse.Allocationdetail> completedAllocationdetailList = getAllocationLineResponse.getAllocationdetails().stream().filter(e -> (e.getSelectedSupervisorRemarksdetail() == null && (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) == 0 || e.isRequestAccepted())).collect(Collectors.toList());
+                allocationdetailListSort.addAll(completedAllocationdetailList);
 
-            allocationdetailList = allocationdetailListSort;     //getAllocationLineResponse.getAllocationdetails();
-            allocationdetailListTemp = allocationdetailListSort; //getAllocationLineResponse.getAllocationdetails();
-            allocationdetailListList = allocationdetailListSort; //getAllocationLineResponse.getAllocationdetails();
+                allocationdetailList = allocationdetailListSort;     //getAllocationLineResponse.getAllocationdetails();
+                allocationdetailListTemp = allocationdetailListSort; //getAllocationLineResponse.getAllocationdetails();
+                allocationdetailListList = allocationdetailListSort; //getAllocationLineResponse.getAllocationdetails();
 
-            setOrderCompletedPending(activityPickListBinding.getAllocationData().getScanstatus());
-            if (allocationdetailList != null && allocationdetailList.size() >= pageSize) {
-                startIndex = 0;
-                endIndex = pageSize;
-            } else {
-                endIndex = allocationdetailList.size();
-            }
-            activityPickListBinding.setIsNaxtPage(endIndex != allocationdetailList.size());
-            activityPickListBinding.setIsPrevtPage(startIndex != 0);
-            allocationdetailListForAdapter = allocationdetailList.subList(startIndex, endIndex);
+                setOrderCompletedPending(activityPickListBinding.getAllocationData().getScanstatus());
+                if (allocationdetailList != null && allocationdetailList.size() >= pageSize) {
+                    startIndex = 0;
+                    endIndex = pageSize;
+                } else {
+                    endIndex = allocationdetailList.size();
+                }
+                activityPickListBinding.setIsNaxtPage(endIndex != allocationdetailList.size());
+                activityPickListBinding.setIsPrevtPage(startIndex != 0);
+                allocationdetailListForAdapter = allocationdetailList.subList(startIndex, endIndex);
 
-            activityPickListBinding.setIsPagination(allocationdetailList.size() > pageSize);
+                activityPickListBinding.setIsPagination(allocationdetailList.size() > pageSize);
 
-            itemListAdapter = new ItemListAdapter(this, allocationdetailListForAdapter, this, activityPickListBinding.getAllocationData().getScanstatus().equalsIgnoreCase("Completed"));
-            setPagination(allocationdetailList.size() > pageSize);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            activityPickListBinding.listitemRecycleview.setLayoutManager(layoutManager);
+                itemListAdapter = new ItemListAdapter(this, allocationdetailListForAdapter, this, activityPickListBinding.getAllocationData().getScanstatus().equalsIgnoreCase("Completed"));
+                setPagination(allocationdetailList.size() > pageSize);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                activityPickListBinding.listitemRecycleview.setLayoutManager(layoutManager);
 //            activityPickListBinding.listitemRecycleview.setHasFixedSize(true);
 //            activityPickListBinding.listitemRecycleview.setItemViewCacheSize(10);
 //            activityPickListBinding.listitemRecycleview.setDrawingCacheEnabled(true);
 //            activityPickListBinding.listitemRecycleview.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
-            activityPickListBinding.listitemRecycleview.setAdapter(itemListAdapter);
+                activityPickListBinding.listitemRecycleview.setAdapter(itemListAdapter);
 
-            String[] statusList = new String[]{"All", "Scanned", "Pending", "Approved", "Completed"};
-            StatusFilterCustomSpinnerAdapter statusFilterCustomSpinnerAdapter = new StatusFilterCustomSpinnerAdapter(this, statusList, this);
-            activityPickListBinding.astramain.setAdapter(statusFilterCustomSpinnerAdapter);
-            activityPickListBinding.astramain.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String[] statusList = new String[]{"All", "Scanned", "Pending", "Approved", "Completed"};
+                StatusFilterCustomSpinnerAdapter statusFilterCustomSpinnerAdapter = new StatusFilterCustomSpinnerAdapter(this, statusList, this);
+                activityPickListBinding.astramain.setAdapter(statusFilterCustomSpinnerAdapter);
+                activityPickListBinding.astramain.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //                    itemListAdapter.getFilter().filter(statusList[position]);
-                    activityPickListBinding.setItemListStatus(position);
-                    getFilter().filter(statusList[position]);
-                }
+                        activityPickListBinding.setItemListStatus(position);
+                        getFilter().filter(statusList[position]);
+                    }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
 
-                }
-            });
+                    }
+                });
+            }
         }
-
 
     }
 
@@ -1870,10 +1916,11 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     @Override
     public void onClickShowSpeed() {
-        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkCapabilities nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
-        int downSpeed = nc.getLinkDownstreamBandwidthKbps() / 1000;
-           int upSpeed = nc.getLinkUpstreamBandwidthKbps() / 1000;
+        if (NetworkUtils.isNetworkConnected(this)) {
+            ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkCapabilities nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
+            int downSpeed = nc.getLinkDownstreamBandwidthKbps() / 1000;
+            int upSpeed = nc.getLinkUpstreamBandwidthKbps() / 1000;
 //        NetworkInfo netInfo = cm.getActiveNetworkInfo();
 //
 //        if (cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
@@ -1955,6 +2002,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 activityPickListBinding.customMenuLayout.greenSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
             }
         }
+    }
 //        else {
 //            activityPickListBinding.customMenuLayout.internetSpeedText.setText("");
 //            activityPickListBinding.customMenuLayout.redSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));

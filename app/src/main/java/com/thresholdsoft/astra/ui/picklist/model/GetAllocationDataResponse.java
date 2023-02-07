@@ -115,6 +115,8 @@ public class GetAllocationDataResponse implements Serializable {
         private boolean isSelected;
         private int collected;
 
+        private boolean isDownloaded;
+
         public String getInventsiteid() {
             return inventsiteid;
         }
@@ -305,6 +307,14 @@ public class GetAllocationDataResponse implements Serializable {
 
         public void setCollected(int collected) {
             this.collected = collected;
+        }
+
+        public boolean isDownloaded() {
+            return isDownloaded;
+        }
+
+        public void setDownloaded(boolean downloaded) {
+            isDownloaded = downloaded;
         }
     }
 

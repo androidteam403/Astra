@@ -20,7 +20,7 @@ public interface PickListActivityCallback {
 
     void onClickPickListItem(GetAllocationDataResponse.Allocationhddata allocationhddata);
 
-    void onSuccessGetAllocationLineApi(GetAllocationLineResponse getAllocationLineResponse);
+    void onSuccessGetAllocationLineApi(GetAllocationLineResponse getAllocationLineResponse, boolean isAllLineItemsDownload, String purchId, String areaId);
 
     void onClickScanNow();
 

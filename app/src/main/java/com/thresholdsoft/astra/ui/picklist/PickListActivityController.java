@@ -170,9 +170,9 @@ public class PickListActivityController {
         }
     }
 
-    public void getAllocationLineApiCall(GetAllocationDataResponse.Allocationhddata allocationhddata) {
+    public void getAllocationLineApiCall(GetAllocationDataResponse.Allocationhddata allocationhddata, boolean isAllLineItemsDownload) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
-            ActivityUtils.showDialog(mContext, "Please wait.");
+            if (!isAllLineItemsDownload) ActivityUtils.showDialog(mContext, "Please wait.");
 
             GetAllocationLineRequest getAllocationLineRequest = new GetAllocationLineRequest();
             getAllocationLineRequest.setPurchreqid(allocationhddata.getPurchreqid());
@@ -184,7 +184,9 @@ public class PickListActivityController {
             call.enqueue(new Callback<GetAllocationLineResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetAllocationLineResponse> call, @NotNull Response<GetAllocationLineResponse> response) {
-                    ActivityUtils.hideDialog();
+                    if (!isAllLineItemsDownload) {
+                        ActivityUtils.hideDialog();
+                    }
                     if (response.code() == 200 && response.body() != null) {
                         if (response.body().getRequeststatus()) {
                             for (int i = 0; i < response.body().getAllocationdetails().size(); i++) {
@@ -202,7 +204,7 @@ public class PickListActivityController {
                             });
 
 
-                            mCallback.onSuccessGetAllocationLineApi(response.body());
+                            mCallback.onSuccessGetAllocationLineApi(response.body(), isAllLineItemsDownload, allocationhddata.getPurchreqid(), allocationhddata.getAreaid());
                         } else {
                             mCallback.noItemListFound(0);
                             mCallback.onFailureMessage(response.body().getRequestmessage());
