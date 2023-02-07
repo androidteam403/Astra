@@ -10,6 +10,7 @@ import com.thresholdsoft.astra.ui.picklist.model.GetModeofDeliveryResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldStatusResponse;
 import com.thresholdsoft.astra.ui.picklist.model.PackingLabelResponse;
+import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateRequest;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
 
 public interface PickListActivityCallback {
@@ -20,7 +21,7 @@ public interface PickListActivityCallback {
 
     void onClickPickListItem(GetAllocationDataResponse.Allocationhddata allocationhddata);
 
-    void onSuccessGetAllocationLineApi(GetAllocationLineResponse getAllocationLineResponse);
+    void onSuccessGetAllocationLineApi(GetAllocationLineResponse getAllocationLineResponse, boolean isAllLineItemsDownload, String purchId, String areaId);
 
     void onClickScanNow();
 
@@ -30,7 +31,7 @@ public interface PickListActivityCallback {
 
     void noItemListFound(int count);
 
-    void onSuccessStatusUpdateApi(StatusUpdateResponse statusUpdateResponse, String status, boolean ismanuallyEditedScannedPacks, boolean isRequestToSupervisior);
+    void onSuccessStatusUpdateApi(StatusUpdateResponse statusUpdateResponse, String status, boolean ismanuallyEditedScannedPacks, boolean isRequestToSupervisior, int getInProcessPendingDataFromDb, boolean isRefreshInternetClick);
 
     void onClickProcessDocument();
 
@@ -120,4 +121,18 @@ public interface PickListActivityCallback {
 
     void onClickPurchaseRequisitionClose();
 
+//    void onClickRefreshForInternet();
+//
+//    void  onClickRefreshForInternetSup();
+
+    void onSuccessStatusUpdateApiIsRefreshInternetReqSup(StatusUpdateRequest statusUpdateRequest, boolean isNetworkStateChange);
+
+    void onSuccessStatusApiIsRefreshInternetPendingInprocess(StatusUpdateRequest statusUpdateRequest, boolean isNetworkStateChange);
+
+    void onClickShowSpeed();
+
+
+    void onSuccessStatusUpdateApiWithoutInternet(StatusUpdateResponse statusUpdateResponse, String status, boolean ismanuallyEditedScannedPacks, boolean isRequestToSupervisior, StatusUpdateRequest statusUpdateRequest);
+
+    void onNetworkStateChange();
 }
