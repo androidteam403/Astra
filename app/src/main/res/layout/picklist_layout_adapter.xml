@@ -6,7 +6,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="@{()-> callback.onClickPickListItem(model)}">
-<!--        android:alpha="@{model.scanstatus.equalsIgnoreCase(`Completed`) ? .5f : 1f}"-->
+        <!--        android:alpha="@{model.scanstatus.equalsIgnoreCase(`Completed`) ? .5f : 1f}"-->
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardview"
@@ -161,32 +161,72 @@
                     </LinearLayout>
 
                     <LinearLayout
-
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:weightSum="1">
 
+                        <LinearLayout
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="@dimen/dimen0dp"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:gravity="center_horizontal"
-                            android:text="Status : "
-                            android:textAlignment="center"
-                            android:textSize="@dimen/dimen8sp" />
+                            android:layout_weight=".5"
+                            android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/status"
-                            android:layout_width="wrap_content"
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center_horizontal"
+                                android:text="Status : "
+                                android:textAlignment="center"
+                                android:textSize="@dimen/dimen8sp" />
+
+                            <TextView
+                                android:id="@+id/status"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center_horizontal"
+                                android:text="@{model.scanstatus}"
+                                android:textAlignment="center"
+                                android:textColor="@{model.scanstatus.equalsIgnoreCase(`INPROCESS`) ? @color/material_amber_accent_700 : model.scanstatus.equalsIgnoreCase(`Assigned`) ? @color/black : @color/green}"
+                                android:textSize="@dimen/dimen8sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+
+                            android:layout_width="@dimen/dimen0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:gravity="center_horizontal"
-                            android:text="@{model.scanstatus}"
-                            android:textAlignment="center"
-                            android:textColor="@{model.scanstatus.equalsIgnoreCase(`INPROCESS`) ? @color/material_amber_accent_700 : model.scanstatus.equalsIgnoreCase(`Assigned`) ? @color/black : @color/green}"
-                            android:textSize="@dimen/dimen8sp" />
+                            android:layout_weight=".5"
+                            android:orientation="horizontal">
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center_horizontal"
+                                android:text="Customer ID : "
+                                android:textAlignment="center"
+                                android:textSize="@dimen/dimen8sp" />
+
+                            <TextView
+                                android:id="@+id/custId"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center_horizontal"
+                                android:text="@{model.custaccount}"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen8sp" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/dimen5dp"
+        android:weightSum="5">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="ITEMID :"
+                android:textAlignment="center"
+                android:textSize="@dimen/dimen14sp" />
+
+            <TextView
+                android:id="@+id/itemId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen3dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="@{itemId}"
+                android:textColor="@color/inprogress_color"
+                android:textSize="@dimen/dimen14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:gravity="start|center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="BATCH :"
+                android:textAlignment="center"
+                android:textSize="@dimen/dimen14sp" />
+
+            <TextView
+                android:id="@+id/batch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen3dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="@{model.batchid}"
+                android:textColor="@color/inprogress_color"
+                android:textSize="@dimen/dimen14sp" />
+        </LinearLayout>
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="0.5"-->
+<!--            android:gravity="start|center_vertical"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:fontFamily="@font/poppins_semibold"-->
+<!--                android:text="QTY :"-->
+<!--                android:textAlignment="center"-->
+<!--                android:textSize="@dimen/dimen14sp" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/qty"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/dimen3dp"-->
+<!--                android:fontFamily="@font/poppins_bold"-->
+<!--                android:text="@{String.valueOf(model.allocatedqty)}"-->
+<!--                android:textColor="@color/inprogress_color"-->
+<!--                android:textSize="@dimen/dimen14sp" />-->
+<!--        </LinearLayout>-->
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".6"
+            android:gravity="start|center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="QOH :"
+                android:textAlignment="center"
+                android:textSize="@dimen/dimen14sp" />
+
+            <TextView
+                android:id="@+id/qoh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen3dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="@{String.valueOf(model.onhandqty - model.allocatedqty)}"
+                android:textColor="@color/inprogress_color"
+                android:textSize="@dimen/dimen14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.6"
+            android:gravity="start|center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Expiry Date :"
+                android:textAlignment="center"
+                android:textSize="@dimen/dimen14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen3dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="@{model.expdate}"
+                android:textColor="@color/inprogress_color"
+                android:textSize="@dimen/dimen14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:gravity="start|center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="MRP :"
+                android:textAlignment="center"
+                android:textSize="@dimen/dimen14sp" />
+
+            <TextView
+                android:id="@+id/mrp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen3dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="@{String.valueOf(model.mrp)}"
+                android:textColor="@color/inprogress_color"
+                android:textSize="@dimen/dimen14sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <data>
+
+        <variable
+            name="itemId"
+            type="String" />
+
+        <variable
+            name="model"
+            type="com.thresholdsoft.astra.ui.pickerrequests.model.CheckQohResponse.Onhanddetail" />
+    </data>
+</layout>

@@ -3,7 +3,6 @@ package com.thresholdsoft.astra.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Build;
 import android.widget.Toast;
 
 import com.thresholdsoft.astra.db.room.AppDatabase;
@@ -11,7 +10,6 @@ import com.thresholdsoft.astra.ui.picklist.model.OrderStatusTimeDateEntity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -22,22 +20,42 @@ public class CommonUtils {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
         return sdf.format(new Date());
     }
+
     public static String getCurrentDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
         return sdf.format(new Date());
     }
+
     public static Date getConvertStringToDate(String date) {
         Date date1 = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         try {
-             date1 = sdf.parse(date);
+            date1 = sdf.parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
         return date1;
     }
-    public static String  getLastDay() {
+
+    public static Date getCurrentDateDate() {
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String formattedDate = df.format(c);
+
+        Date date1 = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        try {
+            date1 = sdf.parse(formattedDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date1;
+    }
+
+    public static String getLastDay() {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
@@ -45,7 +63,7 @@ public class CommonUtils {
 //        String todate = sdf.format(date);
 
         Calendar cal;
-       cal = Calendar.getInstance();
+        cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
         Date todate1 = cal.getTime();
         return sdf.format(todate1);

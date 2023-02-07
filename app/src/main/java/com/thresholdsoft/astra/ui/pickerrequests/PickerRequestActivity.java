@@ -19,23 +19,28 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.room.util.StringUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.zxing.common.StringUtils;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityPickerRequestsBinding;
+import com.thresholdsoft.astra.databinding.AlertDialogBinding;
 import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.ui.alertdialogs.AlertBox;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.menucallbacks.CustomMenuSupervisorCallback;
+import com.thresholdsoft.astra.ui.pickerrequests.adapter.CheckQohAdapter;
 import com.thresholdsoft.astra.ui.pickerrequests.adapter.PickerListAdapter;
 import com.thresholdsoft.astra.ui.pickerrequests.adapter.RequestTypeDropdownSpinner;
 import com.thresholdsoft.astra.ui.pickerrequests.adapter.RouteTypeDropdownSpinner;
 import com.thresholdsoft.astra.ui.pickerrequests.adapter.SortbyDropDownSpinner;
+import com.thresholdsoft.astra.ui.pickerrequests.adapter.StatusDropdownSpinner;
+import com.thresholdsoft.astra.ui.pickerrequests.model.CheckQohResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
@@ -53,8 +58,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class PickerRequestActivity extends BaseActivity implements PickerRequestCallback, CustomMenuSupervisorCallback {
@@ -82,10 +85,12 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     private String selectedRoute = "All";
     private String minDate, maxDate;
     public boolean status = false;
+    private String selecteStatus = "Pending";
 
     private boolean isRequestTypeSpinnerReset = false;
     private boolean isSortbySpinnerReset = false;
     private boolean isRouteSpinnerReset = false;
+    private boolean isStatusSpinnerReset = false;
     private boolean isRefreshing = false;
 
     @SuppressLint("ResourceAsColor")
@@ -93,7 +98,6 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityPickerRequestsBinding = DataBindingUtil.setContentView(this, R.layout.activity_picker_requests);
-
         setUp();
     }
 
@@ -131,6 +135,10 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void setUp() {
+        isRequestTypeSpinnerReset = true;
+        isSortbySpinnerReset = true;
+        isRouteSpinnerReset = true;
+        isStatusSpinnerReset = true;
 //        activityPickerRequestsBinding.setCallback(this);
 //        activityPickerRequestsBinding.customMenuLayout.setCustomMenuCallback(this);
 //        activityPickerRequestsBinding.customMenuLayout.setSelectedMenu(5);
@@ -151,10 +159,43 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         pickerRequestSearchByText();
         setSortbyDropDown();
         setRouteDropDown();
+        setStatusDropDown();
 
 
     }
 
+    private void setStatusDropDown() {
+        List<String> statusList = new ArrayList<>();
+        statusList.add("All");
+        statusList.add("Pending");
+        statusList.add("Approved");
+        statusList.add("Rejected");
+
+        StatusDropdownSpinner adapter = new StatusDropdownSpinner(this, statusList);
+        activityPickerRequestsBinding.statusSpinner.setAdapter(adapter);
+        activityPickerRequestsBinding.statusSpinner.setSelection(1);
+        activityPickerRequestsBinding.statusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (!isStatusSpinnerReset) {
+                    selecteStatus = statusList.get(position);
+                    if (pickListHistoryAdapter != null) {
+                        pickListHistoryAdapter.setStatus(selecteStatus);
+                        pickListHistoryAdapter.getFilter().filter("");
+                    }
+
+                } else {
+                    isStatusSpinnerReset = false;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
 
     private void setRequestTypeDropDown() {
         String noStockLength;
@@ -168,12 +209,11 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         remarksdetail.setRemarksdesc("All");
         remarksdetailsList.add(0, remarksdetail);
 
-        for (int i=1;i<remarksdetailsList.size();i++){
-            if (remarksdetailsList.get(i).getRemarksdesc().contains("All")){
+        for (int i = 1; i < remarksdetailsList.size(); i++) {
+            if (remarksdetailsList.get(i).getRemarksdesc().contains("All")) {
                 remarksdetailsList.remove(i);
             }
         }
-
 
 
         remarksdetailsList.removeIf(s -> s.getRemarksdesc().equalsIgnoreCase("ByPass_Scan") || s.getRemarksdesc().equalsIgnoreCase("Quantity_Wise") || s.getRemarksdesc().equalsIgnoreCase("Area_Wise_ByPass"));
@@ -181,20 +221,19 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 //Set<GetWithHoldRemarksResponse.Remarksdetail> set=remarksdetailsList.stream().collect(Collectors.toCollection(()->new TreeSet<>(Comparator.comparing(GetWithHoldRemarksResponse.Remarksdetail::getRemarkscode))));
 
 
-
         for (int i = 0; i < remarksdetailsList.size(); i++) {
             if (remarksdetailsList.get(i).getRemarksdesc().contains("NO_STOCK")) {
                 if (noStockItemList.size() > 0) {
-                    noStockLength=String.valueOf(noStockItemList.size());
+                    noStockLength = String.valueOf(noStockItemList.size());
 
-                    remarksdetailsList.get(i).setRemarksdesc(StringUtils.GB2312.replace("GB2312",remarksdetailsList.get(i).getRemarksdesc() + " (" + noStockItemList.size() + ")").substring(0,11+noStockLength.length()));
+                    remarksdetailsList.get(i).setRemarksdesc(StringUtils.GB2312.replace("GB2312", remarksdetailsList.get(i).getRemarksdesc() + " (" + noStockItemList.size() + ")").substring(0, 11 + noStockLength.length()));
                 }
 
 
             } else if (remarksdetailsList.get(i).getRemarksdesc().contains("DAMAGE_ITEM")) {
                 if (damageItemList.size() > 0) {
-                    damageItemsLength=String.valueOf(damageItemList.size());
-                    remarksdetailsList.get(i).setRemarksdesc(StringUtils.GB2312.replace("GB2312",remarksdetailsList.get(i).getRemarksdesc() + " (" + damageItemList.size() + ")").substring(0,14+damageItemsLength.length()));
+                    damageItemsLength = String.valueOf(damageItemList.size());
+                    remarksdetailsList.get(i).setRemarksdesc(StringUtils.GB2312.replace("GB2312", remarksdetailsList.get(i).getRemarksdesc() + " (" + damageItemList.size() + ")").substring(0, 14 + damageItemsLength.length()));
 
                 }
             }
@@ -300,6 +339,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 //                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
 //                        activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
 //                        activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+                        activityPickerRequestsBinding.pickerRequestRecycleview.getRecycledViewPool().clear();
                         pickListHistoryAdapter.setWithholddetailList(withholddetailListTemp);
                         pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
                         pickListHistoryAdapter.setRequestType(selectedRequestType);
@@ -322,6 +362,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 //                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
 //                        activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
 //                        activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+                        activityPickerRequestsBinding.pickerRequestRecycleview.getRecycledViewPool().clear();
                         pickListHistoryAdapter.setWithholddetailList(withholddetailListTemp);
                         pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
                         pickListHistoryAdapter.setRequestType(selectedRequestType);
@@ -344,6 +385,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 //                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
 //                        activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
 //                        activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+                        activityPickerRequestsBinding.pickerRequestRecycleview.getRecycledViewPool().clear();
                         pickListHistoryAdapter.setWithholddetailList(withholddetailListTemp);
                         pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
                         pickListHistoryAdapter.setRequestType(selectedRequestType);
@@ -390,6 +432,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 //                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
 //                        activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
 //                        activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.getRecycledViewPool().clear();
                         pickListHistoryAdapter.setWithholddetailList(withholddetailListTemp);
                         pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
                         pickListHistoryAdapter.setRequestType(selectedRequestType);
@@ -455,8 +498,10 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
         this.minDate = CommonUtils.parseDateToddMMyyyyNoTime(minDate);
         this.maxDate = CommonUtils.parseDateToddMMyyyyNoTime(maxDate);
-        activityPickerRequestsBinding.setMinDate(this.minDate);
-        activityPickerRequestsBinding.setMaxDate(this.maxDate);
+
+
+        activityPickerRequestsBinding.setMinDate(CommonUtils.getCurrentDate());
+        activityPickerRequestsBinding.setMaxDate(CommonUtils.getCurrentDate());
         activityPickerRequestsBinding.setIsSortByRouteWise(true);
         if (withHoldDataResponse != null && withHoldDataResponse.getRequeststatus()) {
             withholddetailList = (ArrayList<WithHoldDataResponse.Withholddetail>) withHoldDataResponse.getWithholddetails();
@@ -466,7 +511,6 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
             damageItemList = withholddetailList.stream().filter(a -> a.getHoldreasoncode().contains("DAMAGE_ITEM")).collect(Collectors.toList());
             setRequestTypeDropDown();
-
 
 
             routeList = withholddetailListTemp.stream().map(WithHoldDataResponse.Withholddetail::getRoutecode).distinct().collect(Collectors.toList());
@@ -495,11 +539,12 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
             if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-                pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, this);
+                pickListHistoryAdapter = new PickerListAdapter(this, getPendingCurrentDateWithHoldDetails(withholddetailListTemp), withholddetailListTemp, this);
                 pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
                 pickListHistoryAdapter.setRequestType(selectedRequestType);
                 activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
                 activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+
 
                 noPickerRequestsFound(withholddetailListTemp.size());
                 if (isRefreshing) {
@@ -516,6 +561,10 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
                         isRouteSpinnerReset = true;
                         activityPickerRequestsBinding.routeSprinner.setSelection(0);
                     }
+                    if (activityPickerRequestsBinding.statusSpinner != null) {
+                        isStatusSpinnerReset = true;
+                        activityPickerRequestsBinding.statusSpinner.setSelection(1);
+                    }
                 }
             } else {
                 noPickerRequestsFound(0);
@@ -525,6 +574,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             noPickerRequestsFound(0);
 //            Toast.makeText(this, withHoldDataResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override
@@ -695,10 +745,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
     @Override
     public void onClickDateApply() {
-        if (activityPickerRequestsBinding.getMinDate() != null
-                && !activityPickerRequestsBinding.getMinDate().isEmpty()
-                && activityPickerRequestsBinding.getMaxDate() != null
-                && !activityPickerRequestsBinding.getMaxDate().isEmpty()) {
+        if (activityPickerRequestsBinding.getMinDate() != null && !activityPickerRequestsBinding.getMinDate().isEmpty() && activityPickerRequestsBinding.getMaxDate() != null && !activityPickerRequestsBinding.getMaxDate().isEmpty()) {
             String date1 = activityPickerRequestsBinding.getMinDate();
             String date2 = activityPickerRequestsBinding.getMaxDate();
 
@@ -727,6 +774,30 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             } catch (ParseException ex) {
                 Log.v("Exception", ex.getLocalizedMessage());
             }
+        }
+    }
+
+    @Override
+    public void onSuccessCheckQohApiCall(CheckQohResponse checkQohResponse, AlertDialogBinding alertDialogBoxBinding, boolean isFirstClick, WithHoldDataResponse.Withholddetail pickListItems) {
+        if (checkQohResponse != null && checkQohResponse.getOnhanddetails() != null && checkQohResponse.getOnhanddetails().size() > 0) {
+            alertDialogBoxBinding.checkqoh.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+            alertDialogBoxBinding.onhandDetailRecyclerviewLayout.setVisibility(View.VISIBLE);
+            CheckQohAdapter checkQohAdapter = new CheckQohAdapter(this, checkQohResponse.getOnhanddetails(), pickListItems.getItemid());
+            RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            alertDialogBoxBinding.onhandDetailRecyclerview.setLayoutManager(linearLayoutManager);
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
+            alertDialogBoxBinding.onhandDetailRecyclerview.addItemDecoration(dividerItemDecoration);
+            alertDialogBoxBinding.onhandDetailRecyclerview.setAdapter(checkQohAdapter);
+        }
+    }
+
+    @Override
+    public void onClickCheckQoh(AlertDialogBinding alertDialogBoxBinding, boolean isFirstClick, WithHoldDataResponse.Withholddetail pickListItems) {
+        if (isFirstClick) {
+            getController().checkQohApiCall(alertDialogBoxBinding, isFirstClick, pickListItems);
+        } else {
+            alertDialogBoxBinding.checkqoh.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_right_24, 0);
+            alertDialogBoxBinding.onhandDetailRecyclerviewLayout.setVisibility(View.GONE);
         }
     }
 
@@ -776,7 +847,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             });
             if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-                pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, this);
+                pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, withholddetailListTemp, this);
                 pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
                 activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
                 activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
@@ -800,7 +871,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             });
             if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-                pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, this);
+                pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, withholddetailListTemp, this);
                 pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
                 activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
                 activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
@@ -843,5 +914,28 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             }
         });
         customDialog.show();
+    }
+
+    private List<WithHoldDataResponse.Withholddetail> getPendingCurrentDateWithHoldDetails(List<WithHoldDataResponse.Withholddetail> WithHoldDetails) {
+        List<WithHoldDataResponse.Withholddetail> returnWithHoldDetails = new ArrayList<>();
+        for (WithHoldDataResponse.Withholddetail withholddetail : WithHoldDetails) {
+            if (withholddetail.getStatus().equalsIgnoreCase("PENDING")) {
+                String date1 = CommonUtils.getCurrentDate();
+                String date2 = CommonUtils.getCurrentDate();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+                try {
+                    Date d1 = sdf.parse(date1);
+                    Date d2 = sdf.parse(date2);
+                    Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(withholddetail.getOnholddatetime());
+                    if (!d3.before(d1) && !d3.after(d2)) {
+                        returnWithHoldDetails.add(withholddetail);
+                    }
+                } catch (ParseException ex) {
+                    System.out.println(ex);
+                }
+            }
+        }
+
+        return returnWithHoldDetails;
     }
 }

@@ -90,7 +90,7 @@
                     android:layout_marginTop="@dimen/dimen5dp"
                     android:layout_marginEnd="@dimen/dimen10dp"
                     android:orientation="horizontal"
-                    android:weightSum="6">
+                    android:weightSum="7">
 
                     <TextView
                         android:layout_width="0dp"
@@ -128,7 +128,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="1.2"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="@string/label_allocated_packs"
                         android:textAllCaps="true"
@@ -142,6 +142,16 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="@string/label_expiry_date"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen10sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".8"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="@string/label_batch_code"
                         android:textAllCaps="true"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dimen10sp"

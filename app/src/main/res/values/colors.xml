@@ -148,6 +148,9 @@
     <color name="bg_pick_list_details_view">#dcdeea</color>
     <color name="item_selected_color">#1A03b3b3</color>
     <color name="bg_assigned_orders_count">#f8bd79</color>
+    <color name="picker_request_pending">#FFFFFFFF</color>
+    <color name="picker_request_approved">#1A3CB371</color>
+    <color name="picker_request_rejected">#1AFF0000</color>
 
 </resources>
 

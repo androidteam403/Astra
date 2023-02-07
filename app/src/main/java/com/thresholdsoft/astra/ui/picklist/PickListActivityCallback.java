@@ -3,6 +3,7 @@ package com.thresholdsoft.astra.ui.picklist;
 import android.view.View;
 
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
+import com.thresholdsoft.astra.ui.pickerrequests.model.CheckQohResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetModeofDeliveryResponse;
@@ -44,6 +45,8 @@ public interface PickListActivityCallback {
     void onClickRequesttoHoldResoan();
 
     void onSuccessGetWithHoldRemarksApi(GetWithHoldRemarksResponse getWithHoldRemarksResponse);
+
+    void onSuccessCheckQoh(CheckQohResponse checkQohResponse, GetWithHoldRemarksResponse getWithHoldRemarksResponse);
 
     void onClickSupervisorRemarkItem(GetWithHoldRemarksResponse.Remarksdetail remarksdetail);
 

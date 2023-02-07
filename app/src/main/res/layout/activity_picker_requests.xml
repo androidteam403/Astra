@@ -41,38 +41,78 @@
                 android:layout_weight=".9"
                 android:orientation="vertical"
                 tools:ignore="NotSibling">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:textAlignment="center"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="PICKER REQUEST"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-
                     android:gravity="center_vertical">
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/dimen15dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="PICKER REQUEST"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen40dp"
+                        android:layout_height="@dimen/dimen40dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="@dimen/dimen10dp"
+                        android:layout_marginEnd="@dimen/dimen10dp"
+                        android:contentDescription="@string/app_name"
+                        android:onClick="@{()-> mCallback.onClickRefreshRequest()}"
+                        android:src="@drawable/refresh_icon" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical">
 
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:weightSum="3"
                         android:layout_alignParentEnd="true"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/dimen30dp"
+                                android:layout_marginStart="@dimen/dimen5dp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center"
+                                android:paddingStart="@dimen/dimen5dp"
+                                android:paddingEnd="@dimen/dimen5dp"
+                                android:text="Status :"
+                                android:textSize="@dimen/dimen12sp" />
+
+                            <Spinner
+                                android:id="@+id/status_spinner"
+                                style="@style/spinner_style"
+                                android:layout_width="@dimen/dimen150dp"
+                                android:layout_height="wrap_content"
+                                android:spinnerMode="dropdown"
+                                android:textSize="@dimen/dimen14sp" />
+
+                        </LinearLayout>
+
 
                         <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
@@ -90,7 +130,7 @@
                             <Spinner
                                 android:id="@+id/request_code_spinner"
                                 style="@style/spinner_style"
-                                android:layout_width="@dimen/dimen250dp"
+                                android:layout_width="@dimen/dimen230dp"
                                 android:layout_height="wrap_content"
                                 android:spinnerMode="dropdown"
                                 android:textSize="@dimen/dimen14sp" />
@@ -98,8 +138,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
@@ -117,15 +156,15 @@
                             <Spinner
                                 android:id="@+id/sort_by_sprinner"
                                 style="@style/spinner_style"
-                                android:layout_width="@dimen/dimen250dp"
+                                android:layout_width="@dimen/dimen230dp"
                                 android:layout_height="wrap_content"
                                 android:spinnerMode="dropdown"
                                 android:textSize="@dimen/dimen14sp" />
 
                         </LinearLayout>
+
                         <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
@@ -137,18 +176,19 @@
                                 android:gravity="center"
                                 android:paddingStart="@dimen/dimen5dp"
                                 android:paddingEnd="@dimen/dimen5dp"
-                                android:text="Route:"
+                                android:text="Route :"
                                 android:textSize="@dimen/dimen12sp" />
 
                             <Spinner
                                 android:id="@+id/route_sprinner"
                                 style="@style/spinner_style"
-                                android:layout_width="@dimen/dimen250dp"
+                                android:layout_width="@dimen/dimen230dp"
                                 android:layout_height="wrap_content"
                                 android:spinnerMode="dropdown"
                                 android:textSize="@dimen/dimen14sp" />
 
                         </LinearLayout>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/dimen30dp"
@@ -194,13 +234,13 @@
                             android:textSize="@dimen/dimen12sp"
                             android:visibility="gone" />
 
-                        <ImageView
-                            android:layout_width="@dimen/dimen40dp"
-                            android:layout_height="@dimen/dimen40dp"
-                            android:layout_marginStart="@dimen/dimen10dp"
-                            android:contentDescription="@string/app_name"
-                            android:onClick="@{()-> mCallback.onClickRefreshRequest()}"
-                            android:src="@drawable/refresh_icon" />
+                        <!--                        <ImageView-->
+                        <!--                            android:layout_width="@dimen/dimen40dp"-->
+                        <!--                            android:layout_height="@dimen/dimen40dp"-->
+                        <!--                            android:layout_marginStart="@dimen/dimen10dp"-->
+                        <!--                            android:contentDescription="@string/app_name"-->
+                        <!--                            android:onClick="@{()-> mCallback.onClickRefreshRequest()}"-->
+                        <!--                            android:src="@drawable/refresh_icon" />-->
 
                     </LinearLayout>
 
@@ -409,9 +449,7 @@
         <variable
             name="isSortByRouteWise"
             type="Boolean" />
-        <variable
-            name="isSortByEmpId"
-            type="Boolean" />
+
         <variable
             name="minDate"
             type="String" />

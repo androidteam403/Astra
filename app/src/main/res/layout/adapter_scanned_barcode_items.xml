@@ -14,7 +14,7 @@
             android:layout_marginEnd="@dimen/dimen10dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:weightSum="6">
+            android:weightSum="7">
 
             <TextView
                 android:layout_width="0dp"
@@ -52,7 +52,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="1.2"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="@{String.valueOf(allocationDetails.allocatedpacks)}"
                 android:textAllCaps="true"
@@ -66,6 +66,17 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="@{CommonUtils.parseDateToMMYYYY(allocationDetails.expdate)}"
+                android:textAllCaps="true"
+                android:textColor="@{allocationDetails.scannedBarcodeItemSelected ? @color/white : @color/black}"
+                android:textSize="@dimen/dimen10sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".8"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@{allocationDetails.inventbatchid}"
                 android:textAllCaps="true"
                 android:textColor="@{allocationDetails.scannedBarcodeItemSelected ? @color/white : @color/black}"
                 android:textSize="@dimen/dimen10sp"

@@ -6,6 +6,7 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/parent_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen5dp"
@@ -110,7 +111,7 @@
                     <TextView
                         android:id="@+id/purchase_id"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight=".18"
                         android:fontFamily="@font/poppins_semibold"
                         android:textColor="@color/black"
@@ -133,6 +134,7 @@
                         android:fontFamily="@font/poppins_semibold"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dimen12sp" />
+
 
                     <TextView
                         android:id="@+id/allocation_qty"
@@ -164,15 +166,15 @@
 
                     <LinearLayout
                         android:layout_width="@dimen/dimen0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight=".1"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <EditText
                             android:id="@+id/approvalqty"
-                            android:layout_width="@dimen/dimen30dp"
-                            android:layout_height="match_parent"
+                            android:layout_width="@dimen/dimen40dp"
+                            android:layout_height="@dimen/dimen40dp"
                             android:background="@drawable/bg_approval_qty_edit"
                             android:fontFamily="@font/poppins_semibold"
                             android:gravity="center"
@@ -182,6 +184,7 @@
                             android:textSize="@dimen/dimen12sp" />
 
                     </LinearLayout>
+
 
                     <TextView
                         android:id="@+id/requestedby"
@@ -207,8 +210,8 @@
 
                 <ImageView
                     android:id="@+id/approvebutton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/dimen50dp"
+                    android:layout_height="@dimen/dimen50dp"
                     android:padding="@dimen/dimen10dp"
                     android:src="@drawable/edit_view" />
 

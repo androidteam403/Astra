@@ -1,7 +1,6 @@
 package com.thresholdsoft.astra.ui.picklist;
 
 import android.content.Context;
-import android.os.Environment;
 import android.util.Pair;
 
 import com.thresholdsoft.astra.BuildConfig;
@@ -10,6 +9,8 @@ import com.thresholdsoft.astra.network.ApiClient;
 import com.thresholdsoft.astra.network.ApiInterface;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutRequest;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
+import com.thresholdsoft.astra.ui.pickerrequests.model.CheckQohRequest;
+import com.thresholdsoft.astra.ui.pickerrequests.model.CheckQohResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataRequest;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineRequest;
@@ -24,6 +25,7 @@ import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateRequest;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
+import com.thresholdsoft.astra.utils.CommonUtils;
 import com.thresholdsoft.astra.utils.NetworkUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -141,6 +143,13 @@ public class PickListActivityController {
                     ActivityUtils.hideDialog();
                     if (response.code() == 200 && response.body() != null) {
                         if (response.body().getRequeststatus()) {
+                            if (response.body().getAllocationhddatas().size() > 0) {
+//                                response.body().setAllocationhddatas(response.body().getAllocationhddatas().stream().filter(i -> CommonUtils.getConvertStringToDate(i.getTransdate().substring(0, 10)).before(CommonUtils.getConvertStringToDate(CommonUtils.getCurrentDate()))).collect(Collectors.toList()));
+//                                response.body().setAllocationhddatas(response.body().getAllocationhddatas().stream().filter(i -> !i.getScanstatus().equalsIgnoreCase("COMPLETED") && CommonUtils.getConvertStringToDate(i.getTransdate().substring(0,10)).before(CommonUtils.getCurrentDateDate())).collect(Collectors.toList()));
+                               // response.body().getAllocationhddatas().removeIf(i -> i.getScanstatus().equalsIgnoreCase("COMPLETED") && CommonUtils.getConvertStringToDate(i.getTransdate().substring(0, 10)).before(CommonUtils.getCurrentDateDate()));
+
+                            }
+
                             mCallback.onSuccessGetAllocationDataApi(response.body(), isRequestToSupervisior, isCompletedStatus);
                         } else {
                             mCallback.noPickListFound(0);
@@ -346,6 +355,42 @@ public class PickListActivityController {
 
     private SessionManager getDataManager() {
         return new SessionManager(mContext);
+    }
+
+    public void checkQohApiCall(String inventBatchId, String itemId, GetWithHoldRemarksResponse getWithHoldRemarksResponse) {
+        if (NetworkUtils.isNetworkConnected(mContext)) {
+            ActivityUtils.showDialog(mContext, "Please wait.");
+            CheckQohRequest checkQohRequest = new CheckQohRequest();
+            checkQohRequest.setBatchid(inventBatchId);
+            checkQohRequest.setItemid(itemId);
+            String dcCodewithname = new SessionManager(mContext).getDcName();
+            String dcCode = dcCodewithname.substring(0, dcCodewithname.indexOf("-"));
+            checkQohRequest.setDccode(dcCode);
+            ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
+            Call<CheckQohResponse> call = apiInterface.CHECK_QOH_API_CALL(BuildConfig.BASE_TOKEN, checkQohRequest);
+
+            call.enqueue(new Callback<CheckQohResponse>() {
+                @Override
+                public void onResponse(Call<CheckQohResponse> call, Response<CheckQohResponse> response) {
+                    ActivityUtils.hideDialog();
+                    if (response.code() == 200 && response.body() != null) {
+                        mCallback.onSuccessCheckQoh(response.body(), getWithHoldRemarksResponse);
+                    } else if (response.code() == 500) {
+                        mCallback.onFailureMessage("Internal Server Error");
+                    } else {
+                        mCallback.onFailureMessage("Something went wrong.");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CheckQohResponse> call, Throwable t) {
+                    ActivityUtils.hideDialog();
+                    mCallback.onFailureMessage(t.getMessage());
+
+                }
+            });
+        }
+
     }
 
     public void logoutApiCall() {

@@ -41,13 +41,15 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
     private boolean isNotifying = false;
     private Dialog customDialog;
     private String requestType;
-    private String route="All";
+    private String route = "All";
+    private String status = "Pending";
     private String minDate, maxDate;
+    private boolean isStartView = true;
 
-    public PickerListAdapter(Activity activity, List<WithHoldDataResponse.Withholddetail> withholddetailList, PickerRequestCallback pickerRequestCallback) {
+    public PickerListAdapter(Activity activity, List<WithHoldDataResponse.Withholddetail> withholddetailList, List<WithHoldDataResponse.Withholddetail> withholddetailListList, PickerRequestCallback pickerRequestCallback) {
         this.activity = activity;
         this.withholddetailList = withholddetailList;
-        this.withholddetailListList = withholddetailList;
+        this.withholddetailListList = withholddetailListList;
         this.pickerRequestCallback = pickerRequestCallback;
     }
 
@@ -73,6 +75,11 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
         this.isNotifying = isNotifying;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+
     @NonNull
     @Override
     public PickerListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -83,83 +90,100 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull PickerListAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        WithHoldDataResponse.Withholddetail pickListItems = withholddetailList.get(position);
+        if (withholddetailList.size() > position) {
+            WithHoldDataResponse.Withholddetail pickListItems = withholddetailList.get(position);
+            if (pickListItems != null) {
+                isStartView = true;
 
-        String holdres = pickListItems.getHoldreasoncode();
+                if (pickListItems.getStatus().equalsIgnoreCase("PENDING"))
+                    holder.pickerrequestAdapterlayoutBinding.parentLayout.setBackgroundColor(activity.getResources().getColor(R.color.picker_request_pending));
+                else if (pickListItems.getStatus().equalsIgnoreCase("APPROVED")) {
+                    holder.pickerrequestAdapterlayoutBinding.parentLayout.setBackgroundColor(activity.getResources().getColor(R.color.picker_request_approved));
+                } else if (pickListItems.getStatus().equalsIgnoreCase("REJECTED")) {
+                    holder.pickerrequestAdapterlayoutBinding.parentLayout.setBackgroundColor(activity.getResources().getColor(R.color.picker_request_rejected));
+                }
+//        String holdres = pickListItems.getHoldreasoncode();
 
 //        var reqDate = approvedOrders.requesteddate.toString()!!
 //                .substring(0,
 //                Math.min(approvedOrders.requesteddate.toString()!!.length, 10))
-        String allocqty = pickListItems.getAllocatedqty().toString();
-        holder.pickerrequestAdapterlayoutBinding.purchaseId.setText(pickListItems.getPurchreqid());
-        holder.pickerrequestAdapterlayoutBinding.productName.setText(pickListItems.getItemname() + " (" + pickListItems.getItemid() + " )");
-        if (allocqty != null) {
-            holder.pickerrequestAdapterlayoutBinding.allocationQty.setText(allocqty);
-        }
+                String allocqty = pickListItems.getAllocatedqty().toString();
+                holder.pickerrequestAdapterlayoutBinding.purchaseId.setText(pickListItems.getPurchreqid());
+                holder.pickerrequestAdapterlayoutBinding.productName.setText(pickListItems.getItemname() + " (" + pickListItems.getItemid() + " )");
+                if (allocqty != null) {
+                    holder.pickerrequestAdapterlayoutBinding.allocationQty.setText(allocqty);
+                }
 
-        holder.pickerrequestAdapterlayoutBinding.route.setText(pickListItems.getRoutecode());
-
-
-        holder.pickerrequestAdapterlayoutBinding.shortqty.setText(pickListItems.getShortqty().toString());
-        holder.pickerrequestAdapterlayoutBinding.scannedQty.setText(pickListItems.getScannedqty().toString());
-        holder.pickerrequestAdapterlayoutBinding.requestedby.setText(pickListItems.getUsername().replace(" ", "") + " (" + pickListItems.getUserid() + " )");
-        holder.pickerrequestAdapterlayoutBinding.approvalqty.setText(String.valueOf(pickListItems.getApprovalqty()));
+                holder.pickerrequestAdapterlayoutBinding.route.setText(pickListItems.getRoutecode());
 
 
-        holder.pickerrequestAdapterlayoutBinding.approvebutton.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public void onClick(View v) {
+                holder.pickerrequestAdapterlayoutBinding.shortqty.setText(pickListItems.getShortqty().toString());
+                holder.pickerrequestAdapterlayoutBinding.scannedQty.setText(pickListItems.getScannedqty().toString());
+                holder.pickerrequestAdapterlayoutBinding.requestedby.setText(pickListItems.getUsername().replace(" ", "") + " (" + pickListItems.getUserid() + " )");
+                holder.pickerrequestAdapterlayoutBinding.approvalqty.setText(String.valueOf(pickListItems.getApprovalqty()));
+
+
+                holder.pickerrequestAdapterlayoutBinding.approvebutton.setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("ResourceAsColor")
+                    @Override
+                    public void onClick(View v) {
 //                holder.pickerrequestAdapterlayoutBinding.approveImage.setVisibility(View.VISIBLE);
 //
 //                holder.pickerrequestAdapterlayoutBinding.approvebutton.setBackgroundColor(Color.parseColor("#29AB87"));
 //                holder.pickerrequestAdapterlayoutBinding.approvebutton.setText("Approved");
-                pickerRequestCallback.onClickApprove(holder.pickerrequestAdapterlayoutBinding.approvalqty.getText().toString(), pickListItems, position, pickListItems.getItemid(), pickListItems.getItemname(), withholddetailList);
+                        pickerRequestCallback.onClickApprove(holder.pickerrequestAdapterlayoutBinding.approvalqty.getText().toString(), pickListItems, position, pickListItems.getItemid(), pickListItems.getItemname(), withholddetailList);
 
-            }
-        });
-        holder.pickerrequestAdapterlayoutBinding.approvalqty.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!isNotifying) {
-                    String text = s.toString();
-                    if (!text.isEmpty()) {
-                        if (Integer.parseInt(text) > pickListItems.getApprovalqty()) {
-                            if (customDialog != null && customDialog.isShowing()) {
-                                customDialog.dismiss();
-                            }
-                            customDialog = new Dialog(activity);
-                            DialogCustomAlertBinding dialogCustomAlertBinding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.dialog_custom_alert, null, false);
-                            customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                            customDialog.setContentView(dialogCustomAlertBinding.getRoot());
-                            customDialog.setCancelable(false);
-                            dialogCustomAlertBinding.message.setText("Approval qty should not be greater than Request qty.");
-                            dialogCustomAlertBinding.alertListenerLayout.setVisibility(View.GONE);
-                            dialogCustomAlertBinding.okBtn.setOnClickListener(view -> {
-                                holder.pickerrequestAdapterlayoutBinding.approvalqty.setText(String.valueOf(pickListItems.getApprovalqty()));
-                                customDialog.dismiss();
-                            });
-                            customDialog.show();
-                        }
                     }
-                }
+                });
+                holder.pickerrequestAdapterlayoutBinding.approvalqty.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        if (!isStartView) {
+                            if (!isNotifying) {
+                                String text = s.toString();
+                                if (!text.isEmpty()) {
+                                    if (Integer.parseInt(text) > pickListItems.getApprovalqty()) {
+                                        if (customDialog != null && customDialog.isShowing()) {
+                                            customDialog.dismiss();
+                                        }
+                                        customDialog = new Dialog(activity);
+                                        DialogCustomAlertBinding dialogCustomAlertBinding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.dialog_custom_alert, null, false);
+                                        customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                        customDialog.setContentView(dialogCustomAlertBinding.getRoot());
+                                        customDialog.setCancelable(false);
+                                        dialogCustomAlertBinding.message.setText("Approval qty should not be greater than Request qty.");
+                                        dialogCustomAlertBinding.alertListenerLayout.setVisibility(View.GONE);
+                                        dialogCustomAlertBinding.okBtn.setOnClickListener(view -> {
+                                            holder.pickerrequestAdapterlayoutBinding.approvalqty.setText(String.valueOf(pickListItems.getApprovalqty()));
+                                            customDialog.dismiss();
+                                        });
+                                        customDialog.show();
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                });
+
+                new Handler().postDelayed(() -> {
+                    if (position == withholddetailList.size() - 1) {
+                        isNotifying = false;
+                    }
+                    isStartView = false;
+                }, 100);
             }
-        });
-        new Handler().postDelayed(() -> {
-            if (position == withholddetailList.size() - 1) {
-                isNotifying = false;
-            }
-        }, 100);
+        }
     }
 
     @Override
@@ -184,8 +208,10 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
                             Date d2 = sdf.parse(date2);
                             Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
                             if (!d3.before(d1) && !d3.after(d2)) {
-                                isNotifying = true;
-                                withholddetailfilteredList.add(row);
+                                if (status.equalsIgnoreCase("All") || status.equalsIgnoreCase(row.getStatus())) {
+                                    isNotifying = true;
+                                    withholddetailfilteredList.add(row);
+                                }
                             }
                         } catch (ParseException ex) {
                             System.out.println(ex);
@@ -205,8 +231,10 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
                                     Date d2 = sdf.parse(date2);
                                     Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
                                     if (!d3.before(d1) && !d3.after(d2)) {
-                                        isNotifying = true;
-                                        withholddetailfilteredList.add(row);
+                                        if (status.equalsIgnoreCase("All") || status.equalsIgnoreCase(row.getStatus())) {
+                                            isNotifying = true;
+                                            withholddetailfilteredList.add(row);
+                                        }
                                     }
                                 } catch (ParseException ex) {
                                     System.out.println(ex);
@@ -222,8 +250,10 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
                                     Date d2 = sdf.parse(date2);
                                     Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
                                     if (!d3.before(d1) && !d3.after(d2)) {
-                                        isNotifying = true;
-                                        withholddetailfilteredList.add(row);
+                                        if (status.equalsIgnoreCase("All") || status.equalsIgnoreCase(row.getStatus())) {
+                                            isNotifying = true;
+                                            withholddetailfilteredList.add(row);
+                                        }
                                     }
                                 } catch (ParseException ex) {
                                     System.out.println(ex);
@@ -239,8 +269,10 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
                                     Date d2 = sdf.parse(date2);
                                     Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
                                     if (!d3.before(d1) && !d3.after(d2)) {
-                                        isNotifying = true;
-                                        withholddetailfilteredList.add(row);
+                                        if (status.equalsIgnoreCase("All") || status.equalsIgnoreCase(row.getStatus())) {
+                                            isNotifying = true;
+                                            withholddetailfilteredList.add(row);
+                                        }
                                     }
                                 } catch (ParseException ex) {
                                     System.out.println(ex);
@@ -265,8 +297,10 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
                                         Date d2 = sdf.parse(date2);
                                         Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
                                         if (!d3.before(d1) && !d3.after(d2)) {
-                                            isNotifying = true;
-                                            withholddetailfilteredList.add(row);
+                                            if (status.equalsIgnoreCase("All") || status.equalsIgnoreCase(row.getStatus())) {
+                                                isNotifying = true;
+                                                withholddetailfilteredList.add(row);
+                                            }
                                         }
                                     } catch (ParseException ex) {
                                         System.out.println(ex);
@@ -274,15 +308,9 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
                                 }
                             }
                         } else if (!requestType.equalsIgnoreCase("All")) {
-                            if (!withholddetailfilteredList.contains(row)
-                                    && ((row.getHoldreasoncode().toLowerCase().contains(requestType.toLowerCase())))) {
+                            if (!withholddetailfilteredList.contains(row) && ((row.getHoldreasoncode().toLowerCase().contains(requestType.toLowerCase())))) {
 
-                                if ((row.getPurchreqid().toLowerCase().contains(charString.toLowerCase()))
-                                        || (row.getUserid().replace(" ", "").toLowerCase().contains(charString.toLowerCase()))
-                                        || (row.getUsername().replace(" ", "").toLowerCase().contains(charString.toLowerCase()))
-                                        || (row.getItemname().toLowerCase().contains(charString.toLowerCase()))
-                                        || (row.getHoldreasoncode().toLowerCase().contains(charString.toLowerCase()))
-                                        || (row.getRoutecode().toLowerCase().contains(charString.toLowerCase()) || charString.equalsIgnoreCase("All"))) {
+                                if ((row.getPurchreqid().toLowerCase().contains(charString.toLowerCase())) || (row.getUserid().replace(" ", "").toLowerCase().contains(charString.toLowerCase())) || (row.getUsername().replace(" ", "").toLowerCase().contains(charString.toLowerCase())) || (row.getItemname().toLowerCase().contains(charString.toLowerCase())) || (row.getHoldreasoncode().toLowerCase().contains(charString.toLowerCase())) || (row.getRoutecode().toLowerCase().contains(charString.toLowerCase()) || charString.equalsIgnoreCase("All"))) {
                                     String date1 = minDate;
                                     String date2 = maxDate;
                                     SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
@@ -291,8 +319,10 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
                                         Date d2 = sdf.parse(date2);
                                         Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
                                         if (!d3.before(d1) && !d3.after(d2)) {
-                                            isNotifying = true;
-                                            withholddetailfilteredList.add(row);
+                                            if (status.equalsIgnoreCase("All") || status.equalsIgnoreCase(row.getStatus())) {
+                                                isNotifying = true;
+                                                withholddetailfilteredList.add(row);
+                                            }
                                         }
                                     } catch (ParseException ex) {
                                         System.out.println(ex);
@@ -302,12 +332,7 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
                         } else if (!route.equalsIgnoreCase("All")) {
                             if (!withholddetailfilteredList.contains(row) && ((row.getRoutecode().toLowerCase().contains(route.toLowerCase())))) {
 
-                                if ((row.getPurchreqid().toLowerCase().contains(charString.toLowerCase()))
-                                        || (row.getUserid().replace(" ", "").toLowerCase().contains(charString.toLowerCase()))
-                                        || (row.getUsername().replace(" ", "").toLowerCase().contains(charString.toLowerCase()))
-                                        || (row.getItemname().toLowerCase().contains(charString.toLowerCase()))
-                                        || (row.getHoldreasoncode().toLowerCase().contains(charString.toLowerCase())|| charString.equalsIgnoreCase("All"))
-                                        || (row.getRoutecode().toLowerCase().contains(charString.toLowerCase()))) {
+                                if ((row.getPurchreqid().toLowerCase().contains(charString.toLowerCase())) || (row.getUserid().replace(" ", "").toLowerCase().contains(charString.toLowerCase())) || (row.getUsername().replace(" ", "").toLowerCase().contains(charString.toLowerCase())) || (row.getItemname().toLowerCase().contains(charString.toLowerCase())) || (row.getHoldreasoncode().toLowerCase().contains(charString.toLowerCase()) || charString.equalsIgnoreCase("All")) || (row.getRoutecode().toLowerCase().contains(charString.toLowerCase()))) {
                                     String date1 = minDate;
                                     String date2 = maxDate;
                                     SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
@@ -316,8 +341,10 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
                                         Date d2 = sdf.parse(date2);
                                         Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
                                         if (!d3.before(d1) && !d3.after(d2)) {
-                                            isNotifying = true;
-                                            withholddetailfilteredList.add(row);
+                                            if (status.equalsIgnoreCase("All") || status.equalsIgnoreCase(row.getStatus())) {
+                                                isNotifying = true;
+                                                withholddetailfilteredList.add(row);
+                                            }
                                         }
                                     } catch (ParseException ex) {
                                         System.out.println(ex);
@@ -326,13 +353,7 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
 
                             }
                         } else {
-                            if (!withholddetailfilteredList.contains(row)
-                                    && ((row.getHoldreasoncode().toLowerCase().contains(charString.toLowerCase()))
-                                    || (row.getPurchreqid().toLowerCase().contains(charString.toLowerCase()))
-                                    || (row.getUserid().replace(" ", "").toLowerCase().contains(charString.toLowerCase()))
-                                    || (row.getUsername().replace(" ", "").toLowerCase().contains(charString.toLowerCase()))
-                                    || (row.getItemname().toLowerCase().contains(charString.toLowerCase()))
-                                    || (row.getRoutecode().toLowerCase().contains(charString.toLowerCase())))) {
+                            if (!withholddetailfilteredList.contains(row) && ((row.getHoldreasoncode().toLowerCase().contains(charString.toLowerCase())) || (row.getPurchreqid().toLowerCase().contains(charString.toLowerCase())) || (row.getUserid().replace(" ", "").toLowerCase().contains(charString.toLowerCase())) || (row.getUsername().replace(" ", "").toLowerCase().contains(charString.toLowerCase())) || (row.getItemname().toLowerCase().contains(charString.toLowerCase())) || (row.getRoutecode().toLowerCase().contains(charString.toLowerCase())))) {
                                 String date1 = minDate;
                                 String date2 = maxDate;
                                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
@@ -341,8 +362,10 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
                                     Date d2 = sdf.parse(date2);
                                     Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
                                     if (!d3.before(d1) && !d3.after(d2)) {
-                                        isNotifying = true;
-                                        withholddetailfilteredList.add(row);
+                                        if (status.equalsIgnoreCase("All") || status.equalsIgnoreCase(row.getStatus())) {
+                                            isNotifying = true;
+                                            withholddetailfilteredList.add(row);
+                                        }
                                     }
                                 } catch (ParseException ex) {
                                     System.out.println(ex);
@@ -350,11 +373,11 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
                             }
                         }
                     }
-                    withholddetailList = withholddetailfilteredList;
+//                    withholddetailList = withholddetailfilteredList;
                 }
 
                 FilterResults filterResults = new FilterResults();
-                filterResults.values = withholddetailList;
+                filterResults.values = withholddetailfilteredList;
                 return filterResults;
             }
 

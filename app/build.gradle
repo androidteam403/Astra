@@ -1,10 +1,7 @@
-//applicationId "com.example.astra"
-
-
 plugins {
     id 'com.android.application'
-
-
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -14,7 +11,6 @@ android {
 //        enabled = true
 //    }
     buildFeatures {
-
         dataBinding true
 
         // for view binding:
@@ -25,25 +21,36 @@ android {
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
-        versionName "1.0.4"
+        versionName "1.0.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        //Production
 //        buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/Apollo/AHL/\"")
 //        buildConfigField("String", "BASE_TOKEN", "\"prdyvEoG+8MvYiOfhV2wb5j\"")
 
-        buildConfigField("String", "BASE_URL", "\"https://online.apollopharmacy.org/Digital/Apollo/AHL/\"")
-        buildConfigField("String", "BASE_TOKEN", "\"yvEoG+8MvYiOfhV2wb5jw\"")
+        //Pre Production
+        buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/preprod/Apollo/AHL/\"")
+        buildConfigField("String", "BASE_TOKEN", "\"prdyvEoG+8MvYiOfhV2wb5j\"")
+
+        //Dev
+//        buildConfigField("String", "BASE_URL", "\"https://online.apollopharmacy.org/Digital/Apollo/AHL/\"")
+//        buildConfigField("String", "BASE_TOKEN", "\"yvEoG+8MvYiOfhV2wb5jw\"")
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            //Production
 //            buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/Apollo/AHL/\"")
 //            buildConfigField("String", "BASE_TOKEN", "\"prdyvEoG+8MvYiOfhV2wb5j\"")
 
-            buildConfigField("String", "BASE_URL", "\"https://online.apollopharmacy.org/Digital/Apollo/AHL/\"")
-            buildConfigField("String", "BASE_TOKEN", "\"yvEoG+8MvYiOfhV2wb5jw\"")
+            //Pre Production
+            buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/preprod/Apollo/AHL/\"")
+            buildConfigField("String", "BASE_TOKEN", "\"prdyvEoG+8MvYiOfhV2wb5j\"")
+
+            //Dev
+//            buildConfigField("String", "BASE_URL", "\"https://online.apollopharmacy.org/Digital/Apollo/AHL/\"")
+//            buildConfigField("String", "BASE_TOKEN", "\"yvEoG+8MvYiOfhV2wb5jw\"")
         }
     }
     compileOptions {
@@ -96,6 +103,11 @@ dependencies {
     // Room
     implementation 'androidx.room:room-runtime:2.2.5'
     annotationProcessor 'androidx.room:room-compiler:2.2.5'
+
+    //firebase
+    implementation 'com.google.firebase:firebase-messaging:21.0.1'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.1'
+    implementation 'com.google.firebase:firebase-analytics:18.0.2'
 }
 
 

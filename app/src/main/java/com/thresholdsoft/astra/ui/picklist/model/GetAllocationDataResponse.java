@@ -105,6 +105,10 @@ public class GetAllocationDataResponse implements Serializable {
         @SerializedName("transdate")
         @Expose
         private String transdate;
+        @SerializedName("allocationdate")
+        @Expose
+        private String allocationdate;
+
         @SerializedName("isreversesync")
         @Expose
         private Boolean isreversesync;
@@ -273,6 +277,14 @@ public class GetAllocationDataResponse implements Serializable {
 
         public void setTransdate(String transdate) {
             this.transdate = transdate;
+        }
+
+        public String getAllocationdate() {
+            return allocationdate;
+        }
+
+        public void setAllocationdate(String allocationdate) {
+            this.allocationdate = allocationdate;
         }
 
         public Boolean getIsreversesync() {
