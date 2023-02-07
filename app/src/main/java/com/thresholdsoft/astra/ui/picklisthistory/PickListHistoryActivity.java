@@ -230,4 +230,9 @@ public class PickListHistoryActivity extends BaseActivity implements CustomMenuC
 
     }
 
+    @Override
+    public void onClickLogcat() {
+
+    }
+
 }
