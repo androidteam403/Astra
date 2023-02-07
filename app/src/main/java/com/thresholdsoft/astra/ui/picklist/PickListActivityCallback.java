@@ -135,4 +135,6 @@ public interface PickListActivityCallback {
     void onSuccessStatusUpdateApiWithoutInternet(StatusUpdateResponse statusUpdateResponse, String status, boolean ismanuallyEditedScannedPacks, boolean isRequestToSupervisior, StatusUpdateRequest statusUpdateRequest);
 
     void onNetworkStateChange();
+
+    void onSuccessCheckQohWithoutInternet(GetWithHoldRemarksResponse getWithHoldRemarksResponse);
 }

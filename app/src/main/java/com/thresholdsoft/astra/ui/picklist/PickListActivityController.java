@@ -430,6 +430,10 @@ public class PickListActivityController {
 
                 }
             });
+        }else{
+            mCallback.onSuccessCheckQohWithoutInternet(getWithHoldRemarksResponse);
+
+
         }
 
     }
