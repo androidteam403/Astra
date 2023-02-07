@@ -16,4 +16,6 @@ public interface CustomMenuCallback {
     void onClickRefreshForInternetSup();
 
     void onClickRefreshForInternet();
+
+    void onClickLogcat();
 }

@@ -382,10 +382,38 @@
                     <!--                            android:textColor="@{selectedMenu == 5 ? @color/black : @color/white}"-->
                     <!--                            android:textSize="@dimen/dimen12sp" />-->
                     <!--                    </LinearLayout>-->
-                    <View
+<!--                    <View-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height=".0dp"-->
+<!--                        android:layout_weight=".1" />-->
+
+                    <LinearLayout
+                        android:layout_margin="@dimen/dimen5dp"
+                        android:layout_weight=".1"
+                        android:padding="4dp"
                         android:layout_width="match_parent"
-                        android:layout_height=".0dp"
-                        android:layout_weight=".1" />
+                        android:layout_height="0dp"
+                        android:layout_marginStart="@dimen/dimen2dp"
+                        android:background="@drawable/rounded_corner_bg"
+                        android:backgroundTint="@color/lite_yellow"
+                        android:gravity="center"
+                        android:onClick="@{()-> customMenuCallback.onClickLogcat()}"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rounded_corner_bg"
+                            android:backgroundTint="@color/lite_yellow"
+                            android:gravity="center"
+                            android:text="Check Log"
+                            android:textAllCaps="true"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen9sp" />
+                    </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
