@@ -151,6 +151,7 @@
     <color name="picker_request_pending">#FFFFFFFF</color>
     <color name="picker_request_approved">#1A3CB371</color>
     <color name="picker_request_rejected">#1AFF0000</color>
+    <color name="seaa_blue">#4daed8</color>
 
 </resources>
 

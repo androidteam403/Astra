@@ -28,6 +28,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Astra">
         <activity
+            android:exported="true"
             android:name=".ui.splash.SplashActivity"
             android:configChanges="keyboard|keyboardHidden"
             android:screenOrientation="landscape">

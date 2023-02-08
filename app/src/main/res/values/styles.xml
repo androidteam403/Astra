@@ -43,4 +43,9 @@
         <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
         <item name="android:dropDownSelector">@android:color/white</item>
     </style>
+
+    <style name="CustomAppTheme" parent="Theme.AppCompat">
+        <item name="android:textColorPrimaryDisableOnly">#00838f</item>
+        <item name="colorAccent">#5ec639</item>
+    </style>
 </resources>
