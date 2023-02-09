@@ -385,12 +385,13 @@
                                 android:weightSum="1">
 
                                 <ImageView
-                                    android:layout_weight="0.4"
+                                    android:layout_weight="0.3"
                                     android:layout_width="@dimen/dimen40dp"
                                     android:layout_height="@dimen/dimen40dp"
                                     android:src="@drawable/log" />
 
                                 <LinearLayout
+                                    android:layout_marginTop="@dimen/dimen5dp"
                                     android:layout_marginEnd="@dimen/dimen2dp"
                                     android:layout_weight="0.6"
                                     android:layout_width="0dp"
@@ -426,6 +427,7 @@
                                 android:background="@color/seaa_blue" />
 
                             <LinearLayout
+                                android:gravity="center_horizontal"
                                 android:onClick="@{()-> customMenuCallback.onClickLogcat()}"
                                 android:id="@+id/onClickLogcatButton"
                                 android:layout_width="match_parent"
@@ -461,13 +463,14 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:gravity="center_horizontal"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_marginStart="@dimen/dimen5dp"
                             android:layout_marginTop="@dimen/dimen5dp"
                             android:layout_marginEnd="@dimen/dimen5dp"
                             android:layout_marginBottom="@dimen/dimen2dp"
-                            android:layout_weight="0.2"
+                            android:layout_weight="0.02"
                             android:background="@drawable/bg_for_signall"
                             android:orientation="horizontal"
                             android:visibility="visible">
