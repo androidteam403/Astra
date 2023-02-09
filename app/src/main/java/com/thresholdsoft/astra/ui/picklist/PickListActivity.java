@@ -1933,7 +1933,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             // clear the previous logcat and then write the new one to the file
             try {
                 Process process = Runtime.getRuntime().exec("logcat -f " + logFile);
-                Toast.makeText(getApplicationContext(), "Log file downloaded.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Downloaded: " + logDirectory, Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
