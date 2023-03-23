@@ -56,6 +56,10 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     }
 
+    public void deleteAllocationLineDateByUniqueId(int allocationLineDateUniqueId) {
+        dbDao().deleteAllocationLineDateByUiqueId(allocationLineDateUniqueId);
+    }
+
     public String getScanStartedTimeAndDate(String purchId, String areaId) {
         return dbDao().getScanStartedDateAndTime(purchId, areaId) != null ? dbDao().getScanStartedDateAndTime(purchId, areaId) : "";
     }

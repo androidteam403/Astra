@@ -28,6 +28,9 @@ public interface DbDao {
     @Query("SELECT * FROM allocation_line_data WHERE purchreqid == :purchreqid AND areaid == :areaid")
     List<GetAllocationLineResponse> getAllAllocationLineByPurchreqid(String purchreqid, String areaid);
 
+    @Query("DELETE FROM allocation_line_data WHERE uniquekey == :uniqueKey")
+    void deleteAllocationLineDateByUiqueId(int uniqueKey);
+
     @Query("SELECT scan_start_date_time FROM allocation_line_data WHERE purchreqid == :purchreqid AND areaid == :areaId")
     String getScanStartedDateAndTime(String purchreqid, String areaId);
 

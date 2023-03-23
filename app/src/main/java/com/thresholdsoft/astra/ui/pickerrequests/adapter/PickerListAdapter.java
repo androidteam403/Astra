@@ -95,11 +95,17 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
             if (pickListItems != null) {
                 isStartView = true;
 
-                if (pickListItems.getStatus().equalsIgnoreCase("PENDING"))
+                if (pickListItems.getStatus().equalsIgnoreCase("PENDING")) {
+                    holder.pickerrequestAdapterlayoutBinding.approvebutton.setEnabled(true);
+                    holder.pickerrequestAdapterlayoutBinding.approvebutton.setImageDrawable(activity.getResources().getDrawable(R.drawable.edit_view));
                     holder.pickerrequestAdapterlayoutBinding.parentLayout.setBackgroundColor(activity.getResources().getColor(R.color.picker_request_pending));
-                else if (pickListItems.getStatus().equalsIgnoreCase("APPROVED")) {
+                } else if (pickListItems.getStatus().equalsIgnoreCase("APPROVED")) {
+                    holder.pickerrequestAdapterlayoutBinding.approvebutton.setEnabled(false);
+                    holder.pickerrequestAdapterlayoutBinding.approvebutton.setImageDrawable(activity.getResources().getDrawable(R.drawable.edit_view_disable));
                     holder.pickerrequestAdapterlayoutBinding.parentLayout.setBackgroundColor(activity.getResources().getColor(R.color.picker_request_approved));
                 } else if (pickListItems.getStatus().equalsIgnoreCase("REJECTED")) {
+                    holder.pickerrequestAdapterlayoutBinding.approvebutton.setEnabled(false);
+                    holder.pickerrequestAdapterlayoutBinding.approvebutton.setImageDrawable(activity.getResources().getDrawable(R.drawable.edit_view_disable));
                     holder.pickerrequestAdapterlayoutBinding.parentLayout.setBackgroundColor(activity.getResources().getColor(R.color.picker_request_rejected));
                 }
 //        String holdres = pickListItems.getHoldreasoncode();

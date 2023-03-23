@@ -456,7 +456,12 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         if (allocationhddata.getScanstatus().equals("INPROCESS") || allocationhddata.getScanstatus().equalsIgnoreCase("Completed")) {
             List<GetAllocationLineResponse> getAllocationLineResponseFromDb = AppDatabase.getDatabaseInstance(this).dbDao().getAllAllocationLineByPurchreqid(allocationhddata.getPurchreqid(), allocationhddata.getAreaid());
             if (getAllocationLineResponseFromDb != null && getAllocationLineResponseFromDb.size() > 0) {
-                onSuccessGetAllocationLineApi(getAllocationLineResponseFromDb.get(0));
+                if (getAllocationLineResponseFromDb.get(0).getAllocationdetails().size() == allocationhddata.getAllocatedlines()) {
+                    onSuccessGetAllocationLineApi(getAllocationLineResponseFromDb.get(0));
+                } else {
+                    AppDatabase.getDatabaseInstance(this).deleteAllocationLineDateByUniqueId(getAllocationLineResponseFromDb.get(0).getUniqueKey());
+                    getController().getAllocationLineApiCall(allocationhddata);
+                }
             } else {
                 getController().getAllocationLineApiCall(allocationhddata);
             }
@@ -822,6 +827,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         statusUpdateRequest.setScanstatus("COMPLETED");
         statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
         statusUpdateRequest.setStatusdatetime(getLatestScanDateTime());
+        statusUpdateRequest.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
         List<StatusUpdateRequest.Allocationdetail> statusUpdateAllocationdetailList = new ArrayList<>();
 
         for (GetAllocationLineResponse.Allocationdetail allocationdetail : allocationdetailList) {
@@ -863,6 +869,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             statusUpdateRequest.setScanstatus("INPROCESS");
             statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
             statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
+            statusUpdateRequest.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
             getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", false, true);
         } else {
             onSuccessGetWithHoldRemarksApi(AppConstants.getWithHoldRemarksResponse);
@@ -961,6 +968,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             statusUpdateAllocationdetailList.add(statusUpdateAllocationDetail);
         }
         statusUpdateRequest.setAllocationdetails(statusUpdateAllocationdetailList);
+        statusUpdateRequest.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
         getController().statusUpdateApiCall(statusUpdateRequest, "WITHHOLD", false, false);
 //        } else {
 //            Toast.makeText(this, "Select hold  remark ", Toast.LENGTH_SHORT).show();
@@ -1126,6 +1134,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 statusUpdateRequest.setScanstatus("INPROCESS");
                 statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
                 statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
+                statusUpdateRequest.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
                 getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", true, false);
             } else {
                 hideKeyboard();
@@ -1186,6 +1195,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                                         statusUpdateRequest.setScanstatus("INPROCESS");
                                         statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
                                         statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
+                                        statusUpdateRequest.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
                                         getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", false, false);
                                     }
                                 } else {
@@ -1751,6 +1761,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                                     statusUpdateRequest.setScanstatus("INPROCESS");
                                     statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
                                     statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
+                                    statusUpdateRequest.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
                                     getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", false, false);
                                 }
 

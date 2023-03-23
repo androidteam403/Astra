@@ -804,13 +804,13 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     @Override
     public void onFailureMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
     public void onSuccessWithHoldApprovalApi(WithHoldApprovalResponse withHoldApprovalResponse) {
 
-        getController().getWithHoldApi();
+//        getController().getWithHoldApi();
+        onClickRefreshRequest();
     }
 
     @Override
