@@ -36,6 +36,12 @@ public class StatusUpdateRequest implements Serializable {
     @Expose
     private List<Allocationdetail> allocationdetails = null;
 
+    @SerializedName("areaid")
+    @Expose
+    private String areaid;
+
+    //
+
     public String getRequesttype() {
         return requesttype;
     }
@@ -106,6 +112,14 @@ public class StatusUpdateRequest implements Serializable {
 
     public void setAllocationdetails(List<Allocationdetail> allocationdetails) {
         this.allocationdetails = allocationdetails;
+    }
+
+    public String getAreaid() {
+        return areaid;
+    }
+
+    public void setAreaid(String areaid) {
+        this.areaid = areaid;
     }
 
     public static class Allocationdetail implements Serializable {

@@ -63,7 +63,9 @@ public class WithHoldDataResponse implements Serializable {
 
 
     public class Withholddetail {
-
+        @SerializedName("status")
+        @Expose
+        private String status;
         @SerializedName("purchreqid")
         @Expose
         private String purchreqid;
@@ -118,6 +120,9 @@ public class WithHoldDataResponse implements Serializable {
         @SerializedName("routecode")
         @Expose
         private String routecode;
+        @SerializedName("rackshelf")
+        @Expose
+        private String rackshelf;
 
         @SerializedName("onholddatetime")
         @Expose
@@ -130,6 +135,14 @@ public class WithHoldDataResponse implements Serializable {
         private boolean isNotifying;
 
         private Date date;
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
 
         public String getPurchreqid() {
             return purchreqid;
@@ -353,6 +366,14 @@ public class WithHoldDataResponse implements Serializable {
 
         public void setRoutecode(String routecode) {
             this.routecode = routecode;
+        }
+
+        public String getRackshelf() {
+            return rackshelf;
+        }
+
+        public void setRackshelf(String rackshelf) {
+            this.rackshelf = rackshelf;
         }
 
         public String getOnholddatetime() {

@@ -3,11 +3,14 @@ package com.thresholdsoft.astra.ui.pickerrequests;
 import android.content.Context;
 
 import com.thresholdsoft.astra.BuildConfig;
+import com.thresholdsoft.astra.databinding.AlertDialogBinding;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.network.ApiClient;
 import com.thresholdsoft.astra.network.ApiInterface;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutRequest;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
+import com.thresholdsoft.astra.ui.pickerrequests.model.CheckQohRequest;
+import com.thresholdsoft.astra.ui.pickerrequests.model.CheckQohResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalRequest;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataRequest;
@@ -20,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -192,6 +194,41 @@ public class PickerRequestController {
         } else if (!NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.hideDialog();
 
+        }
+    }
+
+    public void checkQohApiCall(AlertDialogBinding alertDialogBoxBinding, boolean isFirstClick, WithHoldDataResponse.Withholddetail pickListItems) {
+        if (NetworkUtils.isNetworkConnected(mContext)) {
+            ActivityUtils.showDialog(mContext, "Please wait.");
+            CheckQohRequest checkQohRequest = new CheckQohRequest();
+            checkQohRequest.setBatchid(pickListItems.getInventbatchid());
+            checkQohRequest.setItemid(pickListItems.getItemid());
+            String dcCodewithname = new SessionManager(mContext).getDcName();
+            String dcCode = dcCodewithname.substring(0, dcCodewithname.indexOf("-"));
+            checkQohRequest.setDccode(dcCode);
+            ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
+            Call<CheckQohResponse> call = apiInterface.CHECK_QOH_API_CALL(BuildConfig.BASE_TOKEN, checkQohRequest);
+
+            call.enqueue(new Callback<CheckQohResponse>() {
+                @Override
+                public void onResponse(Call<CheckQohResponse> call, Response<CheckQohResponse> response) {
+                    ActivityUtils.hideDialog();
+                    if (response.code() == 200 && response.body() != null) {
+                        mCallback.onSuccessCheckQohApiCall(response.body(), alertDialogBoxBinding, isFirstClick, pickListItems);
+                    } else if (response.code() == 500) {
+                        mCallback.onFailureMessage("Internal Server Error");
+                    } else {
+                        mCallback.onFailureMessage("Something went wrong.");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CheckQohResponse> call, Throwable t) {
+                    ActivityUtils.hideDialog();
+                    mCallback.onFailureMessage(t.getMessage());
+
+                }
+            });
         }
 
     }

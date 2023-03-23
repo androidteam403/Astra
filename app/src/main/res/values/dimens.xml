@@ -58,6 +58,9 @@
     <dimen name="dimen70dp">70dp</dimen>
     <dimen name="dimen25sp">25sp</dimen>
     <dimen name="dimen250dp">250dp</dimen>
+    <dimen name="dimen230dp">230dp</dimen>
+    <dimen name="dimen170dp">170dp</dimen>
+    <dimen name="dimen800dp">800dp</dimen>
     <!--    <dimen name="pdf_width">595px</dimen>-->
     <!--    <dimen name="pdf_height">842px</dimen>-->
 <!--    <dimen name="pdf_margin_horizontal">20px</dimen>-->

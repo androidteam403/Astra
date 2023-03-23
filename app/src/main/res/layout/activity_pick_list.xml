@@ -591,7 +591,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:gravity="center_horizontal"
-                                android:text="@{CommonUtils.parseDateToddMMyyyy(allocationData.transdate)}"
+                                android:text="@{CommonUtils.parseDateToddMMyyyy(allocationData.allocationdate)}"
                                 android:textAlignment="center"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/dimen8sp" />
@@ -1461,9 +1461,8 @@
                                                             android:layout_height="wrap_content"
                                                             android:layout_weight="1"
                                                             android:fontFamily="@font/poppins_semibold"
-                                                            android:text="Expiry date"
-                                                            android:textSize="@dimen/dimen8sp"
-                                                            android:visibility="gone" />
+                                                            android:text="Batch code"
+                                                            android:textSize="@dimen/dimen8sp" />
 
 
                                                     </LinearLayout>
@@ -1510,11 +1509,10 @@
                                                             android:layout_height="wrap_content"
                                                             android:layout_weight="1"
                                                             android:fontFamily="@font/poppins_semibold"
-                                                            android:text="@{CommonUtils.parseDateToddMMyyyy(barcodeScannedItem.expdate)}"
+                                                            android:text="@{barcodeScannedItem.inventbatchid}"
                                                             android:textColor="@color/black"
                                                             android:textSize="@dimen/dimen8sp"
-                                                            android:textStyle="bold"
-                                                            android:visibility="gone" />
+                                                            android:textStyle="bold" />
 
 
                                                     </LinearLayout>
@@ -1587,7 +1585,7 @@
                                                                     android:paddingStart="4dp"
                                                                     android:paddingTop="2dp"
                                                                     android:paddingBottom="3dp"
-                                                                    android:text="@{String.valueOf(Math.round(barcodeScannedItem.scannedqty))}"
+                                                                    android:text="@{String.valueOf(Math.round(barcodeScannedItem.allocatedpacks - barcodeScannedItem.allocatedPackscompleted))}"
                                                                     android:textColor="@color/black"
                                                                     android:textSize="@dimen/dimen8sp" />
 
@@ -1627,7 +1625,7 @@
                                                                 android:layout_marginStart="5dp"
                                                                 android:layout_marginTop="3dp"
                                                                 android:fontFamily="@font/poppins_semibold"
-                                                                android:text="@{String.valueOf(Math.round(barcodeScannedItem.shortqty))}"
+                                                                android:text="@{String.valueOf(Math.round(barcodeScannedItem.allocatedPackscompleted))}"
                                                                 android:textColor="@color/black"
                                                                 android:textSize="@dimen/dimen8sp" />
                                                         </LinearLayout>

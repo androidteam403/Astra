@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.thresholdsoft.astra.R;
@@ -36,7 +35,7 @@ public class AlertBox {
 
     public AlertBox(Context context, String itemname, String id, Activity activity, WithHoldDataResponse.Withholddetail pickListItems, PickerRequestCallback mCallback) {
         this.mCallback = mCallback;
-        dialog = new Dialog(context);
+        dialog = new Dialog(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         alertDialogBoxBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.alert_dialog, null, false);
         dialog.setCancelable(false);
         dialog.setContentView(alertDialogBoxBinding.getRoot());
@@ -45,8 +44,15 @@ public class AlertBox {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         String[] areaNames = new String[]{"Approval", "Reject"};
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("Approve");
-        arrayList.add("Reject");
+        if (pickListItems.getStatus().equalsIgnoreCase("Pending")) {
+            arrayList.add("Approve");
+            arrayList.add("Reject");
+        } else if (pickListItems.getStatus().equalsIgnoreCase("Approved")) {
+            arrayList.add("Approve");
+        } else {
+            arrayList.add("Reject");
+        }
+
 
         if (dialog != null) {
             alertDialogBoxBinding.checkqoh.setOnClickListener(new View.OnClickListener() {
@@ -54,12 +60,18 @@ public class AlertBox {
                 public void onClick(View v) {
                     if (!isClick) {
                         isClick = true;
-                        alertDialogBoxBinding.checkqoh.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
-                        alertDialogBoxBinding.qohlayout.setVisibility(View.VISIBLE);
+                        if (mCallback != null) {
+                            mCallback.onClickCheckQoh(alertDialogBoxBinding, true, pickListItems);
+                        }
+//                        alertDialogBoxBinding.checkqoh.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+//                        alertDialogBoxBinding.qohlayout.setVisibility(View.VISIBLE);
                     } else {
                         isClick = false;
+//                        if (mCallback != null) {
+//                            mCallback.onClickCheckQoh(alertDialogBoxBinding, false, pickListItems);
+//                        }
                         alertDialogBoxBinding.checkqoh.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_right_24, 0);
-                        alertDialogBoxBinding.qohlayout.setVisibility(View.GONE);
+                        alertDialogBoxBinding.onhandDetailRecyclerviewLayout.setVisibility(View.GONE);
 
                     }
 
@@ -71,10 +83,13 @@ public class AlertBox {
             alertDialogBoxBinding.itemname.setText(itemname + " - " + id);
             PickerRequestSpinnerAdapter adapter = new PickerRequestSpinnerAdapter(activity, arrayList);
             alertDialogBoxBinding.areaName.setAdapter(adapter);
-            alertDialogBoxBinding.itemId.setText(pickListItems.getItemid());
-            alertDialogBoxBinding.batch.setText(pickListItems.getInventbatchid());
-            alertDialogBoxBinding.qty.setText(pickListItems.getScannedqty().toString());
-            alertDialogBoxBinding.mrp.setText(pickListItems.getMrp());
+            if (!pickListItems.getStatus().equalsIgnoreCase("Pending")) {
+                alertDialogBoxBinding.areaName.setEnabled(false);
+            }
+            //            alertDialogBoxBinding.itemId.setText(pickListItems.getItemid());
+//            alertDialogBoxBinding.batch.setText(pickListItems.getInventbatchid());
+//            alertDialogBoxBinding.qty.setText(pickListItems.getScannedqty().toString());
+//            alertDialogBoxBinding.mrp.setText(pickListItems.getMrp());
 
             alertDialogBoxBinding.areaName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -108,8 +123,6 @@ public class AlertBox {
 
     public void show() {
         if (dialog != null) {
-
-
             dialog.show();
         } else {
             dialog.cancel();

@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "406507379992",
-    "project_id": "apolloastra-91c86",
-    "storage_bucket": "apolloastra-91c86.appspot.com"
+    "project_number": "679806231179",
+    "project_id": "astra-8b6a8",
+    "storage_bucket": "astra-8b6a8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:406507379992:android:12a5dfe885acba5825d26d",
+        "mobilesdk_app_id": "1:679806231179:android:5a84f757fa18564a50ea8e",
         "android_client_info": {
           "package_name": "com.thresholdsoft.astra"
         }
       },
       "oauth_client": [
         {
-          "client_id": "406507379992-aqbupik52ho5g5lc2vdp889k2chvar9b.apps.googleusercontent.com",
+          "client_id": "679806231179-qv17v642uite49qqlscv4qchv9bu3on5.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCyHOzKrnCe4ZfdqJX_pjPw9Bs3T2QYeWk"
+          "current_key": "AIzaSyAB0Ve5MXSx9AiliNS_hVBUIpqQpUvuDzQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "406507379992-aqbupik52ho5g5lc2vdp889k2chvar9b.apps.googleusercontent.com",
+              "client_id": "679806231179-qv17v642uite49qqlscv4qchv9bu3on5.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

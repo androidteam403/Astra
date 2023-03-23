@@ -32,10 +32,9 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Chronometer;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -50,13 +49,11 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.util.StringUtil;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.Writer;
 import com.google.zxing.common.BitMatrix;
-import com.google.zxing.common.StringUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.google.zxing.oned.Code128Writer;
@@ -87,6 +84,7 @@ import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestActivity;
+import com.thresholdsoft.astra.ui.pickerrequests.model.CheckQohResponse;
 import com.thresholdsoft.astra.ui.picklist.adapter.ItemListAdapter;
 import com.thresholdsoft.astra.ui.picklist.adapter.ModeofDeliveryCustomeSpinnerAdapter;
 import com.thresholdsoft.astra.ui.picklist.adapter.PickListAdapter;
@@ -110,8 +108,6 @@ import com.thresholdsoft.astra.ui.requesthistory.RequestHistoryActivity;
 import com.thresholdsoft.astra.ui.scanner.ScannerActivity;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.CommonUtils;
-import com.thresholdsoft.astra.utils.NetworkUtils;
-import com.thresholdsoft.astra.utils.Utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -120,14 +116,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.stream.Collectors;
 
 public class PickListActivity extends PDFCreatorActivity implements PickListActivityCallback, CustomMenuCallback, Filterable {
@@ -165,9 +158,6 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     private List<GetAllocationLineResponse.Allocationdetail> allocationdetailListList = new ArrayList<>();
     List<GetAllocationLineResponse.Allocationdetail> allocationdetailListForAdapter;
 
-    Handler handler = new Handler();
-    Runnable runnable;
-    int delay = 5000;
 
     //For pagination
     private int startIndex = 0;
@@ -194,13 +184,9 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         super.onCreate(savedInstanceState);
         activityPickListBinding = DataBindingUtil.setContentView(this, R.layout.activity_pick_list);
         setUp();
-
     }
 
-
     private void setUp() {
-
-
 //        this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
         activityPickListBinding.setAssignedOrdersCount("0");
         activityPickListBinding.setAssignedLines("0");
@@ -244,7 +230,6 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 activityPickListBinding.barcodeScanEdittext.requestFocus();
             }
         });
-        timeHandler();
 
         searchByPurchReqId();
         searchByItemBoxCheckEmpty();
@@ -255,8 +240,6 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
 
     }
-
-
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -307,22 +290,6 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     private SessionManager getSessionManager() {
         return new SessionManager(this);
     }
-
-
-    private void timeHandler() {
-
-       handler.postDelayed(new Runnable() {
-           @Override
-           public void run() {
-              start();
-                  timeHandler();
-
-
-           }
-       },3000);
-
-    }
-
 
     private void searchByPurchReqId() {
         activityPickListBinding.searchByText.setOnKeyListener((v, keyCode, event) -> {
@@ -406,36 +373,32 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSuccessGetAllocationDataApi(GetAllocationDataResponse getAllocationDataResponse, boolean isRequestToSupervisior, boolean isCompletedStatus) {
-        if (getSessionManager().getAllocationDataResponse() != null) {
-            allocationdata(isRequestToSupervisior, isCompletedStatus);
-
-        }
-    }
-
-    public void allocationdata(boolean isRequestToSupervisior, boolean isCompletedStatus) {
         if (isRequestToSupervisior) {
             onSuccessGetWithHoldRemarksApi(AppConstants.getWithHoldRemarksResponse);
         }
         if (isCompletedStatus) {
-            List<GetAllocationDataResponse.Allocationhddata> selectedAllocationhddata = getSessionManager().getAllocationDataResponse().getAllocationhddatas().stream().filter(e -> e.getPurchreqid().equalsIgnoreCase(activityPickListBinding.getAllocationData().getPurchreqid()) && e.getAreaid().equalsIgnoreCase(activityPickListBinding.getAllocationData().getAreaid())).collect(Collectors.toList());
-            activityPickListBinding.setAllocationData(selectedAllocationhddata.get(0));
+            List<GetAllocationDataResponse.Allocationhddata> selectedAllocationhddata = getAllocationDataResponse.getAllocationhddatas().stream().filter(e -> e.getPurchreqid().equalsIgnoreCase(activityPickListBinding.getAllocationData().getPurchreqid()) && e.getAreaid().equalsIgnoreCase(activityPickListBinding.getAllocationData().getAreaid())).collect(Collectors.toList());
+
+            if (selectedAllocationhddata != null && selectedAllocationhddata.size() > 0) {
+                activityPickListBinding.setAllocationData(selectedAllocationhddata.get(0));
+            }
         }
         if (activityPickListBinding.getAllocationData() != null) {
-            for (GetAllocationDataResponse.Allocationhddata allocationhddata : getSessionManager().getAllocationDataResponse().getAllocationhddatas()) {
+            for (GetAllocationDataResponse.Allocationhddata allocationhddata : getAllocationDataResponse.getAllocationhddatas()) {
                 allocationhddata.setSelected(allocationhddata.getPurchreqid().equalsIgnoreCase(activityPickListBinding.getAllocationData().getPurchreqid()));
             }
         }
-        if (getSessionManager().getAllocationDataResponse().getAllocationhddatas() != null && getSessionManager().getAllocationDataResponse().getAllocationhddatas() != null && getSessionManager().getAllocationDataResponse().getAllocationhddatas().size() > 0) {
+        if (getAllocationDataResponse != null && getAllocationDataResponse.getAllocationhddatas() != null && getAllocationDataResponse.getAllocationhddatas().size() > 0) {
             this.allocationhddataList = new ArrayList<>();
 
 
-            assignedAllocationData = getSessionManager().getAllocationDataResponse().getAllocationhddatas().stream().filter(e -> e.getScanstatus().equalsIgnoreCase("Assigned")).collect(Collectors.toList());
+            assignedAllocationData = getAllocationDataResponse.getAllocationhddatas().stream().filter(e -> e.getScanstatus().equalsIgnoreCase("Assigned")).collect(Collectors.toList());
             this.allocationhddataList.addAll(assignedAllocationData);
 
-            inProgressAllocationData = getSessionManager().getAllocationDataResponse().getAllocationhddatas().stream().filter(e -> e.getScanstatus().equalsIgnoreCase("INPROCESS")).collect(Collectors.toList());
+            inProgressAllocationData = getAllocationDataResponse.getAllocationhddatas().stream().filter(e -> e.getScanstatus().equalsIgnoreCase("INPROCESS")).collect(Collectors.toList());
             this.allocationhddataList.addAll(inProgressAllocationData);
 
-            completedAllocationData = getSessionManager().getAllocationDataResponse().getAllocationhddatas().stream().filter(e -> e.getScanstatus().equalsIgnoreCase("Completed")).collect(Collectors.toList());
+            completedAllocationData = getAllocationDataResponse.getAllocationhddatas().stream().filter(e -> e.getScanstatus().equalsIgnoreCase("Completed")).collect(Collectors.toList());
             this.allocationhddataList.addAll(completedAllocationData);
             int assignedLinesCount = 0;
             for (GetAllocationDataResponse.Allocationhddata allocationhddataAssignedLine : allocationhddataList) {
@@ -444,12 +407,12 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd");
 
 
-            List<GetAllocationDataResponse.Allocationhddata> completedAllocationDataCount = new ArrayList<>();
-            completedAllocationDataCount = completedAllocationData.stream().filter(i -> CommonUtils.getConvertStringToDate(i.getTransdate().substring(0, 10)).before(CommonUtils.getConvertStringToDate(CommonUtils.getCurrentDate()))).collect(Collectors.toList());
+//            List<GetAllocationDataResponse.Allocationhddata> completedAllocationDataCount = new ArrayList<>();
+//            completedAllocationDataCount = completedAllocationData.stream().filter(i -> CommonUtils.getConvertStringToDate(i.getTransdate().substring(0, 10)).before(CommonUtils.getConvertStringToDate(CommonUtils.getCurrentDate()))).collect(Collectors.toList());
 
 
             activityPickListBinding.setAssignedLines(String.valueOf(assignedLinesCount));
-            activityPickListBinding.setAssignedOrdersCount(String.valueOf((allocationhddataList.size()) - completedAllocationDataCount.size()));
+            activityPickListBinding.setAssignedOrdersCount(String.valueOf((allocationhddataList.size())));// - completedAllocationData.size()
             activityPickListBinding.pendingOrdersCount.setText(String.valueOf(assignedAllocationData.size()));
             activityPickListBinding.progressCount.setText(String.valueOf(inProgressAllocationData.size()));
             activityPickListBinding.completecount.setText(String.valueOf(completedAllocationData.size()));
@@ -463,6 +426,9 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 activityPickListBinding.setPickListSelectedStatus(0);
                 onClickCompletedPickList();
             } else {
+
+
+                allocationhddataList.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getRoutecode));
 
 
                 pickListAdapter = new PickListAdapter(this, allocationhddataList, this, activityPickListBinding.searchByItemId.getText().toString());
@@ -490,7 +456,12 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         if (allocationhddata.getScanstatus().equals("INPROCESS") || allocationhddata.getScanstatus().equalsIgnoreCase("Completed")) {
             List<GetAllocationLineResponse> getAllocationLineResponseFromDb = AppDatabase.getDatabaseInstance(this).dbDao().getAllAllocationLineByPurchreqid(allocationhddata.getPurchreqid(), allocationhddata.getAreaid());
             if (getAllocationLineResponseFromDb != null && getAllocationLineResponseFromDb.size() > 0) {
-                onSuccessGetAllocationLineApi(getAllocationLineResponseFromDb.get(0));
+                if (getAllocationLineResponseFromDb.get(0).getAllocationdetails().size() == allocationhddata.getAllocatedlines()) {
+                    onSuccessGetAllocationLineApi(getAllocationLineResponseFromDb.get(0));
+                } else {
+                    AppDatabase.getDatabaseInstance(this).deleteAllocationLineDateByUniqueId(getAllocationLineResponseFromDb.get(0).getUniqueKey());
+                    getController().getAllocationLineApiCall(allocationhddata);
+                }
             } else {
                 getController().getAllocationLineApiCall(allocationhddata);
             }
@@ -585,7 +556,6 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     public void onClickScanNow() {
         new IntentIntegrator(this).setCaptureActivity(ScannerActivity.class).initiateScan();
     }
-
 
     @Override
     public void onClickScannedBarcodeItem(GetAllocationLineResponse.Allocationdetail allocationdetail) {
@@ -857,6 +827,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         statusUpdateRequest.setScanstatus("COMPLETED");
         statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
         statusUpdateRequest.setStatusdatetime(getLatestScanDateTime());
+        statusUpdateRequest.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
         List<StatusUpdateRequest.Allocationdetail> statusUpdateAllocationdetailList = new ArrayList<>();
 
         for (GetAllocationLineResponse.Allocationdetail allocationdetail : allocationdetailList) {
@@ -874,8 +845,6 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             statusUpdateAllocationdetailList.add(statusUpdateAllocationDetail);
         }
         statusUpdateRequest.setAllocationdetails(statusUpdateAllocationdetailList);
-
-        getSessionManager().setStatusUpdateRequest(statusUpdateRequest);
 
         getController().statusUpdateApiCall(statusUpdateRequest, "COMPLETED", false, false);
     }
@@ -900,6 +869,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             statusUpdateRequest.setScanstatus("INPROCESS");
             statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
             statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
+            statusUpdateRequest.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
             getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", false, true);
         } else {
             onSuccessGetWithHoldRemarksApi(AppConstants.getWithHoldRemarksResponse);
@@ -910,12 +880,22 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSuccessGetWithHoldRemarksApi(GetWithHoldRemarksResponse getWithHoldRemarksResponse) {
+        getController().checkQohApiCall(activityPickListBinding.getBarcodeScannedItem().getInventbatchid(), activityPickListBinding.getBarcodeScannedItem().getItemid(), getWithHoldRemarksResponse);
+    }
 
+    @Override
+    public void onSuccessCheckQoh(CheckQohResponse checkQohResponse, GetWithHoldRemarksResponse getWithHoldRemarksResponse) {
         if (getWithHoldRemarksResponse.getRemarksdetails() != null && getWithHoldRemarksResponse.getRemarksdetails().size() > 0) {
             this.supervisorHoldRemarksdetailsList = getWithHoldRemarksResponse.getRemarksdetails();
             supervisorRequestRemarksDialog = new Dialog(this);
             DialogSupervisorRequestRemarksBinding supervisorRequestRemarksBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_supervisor_request_remarks, null, false);
             supervisorRequestRemarksDialog.setContentView(supervisorRequestRemarksBinding.getRoot());
+            int sumOfOnHandQty = 0;
+            for (CheckQohResponse.Onhanddetail onhanddetail : checkQohResponse.getOnhanddetails()) {
+                sumOfOnHandQty = sumOfOnHandQty + onhanddetail.getOnhandqty();
+            }
+
+            supervisorRequestRemarksBinding.qoh.setText(String.valueOf(sumOfOnHandQty));
             supervisorRequestRemarksBinding.setCallback(this);
             SupervisorRequestRemarksSpinnerAdapter supervisorRequestRemarksSpinnerAdapter = new SupervisorRequestRemarksSpinnerAdapter(this, getWithHoldRemarksResponse.getRemarksdetails(), this);
             supervisorRequestRemarksBinding.supervisorRequestRemarksListRecycler.setAdapter(supervisorRequestRemarksSpinnerAdapter);
@@ -988,6 +968,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             statusUpdateAllocationdetailList.add(statusUpdateAllocationDetail);
         }
         statusUpdateRequest.setAllocationdetails(statusUpdateAllocationdetailList);
+        statusUpdateRequest.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
         getController().statusUpdateApiCall(statusUpdateRequest, "WITHHOLD", false, false);
 //        } else {
 //            Toast.makeText(this, "Select hold  remark ", Toast.LENGTH_SHORT).show();
@@ -1099,7 +1080,9 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         editScanPackDialog.setContentView(dialogEditScannedPacksBinding.getRoot());
         dialogEditScannedPacksBinding.setCallback(this);
         dialogEditScannedPacksBinding.setAllocationedDetail(barcodeAllocationDetailList.get(0));
-        this.editedScannedPack = barcodeAllocationDetailList.get(0).getShortqty();
+//        this.editedScannedPack = barcodeAllocationDetailList.get(0).getShortqty();
+//        this.editedScannedPack = (barcodeAllocationDetailList.get(0).getAllocatedPackscompleted());
+        this.editedScannedPack = (barcodeAllocationDetailList.get(0).getAllocatedpacks());
 
 //        this.editedScannedPack = barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted();
         dialogEditScannedPacksBinding.setEditedScannedPack(this.editedScannedPack);
@@ -1129,6 +1112,11 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     @Override
     public void onClickUpdateEditScannedPack(int editedScannedPack) {
+        View view = dialogEditScannedPacksBinding.editScannedPacks;//this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
         editedScannedPack = Integer.parseInt(dialogEditScannedPacksBinding.editScannedPacks.getText().toString().trim());
         dialogEditScannedPacksBinding.setEditedScannedPack(Integer.parseInt(dialogEditScannedPacksBinding.editScannedPacks.getText().toString().trim()));
         if (Integer.parseInt(dialogEditScannedPacksBinding.editScannedPacks.getText().toString().trim()) <= barcodeAllocationDetailList.get(0).getAllocatedpacks()) {
@@ -1146,8 +1134,10 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 statusUpdateRequest.setScanstatus("INPROCESS");
                 statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
                 statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
+                statusUpdateRequest.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
                 getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", true, false);
             } else {
+                hideKeyboard();
                 this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
                 this.latestScanDateTime = CommonUtils.getCurrentDateAndTime();
                 barcodeAllocationDetailList.get(0).setAllocatedqtycompleted(barcodeAllocationDetailList.get(0).getAllocatedqty() - editedScannedPack);
@@ -1168,6 +1158,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 insertOrUpdateOrderStatusTimeDateEntity();
                 setOrderCompletedPending(activityPickListBinding.getOrderStatusModel().getStatus());
                 pickListAdapter.notifyDataSetChanged();
+                hideKeyboard();
             }
         } else {
             Toast.makeText(this, "Scanned packs should not be greater than allocated packs", Toast.LENGTH_SHORT).show();
@@ -1204,6 +1195,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                                         statusUpdateRequest.setScanstatus("INPROCESS");
                                         statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
                                         statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
+                                        statusUpdateRequest.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
                                         getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", false, false);
                                     }
                                 } else {
@@ -1467,6 +1459,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             activityPickListBinding.setPickListSelectedStatus(1);
             if (assignedAllocationData != null && !assignedAllocationData.isEmpty()) {
 
+                assignedAllocationData.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getCustname));
                 pickListAdapter = new PickListAdapter(this, assignedAllocationData, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
@@ -1483,7 +1476,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         if (activityPickListBinding.getPickListSelectedStatus() == 2) {
             activityPickListBinding.setPickListSelectedStatus(0);
             if (allocationhddataList != null && !allocationhddataList.isEmpty()) {
-
+                allocationhddataList.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getRoutecode));
+                allocationhddataList.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getCustname));
                 pickListAdapter = new PickListAdapter(this, allocationhddataList, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
@@ -1495,7 +1489,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         } else {
             activityPickListBinding.setPickListSelectedStatus(2);
             if (inProgressAllocationData != null && !inProgressAllocationData.isEmpty()) {
-
+                inProgressAllocationData.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getRoutecode));
+                inProgressAllocationData.sort(Comparator.comparing(GetAllocationDataResponse.Allocationhddata::getCustname));
                 pickListAdapter = new PickListAdapter(this, inProgressAllocationData, this, activityPickListBinding.searchByItemId.getText().toString());
                 RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityPickListBinding.picklistrecycleview.setLayoutManager(mLayoutManager2);
@@ -1766,6 +1761,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                                     statusUpdateRequest.setScanstatus("INPROCESS");
                                     statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
                                     statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
+                                    statusUpdateRequest.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
                                     getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", false, false);
                                 }
 
@@ -2003,8 +1999,6 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     @Override
     public void onClickLogout() {
-
-
         Dialog customDialog = new Dialog(this);
         DialogCustomAlertBinding dialogCustomAlertBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_custom_alert, null, false);
         customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -2029,32 +2023,9 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     }
 
-    public void start() {
-        if (NetworkUtils.isNetworkConnected(this)) {
-            if (getSessionManager().getStatusUpdateRequest()!=null) {
-
-                if (getSessionManager().getStatusUpdateRequest().getPurchreqid() != null && getSessionManager().getStatusUpdateRequest().getAllocationdetails() != null) {
-
-
-                    getController().statusUpdateApiCall(getSessionManager().getStatusUpdateRequest(), "COMPLETED", false, false);
-                }
-            }
-        }
-    }
-
-    public void pause() {
-        if (!NetworkUtils.isNetworkConnected(this)) {
-            Log.e("Internet Connected", "Internet DisConnected");
-
-
-        }
-    }
-
-
     @Override
     protected void onPause() {
         barcodeScanHandler.removeCallbacks(barcodeScanRunnable);
-
         activityPickListBinding.barcodeScanEdittext.setText("");
         super.onPause();
     }
@@ -2682,22 +2653,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     private void requestPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(getApplicationContext(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.CALL_PHONE,
-                        Manifest.permission.READ_PHONE_STATE,
-                        Manifest.permission.READ_LOGS,
-                        Manifest.permission.SEND_SMS,
-                        Manifest.permission.RECORD_AUDIO,
-                        Manifest.permission.READ_SMS,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.INTERNET,
-                        Manifest.permission.RECEIVE_SMS
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_LOGS, Manifest.permission.SEND_SMS, Manifest.permission.RECORD_AUDIO, Manifest.permission.READ_SMS, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET, Manifest.permission.RECEIVE_SMS
 
 
                 }, 0);

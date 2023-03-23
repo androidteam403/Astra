@@ -79,4 +79,5 @@
     <string name="label_remarks">Remarks</string>
     <string name="label_scan">Scan</string>
     <string name="label_search_by_purchase_requisition">Search by Purchase Requisition</string>
+    <string name="label_batch_code">Batch code</string>
 </resources>

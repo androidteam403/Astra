@@ -5,6 +5,8 @@ import com.thresholdsoft.astra.ui.commonmodel.LogoutRequest;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelRequest;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
+import com.thresholdsoft.astra.ui.pickerrequests.model.CheckQohRequest;
+import com.thresholdsoft.astra.ui.pickerrequests.model.CheckQohResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalRequest;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataRequest;
@@ -72,5 +74,8 @@ public interface ApiInterface {
 
     @GET
     Call<ResponseBody> doDownloadFile(@Url String fileUrl);
+
+    @POST("checkqoh")
+    Call<CheckQohResponse> CHECK_QOH_API_CALL(@Header("Auth-Token") String authToken, @Body CheckQohRequest checkQohRequest);
 
 }
