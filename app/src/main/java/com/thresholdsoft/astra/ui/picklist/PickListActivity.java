@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -58,6 +59,24 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.google.zxing.oned.Code128Writer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.itextpdf.io.font.FontProgram;
+import com.itextpdf.io.font.FontProgramFactory;
+import com.itextpdf.io.font.PdfEncodings;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.borders.SolidBorder;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.element.Text;
+import com.itextpdf.layout.property.TextAlignment;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.custumpdf.PDFCreatorActivity;
 import com.thresholdsoft.astra.custumpdf.views.PDFBody;
@@ -80,6 +99,7 @@ import com.thresholdsoft.astra.databinding.DialogSupervisorRequestRemarksBinding
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.db.room.AppDatabase;
 import com.thresholdsoft.astra.ui.CustomMenuCallback;
+import com.thresholdsoft.astra.ui.barcode.BarCodeActivity;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
@@ -109,6 +129,7 @@ import com.thresholdsoft.astra.ui.scanner.ScannerActivity;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.CommonUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -456,7 +477,12 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         if (allocationhddata.getScanstatus().equals("INPROCESS") || allocationhddata.getScanstatus().equalsIgnoreCase("Completed")) {
             List<GetAllocationLineResponse> getAllocationLineResponseFromDb = AppDatabase.getDatabaseInstance(this).dbDao().getAllAllocationLineByPurchreqid(allocationhddata.getPurchreqid(), allocationhddata.getAreaid());
             if (getAllocationLineResponseFromDb != null && getAllocationLineResponseFromDb.size() > 0) {
-                onSuccessGetAllocationLineApi(getAllocationLineResponseFromDb.get(0));
+                if (getAllocationLineResponseFromDb.get(0).getAllocationdetails().size() == allocationhddata.getAllocatedlines()) {
+                    onSuccessGetAllocationLineApi(getAllocationLineResponseFromDb.get(0));
+                } else {
+                    AppDatabase.getDatabaseInstance(this).deleteAllocationLineDateByUniqueId(getAllocationLineResponseFromDb.get(0).getUniqueKey());
+                    getController().getAllocationLineApiCall(allocationhddata);
+                }
             } else {
                 getController().getAllocationLineApiCall(allocationhddata);
             }
@@ -822,6 +848,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         statusUpdateRequest.setScanstatus("COMPLETED");
         statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
         statusUpdateRequest.setStatusdatetime(getLatestScanDateTime());
+        statusUpdateRequest.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
         List<StatusUpdateRequest.Allocationdetail> statusUpdateAllocationdetailList = new ArrayList<>();
 
         for (GetAllocationLineResponse.Allocationdetail allocationdetail : allocationdetailList) {
@@ -863,6 +890,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             statusUpdateRequest.setScanstatus("INPROCESS");
             statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
             statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
+            statusUpdateRequest.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
             getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", false, true);
         } else {
             onSuccessGetWithHoldRemarksApi(AppConstants.getWithHoldRemarksResponse);
@@ -961,6 +989,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             statusUpdateAllocationdetailList.add(statusUpdateAllocationDetail);
         }
         statusUpdateRequest.setAllocationdetails(statusUpdateAllocationdetailList);
+        statusUpdateRequest.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
         getController().statusUpdateApiCall(statusUpdateRequest, "WITHHOLD", false, false);
 //        } else {
 //            Toast.makeText(this, "Select hold  remark ", Toast.LENGTH_SHORT).show();
@@ -1126,6 +1155,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 statusUpdateRequest.setScanstatus("INPROCESS");
                 statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
                 statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
+                statusUpdateRequest.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
                 getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", true, false);
             } else {
                 hideKeyboard();
@@ -1186,6 +1216,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                                         statusUpdateRequest.setScanstatus("INPROCESS");
                                         statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
                                         statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
+                                        statusUpdateRequest.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
                                         getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", false, false);
                                     }
                                 } else {
@@ -1751,6 +1782,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                                     statusUpdateRequest.setScanstatus("INPROCESS");
                                     statusUpdateRequest.setAllocatedlines(activityPickListBinding.getAllocationData().getAllocatedlines());
                                     statusUpdateRequest.setStatusdatetime(CommonUtils.getCurrentDateAndTime());
+                                    statusUpdateRequest.setAreaid(activityPickListBinding.getAllocationData().getAreaid());
                                     getController().statusUpdateApiCall(statusUpdateRequest, "INPROCESS", false, false);
                                 }
 
@@ -1958,6 +1990,13 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     }
 
     @Override
+    public void onClickBarCode() {
+        Intent intent = new Intent(PickListActivity.this, BarCodeActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+    }
+
+    @Override
     public void onClickPickListHistory() {
         startActivity(PickListHistoryActivity.getStartActivity(this));
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
@@ -2156,9 +2195,87 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     private Context getContext() {
         return this;
     }
+    public static final String REGULAR = "res/font/roboto_regular.ttf";
+    public static final String BOLD = "res/font/roboto_bold.ttf";
+    private void createPdfPageWiseAstra(PdfDocument pdfDocument, Document document, boolean isDuplicate) throws IOException {
+        // declaring variables for loading the fonts from asset
+        byte[] fontByte, boldByte;
+        AssetManager am;
+        am = this.getAssets();
+
+//        }
+        FontProgram fontProgram = FontProgramFactory.createFont(REGULAR);
+        FontProgram fontProgramBold = FontProgramFactory.createFont(BOLD);
+
+        PdfFont font = PdfFontFactory.createFont(fontProgram, PdfEncodings.WINANSI, true);
+        PdfFont bold = PdfFontFactory.createFont(fontProgramBold, PdfEncodings.WINANSI, true);
+
+
+        float[] columnWidth4 = {288};//288
+        Table table4 = new Table(columnWidth4);
+        Border border4white = new SolidBorder(new DeviceRgb(255, 255, 255), 0.7F);
+
+        Border border4Black = new SolidBorder(new DeviceRgb(0, 0, 0), 0.7F);
+        table4.setBorderTop(border4Black);
+        table4.setBorderLeft(border4Black);
+        table4.setBorderRight(border4Black);
+        table4.setBorderBottom(border4white);
+
+        table4.setMarginTop(0);
+        table4.setMarginBottom(0);
+
+//
+        table4.addCell(new Cell(2, 1).add(new Paragraph(new Text("GLYCOMET SR 500 MG " + "\n").setFontSize(8).setFont(font)).setMarginLeft(5).setTextAlignment(TextAlignment.CENTER).add(new Text("280001UJUSV LTD" + "\n").setFont(font).setFontSize(7.5f))).setPadding(0f).setMargin(0f));
+//        table4.setPadding(5f);
+
+        float[] columnWidth2 = {250, 38};//288
+        Table table2 = new Table(columnWidth2);
+        Border border2 = new SolidBorder(new DeviceRgb(0, 0, 0), 0.7F);
+//        Border border2Black = new SolidBorder(new DeviceRgb(0, 0, 0), 0.7F);
+        table2.setBorderLeft(border4Black);
+        table2.setBorderRight(border4Black);
+        table2.setBorderBottom(border4white);
+
+        Bitmap apolloLogoBitMapQr = null;
+//
+        apolloLogoBitMapQr = generateBarcode("9875fggh5565");
+        //((BitmapDrawable) apolloLogoDrawableQr).getBitmap();
+        ByteArrayOutputStream stream1Qr = new ByteArrayOutputStream();
+        apolloLogoBitMapQr.compress(Bitmap.CompressFormat.PNG, 100, stream1Qr);
+        byte[] bitMapData1Qr = stream1Qr.toByteArray();
+
+        ImageData imageData1Qr = ImageDataFactory.create(bitMapData1Qr);
+        Image image1Qr = new Image(imageData1Qr);
+        image1Qr.setWidth(230);
+        image1Qr.setHeight(200);
+        image1Qr.scaleToFit(100, 20);
+        image1Qr.setHeight(20);
+//        table2.setHeight(60);
+//        table2.setPadding(5f);
+        table2.addCell(new Cell().add(image1Qr).setBorder(Border.NO_BORDER).add(new Paragraph(new Text("76gfhjfghu").setFontSize(7).setFont(font)).setMarginLeft(80)).setPaddingBottom(0f));
+        float[] columnWidth6 = {288};//288
+        Table table6 = new Table(columnWidth4);
+
+        table6.setMarginTop(0);
+        table6.setMarginBottom(0);
+        table6.setBorderTop(border4white);
+
+        table6.setBorderBottom(border4Black);
+        table6.setBorderLeft(border4Black);
+        table6.setBorderRight(border4Black);
+//
+        table6.addCell(new Cell(2, 1).add(new Paragraph(new Text("BY PASS ROAD NANDYAL,518501").setFontSize(8).setFont(font)).setMarginLeft(5).setTextAlignment(TextAlignment.CENTER)));
+//        table6.setPaddings(0f, 0f, 10f, 10f);
+
+        document.add(table4);
+        document.add(table2);
+        document.add(table6);
+
+    }
 
     @Override
     protected PDFHeaderView getHeaderView(int forPage, GetAllocationDataResponse.Allocationhddata pdfModelResponse) {
+
         PDFHeaderView headerView = new PDFHeaderView(getApplicationContext());
 
         PDFHorizontalView pdfHorizontalViewParent = new PDFHorizontalView(getContext());
@@ -2210,6 +2327,8 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         PDFVerticalView headerTitleHorizontalView = new PDFVerticalView(getApplicationContext());
 
         PDFTextView apolloHealthColtdText = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+//        apolloHealthColtdText.setText("APOLLO HEALTHCO LIMITED").setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_bold));
+
         apolloHealthColtdText.setText("APOLLO HEALTHCO LIMITED").setTextTypeface(ResourcesCompat.getFont(getContext(), R.font.poppins_bold));
         headerTitleHorizontalView.addView(apolloHealthColtdText);
 

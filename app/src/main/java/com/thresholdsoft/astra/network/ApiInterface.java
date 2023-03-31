@@ -1,6 +1,8 @@
 package com.thresholdsoft.astra.network;
 
 
+import com.thresholdsoft.astra.ui.barcode.GetBarCodeRequest;
+import com.thresholdsoft.astra.ui.barcode.GetBarCodeResponse;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutRequest;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelRequest;
@@ -71,7 +73,8 @@ public interface ApiInterface {
 
     @POST("https://online.apollopharmacy.org/ASTRAUAT/Apollo/SAVEPDF/GENERATEPDFBYPRNOFORASTHRA")
     Call<PackingLabelResponse> PACKING_LABEL_RESPONSE_CALL(@Header("token") String authToken, @Body PackingLabelRequest packingLabelRequest);
-
+    @POST("GetBarcodePrint")
+    Call<GetBarCodeResponse> BARCODE_API_CALL( @Header("Auth-Token") String authToken,@Body GetBarCodeRequest barCodeRequest);
     @GET
     Call<ResponseBody> doDownloadFile(@Url String fileUrl);
 
