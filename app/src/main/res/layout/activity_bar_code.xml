@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#dcdeea"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".1"
+                android:background="@color/white">
+
+                <include
+                    android:id="@+id/custom_menu_layout"
+                    layout="@layout/custom_menu_barcode"
+                    app:customMenuCallback="@{customMenuCallback}"
+                    app:dcName="@{dcName}"
+                    app:empRole="@{empRole}"
+                    app:pickerName="@{pickerName}"
+                    app:selectedMenu="@{selectedMenu}"
+                    app:userId="@{userId}" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".9">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_centerHorizontal="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="9sp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Bar Code "
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/site_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen12sp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:paddingStart="11sp"
+                        android:text=" "
+                        android:textAlignment="textStart"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:id="@+id/header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:orientation="vertical"
+                        android:visibility="visible">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="@dimen/dimen20sp"
+
+                            android:orientation="horizontal"
+
+
+                            android:weightSum="1">
+
+                            <EditText
+                                android:id="@+id/item_id"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".90"
+                                android:background="@drawable/b_edit_text"
+                                android:hint="Search By Item ID"
+                                android:importantForAutofill="no"
+                                android:inputType="text"
+                                android:paddingStart="10dp"
+                                android:textAllCaps="true"
+                                android:textSize="12sp" />
+
+                            <ImageView
+                                android:id="@+id/search_bar"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="@dimen/dimen5dp"
+                                android:layout_weight=".07"
+
+                                android:background="@drawable/b_edit_text"
+
+                                android:paddingTop="5dp"
+                                android:src="@drawable/search_icon" />
+
+
+                        </LinearLayout>
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/barcoderecycleview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginBottom="@dimen/dimen70dp"
+                            android:orientation="vertical" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/empty"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dimen100dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="No Items is Found "
+                        android:textAlignment="center"
+                        android:textColor="@color/red_transparent_fifty_per"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/print"
+                    android:layout_width="80dp"
+                    android:layout_height="@dimen/dimen45dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="gone"
+                    android:layout_marginBottom="@dimen/dimen10dp"
+                    android:backgroundTint="@color/yellow"
+                    android:text="Print"
+                    android:textColor="@color/black" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+    <data>
+
+        <variable
+            name="pickerName"
+            type="String" />
+
+        <variable
+            name="userId"
+            type="String" />
+
+        <variable
+            name="empRole"
+            type="String" />
+
+        <variable
+            name="dcName"
+            type="String" />
+
+        <variable
+            name="customMenuCallback"
+            type="com.thresholdsoft.astra.ui.CustomMenuCallback" />
+
+        <variable
+            name="callback"
+            type="com.thresholdsoft.astra.ui.barcode.BarCodeActivityCallback" />
+
+        <variable
+            name="selectedMenu"
+            type="Integer" />
+
+    </data>
+</layout>

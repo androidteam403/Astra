@@ -12,8 +12,7 @@
         android:layout_centerVertical="true"
         android:fontFamily="@font/poppins_semibold"
         android:paddingStart="@dimen/dimen8dp"
-        android:paddingTop="@dimen/dimen5dp"
-        android:paddingBottom="@dimen/dimen5dp"
+
         android:text="dsaffd"
         android:textColor="@color/black"
         android:textSize="@dimen/dimen12sp" />
