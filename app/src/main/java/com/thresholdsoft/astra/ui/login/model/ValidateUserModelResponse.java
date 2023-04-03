@@ -29,6 +29,9 @@ public class ValidateUserModelResponse implements Serializable {
     @SerializedName("dcname")
     @Expose
     private String dcname;
+    @SerializedName("dc")
+    @Expose
+    private String dc;
 
 
     public Boolean getRequeststatus() {
@@ -85,5 +88,13 @@ public class ValidateUserModelResponse implements Serializable {
 
     public void setDcname(String dcname) {
         this.dcname = dcname;
+    }
+
+    public String getDc() {
+        return dc;
+    }
+
+    public void setDc(String dc) {
+        this.dc = dc;
     }
 }

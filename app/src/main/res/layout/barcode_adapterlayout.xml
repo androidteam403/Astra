@@ -51,7 +51,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".1"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="Site Id"
+                        android:text="Pack Size Id"
                         android:textColor="@color/bluetooth_header_bg"
                         android:textSize="@dimen/dimen12sp" />
 
@@ -127,7 +127,7 @@
                         android:textSize="10sp" />
 
                     <TextView
-                        android:id="@+id/site_id"
+                        android:id="@+id/pack_size"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".1"
@@ -178,9 +178,9 @@
                             android:background="@drawable/bg_approval_qty_edit"
                             android:fontFamily="@font/poppins_semibold"
                             android:gravity="center"
-                            android:text="1"
                             android:imeOptions="actionDone"
                             android:inputType="number"
+                            android:text="1"
                             android:textColor="@color/black"
                             android:textSize="10sp" />
 
@@ -202,7 +202,6 @@
 
 
         </LinearLayout>
-
 
 
     </RelativeLayout>

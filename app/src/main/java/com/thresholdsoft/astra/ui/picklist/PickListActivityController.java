@@ -25,7 +25,6 @@ import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateRequest;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
-import com.thresholdsoft.astra.utils.CommonUtils;
 import com.thresholdsoft.astra.utils.NetworkUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -146,7 +145,7 @@ public class PickListActivityController {
                             if (response.body().getAllocationhddatas().size() > 0) {
 //                                response.body().setAllocationhddatas(response.body().getAllocationhddatas().stream().filter(i -> CommonUtils.getConvertStringToDate(i.getTransdate().substring(0, 10)).before(CommonUtils.getConvertStringToDate(CommonUtils.getCurrentDate()))).collect(Collectors.toList()));
 //                                response.body().setAllocationhddatas(response.body().getAllocationhddatas().stream().filter(i -> !i.getScanstatus().equalsIgnoreCase("COMPLETED") && CommonUtils.getConvertStringToDate(i.getTransdate().substring(0,10)).before(CommonUtils.getCurrentDateDate())).collect(Collectors.toList()));
-                               // response.body().getAllocationhddatas().removeIf(i -> i.getScanstatus().equalsIgnoreCase("COMPLETED") && CommonUtils.getConvertStringToDate(i.getTransdate().substring(0, 10)).before(CommonUtils.getCurrentDateDate()));
+                                // response.body().getAllocationhddatas().removeIf(i -> i.getScanstatus().equalsIgnoreCase("COMPLETED") && CommonUtils.getConvertStringToDate(i.getTransdate().substring(0, 10)).before(CommonUtils.getCurrentDateDate()));
 
                             }
 
@@ -260,12 +259,12 @@ public class PickListActivityController {
 
     }
 
-    public void getDeliveryofModeApiCall() {
+    public void getDeliveryofModeApiCall(String dcCode) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<GetModeofDeliveryResponse> call = apiInterface.GET_MODEOF_DELIVERY_API_CALL(BuildConfig.BASE_TOKEN);
+            Call<GetModeofDeliveryResponse> call = apiInterface.GET_MODEOF_DELIVERY_API_CALL("GetModeofDelivery/" + dcCode, BuildConfig.BASE_TOKEN);
             call.enqueue(new Callback<GetModeofDeliveryResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetModeofDeliveryResponse> call, @NotNull Response<GetModeofDeliveryResponse> response) {

@@ -1,9 +1,7 @@
 package com.thresholdsoft.astra.ui.barcode;
 
-import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -11,18 +9,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.text.InputFilter;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -56,31 +50,19 @@ import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.VerticalAlignment;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.pdf.AcroFields;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
-import com.thresholdsoft.astra.BuildConfig;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.ActivityBarCodeBinding;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.ui.CustomMenuCallback;
 import com.thresholdsoft.astra.ui.barcode.adapter.BarCodeLabelAdapter;
 import com.thresholdsoft.astra.ui.picklist.PickListActivity;
-import com.thresholdsoft.astra.ui.picklist.PickListActivityController;
-import com.thresholdsoft.astra.ui.picklist.adapter.ShippingBatchNumberAdapter;
-import com.thresholdsoft.astra.ui.picklist.adapter.ShippingLabelAdapter;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -98,7 +80,6 @@ public class BarCodeActivity extends AppCompatActivity implements BarCodeActivit
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         activityBarCodeBinding = DataBindingUtil.setContentView(this, R.layout.activity_bar_code);
         setUp();
-
     }
 
 
@@ -124,7 +105,7 @@ public class BarCodeActivity extends AppCompatActivity implements BarCodeActivit
                     GetBarCodeRequest.Barcodedetail barcodedetail = new GetBarCodeRequest.Barcodedetail(activityBarCodeBinding.itemId.getText().toString(), "");
                     barcodedetailList.add(barcodedetail);
 
-                    GetBarCodeRequest barCodeRequest = new GetBarCodeRequest(getSessionManager().getDcName().replaceAll("[^0-9]", ""), barcodedetailList);
+                    GetBarCodeRequest barCodeRequest = new GetBarCodeRequest(getSessionManager().getDc(), barcodedetailList);
                     getController().getBarCodeResponse(barCodeRequest);
 
                 }
@@ -227,7 +208,7 @@ public class BarCodeActivity extends AppCompatActivity implements BarCodeActivit
             table2.setMarginLeft(3f);
             table2.addCell(new Cell().add(image1Qr).setBorder(Border.NO_BORDER));
             table4.addCell(new Cell(2, 1).add(new Paragraph(new Text(barcodedatumList.get(j).getItemname() + "\n").setFont(bold).setFontSize(4.4f)).setTextAlignment(TextAlignment.LEFT).add(new Text(barcodedatumList.get(j).getBatch() + "\\" + Utils.getTime(barcodedatumList.get(j).getExpdate()) + "\\" + barcodedatumList.get(j).getManufacturername()).setFontSize(4.4f).setFont(bold))).setPadding(0f).setMargin(0f));
-            table6.addCell(new Cell(2, 1).add(new Paragraph(new Text(barcodedatumList.get(j).getBarcode() + "  " + barcodedatumList.get(j).getMrp() + "  " + barcodedatumList.get(j).getItemid() + "\n").setFontSize(4.4f).setFont(bold)).add(new Text(barcodedatumList.get(j).getSiteid() + "  " + barcodedatumList.get(j).getSitename()).setFontSize(4.4f).setFont(bold))).setPadding(0f).setMargin(0f));
+            table6.addCell(new Cell(2, 1).add(new Paragraph(new Text(barcodedatumList.get(j).getBarcode() + "  " + barcodedatumList.get(j).getMrp() + "  " + barcodedatumList.get(j).getItemid() +"\\"+ barcodedatumList.get(j).getPacksize() + "\n").setFontSize(4.4f).setFont(bold)).add(new Text(barcodedatumList.get(j).getSiteid() + "  " + barcodedatumList.get(j).getSitename()).setFontSize(4.4f).setFont(bold))).setPadding(0f).setMargin(0f));
             for (int i = 0; i < barcodedatumList.get(j).getQty(); i++) {
 
                 document.add(table4);
@@ -298,26 +279,41 @@ public class BarCodeActivity extends AppCompatActivity implements BarCodeActivit
 
     }
 
+    String fileName;
+
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void onClickPrint() {
         String pdfpath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-        File file = new File(pdfpath, "shipingbarcode" + ".pdf");
-        try {
-            OutputStream outputStream = new FileOutputStream(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        fileName = System.currentTimeMillis() + ".pdf";
+        File file = new File(pdfpath, "shipingbarcode" + fileName);
+//        try {
+//            OutputStream outputStream = new FileOutputStream(file);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        PdfWriter writer = null;
+//        try {
+//            writer = new PdfWriter(file);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+
+
         PdfWriter writer = null;
         try {
             writer = new PdfWriter(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+
         PageSize fourBySix = new PageSize(155, 58);
 //        j = Integer.parseInt(activityBarCodeBinding.text.getText().toString());
 
         PdfDocument pdfDocument = new PdfDocument(writer);
+//        1.4960629921 - 38 - 107.712
+//        0.5905511811 - 15 - 42.5
 
 
         pdfDocument.setDefaultPageSize(fourBySix);
@@ -335,9 +331,11 @@ public class BarCodeActivity extends AppCompatActivity implements BarCodeActivit
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void showPdf() {
+//        String pdfpath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+//        File file = new File(pdfpath, "shipingbarcode" + ".pdf");
         String pdfpath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-        File file = new File(pdfpath, "shipingbarcode" + ".pdf");
-
+//        String fileName = System.currentTimeMillis() + ".pdf";
+        File file = new File(pdfpath, "shipingbarcode" + fileName);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         Uri photoURI = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", file);
 //            Uri uri = Uri.fromFile(file);

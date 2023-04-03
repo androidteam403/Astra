@@ -44,9 +44,9 @@
         <activity
             android:name=".ui.barcode.BarCodeActivity"
             android:configChanges="keyboard|keyboardHidden"
-android:exported="true"
+            android:exported="true"
             android:screenOrientation="landscape"
-            tools:ignore="DuplicateActivity" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <activity
             android:name=".ui.pickerrequests.PickerRequestActivity"
@@ -72,7 +72,6 @@ android:exported="true"
             android:windowSoftInputMode="adjustPan">
 
 
-
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
 
@@ -80,16 +79,17 @@ android:exported="true"
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
-            android:grantUriPermissions="true"
-            >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
         <activity
             android:name=".ui.picklist.PickListActivity"
             android:configChanges="keyboard|keyboardHidden"

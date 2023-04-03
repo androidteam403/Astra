@@ -50,8 +50,8 @@ public interface ApiInterface {
     @POST("StatusUpdate")
     Call<StatusUpdateResponse> STATUS_UPDATE_API_CALL(@Header("Auth-Token") String authToken, @Body StatusUpdateRequest statusUpdateRequest);
 
-    @GET("GetModeofDelivery")
-    Call<GetModeofDeliveryResponse> GET_MODEOF_DELIVERY_API_CALL(@Header("Auth-Token") String authToken);
+    @GET//GetModeofDelivery
+    Call<GetModeofDeliveryResponse> GET_MODEOF_DELIVERY_API_CALL(@Url String url, @Header("Auth-Token") String authToken);
 
     @GET("GetWithHoldRemarks")
     Call<GetWithHoldRemarksResponse> GET_WITH_HOLD_REMARKS_API_CALL(@Header("Auth-Token") String authToken);
