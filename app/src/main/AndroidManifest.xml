@@ -40,6 +40,14 @@
             android:name=".ui.home.dashboard.DashBoard"
             android:configChanges="keyboard|keyboardHidden"
             android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".ui.barcode.BarCodeActivity"
+            android:configChanges="keyboard|keyboardHidden"
+            android:exported="true"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+
         <activity
             android:name=".ui.pickerrequests.PickerRequestActivity"
             android:configChanges="keyboard|keyboardHidden"
@@ -62,12 +70,26 @@
             android:configChanges="keyboard|keyboardHidden"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan">
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
 
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
         <activity
             android:name=".ui.picklist.PickListActivity"
             android:configChanges="keyboard|keyboardHidden"
@@ -81,7 +103,6 @@
             android:name=".ui.scanner.ScannerActivity"
             android:configChanges="keyboard|keyboardHidden"
             android:screenOrientation="landscape" />
-
     </application>
 
 </manifest>

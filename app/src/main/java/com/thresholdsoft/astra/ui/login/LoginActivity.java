@@ -8,13 +8,13 @@ import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 
-
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityLoginBinding;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestActivity;
 import com.thresholdsoft.astra.ui.picklist.PickListActivity;
+import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 import com.thresholdsoft.astra.utils.AppConstants;
 
 import java.util.Objects;
@@ -25,6 +25,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     private String empRole;
     private String pickerName;
     private String dcName;
+    private String dc;
+    private ValidateUserModelResponse validateUserModelResponse;
 
     public static Intent getStartIntent(Context mContext) {
         Intent intent = new Intent(mContext, LoginActivity.class);
@@ -42,7 +44,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     private void setUp() {
         getDataManager().clearAllSharedPref();
         activityLoginBinding.setCallback(this);
-        getController().getDeliveryofModeApiCall();
+//        getController().getDeliveryofModeApiCall();
         parentLayoutTouchListener();
     }
 
@@ -50,35 +52,39 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     public void onSucessfullValidateResponse(ValidateUserModelResponse validateUserModelResponse) {
         if (validateUserModelResponse != null) {
             if (validateUserModelResponse.getRequeststatus()) {
-                this.loginOtp = validateUserModelResponse.getOtp();
-                this.empRole = validateUserModelResponse.getEmprole();
-                this.pickerName = validateUserModelResponse.getName();
-                this.dcName = validateUserModelResponse.getDcname();
+                this.validateUserModelResponse = validateUserModelResponse;
+                getController().getDeliveryofModeApiCall(validateUserModelResponse.getDc());
 
 
-                AppConstants.userId = activityLoginBinding.userId.getText().toString().trim();
-                getDataManager().setEmpId(activityLoginBinding.userId.getText().toString().trim());
-                if (validateUserModelResponse.getIsotpvalidate()) {
-                    activityLoginBinding.setIsOtpScreen(true);
-                } else {
-                    getDataManager().setEmplRole(empRole);
-                    getDataManager().setPickerName(pickerName);
-                    getDataManager().setDcName(dcName);
-                    getDataManager().setIsLoggedIn(true);
-
-                    if (empRole.equals("Supervisor")) {
-
-
-                        Intent intent = new Intent(this, PickerRequestActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-                        finish();
-                    } else {
-                        startActivity(PickListActivity.getStartActivity(this));
-                        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-                        finish();
-                    }
-                }
+//                this.loginOtp = validateUserModelResponse.getOtp();
+//                this.empRole = validateUserModelResponse.getEmprole();
+//                this.pickerName = validateUserModelResponse.getName();
+//                this.dcName = validateUserModelResponse.getDcname();
+//
+//
+//                AppConstants.userId = activityLoginBinding.userId.getText().toString().trim();
+//                getDataManager().setEmpId(activityLoginBinding.userId.getText().toString().trim());
+//                if (validateUserModelResponse.getIsotpvalidate()) {
+//                    activityLoginBinding.setIsOtpScreen(true);
+//                } else {
+//                    getDataManager().setEmplRole(empRole);
+//                    getDataManager().setPickerName(pickerName);
+//                    getDataManager().setDcName(dcName);
+//                    getDataManager().setIsLoggedIn(true);
+//
+//                    if (empRole.equals("Supervisor")) {
+//
+//
+//                        Intent intent = new Intent(this, PickerRequestActivity.class);
+//                        startActivity(intent);
+//                        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+//                        finish();
+//                    } else {
+//                        startActivity(PickListActivity.getStartActivity(this));
+//                        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+//                        finish();
+//                    }
+//                }
 
             } else {
                 Toast.makeText(getApplicationContext(), validateUserModelResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
@@ -106,6 +112,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
             getDataManager().setEmplRole(empRole);
             getDataManager().setPickerName(pickerName);
             getDataManager().setDcName(dcName);
+            getDataManager().setDc(dc);
             getDataManager().setIsLoggedIn(true);
             if (empRole.equals("Supervisor")) {
                 Intent intent = new Intent(this, PickerRequestActivity.class);
@@ -117,6 +124,38 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 finish();
 
+            }
+        }
+    }
+
+    @Override
+    public void onSuccessGetWithHoldRemarksApi(GetWithHoldRemarksResponse getWithHoldRemarksResponse) {
+        this.loginOtp = validateUserModelResponse.getOtp();
+        this.empRole = validateUserModelResponse.getEmprole();
+        this.pickerName = validateUserModelResponse.getName();
+        this.dcName = validateUserModelResponse.getDcname();
+        this.dc = validateUserModelResponse.getDc();
+
+        AppConstants.userId = activityLoginBinding.userId.getText().toString().trim();
+        getDataManager().setEmpId(activityLoginBinding.userId.getText().toString().trim());
+        if (validateUserModelResponse.getIsotpvalidate()) {
+            activityLoginBinding.setIsOtpScreen(true);
+        } else {
+            getDataManager().setEmplRole(empRole);
+            getDataManager().setPickerName(pickerName);
+            getDataManager().setDcName(dcName);
+            getDataManager().setDc(dc);
+            getDataManager().setIsLoggedIn(true);
+
+            if (empRole.equals("Supervisor")) {
+                Intent intent = new Intent(this, PickerRequestActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                finish();
+            } else {
+                startActivity(PickListActivity.getStartActivity(this));
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                finish();
             }
         }
     }

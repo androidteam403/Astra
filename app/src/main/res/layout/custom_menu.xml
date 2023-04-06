@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -102,7 +103,7 @@
                         android:id="@+id/pick_list_menu"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight=".2"
+                        android:layout_weight=".23"
                         android:background="@{selectedMenu == 1 ? @color/yellow : @color/transperancy}"
                         android:gravity="center"
                         android:onClick="@{()-> customMenuCallback.onClickPickList()}"
@@ -125,121 +126,37 @@
                             android:textSize="@dimen/dimen10sp" />
                     </LinearLayout>
 
-
-                    <!--                    <LinearLayout-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="0dp"-->
-                    <!--                        android:layout_weight=".2"-->
-                    <!--                        android:background="@{selectedMenu == 2 ? @color/yellow : @color/transperancy}"-->
-                    <!--                        android:gravity="center"-->
-                    <!--                        android:onClick="@{()-> customMenuCallback.onClickPickListHistory()}"-->
-                    <!--                        android:orientation="vertical">-->
-
-                    <!--                        <ImageView-->
-                    <!--                            android:layout_width="@dimen/dimen30dp"-->
-                    <!--                            android:layout_height="@dimen/dimen30dp"-->
-                    <!--                            android:contentDescription="@string/app_name"-->
-                    <!--                            android:src="@drawable/ic_baseline_receipt_long_24"-->
-                    <!--                            android:tint="@{selectedMenu == 2 ? @color/black : @color/white}"-->
-                    <!--                            android:visibility="gone" />-->
-
-                    <!--                        <TextView-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:fontFamily="@font/poppins_bold"-->
-                    <!--                            android:gravity="center"-->
-                    <!--                            android:text="@string/label_pick_list_nhistory"-->
-                    <!--                            android:textColor="@{selectedMenu == 2 ? @color/black : @color/white}"-->
-                    <!--                            android:textSize="@dimen/dimen10sp"-->
-                    <!--                            android:visibility="gone" />-->
-                    <!--                    </LinearLayout>-->
-
-                    <!--                    <LinearLayout-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="0dp"-->
-                    <!--                        android:layout_weight=".2"-->
-                    <!--                        android:background="@{selectedMenu == 3 ? @color/yellow : @color/transperancy}"-->
-                    <!--                        android:gravity="center"-->
-                    <!--                        android:onClick="@{()-> customMenuCallback.onClickRequestHistory()}"-->
-                    <!--                        android:orientation="vertical">-->
-
-                    <!--                        <ImageView-->
-                    <!--                            android:layout_width="@dimen/dimen30dp"-->
-                    <!--                            android:layout_height="@dimen/dimen30dp"-->
-                    <!--                            android:contentDescription="@string/app_name"-->
-                    <!--                            android:src="@drawable/ic_baseline_feed_24"-->
-                    <!--                            android:tint="@{selectedMenu == 3 ? @color/black : @color/white}"-->
-                    <!--                            android:visibility="gone" />-->
-
-                    <!--                        <TextView-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:fontFamily="@font/poppins_bold"-->
-                    <!--                            android:gravity="center"-->
-                    <!--                            android:text="@string/label_request_nhistory"-->
-                    <!--                            android:textColor="@{selectedMenu == 3 ? @color/black : @color/white}"-->
-                    <!--                            android:textSize="@dimen/dimen10sp"-->
-                    <!--                            android:visibility="gone" />-->
-                    <!--                    </LinearLayout>-->
-
-                    <!--                    <LinearLayout-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="0dp"-->
-                    <!--                        android:layout_weight=".2"-->
-                    <!--                        android:background="@{selectedMenu == 4 ? @color/yellow : @color/transperancy}"-->
-                    <!--                        android:gravity="center"-->
-                    <!--                        android:onClick="@{()-> customMenuCallback.onClickDashboard()}"-->
-                    <!--                        android:orientation="vertical">-->
-
-                    <!--                        <ImageView-->
-                    <!--                            android:layout_width="@dimen/dimen30dp"-->
-                    <!--                            android:layout_height="@dimen/dimen30dp"-->
-                    <!--                            android:contentDescription="@string/app_name"-->
-                    <!--                            android:src="@drawable/ic_baseline_analytics_24"-->
-                    <!--                            android:tint="@{selectedMenu == 4 ? @color/black : @color/white}"-->
-                    <!--                            android:visibility="gone" />-->
-
-                    <!--                        <TextView-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:fontFamily="@font/poppins_bold"-->
-                    <!--                            android:gravity="center"-->
-                    <!--                            android:text="@string/label_dashboard"-->
-                    <!--                            android:textColor="@{selectedMenu == 4 ? @color/black : @color/white}"-->
-                    <!--                            android:textSize="@dimen/dimen10sp"-->
-                    <!--                            android:visibility="gone" />-->
-                    <!--                    </LinearLayout>-->
-
-                    <!--                    <LinearLayout-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="0dp"-->
-                    <!--                        android:layout_weight=".2"-->
-                    <!--                        android:background="@{selectedMenu == 5 ? @color/yellow : @color/transperancy}"-->
-                    <!--                        android:gravity="center"-->
-                    <!--                        android:onClick="@{()-> customMenuCallback.onClickPickerRequest()}"-->
-                    <!--                        android:orientation="vertical"-->
-                    <!--                        android:visibility="gone">-->
-
-                    <!--                        <ImageView-->
-                    <!--                            android:layout_width="@dimen/dimen30dp"-->
-                    <!--                            android:layout_height="@dimen/dimen30dp"-->
-                    <!--                            android:contentDescription="@string/app_name"-->
-                    <!--                            android:src="@drawable/ic_baseline_hail_24"-->
-                    <!--                            android:tint="@{selectedMenu == 5 ? @color/black : @color/white}" />-->
-
-                    <!--                        <TextView-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:fontFamily="@font/poppins_bold"-->
-                    <!--                            android:gravity="center"-->
-                    <!--                            android:text="@string/label_picker_nrequest"-->
-                    <!--                            android:textColor="@{selectedMenu == 5 ? @color/black : @color/white}"-->
-                    <!--                            android:textSize="@dimen/dimen10sp" />-->
-                    <!--                    </LinearLayout>-->
-                    <View
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height=".0dp"
-                        android:layout_weight=".2" />
+                        android:layout_height="0dp"
+                        android:layout_weight=".23"
+                        android:layout_marginTop="@dimen/dimen5dp"
+                        android:background="@{selectedMenu == 2 ? @color/yellow : @color/transperancy}"
+                        android:gravity="center"
+                        android:onClick="@{()-> customMenuCallback.onClickBarCode()}"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen30dp"
+                            android:layout_height="@dimen/dimen30dp"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_baseline_print_24"
+                            android:tint="@{selectedMenu == 2 ? @color/black : @color/white}"
+                            android:visibility="visible"
+                            tools:ignore="UseAppTint" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center"
+                            android:text="BarCode Print"
+                            android:textColor="@{selectedMenu == 2 ? @color/black : @color/white}"
+                            android:textSize="@dimen/dimen10sp"
+                            android:visibility="visible" />
+                    </LinearLayout>
+
+
 
                     <View
                         android:layout_width="match_parent"
@@ -249,13 +166,14 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height=".0dp"
-                        android:layout_weight=".2" />
+                        android:layout_weight=".1" />
+
 
                     <LinearLayout
                         android:id="@+id/logout_menu"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight=".15"
+                        android:layout_weight=".23"
                         android:gravity="center"
                         android:onClick="@{()-> customMenuCallback.onClickLogout()}"
                         android:orientation="vertical">
@@ -274,17 +192,17 @@
                             android:text="Logout"
                             android:textColor="@color/white"
                             android:textSize="@dimen/dimen10sp" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center"
+                            android:text="@{`V `+BuildConfig.VERSION_NAME}"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dimen10sp" />
+
                     </LinearLayout>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight=".05"
-                        android:fontFamily="@font/poppins_bold"
-                        android:gravity="center"
-                        android:text="@{`V `+BuildConfig.VERSION_NAME}"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/dimen10sp" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -312,15 +230,16 @@
                         android:id="@+id/pick_list_menu_stroke"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight=".2"
+                        android:layout_weight=".23"
                         android:background="@{selectedMenu == 1 ? @color/yellow : @color/transperancy}" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight=".2"
-                        android:background="@{selectedMenu == 2 ? @color/yellow : @color/transperancy}"
-                        android:visibility="gone" />
+                        android:layout_marginTop="@dimen/dimen5dp"
+
+                        android:layout_weight=".23"
+                        android:background="@{selectedMenu == 2 ? @color/yellow : @color/transperancy}" />
 
                     <View
                         android:layout_width="match_parent"
@@ -332,7 +251,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight=".2"
+                        android:layout_weight=".1"
                         android:background="@{selectedMenu == 4 ? @color/yellow : @color/transperancy}"
                         android:visibility="gone" />
 

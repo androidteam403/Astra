@@ -66,12 +66,12 @@ public class LoginActivityController {
         }
     }
 
-    public void getDeliveryofModeApiCall() {
+    public void getDeliveryofModeApiCall(String dcCode) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<GetModeofDeliveryResponse> call = apiInterface.GET_MODEOF_DELIVERY_API_CALL(BuildConfig.BASE_TOKEN);
+            Call<GetModeofDeliveryResponse> call = apiInterface.GET_MODEOF_DELIVERY_API_CALL("GetModeofDelivery/" + dcCode, BuildConfig.BASE_TOKEN);
             call.enqueue(new Callback<GetModeofDeliveryResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetModeofDeliveryResponse> call, @NotNull Response<GetModeofDeliveryResponse> response) {
@@ -117,7 +117,7 @@ public class LoginActivityController {
                         if (response.body().getRequeststatus()) {
                             AppConstants.getWithHoldRemarksResponse = response.body();
                             getDataManager().setGetWithHoldRemarksResponse(response.body());
-//                            mCallback.onSuccessGetWithHoldRemarksApi(response.body());
+                            loginActivityCallback.onSuccessGetWithHoldRemarksApi(response.body());
                         } else {
                             loginActivityCallback.onFailureMessage(response.body().getRequestmessage());
                         }
