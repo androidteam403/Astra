@@ -47,7 +47,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen10dp"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="Bar Code "
+                        android:text="Bar Code Printer"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
@@ -56,7 +56,8 @@
                         android:id="@+id/site_id"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginStart="@dimen/dimen5dp"
                         android:fontFamily="@font/poppins_semibold"
                         android:textAlignment="textStart"
                         android:textColor="@color/black"
@@ -71,7 +72,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
+                            android:layout_height="@dimen/dimen35dp"
                             android:orientation="horizontal"
                             android:weightSum="1">
 
@@ -79,7 +80,8 @@
                                 android:id="@+id/item_id"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_weight=".75"
+                                android:layout_weight=".72"
+                                android:layout_marginStart="@dimen/dimen5dp"
                                 android:background="@drawable/b_edit_text"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:hint="Search By Item ID"
@@ -94,33 +96,79 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="@dimen/dimen5dp"
-                                android:layout_weight=".1"
+                                android:layout_weight=".09"
                                 android:background="@drawable/b_edit_text"
                                 android:contentDescription="@string/app_name"
                                 android:paddingTop="5dp"
                                 android:src="@drawable/search_icon" />
 
-                            <TextView
-                                android:id="@+id/print"
+                            <LinearLayout
+                                android:id="@+id/printlayout"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_marginStart="@dimen/dimen10dp"
+                                android:layout_marginEnd="5dp"
+                                android:layout_marginStart="8dp"
                                 android:layout_weight=".15"
-                                android:background="@color/yellow"
-                                android:fontFamily="@font/poppins_bold"
+                                android:backgroundTint="@color/grey"
+                                android:background="@drawable/background_print"
                                 android:gravity="center"
-                                android:text="Print"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/dimen12sp"
-                                android:visibility="gone" />
+                                android:orientation="horizontal"
+                                android:visibility="visible">
+                                <!--                            android:visibility="@{orderStatusModel.status.equalsIgnoreCase(`Completed`) ? view.GONE : view.VISIBLE}">-->
+
+                                <ImageView
+                                    android:layout_width="22dp"
+                                    android:layout_height="22dp"
+                                    android:contentDescription="@string/app_name"
+                                    android:src="@drawable/black_printer" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen5dp"
+                                    android:id="@+id/print"
+
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="Print"
+                                    android:textColor="@color/black"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
+<!--                            <ImageView-->
+<!--                                android:layout_width="0dp"-->
+<!--                                android:layout_height="match_parent"-->
+<!--                                android:layout_marginStart="@dimen/dimen5dp"-->
+<!--                                android:layout_weight=".1"-->
+<!--                                android:contentDescription="@string/app_name"-->
+<!--                                android:paddingTop="5dp"-->
+<!--                                android:src="@drawable/black_printer" />-->
+
+<!--                            <TextView-->
+<!--                                android:id="@+id/print"-->
+<!--                                android:layout_width="0dp"-->
+<!--                                android:layout_height="match_parent"-->
+<!--                                android:layout_marginStart="@dimen/dimen10dp"-->
+<!--                                android:layout_marginEnd="@dimen/dimen5dp"-->
+<!--                                android:layout_weight=".15"-->
+<!--                                android:background="@color/yellow"-->
+<!--                                android:backgroundTint="@color/grey"-->
+<!--                                android:fontFamily="@font/poppins_bold"-->
+<!--                                android:gravity="center"-->
+<!--                                android:text="Print"-->
+<!--                                android:textColor="@color/black"-->
+<!--                                android:textSize="@dimen/dimen12sp"-->
+<!--                                android:visibility="visible" />-->
 
                         </LinearLayout>
+
                     </LinearLayout>
+
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/barcoderecycleview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dimen5dp"
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="5dp"
                         android:orientation="vertical" />

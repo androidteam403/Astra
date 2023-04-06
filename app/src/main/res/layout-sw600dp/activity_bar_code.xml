@@ -47,7 +47,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen10dp"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="Bar Code "
+                        android:text="Bar Code Printer"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
@@ -79,7 +79,7 @@
                                 android:id="@+id/item_id"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_weight=".75"
+                                android:layout_weight=".72"
                                 android:background="@drawable/b_edit_text"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:hint="Search By Item ID"
@@ -100,20 +100,38 @@
                                 android:contentDescription="@string/app_name"
                                 android:paddingTop="5dp"
                                 android:src="@drawable/search_icon" />
-
-                            <TextView
-                                android:id="@+id/print"
+                            <LinearLayout
+                                android:id="@+id/printlayout"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_marginStart="@dimen/dimen10dp"
+                                android:layout_marginEnd="5dp"
+                                android:layout_marginStart="8dp"
                                 android:layout_weight=".15"
-                                android:background="@color/yellow"
-                                android:fontFamily="@font/poppins_bold"
+                                android:backgroundTint="@color/grey"
+                                android:background="@drawable/background_print"
                                 android:gravity="center"
-                                android:text="Print"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/dimen12sp"
-                                android:visibility="gone" />
+                                android:orientation="horizontal"
+                                android:visibility="visible">
+                                <!--                            android:visibility="@{orderStatusModel.status.equalsIgnoreCase(`Completed`) ? view.GONE : view.VISIBLE}">-->
+
+                                <ImageView
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
+                                    android:contentDescription="@string/app_name"
+                                    android:src="@drawable/black_printer" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen5dp"
+                                    android:id="@+id/print"
+
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="Print"
+                                    android:textColor="@color/black"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
 
                         </LinearLayout>
                     </LinearLayout>

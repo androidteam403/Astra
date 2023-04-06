@@ -251,7 +251,7 @@
                             android:layout_width="@dimen/dimen50dp"
                             android:layout_height="@dimen/dimen50dp"
                             android:contentDescription="@string/app_name"
-                            android:src="@drawable/ic_baseline_receipt_long_24"
+                            android:src="@drawable/ic_baseline_print_24"
                             android:tint="@{selectedMenu == 2 ? @color/black : @color/white}"
                             android:visibility="visible"
                             tools:ignore="UseAppTint" />
@@ -261,7 +261,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_bold"
                             android:gravity="center"
-                            android:text="BarCode"
+                            android:text="BarCode Print"
                             android:textColor="@{selectedMenu == 2 ? @color/black : @color/white}"
                             android:textSize="@dimen/dimen12sp"
                             android:visibility="visible" />

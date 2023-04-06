@@ -50,9 +50,13 @@ public class BarCodeLabelAdapter extends RecyclerView.Adapter<BarCodeLabelAdapte
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+
                     barcodedatumList.get(position).setQty(Integer.parseInt(holder.barcodeAdapterlayoutBinding.qty.getText().toString()));
 
+
                     holder.barcodeAdapterlayoutBinding.qty.clearFocus();
+                    barCodeActivityCallback.onNotify();
+
                 }
                 return false;
             }
