@@ -1,11 +1,10 @@
 package com.thresholdsoft.astra.ui.barcode.adapter;
 
 import android.content.Context;
-import android.view.KeyEvent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -46,21 +45,21 @@ public class BarCodeLabelAdapter extends RecyclerView.Adapter<BarCodeLabelAdapte
         barcodedatumList.get(position).setQty(Integer.parseInt(holder.barcodeAdapterlayoutBinding.qty.getText().toString()));
 
 
-        holder.barcodeAdapterlayoutBinding.qty.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-
-                    barcodedatumList.get(position).setQty(Integer.parseInt(holder.barcodeAdapterlayoutBinding.qty.getText().toString()));
-
-
-                    holder.barcodeAdapterlayoutBinding.qty.clearFocus();
-                    barCodeActivityCallback.onNotify();
-
-                }
-                return false;
-            }
-        });
+//        holder.barcodeAdapterlayoutBinding.qty.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                if (actionId == EditorInfo.IME_ACTION_DONE) {
+//
+//                    barcodedatumList.get(position).setQty(Integer.parseInt(holder.barcodeAdapterlayoutBinding.qty.getText().toString()));
+//
+//
+//                    holder.barcodeAdapterlayoutBinding.qty.clearFocus();
+//                    barCodeActivityCallback.onNotify();
+//
+//                }
+//                return false;
+//            }
+//        });
 
 
         holder.barcodeAdapterlayoutBinding.batch.setText(barcodedatum.getBatch());
@@ -71,6 +70,33 @@ public class BarCodeLabelAdapter extends RecyclerView.Adapter<BarCodeLabelAdapte
         holder.barcodeAdapterlayoutBinding.packSize.setText(String.valueOf(barcodedatum.getPacksize()));
         holder.barcodeAdapterlayoutBinding.sitename.setText(barcodedatum.getExpdate());
 
+        holder.barcodeAdapterlayoutBinding.qty.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                System.out.println("onTextChanged" + position);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                System.out.println("afterTextChanged" + position);
+                if (editable.toString() != null) {
+                    if (editable.toString().isEmpty()) {
+                        barcodedatumList.get(position).setQty(0);
+                    } else {
+                        barcodedatumList.get(position).setQty(Integer.parseInt(holder.barcodeAdapterlayoutBinding.qty.getText().toString()));
+                    }
+//                    holder.barcodeAdapterlayoutBinding.qty.clearFocus();
+                    barCodeActivityCallback.onNotify();
+                } else {
+                    return;
+                }
+            }
+        });
 
     }
 

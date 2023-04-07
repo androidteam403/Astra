@@ -1,32 +1,36 @@
 package com.thresholdsoft.astra.ui.barcode;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Context;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
-import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.print.PageRange;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintDocumentInfo;
-import android.print.PrintManager;
 import android.text.InputFilter;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,15 +55,18 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.borders.SolidBorder;
+import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.element.Text;
+import com.itextpdf.layout.property.AreaBreakType;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.VerticalAlignment;
 import com.thresholdsoft.astra.R;
+import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityBarCodeBinding;
 import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
 import com.thresholdsoft.astra.db.SessionManager;
@@ -74,7 +81,6 @@ import com.thresholdsoft.astra.utils.Utils;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -84,7 +90,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BarCodeActivity extends AppCompatActivity implements BarCodeActivityCallback, CustomMenuCallback {
+public class BarCodeActivity extends BaseActivity implements BarCodeActivityCallback, CustomMenuCallback {
     private ActivityBarCodeBinding activityBarCodeBinding;
     int j = 1;
     TextView selectedStatusText;
@@ -94,7 +100,6 @@ public class BarCodeActivity extends AppCompatActivity implements BarCodeActivit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         activityBarCodeBinding = DataBindingUtil.setContentView(this, R.layout.activity_bar_code);
         setUp();
     }
@@ -146,7 +151,13 @@ public class BarCodeActivity extends AppCompatActivity implements BarCodeActivit
 
             }
         });
-
+        activityBarCodeBinding.parentLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard();
+                return false;
+            }
+        });
     }
 
     private BarCodeActivityController getController() {
@@ -234,20 +245,15 @@ public class BarCodeActivity extends AppCompatActivity implements BarCodeActivit
             table4.addCell(new Cell(2, 1).add(new Paragraph(new Text(barcodedatumList.get(j).getItemname() + "\n").setFont(bold).setFontSize(4.4f)).setTextAlignment(TextAlignment.LEFT).add(new Text(barcodedatumList.get(j).getBatch() + "\\" + Utils.getTime(barcodedatumList.get(j).getExpdate()) + "\\" + barcodedatumList.get(j).getManufacturername()).setFontSize(4.4f).setFont(bold)).setFixedLeading(4.2f)).setPadding(0f).setMargin(0f));
             table6.addCell(new Cell(2, 1).add(new Paragraph(new Text(barcodedatumList.get(j).getBarcode() + "  " + barcodedatumList.get(j).getMrp() + "  " + barcodedatumList.get(j).getItemid() + "\\" + barcodedatumList.get(j).getPacksize() + "\n").setFontSize(4.4f).setFont(bold)).add(new Text(barcodedatumList.get(j).getSiteid() + "  " + barcodedatumList.get(j).getSitename()).setFontSize(4.4f).setFont(bold)).setFixedLeading(4.2f)).setPadding(0f).setMargin(0f));
             for (int i = 0; i < barcodedatumList.get(j).getQty(); i++) {
-
                 document.add(table4);
                 document.add(table2);
                 document.add(table6);
-//            Toast.makeText(getApplicationContext(), "Pdf Created", Toast.LENGTH_LONG).show();
-                showPdf();
-                ActivityUtils.hideDialog();
+                if (i != (barcodedatumList.get(j).getQty() - 1))
+                    document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
             }
-
+            ActivityUtils.hideDialog();
+            showPdf();
         }
-
-
-//
-
     }
 // tableAddress.addCell(new Cell(3, 1)
 //                    .add(new Paragraph(new Text(pdfShippingLabelResponse.getData().getCustomername() + "\n" + pdfShippingLabelResponse.getData().getShippingaddress() + ", " + pdfShippingLabelResponse.getData().getShippingcity() + ", " + pdfShippingLabelResponse.getData().getShippingstateid() + ", " + pdfShippingLabelResponse.getData().getShippingpincode()).setFont(font).setFontSize(8)).setMarginLeft(5).setFixedLeading(10)).setBorder(Border.NO_BORDER).setMarginLeft(5));
@@ -309,10 +315,6 @@ public class BarCodeActivity extends AppCompatActivity implements BarCodeActivit
 
     }
 
-    private SessionManager getDataManager() {
-        return new SessionManager(getApplicationContext());
-    }
-
     @Override
     public void onSuccessLogoutApiCAll(LogoutResponse logoutResponse) {
         getDataManager().clearAllSharedPref();
@@ -340,95 +342,139 @@ public class BarCodeActivity extends AppCompatActivity implements BarCodeActivit
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void onClickPrint() {
-
-        String extStorageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-        File folder = new File(extStorageDirectory, "packinglabel");
-        folder.mkdir();
-        File file = new File(folder, "barcode" + ".pdf");
         try {
-            file.createNewFile();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-
-
-        PdfWriter writer = null;
-        try {
-            writer = new PdfWriter(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-
-        PageSize fourBySix = new PageSize(107.7f, 42.5f);
-//        j = Integer.parseInt(activityBarCodeBinding.text.getText().toString());
-
-        PdfDocument pdfDocument = new PdfDocument(writer);
-//        1.4960629921 - 38 - 107.712
-//        0.5905511811 - 15 - 42.5
-
-
-        pdfDocument.setDefaultPageSize(fourBySix);
-        Document document = new Document(pdfDocument, fourBySix);
-        document.setHorizontalAlignment(HorizontalAlignment.CENTER);
-        document.setMargins(5, 0, 0, 0);
-        try {
-            createPdfPageWiseAstra(pdfDocument, document, false, (ArrayList<GetBarCodeResponse.Barcodedatum>) barcodedatumList);
+            createBarcodePdf();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        document.close();
+    }
+
+    public boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (this.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+//                Log.v(TAG,"Permission is granted");
+                return true;
+            } else {
+
+//                Log.v(TAG,"Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        } else { //permission is automatically granted on sdk<23 upon installation
+//            Log.v(TAG,"Permission is granted");
+            return true;
+        }
+    }
+
+    private void createBarcodePdf() throws IOException {
+        if (isStoragePermissionGranted()) {
+            fileName = System.currentTimeMillis() + ".pdf";
+            FileUtil.createFilePath(fileName, this, "astrabarcode");
+            PdfWriter writer = new PdfWriter(FileUtil.getFilePath(fileName, this, "astrabarcode"));
+            PdfDocument pdfDocument = new PdfDocument(writer);
+            PageSize customPageSize38mm15mm = new PageSize(107.7f, 42.5f);
+            Document document = new Document(pdfDocument, customPageSize38mm15mm);
+            document.setMargins(0, 0, 0, 0);
+            document.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                createPdfPageWiseAstra(pdfDocument, document, false, (ArrayList<GetBarCodeResponse.Barcodedatum>) barcodedatumList);
+            }
+            document.close();
+//            if (isStoragePermissionGranted()) {
+//                openPdf();
+//            }
+
+
+//            String extStorageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+//            fileName = System.currentTimeMillis() + ".pdf";
+//            File folder = new File(extStorageDirectory, "packinglabel");
+//            folder.mkdir();
+////        File file = new File(folder, "barcode" + ".pdf");
+//            File file = new File(folder, fileName);
+//
+//            try {
+//                file.createNewFile();
+//            } catch (IOException e1) {
+//                e1.printStackTrace();
+//            }
+//
+//
+//            PdfWriter writer = null;
+//            try {
+//                writer = new PdfWriter(file);
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//
+//
+//            PageSize fourBySix = new PageSize(107.7f, 42.5f);
+////        j = Integer.parseInt(activityBarCodeBinding.text.getText().toString());
+//
+//            PdfDocument pdfDocument = new PdfDocument(writer);
+////        1.4960629921 - 38 - 107.712
+////        0.5905511811 - 15 - 42.5
+//
+//
+//            pdfDocument.setDefaultPageSize(fourBySix);
+//            Document document = new Document(pdfDocument, fourBySix);
+//            document.setHorizontalAlignment(HorizontalAlignment.CENTER);
+//            document.setMargins(5, 0, 0, 0);
+//            try {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                    createPdfPageWiseAstra(pdfDocument, document, false, (ArrayList<GetBarCodeResponse.Barcodedatum>) barcodedatumList);
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            document.close();
+        }
     }
 
     @SuppressLint("Range")
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void showPdf() {
-////        String pdfpath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-////        File file = new File(pdfpath, "shipingbarcode" + ".pdf");
-//        String pdfpath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-////        String fileName = System.currentTimeMillis() + ".pdf";
-//        File file = new File(pdfpath, "shipingbarcode" + fileName);
-//        Intent intent = new Intent(Intent.ACTION_VIEW);
-//        Uri photoURI = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", file);
-////            Uri uri = Uri.fromFile(file);
-//        intent.setDataAndType(photoURI, "application/pdf");
-//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//
-//
-//        try {
-//            startActivity(intent);
-//        } catch (ActivityNotFoundException e) {
-//            Toast.makeText(this, "No Application for pdf view", Toast.LENGTH_SHORT).show();
+        File file = FileUtil.getFilePath(fileName, this, "astrabarcode");
+//        if (file.exists()) {
+//            PrintAttributes.Builder builder = new PrintAttributes.Builder();
+////            PrintAttributes.MediaSize paperSize = new PrintAttributes.MediaSize("CUSTOM_BARCODE", "android", 108, 43).asLandscape();
+//            PrintAttributes.MediaSize paperSize = new PrintAttributes.MediaSize("CUSTOM_BARCODE", "android", 1496, 590);
+//            builder.setMediaSize(paperSize);
+//            PrintManager printManager = (PrintManager) getSystemService(Context.PRINT_SERVICE);
+//            String jobName = this.getString(R.string.app_name) + " Document";
+//            printManager.print(jobName, pda, builder.build());
 //        }
 
+//        String extStorageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+//        File folder = new File(extStorageDirectory, "packinglabel");
+//        File file = new File(folder, fileName);
 
-        String extStorageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-        File folder = new File(extStorageDirectory, "packinglabel");
-        File file = new File(folder, "barcode" + ".pdf");
+
+//        String pdfpath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+//        File file = new File(pdfpath, "shipingbarcode" + ".pdf");
+//        String pdfpath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+//        String fileName = System.currentTimeMillis() + ".pdf";
+//        File file = new File(pdfpath, "shipingbarcode" + fileName);
+
+
+        // Remove after
+//        String extStorageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+//        File folder = new File(extStorageDirectory, "packinglabel");
+//        File file = new File(folder, "barcode" + ".pdf");
 
         if (file.exists()) {
-            PrintAttributes.Builder builder = new PrintAttributes.Builder();
-
-////            R.string.onepointfivebyzeropointnine
-////            107.7f, 42.5f
-//"
-         PrintAttributes.MediaSize paperSize=   new PrintAttributes.MediaSize("CUSTOM_BARCODE", "android",108, 43);
-
-//
-Double wid=1.5;
-Double height=0.6;
-
-
-
-
-            builder.setMediaSize(paperSize);
-            PrintManager printManager = (PrintManager) getSystemService(Context.PRINT_SERVICE);
-            String jobName = this.getString(R.string.app_name) + " Document";
-            printManager.print(jobName, pda, builder.build());
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri photoURI = FileProvider.getUriForFile(this, BarCodeActivity.this.getPackageName() + ".provider", file);
+//            Uri uri = Uri.fromFile(file);
+            intent.setDataAndType(photoURI, "application/pdf");
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(this, "No Application for pdf view", Toast.LENGTH_SHORT).show();
+            }
         }
-
 
     }
 
@@ -440,8 +486,12 @@ Double height=0.6;
             InputStream input = null;
             OutputStream output = null;
             try {
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/packinglabel/" + "barcode" + ".pdf");
+//                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/packinglabel/" + "barcode" + ".pdf");
+//                String extStorageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+//                File folder = new File(extStorageDirectory, "packinglabel");
+//                File file = new File(folder, fileName);
 
+                File file = FileUtil.getFilePath(fileName, BarCodeActivity.this, "astrabarcode");
                 input = new FileInputStream(file);//"/storage/emulated/0/Documents/my-document-1656940186153.pdf"
                 output = new FileOutputStream(destination.getFileDescriptor());
                 byte[] buf = new byte[1024];
@@ -479,7 +529,7 @@ Double height=0.6;
                 return;
             }
             //int pages = computePageCount(newAttributes);
-            PrintDocumentInfo pdi = new PrintDocumentInfo.Builder("file_name.pdf").setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT).build();
+            PrintDocumentInfo pdi = new PrintDocumentInfo.Builder(fileName).setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT).build();
             callback.onLayoutFinished(pdi, true);
         }
 
