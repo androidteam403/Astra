@@ -3,6 +3,7 @@ package com.thresholdsoft.astra.ui.pickerrequests;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -31,6 +32,7 @@ import com.thresholdsoft.astra.databinding.AlertDialogBinding;
 import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.ui.alertdialogs.AlertBox;
+import com.thresholdsoft.astra.ui.barcode.BarCodeActivity;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.menucallbacks.CustomMenuSupervisorCallback;
@@ -43,6 +45,7 @@ import com.thresholdsoft.astra.ui.pickerrequests.adapter.StatusDropdownSpinner;
 import com.thresholdsoft.astra.ui.pickerrequests.model.CheckQohResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
+import com.thresholdsoft.astra.ui.picklist.PickListActivity;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
@@ -804,13 +807,13 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     @Override
     public void onFailureMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
     public void onSuccessWithHoldApprovalApi(WithHoldApprovalResponse withHoldApprovalResponse) {
 
-        getController().getWithHoldApi();
+//        getController().getWithHoldApi();
+        onClickRefreshRequest();
     }
 
     @Override
@@ -889,6 +892,14 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     @Override
     public void onClickPickerRequests() {
 
+    }
+
+    @Override
+    public void onClickBarCode() {
+        Intent intent = new Intent(PickerRequestActivity.this, BarCodeActivity.class);
+        intent.putExtra("pickerrequest","Picker "+"\n"+"Request");
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }
 
     @Override

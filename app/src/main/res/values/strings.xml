@@ -12,6 +12,9 @@
     <string name="picker_nhistory">PICKER\nHISTORY</string>
     <string name="total_assigned">TOTAL ASSIGNED</string>
     <string name="_120">120</string>
+    <string name="onepointfivebyzeropointnine">1.5</string>
+
+
     <string name="price_format">%,.2f</string>
     <string name="completed">COMPLETED</string>
     <string name="_20">20</string>
@@ -80,4 +83,5 @@
     <string name="label_scan">Scan</string>
     <string name="label_search_by_purchase_requisition">Search by Purchase Requisition</string>
     <string name="label_batch_code">Batch code</string>
+    <string name="mediasize_iso_05">12333</string>
 </resources>

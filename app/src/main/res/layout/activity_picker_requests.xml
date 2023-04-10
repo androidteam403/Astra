@@ -59,8 +59,8 @@
                         android:textSize="18sp" />
 
                     <ImageView
-                        android:layout_width="@dimen/dimen40dp"
-                        android:layout_height="@dimen/dimen40dp"
+                        android:layout_width="@dimen/dimen35dp"
+                        android:layout_height="@dimen/dimen35dp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginStart="@dimen/dimen10dp"
                         android:layout_marginEnd="@dimen/dimen10dp"
@@ -82,110 +82,112 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:weightSum="4">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
                             android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/dimen30dp"
-                                android:layout_marginStart="@dimen/dimen5dp"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:gravity="center"
                                 android:paddingStart="@dimen/dimen5dp"
                                 android:paddingEnd="@dimen/dimen5dp"
                                 android:text="Status :"
-                                android:textSize="@dimen/dimen12sp" />
+                                android:textSize="12sp" />
 
                             <Spinner
                                 android:id="@+id/status_spinner"
                                 style="@style/spinner_style"
-                                android:layout_width="@dimen/dimen150dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:spinnerMode="dropdown"
-                                android:textSize="@dimen/dimen14sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
                             android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/dimen30dp"
-                                android:layout_marginStart="@dimen/dimen5dp"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:gravity="center"
                                 android:paddingStart="@dimen/dimen5dp"
                                 android:paddingEnd="@dimen/dimen5dp"
                                 android:text="Request Type :"
-                                android:textSize="@dimen/dimen12sp" />
+                                android:textSize="12sp" />
 
                             <Spinner
                                 android:id="@+id/request_code_spinner"
                                 style="@style/spinner_style"
-                                android:layout_width="@dimen/dimen230dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:spinnerMode="dropdown"
-                                android:textSize="@dimen/dimen14sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
                             android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/dimen30dp"
-                                android:layout_marginStart="@dimen/dimen5dp"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:gravity="center"
                                 android:paddingStart="@dimen/dimen5dp"
                                 android:paddingEnd="@dimen/dimen5dp"
                                 android:text="Sort by :"
-                                android:textSize="@dimen/dimen12sp" />
+                                android:textSize="12sp" />
 
                             <Spinner
                                 android:id="@+id/sort_by_sprinner"
                                 style="@style/spinner_style"
-                                android:layout_width="@dimen/dimen230dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:spinnerMode="dropdown"
-                                android:textSize="@dimen/dimen14sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+
                             android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
                             android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/dimen30dp"
-                                android:layout_marginStart="@dimen/dimen5dp"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:gravity="center"
                                 android:paddingStart="@dimen/dimen5dp"
                                 android:paddingEnd="@dimen/dimen5dp"
                                 android:text="Route :"
-                                android:textSize="@dimen/dimen12sp" />
+                                android:textSize="12sp" />
 
                             <Spinner
                                 android:id="@+id/route_sprinner"
                                 style="@style/spinner_style"
-                                android:layout_width="@dimen/dimen230dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:spinnerMode="dropdown"
-                                android:textSize="@dimen/dimen14sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 
@@ -259,7 +261,7 @@
                         android:layout_width="0dp"
                         android:layout_height="@dimen/dimen35dp"
                         android:layout_marginEnd="@dimen/dimen5dp"
-                        android:layout_weight=".6"
+                        android:layout_weight=".56"
                         android:background="@drawable/bg_edit_text"
                         android:drawableLeft="@drawable/search_icon"
                         android:hint="Search by Purchase Requisition,Product Name,Route,Emp Id,Emp Name "
@@ -273,7 +275,7 @@
                     <LinearLayout
                         android:layout_width="@dimen/dimen0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight=".4"
+                        android:layout_weight=".44"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
@@ -288,7 +290,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="@dimen/dimen10dp"
-                                android:layout_weight=".42"
+                                android:layout_weight=".53"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
 
@@ -321,7 +323,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="@dimen/dimen10dp"
-                                android:layout_weight=".42"
+                                android:layout_weight=".47"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
 
@@ -354,7 +356,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.16"
-                                android:gravity="bottom">
+                                android:gravity="bottom"
+                                android:visibility="gone">
 
                                 <TextView
                                     android:layout_width="match_parent"

@@ -1,6 +1,7 @@
 package com.thresholdsoft.astra.ui.login;
 
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
+import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 
 public interface LoginActivityCallback {
 
@@ -11,4 +12,6 @@ public interface LoginActivityCallback {
     void onClickLogin();
 
     void onClickSubmit();
+
+    void onSuccessGetWithHoldRemarksApi(GetWithHoldRemarksResponse getWithHoldRemarksResponse);
 }
