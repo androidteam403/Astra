@@ -897,6 +897,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     @Override
     public void onClickBarCode() {
         Intent intent = new Intent(PickerRequestActivity.this, BarCodeActivity.class);
+        intent.putExtra("pickerrequest","Picker "+"\n"+"Request");
         startActivity(intent);
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }

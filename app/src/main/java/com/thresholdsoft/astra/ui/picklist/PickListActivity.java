@@ -1992,6 +1992,9 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     @Override
     public void onClickBarCode() {
         Intent intent = new Intent(PickListActivity.this, BarCodeActivity.class);
+//        Pick List
+        intent.putExtra("pickerrequest","Pick List");
+
         startActivity(intent);
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }

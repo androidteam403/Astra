@@ -123,7 +123,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_bold"
                             android:gravity="center"
-                            android:text="@string/label_pick_list"
+                            android:text="@{picker}"
                             android:textColor="@{selectedMenu == 1 ? @color/black : @color/white}"
                             android:textSize="@dimen/dimen12sp" />
                     </LinearLayout>
@@ -393,6 +393,10 @@
         <variable
             name="empRole"
             type="String" />
+        <variable
+            name="picker"
+            type="String" />
+
 
         <variable
             name="pickerName"

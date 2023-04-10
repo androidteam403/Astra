@@ -27,6 +27,7 @@
                     app:customMenuCallback="@{customMenuCallback}"
                     app:dcName="@{dcName}"
                     app:empRole="@{empRole}"
+                    app:picker="@{picker}"
                     app:pickerName="@{pickerName}"
                     app:selectedMenu="@{selectedMenu}"
                     app:userId="@{userId}" />
@@ -76,21 +77,40 @@
                             android:layout_height="@dimen/dimen35dp"
                             android:orientation="horizontal"
                             android:weightSum="1">
-
-                            <EditText
-                                android:id="@+id/item_id"
-                                android:layout_width="0dp"
+                            <LinearLayout
+                                android:layout_width="@dimen/dimen0dp"
                                 android:layout_height="match_parent"
-                                android:layout_weight=".72"
-                                android:layout_marginStart="@dimen/dimen5dp"
+                                android:orientation="horizontal"
                                 android:background="@drawable/b_edit_text"
-                                android:fontFamily="@font/poppins_semibold"
-                                android:hint="Search By Item ID"
-                                android:importantForAutofill="no"
-                                android:inputType="text"
-                                android:paddingStart="10dp"
-                                android:textAllCaps="true"
-                                android:textSize="12sp" />
+
+                                android:weightSum=".72"
+                                android:layout_weight=".72">
+                                <EditText
+                                    android:id="@+id/item_id"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight=".64"
+                                    android:background="@drawable/b_edit_text"
+
+                                    android:layout_marginStart="@dimen/dimen5dp"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:hint="Search By Item ID"
+                                    android:importantForAutofill="no"
+                                    android:inputType="text"
+                                    android:paddingStart="10dp"
+                                    android:textAllCaps="true"
+                                    android:textSize="12sp" />
+                                <ImageView
+                                    android:layout_width="0dp"
+                                    android:id="@+id/clear_text"
+                                    android:layout_weight=".08"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_height="28dp"
+                                    android:src="@drawable/close_new"/>
+                            </LinearLayout>
+
+
+
 
                             <ImageView
                                 android:id="@+id/search_bar"
@@ -200,7 +220,9 @@
         <variable
             name="pickerName"
             type="String" />
-
+        <variable
+            name="picker"
+            type="String" />
         <variable
             name="userId"
             type="String" />

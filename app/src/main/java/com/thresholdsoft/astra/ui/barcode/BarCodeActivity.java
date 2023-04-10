@@ -20,7 +20,9 @@ import android.print.PageRange;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintDocumentInfo;
+import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -74,6 +76,7 @@ import com.thresholdsoft.astra.ui.CustomMenuCallback;
 import com.thresholdsoft.astra.ui.barcode.adapter.BarCodeLabelAdapter;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
+import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestActivity;
 import com.thresholdsoft.astra.ui.picklist.PickListActivity;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.Utils;
@@ -96,7 +99,7 @@ public class BarCodeActivity extends BaseActivity implements BarCodeActivityCall
     TextView selectedStatusText;
     TextView selectedBatchText;
     List<GetBarCodeResponse.Barcodedatum> barcodedatumList = new ArrayList<>();
-
+    String activity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +118,56 @@ public class BarCodeActivity extends BaseActivity implements BarCodeActivityCall
         activityBarCodeBinding.setCallback(this);
         activityBarCodeBinding.itemId.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         activityBarCodeBinding.siteId.setText(getSessionManager().getDcName());
+
+        activity=getIntent().getStringExtra("pickerrequest");
+        if (activity.isEmpty()){
+
+        }else {
+            activityBarCodeBinding.setPicker(activity);
+        }
+
+        activityBarCodeBinding.itemId.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length()>6){
+                    activityBarCodeBinding.empty.setVisibility(View.GONE);
+                    activityBarCodeBinding.barcoderecycleview.setVisibility(View.VISIBLE);
+                    List<GetBarCodeRequest.Barcodedetail> barcodedetailList = new ArrayList<>();
+                    GetBarCodeRequest.Barcodedetail barcodedetail = new GetBarCodeRequest.Barcodedetail(activityBarCodeBinding.itemId.getText().toString(), "");
+                    barcodedetailList.add(barcodedetail);
+
+                    GetBarCodeRequest barCodeRequest = new GetBarCodeRequest(getSessionManager().getDcName().substring(0, 5), barcodedetailList);
+                    getController().getBarCodeResponse(barCodeRequest);
+                    activityBarCodeBinding.itemId.clearFocus();
+                }
+                else {
+                    activityBarCodeBinding.empty.setVisibility(View.VISIBLE);
+                    activityBarCodeBinding.barcoderecycleview.setVisibility(View.GONE);
+                }
+
+            }
+        });
+
+        activityBarCodeBinding.clearText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activityBarCodeBinding.itemId.setText("");
+                activityBarCodeBinding.empty.setVisibility(View.GONE);
+                activityBarCodeBinding.printlayout.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.grey)));
+
+                activityBarCodeBinding.barcoderecycleview.setVisibility(View.GONE);
+            }
+        });
 
         activityBarCodeBinding.searchBar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -242,8 +295,8 @@ public class BarCodeActivity extends BaseActivity implements BarCodeActivityCall
             table2.addCell(new Cell().add(image1Qr).setBorder(Border.NO_BORDER));
 
 
-            table4.addCell(new Cell(2, 1).add(new Paragraph(new Text(barcodedatumList.get(j).getItemname() + "\n").setFont(bold).setFontSize(4.4f)).setTextAlignment(TextAlignment.LEFT).add(new Text(barcodedatumList.get(j).getBatch() + "\\" + Utils.getTime(barcodedatumList.get(j).getExpdate()) + "\\" + barcodedatumList.get(j).getManufacturername()).setFontSize(4.4f).setFont(bold)).setFixedLeading(4.2f)).setPadding(0f).setMargin(0f));
-            table6.addCell(new Cell(2, 1).add(new Paragraph(new Text(barcodedatumList.get(j).getBarcode() + "  " + barcodedatumList.get(j).getMrp() + "  " + barcodedatumList.get(j).getItemid() + "\\" + barcodedatumList.get(j).getPacksize() + "\n").setFontSize(4.4f).setFont(bold)).add(new Text(barcodedatumList.get(j).getSiteid() + "  " + barcodedatumList.get(j).getSitename()).setFontSize(4.4f).setFont(bold)).setFixedLeading(4.2f)).setPadding(0f).setMargin(0f));
+            table4.addCell(new Cell(2, 1).add(new Paragraph(new Text(barcodedatumList.get(j).getItemname() + "\n").setFont(bold).setFontSize(4.3f)).setTextAlignment(TextAlignment.LEFT).add(new Text(barcodedatumList.get(j).getBatch() + "\\" + Utils.getTime(barcodedatumList.get(j).getExpdate()) + "\\" + barcodedatumList.get(j).getManufacturername()).setFontSize(4.4f).setFont(bold)).setFixedLeading(5.0f)).setPadding(0f).setMargin(0f));
+            table6.addCell(new Cell(2, 1).add(new Paragraph(new Text(barcodedatumList.get(j).getBarcode() + "  " + barcodedatumList.get(j).getMrp() + "  " + barcodedatumList.get(j).getItemid() + "\\" + barcodedatumList.get(j).getPacksize() + "\n").setFontSize(4.4f).setFont(bold)).add(new Text(barcodedatumList.get(j).getSiteid() + "  " + barcodedatumList.get(j).getSitename()).setFontSize(4.4f).setFont(bold)).setFixedLeading(4.8f)).setPadding(0f).setMargin(0f));
             for (int i = 0; i < barcodedatumList.get(j).getQty(); i++) {
                 document.add(table4);
                 document.add(table2);
@@ -263,7 +316,6 @@ public class BarCodeActivity extends BaseActivity implements BarCodeActivityCall
         if (barCodeResponse.getBarcodedata().size() > 0) {
             activityBarCodeBinding.empty.setVisibility(View.GONE);
             activityBarCodeBinding.barcoderecycleview.setVisibility(View.VISIBLE);
-            activityBarCodeBinding.print.setVisibility(View.VISIBLE);
 
             List<GetBarCodeResponse> getBarCodeResponses = new ArrayList<>();
             getBarCodeResponses.add(barCodeResponse);
@@ -275,36 +327,12 @@ public class BarCodeActivity extends BaseActivity implements BarCodeActivityCall
             activityBarCodeBinding.barcoderecycleview.setLayoutManager(mLayoutManager2);
             activityBarCodeBinding.barcoderecycleview.setAdapter(barCodeLabelAdapter);
         } else {
-            activityBarCodeBinding.print.setVisibility(View.GONE);
 
             activityBarCodeBinding.empty.setVisibility(View.VISIBLE);
             activityBarCodeBinding.barcoderecycleview.setVisibility(View.GONE);
         }
 
-//        GetBarCodeResponse.Barcodedatum barcodedatum=new GetBarCodeResponse.Barcodedatum();
-//        barcodedatum.setItemname("5 Star");
-//        barcodedatum.setBatch("FOOD45");
-//        barcodedatum.setBarcode("3566");
-//        barcodedatum.setItemid("5ST0001");
-//        barcodedatum.setExpdate("30-Dec-2022");
-//        barcodedatum.setSiteid("16001");
-//        barcodedatum.setSitename("Ahi");
-//        barcodedatum.setMrp(6.00);
-//        barcodedatum.setManufacturername("cabry");
-//
-//        GetBarCodeResponse.Barcodedatum barcodedatum1=new GetBarCodeResponse.Barcodedatum();
-//        barcodedatum1.setItemname("Santoor");
-//        barcodedatum1.setBatch("SOAP567");
-//        barcodedatum1.setBarcode("123566");
-//        barcodedatum1.setExpdate("30-Dec-2022");
-//        barcodedatum1.setSiteid("16001");
-//        barcodedatum1.setSitename("Ahi");
-//        barcodedatum1.setMrp(6.00);
-//        barcodedatum.setManufacturername("santoor");
-//
-//        barcodedatum1.setItemid("SANST0001");
-//        barcodedatumList.add(barcodedatum);
-//        barcodedatumList.add(barcodedatum1);
+
 
 
     }
@@ -374,7 +402,7 @@ public class BarCodeActivity extends BaseActivity implements BarCodeActivityCall
             PdfDocument pdfDocument = new PdfDocument(writer);
             PageSize customPageSize38mm15mm = new PageSize(107.7f, 42.5f);
             Document document = new Document(pdfDocument, customPageSize38mm15mm);
-            document.setMargins(0, 0, 0, 0);
+            document.setMargins(2, 0, 0, 0);
             document.setHorizontalAlignment(HorizontalAlignment.CENTER);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 createPdfPageWiseAstra(pdfDocument, document, false, (ArrayList<GetBarCodeResponse.Barcodedatum>) barcodedatumList);
@@ -561,9 +589,16 @@ public class BarCodeActivity extends BaseActivity implements BarCodeActivityCall
 
     @Override
     public void onClickPickList() {
-        startActivity(PickListActivity.getStartActivity(this));
-        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-        finish();
+        if (activity.contains("Request")) {
+            Intent i=new Intent(this,PickerRequestActivity.class);
+            startActivity(i);
+            overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+            finish();
+        } else if (activity.contains("List")) {
+            startActivity(PickListActivity.getStartActivity(this));
+            overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+            finish();
+        }
     }
 
     @Override
