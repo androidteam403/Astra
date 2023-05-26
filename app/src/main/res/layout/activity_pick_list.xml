@@ -913,11 +913,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/dimen10dp"
                             android:layout_weight="1"
-                            android:background="@color/lite_yellow"
+                            android:background="@{allocationData.noofboxes > 0 ? @color/continue_select_color : @color/light_yellow_color}"
                             android:gravity="center"
                             android:onClick="@{()-> callback.onClickPrint()}"
                             android:orientation="horizontal"
-                            android:visibility="@{allocationData.scanstatus.equalsIgnoreCase(`Completed`) ? view.VISIBLE : orderStatusModel.status.equalsIgnoreCase(`Completed`) ? view.VISIBLE : view.GONE}">
+                            android:visibility="@{allocationData.noofboxes == 0 ? view.GONE : allocationData.scanstatus.equalsIgnoreCase(`Completed`)  ? view.VISIBLE : orderStatusModel.status.equalsIgnoreCase(`Completed`) ? view.VISIBLE : view.GONE}">
 
                             <ImageView
                                 android:layout_width="@dimen/dimen20dp"

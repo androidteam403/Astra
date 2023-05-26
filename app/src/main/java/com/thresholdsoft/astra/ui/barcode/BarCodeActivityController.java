@@ -9,8 +9,6 @@ import com.thresholdsoft.astra.network.ApiClient;
 import com.thresholdsoft.astra.network.ApiInterface;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutRequest;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
-import com.thresholdsoft.astra.ui.picklist.model.PackingLabelRequest;
-import com.thresholdsoft.astra.ui.picklist.model.PackingLabelResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.NetworkUtils;
@@ -22,7 +20,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -81,9 +78,10 @@ public class BarCodeActivityController {
                 @Override
                 public void onResponse(@NotNull Call<GetBarCodeResponse> call, @NotNull Response<GetBarCodeResponse> response) {
                     ActivityUtils.hideDialog();
-                    if (response.code() == 200 && response.body() != null) {
-
-
+                    if (response.code() == 200 && response.body() != null) {//Data Not Founds!!!
+                        if (response.body().getBarcodedata() != null && response.body().getBarcodedata().size() == 1 && !response.body().getBarcodedata().get(0).getRequeststatus()) {
+                            response.body().getBarcodedata().clear();
+                        }
                         mCallback.onSucessBarCodeResponse(response.body());
                     }
                 }
@@ -98,7 +96,6 @@ public class BarCodeActivityController {
             mCallback.onFailureMessage("Something went wrong.");
         }
     }
-
 
 
     public void createFilePath(ResponseBody body, File destinationFile) {
@@ -137,11 +134,9 @@ public class BarCodeActivityController {
     }
 
 
-
     private SessionManager getDataManager() {
         return new SessionManager(mContext);
     }
-
 
 
     public void doDownloadPdf(String pdfUrl, File file) {

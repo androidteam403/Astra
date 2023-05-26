@@ -921,7 +921,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginEnd="@dimen/dimen10dp"
                             android:layout_weight="1"
-                            android:background="@color/lite_yellow"
+                            android:background="@{allocationData.noofboxes > 0 ? @color/continue_select_color : @color/light_yellow_color}"
                             android:gravity="center"
                             android:onClick="@{()-> callback.onClickPrint()}"
                             android:orientation="horizontal"

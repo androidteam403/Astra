@@ -21,20 +21,26 @@ android {
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
-        versionName "1.0.7"
+        versionName "1.0.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Production
 //        buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/Apollo/AHL/\"")
 //        buildConfigField("String", "BASE_TOKEN", "\"prdyvEoG+8MvYiOfhV2wb5j\"")
+//        buildConfigField("String", "ENVIRONMENT", "\"Production\"")
+
 
         //Pre Production
 //        buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/preprod/Apollo/AHL/\"")
 //        buildConfigField("String", "BASE_TOKEN", "\"prdyvEoG+8MvYiOfhV2wb5j\"")
+//        buildConfigField("String", "ENVIRONMENT", "\"Pre-Prod\"")
+
 
         //Dev
         buildConfigField("String", "BASE_URL", "\"https://online.apollopharmacy.org/Digital/Apollo/AHL/\"")
         buildConfigField("String", "BASE_TOKEN", "\"yvEoG+8MvYiOfhV2wb5jw\"")
+        buildConfigField("String", "ENVIRONMENT", "\"UAT\"")
+
     }
 
     buildTypes {

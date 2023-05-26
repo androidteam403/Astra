@@ -97,14 +97,14 @@ public class GetBarCodeResponse implements Serializable {
         private int packsize;
         @SerializedName("onhandqty")
         @Expose
-        private Double onhandqty;
+        private int onhandqty;
         private int qty;
 
-        public Double getOnhandqty() {
+        public int getOnhandqty() {
             return onhandqty;
         }
 
-        public void setOnhandqty(Double onhandqty) {
+        public void setOnhandqty(int onhandqty) {
             this.onhandqty = onhandqty;
         }
 

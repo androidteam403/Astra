@@ -34,6 +34,7 @@ public class SessionManager {
     private static final String PREF_KEY_GET_ALLOCATION_DATA = "PREF_KEY_GET_ALLOCATION_DATA";
     private static final String PREF_KEY_STATUS_UPDATE_REQUEST = "PREF_KEY_STATUS_UPDATE_REQUEST";
     private static final String PREF_KEY_WITHHOLDAPPROVAL_REQUEST = "PREF_KEY_WITHHOLDAPPROVAL_REQUEST";
+    private static final String PREF_KEY_CUSTOM_BARCODE_PRINT = "PREF_KEY_CUSTOM_BARCODE_PRINT";
 
     public SessionManager(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -169,5 +170,13 @@ public class SessionManager {
     public GetWithHoldRemarksResponse getGetWithHoldRemarksResponse() {
         String getWithHoldRemarksResponseJsonString = preferences.getString(PREF_KEY_GET_WITHHOLD_REMARKS_RESPONSE, "");
         return new Gson().fromJson(getWithHoldRemarksResponseJsonString, GetWithHoldRemarksResponse.class);
+    }
+
+    public void setCustomBarcodePrintSize(String customBarcodePrintSize) {
+        preferences.edit().putString(PREF_KEY_CUSTOM_BARCODE_PRINT, customBarcodePrintSize).apply();
+    }
+
+    public String getCustomBarcodePrintSize() {
+        return preferences.getString(PREF_KEY_CUSTOM_BARCODE_PRINT, "THIRTYEIGHT_FIFTEEN");
     }
 }

@@ -1,13 +1,19 @@
 package com.thresholdsoft.astra.ui.barcode.adapter;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -15,10 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.BarcodeAdapterlayoutBinding;
+import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
 import com.thresholdsoft.astra.ui.barcode.BarCodeActivityCallback;
 import com.thresholdsoft.astra.ui.barcode.GetBarCodeResponse;
 
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -45,7 +51,7 @@ public class BarCodeLabelAdapter extends RecyclerView.Adapter<BarCodeLabelAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BarCodeLabelAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BarCodeLabelAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         GetBarCodeResponse.Barcodedatum barcodedatum = barcodedatumList.get(position);
         if (holder.barcodeAdapterlayoutBinding.qty.getText().toString().isEmpty()) {
 
@@ -60,19 +66,19 @@ public class BarCodeLabelAdapter extends RecyclerView.Adapter<BarCodeLabelAdapte
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-
-                    barcodedatumList.get(position).setQty(Integer.parseInt(holder.barcodeAdapterlayoutBinding.qty.getText().toString()));
-
-
+                    if (holder.barcodeAdapterlayoutBinding.qty.getText().toString() != null && !holder.barcodeAdapterlayoutBinding.qty.getText().toString().isEmpty()) {
+                        barcodedatumList.get(position).setQty(Integer.parseInt(holder.barcodeAdapterlayoutBinding.qty.getText().toString()));
+                    } else {
+                        barcodedatumList.get(position).setQty(0);
+                    }
                     holder.barcodeAdapterlayoutBinding.qty.clearFocus();
-
                 }
                 return false;
             }
         });
 
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        holder.barcodeAdapterlayoutBinding.qoh.setText(decimalFormat.format(barcodedatum.getOnhandqty()).toString());
+        holder.barcodeAdapterlayoutBinding.qoh.setText(String.valueOf(barcodedatum.getOnhandqty()));
         holder.barcodeAdapterlayoutBinding.batch.setText(barcodedatum.getBatch());
         holder.barcodeAdapterlayoutBinding.barcode.setText(barcodedatum.getBarcode());
         holder.barcodeAdapterlayoutBinding.itemId.setText(barcodedatum.getItemid());
@@ -99,7 +105,13 @@ public class BarCodeLabelAdapter extends RecyclerView.Adapter<BarCodeLabelAdapte
                     if (editable.toString().isEmpty()) {
                         barcodedatumList.get(position).setQty(0);
                     } else {
-                        barcodedatumList.get(position).setQty(Integer.parseInt(holder.barcodeAdapterlayoutBinding.qty.getText().toString()));
+                        if (barcodedatumList.get(position).getOnhandqty() >= Integer.valueOf(holder.barcodeAdapterlayoutBinding.qty.getText().toString())) {
+                            barcodedatumList.get(position).setQty(Integer.parseInt(holder.barcodeAdapterlayoutBinding.qty.getText().toString()));
+                        } else {
+                            showAlertMessage("Qty should not be greater than QOH.");
+                            barcodedatumList.get(position).setQty(0);
+                            holder.barcodeAdapterlayoutBinding.qty.setText("");
+                        }
                     }
 //                    holder.barcodeAdapterlayoutBinding.qty.clearFocus();
                     barCodeActivityCallback.onNotify();
@@ -109,6 +121,18 @@ public class BarCodeLabelAdapter extends RecyclerView.Adapter<BarCodeLabelAdapte
             }
         });
 
+    }
+
+    private void showAlertMessage(String message) {
+        Dialog customDialog = new Dialog(mContext);
+        DialogCustomAlertBinding dialogCustomAlertBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.dialog_custom_alert, null, false);
+        customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        customDialog.setContentView(dialogCustomAlertBinding.getRoot());
+        customDialog.setCancelable(false);
+        dialogCustomAlertBinding.message.setText(message);
+        dialogCustomAlertBinding.alertListenerLayout.setVisibility(View.GONE);
+        dialogCustomAlertBinding.okBtn.setOnClickListener(v -> customDialog.dismiss());
+        customDialog.show();
     }
 
     @Override

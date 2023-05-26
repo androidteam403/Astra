@@ -8,7 +8,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -59,24 +58,6 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.google.zxing.oned.Code128Writer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import com.itextpdf.io.font.FontProgram;
-import com.itextpdf.io.font.FontProgramFactory;
-import com.itextpdf.io.font.PdfEncodings;
-import com.itextpdf.io.image.ImageData;
-import com.itextpdf.io.image.ImageDataFactory;
-import com.itextpdf.kernel.colors.DeviceRgb;
-import com.itextpdf.kernel.font.PdfFont;
-import com.itextpdf.kernel.font.PdfFontFactory;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.borders.Border;
-import com.itextpdf.layout.borders.SolidBorder;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Image;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
-import com.itextpdf.layout.element.Text;
-import com.itextpdf.layout.property.TextAlignment;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.custumpdf.PDFCreatorActivity;
 import com.thresholdsoft.astra.custumpdf.views.PDFBody;
@@ -92,6 +73,7 @@ import com.thresholdsoft.astra.databinding.ActivityPickListBinding;
 import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
 import com.thresholdsoft.astra.databinding.DialogEditScannedPacksBinding;
 import com.thresholdsoft.astra.databinding.DialogItemResetBinding;
+import com.thresholdsoft.astra.databinding.DialogMenuLogisticsBinding;
 import com.thresholdsoft.astra.databinding.DialogModeofDeliveryBinding;
 import com.thresholdsoft.astra.databinding.DialogRequestApprovalBinding;
 import com.thresholdsoft.astra.databinding.DialogScannedBarcodeItemListBinding;
@@ -129,7 +111,6 @@ import com.thresholdsoft.astra.ui.scanner.ScannerActivity;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.CommonUtils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -221,6 +202,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         activityPickListBinding.setEmpRole(getSessionManager().getEmplRole());
         activityPickListBinding.setPickerName(getSessionManager().getPickerName());
         activityPickListBinding.setDcName(getSessionManager().getDcName());
+        activityPickListBinding.customMenuLayout.setPicker("Pick List");
 
         if (Build.VERSION.SDK_INT >= 21) {
             activityPickListBinding.barcodeScanEdittext.setShowSoftInputOnFocus(false);
@@ -1565,21 +1547,22 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     public void onClickPrint() {
-        if (isStoragePermissionGranted()) {
-            PackingLabelRequest packingLabelRequest = new PackingLabelRequest();
-            packingLabelRequest.setDcName(activityPickListBinding.getDcName());
-            packingLabelRequest.setPrNo(activityPickListBinding.getAllocationData().getPurchreqid());
-            packingLabelRequest.setCustId(activityPickListBinding.getAllocationData().getCustaccount());
-            packingLabelRequest.setCustName(activityPickListBinding.getAllocationData().getCustname());
-            packingLabelRequest.setArea(activityPickListBinding.getAllocationData().getAreaid());
-            packingLabelRequest.setPrDate(CommonUtils.parseDateToddMMyyyyNoTime(activityPickListBinding.getAllocationData().getTransdate()));
-            packingLabelRequest.setAllocateDate(CommonUtils.parseDateToddMMyyyyNoTime(activityPickListBinding.getAllocationData().getTransdate()));
-            packingLabelRequest.setPickerName(getSessionManager().getEmplId() + "-" + activityPickListBinding.getAllocationData().getUsername());
-            packingLabelRequest.setRouteNo(activityPickListBinding.getAllocationData().getRoutecode());
-            packingLabelRequest.setBoxNo(String.valueOf(activityPickListBinding.getAllocationData().getNoofboxes()));
-            getController().getPackingLabelResponseApiCall(packingLabelRequest);
+        if (activityPickListBinding.getAllocationData().getNoofboxes() > 0) {
+            if (isStoragePermissionGranted()) {
+                PackingLabelRequest packingLabelRequest = new PackingLabelRequest();
+                packingLabelRequest.setDcName(activityPickListBinding.getDcName());
+                packingLabelRequest.setPrNo(activityPickListBinding.getAllocationData().getPurchreqid());
+                packingLabelRequest.setCustId(activityPickListBinding.getAllocationData().getCustaccount());
+                packingLabelRequest.setCustName(activityPickListBinding.getAllocationData().getCustname());
+                packingLabelRequest.setArea(activityPickListBinding.getAllocationData().getAreaid());
+                packingLabelRequest.setPrDate(CommonUtils.parseDateToddMMyyyyNoTime(activityPickListBinding.getAllocationData().getTransdate()));
+                packingLabelRequest.setAllocateDate(CommonUtils.parseDateToddMMyyyyNoTime(activityPickListBinding.getAllocationData().getAllocationdate()));
+                packingLabelRequest.setPickerName(getSessionManager().getEmplId() + "-" + activityPickListBinding.getAllocationData().getUsername());
+                packingLabelRequest.setRouteNo(activityPickListBinding.getAllocationData().getRoutecode());
+                packingLabelRequest.setBoxNo(String.valueOf(activityPickListBinding.getAllocationData().getNoofboxes()));
+                getController().getPackingLabelResponseApiCall(packingLabelRequest);
+            }
         }
-
 
 //        String extStorageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
 //
@@ -1993,7 +1976,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     public void onClickBarCode() {
         Intent intent = new Intent(PickListActivity.this, BarCodeActivity.class);
 //        Pick List
-        intent.putExtra("pickerrequest","Pick List");
+        intent.putExtra("pickerrequest", "Pick List");
 
         startActivity(intent);
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
@@ -2052,6 +2035,14 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         });
         customDialog.show();
 
+    }
+
+    @Override
+    public void onClickLogistics() {
+        Dialog menuLogisticsDialog = new Dialog(this);
+        DialogMenuLogisticsBinding dialogMenuLogisticsBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_menu_logistics, null, false);
+        menuLogisticsDialog.setContentView(dialogMenuLogisticsBinding.getRoot());
+        menuLogisticsDialog.show();
     }
 
     @Override
@@ -2198,6 +2189,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     private Context getContext() {
         return this;
     }
+
     public static final String REGULAR = "res/font/roboto_regular.ttf";
     public static final String BOLD = "res/font/roboto_bold.ttf";
 

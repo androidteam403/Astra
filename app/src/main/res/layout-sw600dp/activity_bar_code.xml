@@ -23,10 +23,9 @@
 
                 <include
                     android:id="@+id/custom_menu_layout"
-                    layout="@layout/custom_menu"
-                    app:customMenuCallback="@{customMenuCallback}"
+                    layout="@layout/custom_menu_layout_updated"
+                    app:customMenuSupervisorCallback="@{customMenuSupervisorCallback}"
                     app:dcName="@{dcName}"
-                    app:picker="@{picker}"
                     app:empRole="@{empRole}"
                     app:pickerName="@{pickerName}"
                     app:selectedMenu="@{selectedMenu}"
@@ -49,10 +48,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen10dp"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="Bar Code Printer"
+                        android:text="Custom Barcode Label Print"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/site_id"
@@ -76,14 +75,16 @@
                             android:layout_height="40dp"
                             android:orientation="horizontal"
                             android:weightSum="1">
+
                             <LinearLayout
                                 android:layout_width="@dimen/dimen0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight=".72"
                                 android:background="@drawable/b_edit_text"
 
-                                android:weightSum="1"
-                                android:orientation="horizontal">
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
                                 <EditText
                                     android:id="@+id/item_id"
                                     android:layout_width="0dp"
@@ -92,23 +93,23 @@
                                     android:background="@drawable/b_edit_text"
                                     android:fontFamily="@font/poppins_semibold"
                                     android:hint="Search By Item ID"
+                                    android:imeOptions="actionDone"
                                     android:importantForAutofill="no"
                                     android:inputType="text"
-                                    android:imeOptions="actionDone"
                                     android:paddingStart="10dp"
                                     android:textAllCaps="true"
                                     android:textSize="12sp" />
+
                                 <ImageView
+                                    android:id="@+id/clear_text"
                                     android:layout_width="@dimen/dimen0dp"
                                     android:layout_height="@dimen/dimen35dp"
-                                    android:layout_weight=".10"
                                     android:layout_marginTop="2dp"
-                                    android:id="@+id/clear_text"
+                                    android:layout_weight=".10"
 
-                                    android:src="@drawable/close_new"/>
+                                    android:src="@drawable/close_new" />
 
                             </LinearLayout>
-
 
 
                             <ImageView
@@ -121,15 +122,16 @@
                                 android:contentDescription="@string/app_name"
                                 android:paddingTop="5dp"
                                 android:src="@drawable/search_icon" />
+
                             <LinearLayout
                                 android:id="@+id/printlayout"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_marginEnd="5dp"
                                 android:layout_marginStart="8dp"
+                                android:layout_marginEnd="5dp"
                                 android:layout_weight=".15"
-                                android:backgroundTint="@color/grey"
                                 android:background="@drawable/background_print"
+                                android:backgroundTint="@color/grey"
                                 android:gravity="center"
                                 android:orientation="horizontal"
                                 android:visibility="visible">
@@ -142,10 +144,10 @@
                                     android:src="@drawable/black_printer" />
 
                                 <TextView
+                                    android:id="@+id/print"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/dimen5dp"
-                                    android:id="@+id/print"
 
                                     android:fontFamily="@font/poppins_semibold"
                                     android:text="Print"
@@ -195,6 +197,7 @@
         <variable
             name="userId"
             type="String" />
+
         <variable
             name="picker"
             type="String" />
@@ -208,8 +211,8 @@
             type="String" />
 
         <variable
-            name="customMenuCallback"
-            type="com.thresholdsoft.astra.ui.CustomMenuCallback" />
+            name="customMenuSupervisorCallback"
+            type="com.thresholdsoft.astra.ui.menucallbacks.CustomMenuSupervisorCallback" />
 
         <variable
             name="callback"

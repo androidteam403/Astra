@@ -16,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -29,6 +30,7 @@ import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityPickerRequestsBinding;
 import com.thresholdsoft.astra.databinding.AlertDialogBinding;
+import com.thresholdsoft.astra.databinding.DialogChooseCustomBarcodeSizeBinding;
 import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.ui.alertdialogs.AlertBox;
@@ -45,7 +47,6 @@ import com.thresholdsoft.astra.ui.pickerrequests.adapter.StatusDropdownSpinner;
 import com.thresholdsoft.astra.ui.pickerrequests.model.CheckQohResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
-import com.thresholdsoft.astra.ui.picklist.PickListActivity;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
@@ -95,6 +96,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     private boolean isRouteSpinnerReset = false;
     private boolean isStatusSpinnerReset = false;
     private boolean isRefreshing = false;
+    TextView s;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -897,9 +899,10 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     @Override
     public void onClickBarCode() {
         Intent intent = new Intent(PickerRequestActivity.this, BarCodeActivity.class);
-        intent.putExtra("pickerrequest","Picker "+"\n"+"Request");
+        intent.putExtra("pickerrequest", "Picker " + "\n" + "Request");
         startActivity(intent);
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+        finish();
     }
 
     @Override
