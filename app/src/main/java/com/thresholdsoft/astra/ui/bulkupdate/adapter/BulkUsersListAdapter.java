@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -35,19 +37,19 @@ public class BulkUsersListAdapter extends RecyclerView.Adapter<BulkUsersListAdap
     private List<BulkListResponse.Itemdetail> bulkUsersList;
     UpdateActivityCallback mCallBack;
     String charString;
-    private List<BulkListResponse.Itemdetail> bulkUsersListList=new ArrayList<>();
+    private List<BulkListResponse.Itemdetail> bulkUsersListList = new ArrayList<>();
 
-    private  List<BulkListResponse.Itemdetail>  bulkUsersFilterList=new ArrayList<>();
+    private List<BulkListResponse.Itemdetail> bulkUsersFilterList = new ArrayList<>();
     Double reqmrp;
-    Boolean isMrpModified=false;
-    Boolean isBarcodeModified=false;
-    Boolean isBulkScanModified=false;
-
-
+    Boolean isMrpModified = false;
+    Boolean isBarcodeModified = false;
+    Boolean isBulkScanModified = false;
+    ActionCustomSpinnerAdapter actionCustomSpinnerAdapter;
+    String[] bulkscanList;
     public BulkUsersListAdapter(Context mContext, List<BulkListResponse.Itemdetail> bulkUsersList, UpdateActivityCallback updateActivityCallback) {
         this.mContext = mContext;
         this.bulkUsersList = bulkUsersList;
-        this.bulkUsersListList=bulkUsersList;
+        this.bulkUsersListList = bulkUsersList;
         this.mCallBack = updateActivityCallback;
 
     }
@@ -70,6 +72,9 @@ public class BulkUsersListAdapter extends RecyclerView.Adapter<BulkUsersListAdap
         holder.bulkUsersAdapterlayoutBinding.itemcode.setText(items.getItemid());
         holder.bulkUsersAdapterlayoutBinding.batch.setText(items.getBatch());
         holder.bulkUsersAdapterlayoutBinding.mrp.setText(items.getMrp().toString());
+        holder.bulkUsersAdapterlayoutBinding.mrpTextview.setText(items.getMrp().toString());
+        holder.bulkUsersAdapterlayoutBinding.barcodeTextview.setText(items.getBarcode());
+
         holder.bulkUsersAdapterlayoutBinding.barcode.setText(items.getBarcode());
         if (items.getIsbulkupload() == false) {
             holder.bulkUsersAdapterlayoutBinding.bulkscanTextview.setText("No");
@@ -77,6 +82,81 @@ public class BulkUsersListAdapter extends RecyclerView.Adapter<BulkUsersListAdap
             holder.bulkUsersAdapterlayoutBinding.bulkscanTextview.setText("Yes");
 
         }
+
+
+        holder.bulkUsersAdapterlayoutBinding.mrp.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (holder.bulkUsersAdapterlayoutBinding.mrp.getText().toString() != null && !holder.bulkUsersAdapterlayoutBinding.mrp.getText().toString().isEmpty()) {
+                    items.setRequestmrp(Double.valueOf(holder.bulkUsersAdapterlayoutBinding.mrp.getText().toString()));
+                } else {
+
+                }
+                if (items.getRequestmrp() == 0.0 || items.getMrp().equals(items.getRequestmrp())) {
+                    isMrpModified = false;
+
+                    holder.bulkUsersAdapterlayoutBinding.apply.setBackgroundColor(Color.parseColor("#BBBBBB"));
+
+                } else {
+                    isMrpModified = true;
+
+                    holder.bulkUsersAdapterlayoutBinding.apply.setBackgroundColor(Color.parseColor("#fdb813"));
+
+                }
+
+            }
+        });
+        holder.bulkUsersAdapterlayoutBinding.barcode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (holder.bulkUsersAdapterlayoutBinding.barcode.getText().toString() != null && !holder.bulkUsersAdapterlayoutBinding.barcode.getText().toString().isEmpty()) {
+                    items.setRequestbarcode(holder.bulkUsersAdapterlayoutBinding.barcode.getText().toString());
+                } else {
+
+                }
+
+
+                if (items.getRequestbarcode().isEmpty()) {
+                    isBarcodeModified = false;
+                    holder.bulkUsersAdapterlayoutBinding.apply.setBackgroundColor(Color.parseColor("#BBBBBB"));
+
+                } else {
+                    if (items.getBarcode().equals(items.getRequestbarcode())) {
+                        isBarcodeModified = false;
+
+                        holder.bulkUsersAdapterlayoutBinding.apply.setBackgroundColor(Color.parseColor("#BBBBBB"));
+
+                    } else {
+                        isBarcodeModified = true;
+
+                        holder.bulkUsersAdapterlayoutBinding.apply.setBackgroundColor(Color.parseColor("#fdb813"));
+
+                    }
+                }
+
+            }
+        });
         holder.bulkUsersAdapterlayoutBinding.barcode.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 if (holder.bulkUsersAdapterlayoutBinding.barcode.getText().toString() != null && !holder.bulkUsersAdapterlayoutBinding.barcode.getText().toString().isEmpty()) {
@@ -84,19 +164,18 @@ public class BulkUsersListAdapter extends RecyclerView.Adapter<BulkUsersListAdap
                 } else {
 
                 }
-                if (items.getRequestbarcode().isEmpty()){
-                    isBarcodeModified=false;
+                if (items.getRequestbarcode().isEmpty()) {
+                    isBarcodeModified = false;
                     holder.bulkUsersAdapterlayoutBinding.apply.setBackgroundColor(Color.parseColor("#BBBBBB"));
 
-                }else {
-                    if (items.getBarcode().equals(items.getRequestbarcode())){
-                        isBarcodeModified=false;
+                } else {
+                    if (items.getBarcode().equals(items.getRequestbarcode())) {
+                        isBarcodeModified = false;
 
                         holder.bulkUsersAdapterlayoutBinding.apply.setBackgroundColor(Color.parseColor("#BBBBBB"));
 
-                    }
-                    else{
-                        isBarcodeModified=true;
+                    } else {
+                        isBarcodeModified = true;
 
                         holder.bulkUsersAdapterlayoutBinding.apply.setBackgroundColor(Color.parseColor("#fdb813"));
 
@@ -125,14 +204,14 @@ public class BulkUsersListAdapter extends RecyclerView.Adapter<BulkUsersListAdap
 //                return false;
 //            }
 //        });
-        String[] bulkscanList;
+
         if (items.getIsbulkupload() == false) {
             bulkscanList = new String[]{"No", "Yes"};
         } else {
             bulkscanList = new String[]{"Yes", "No"};
 
         }
-        ActionCustomSpinnerAdapter actionCustomSpinnerAdapter = new ActionCustomSpinnerAdapter((Activity) mContext, bulkscanList);
+         actionCustomSpinnerAdapter = new ActionCustomSpinnerAdapter((Activity) mContext, bulkscanList);
         holder.bulkUsersAdapterlayoutBinding.bulkscanSpinner.setAdapter(actionCustomSpinnerAdapter);
 
         holder.bulkUsersAdapterlayoutBinding.bulkscanSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -140,28 +219,25 @@ public class BulkUsersListAdapter extends RecyclerView.Adapter<BulkUsersListAdap
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 if (items.getIsbulkupload() == false) {
-                    if (bulkscanList[position].equals("No")){
-                        isBulkScanModified=false;
+                    if (bulkscanList[position].equals("No")) {
+                        isBulkScanModified = false;
 
                         holder.bulkUsersAdapterlayoutBinding.apply.setBackgroundColor(Color.parseColor("#BBBBBB"));
 
-                    }
-                    else {
-                        isBulkScanModified=true;
+                    } else {
+                        isBulkScanModified = true;
 
                         holder.bulkUsersAdapterlayoutBinding.apply.setBackgroundColor(Color.parseColor("#fdb813"));
                     }
 
-                }
-                else   if (items.getIsbulkupload() == true) {
-                    if (bulkscanList[position].equals("yes")){
-                        isBulkScanModified=false;
+                } else if (items.getIsbulkupload() == true) {
+                    if (bulkscanList[position].equals("yes")) {
+                        isBulkScanModified = false;
 
                         holder.bulkUsersAdapterlayoutBinding.apply.setBackgroundColor(Color.parseColor("#BBBBBB"));
 
-                    }
-                    else {
-                        isBulkScanModified=true;
+                    } else {
+                        isBulkScanModified = true;
 
                         holder.bulkUsersAdapterlayoutBinding.apply.setBackgroundColor(Color.parseColor("#fdb813"));
 
@@ -188,14 +264,13 @@ public class BulkUsersListAdapter extends RecyclerView.Adapter<BulkUsersListAdap
                     } else {
 
                     }
-                    if (items.getRequestmrp()==0.0||items.getMrp().equals(items.getRequestmrp())){
-                        isMrpModified=false;
+                    if (items.getRequestmrp() == 0.0 || items.getMrp().equals(items.getRequestmrp())) {
+                        isMrpModified = false;
 
                         holder.bulkUsersAdapterlayoutBinding.apply.setBackgroundColor(Color.parseColor("#BBBBBB"));
 
-                    }
-                    else {
-                        isMrpModified=true;
+                    } else {
+                        isMrpModified = true;
 
                         holder.bulkUsersAdapterlayoutBinding.apply.setBackgroundColor(Color.parseColor("#fdb813"));
 
@@ -217,15 +292,32 @@ public class BulkUsersListAdapter extends RecyclerView.Adapter<BulkUsersListAdap
                 holder.bulkUsersAdapterlayoutBinding.apply.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (isBarcodeModified||isMrpModified||isBulkScanModified) {
+                        if (isBarcodeModified || isMrpModified || isBulkScanModified) {
 
-                            mCallBack.onClickAction(statusList[position], items, position, reqmrp,isBulkScanModified);
+                            mCallBack.onClickAction(statusList[position], items, position, reqmrp, isBulkScanModified);
                         }
                     }
                 });
 
 
                 if (statusList[position].equals("MRP Update")) {
+                    holder.bulkUsersAdapterlayoutBinding.mrp.setText(items.getMrp().toString());
+                    holder.bulkUsersAdapterlayoutBinding.mrpTextview.setText(items.getMrp().toString());
+                    holder.bulkUsersAdapterlayoutBinding.barcodeTextview.setText(items.getBarcode());
+                    if (items.getIsbulkupload() == false) {
+                        bulkscanList = new String[]{"No", "Yes"};
+                    } else {
+                        bulkscanList = new String[]{"Yes", "No"};
+
+                    }
+                    actionCustomSpinnerAdapter = new ActionCustomSpinnerAdapter((Activity) mContext, bulkscanList);
+                    holder.bulkUsersAdapterlayoutBinding.bulkscanSpinner.setAdapter(actionCustomSpinnerAdapter);                    if (items.getIsbulkupload() == false) {
+                        holder.bulkUsersAdapterlayoutBinding.bulkscanTextview.setText("No");
+                    } else {
+                        holder.bulkUsersAdapterlayoutBinding.bulkscanTextview.setText("Yes");
+
+                    }
+                    holder.bulkUsersAdapterlayoutBinding.barcode.setText(items.getBarcode());
                     holder.bulkUsersAdapterlayoutBinding.mrpLayout.setVisibility(View.VISIBLE);
                     holder.bulkUsersAdapterlayoutBinding.barcodeLayout.setVisibility(View.GONE);
                     holder.bulkUsersAdapterlayoutBinding.bulkscanSpinner.setVisibility(View.GONE);
@@ -235,7 +327,26 @@ public class BulkUsersListAdapter extends RecyclerView.Adapter<BulkUsersListAdap
                     holder.bulkUsersAdapterlayoutBinding.mrp.setEnabled(true);
                     holder.bulkUsersAdapterlayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#FFCCCC"));
                 } else if (statusList[position].equals("Barcode Update")) {
-          holder.bulkUsersAdapterlayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#FFCCCC"));
+                    if (items.getIsbulkupload() == false) {
+                        bulkscanList = new String[]{"No", "Yes"};
+                    } else {
+                        bulkscanList = new String[]{"Yes", "No"};
+
+                    }
+                    actionCustomSpinnerAdapter = new ActionCustomSpinnerAdapter((Activity) mContext, bulkscanList);
+                    holder.bulkUsersAdapterlayoutBinding.bulkscanSpinner.setAdapter(actionCustomSpinnerAdapter);
+                    if (items.getIsbulkupload() == false) {
+                        holder.bulkUsersAdapterlayoutBinding.bulkscanTextview.setText("No");
+                    } else {
+                        holder.bulkUsersAdapterlayoutBinding.bulkscanTextview.setText("Yes");
+
+                    }
+                    holder.bulkUsersAdapterlayoutBinding.mrp.setText(items.getMrp().toString());
+                    holder.bulkUsersAdapterlayoutBinding.mrpTextview.setText(items.getMrp().toString());
+                    holder.bulkUsersAdapterlayoutBinding.barcodeTextview.setText(items.getBarcode());
+
+                    holder.bulkUsersAdapterlayoutBinding.barcode.setText(items.getBarcode());
+                    holder.bulkUsersAdapterlayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#FFCCCC"));
                     holder.bulkUsersAdapterlayoutBinding.barcode.setEnabled(true);
                     holder.bulkUsersAdapterlayoutBinding.barcodeLayout.setVisibility(View.VISIBLE);
                     holder.bulkUsersAdapterlayoutBinding.barcodeTextview.setVisibility(View.GONE);
@@ -245,6 +356,25 @@ public class BulkUsersListAdapter extends RecyclerView.Adapter<BulkUsersListAdap
                     holder.bulkUsersAdapterlayoutBinding.bulkscanSpinner.setVisibility(View.GONE);
                     holder.bulkUsersAdapterlayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#87CEFA"));
                 } else if (statusList[position].equals("BulkScan")) {
+                    if (items.getIsbulkupload() == false) {
+                        bulkscanList = new String[]{"No", "Yes"};
+                    } else {
+                        bulkscanList = new String[]{"Yes", "No"};
+
+                    }
+                    if (items.getIsbulkupload() == false) {
+                        holder.bulkUsersAdapterlayoutBinding.bulkscanTextview.setText("No");
+                    } else {
+                        holder.bulkUsersAdapterlayoutBinding.bulkscanTextview.setText("Yes");
+
+                    }
+                    actionCustomSpinnerAdapter = new ActionCustomSpinnerAdapter((Activity) mContext, bulkscanList);
+                    holder.bulkUsersAdapterlayoutBinding.bulkscanSpinner.setAdapter(actionCustomSpinnerAdapter);
+                    holder.bulkUsersAdapterlayoutBinding.mrp.setText(items.getMrp().toString());
+                    holder.bulkUsersAdapterlayoutBinding.mrpTextview.setText(items.getMrp().toString());
+                    holder.bulkUsersAdapterlayoutBinding.barcodeTextview.setText(items.getBarcode());
+
+                    holder.bulkUsersAdapterlayoutBinding.barcode.setText(items.getBarcode());
                     holder.bulkUsersAdapterlayoutBinding.mrpTextview.setVisibility(View.VISIBLE);
                     holder.bulkUsersAdapterlayoutBinding.mrpLayout.setVisibility(View.GONE);
                     holder.bulkUsersAdapterlayoutBinding.barcodeLayout.setVisibility(View.GONE);
@@ -297,11 +427,9 @@ public class BulkUsersListAdapter extends RecyclerView.Adapter<BulkUsersListAdap
                     for (BulkListResponse.Itemdetail row : bulkUsersListList) {
                         if (!bulkUsersFilterList.contains(row) && (row.getItemid()).toLowerCase().contains(charString.toLowerCase())) {
                             bulkUsersFilterList.add(row);
-                        }
-                        else if (!bulkUsersFilterList.contains(row) && (row.getBatch()).toLowerCase().contains(charString.toLowerCase())) {
+                        } else if (!bulkUsersFilterList.contains(row) && (row.getBatch()).toLowerCase().contains(charString.toLowerCase())) {
                             bulkUsersFilterList.add(row);
-                        }
-                        else if (!bulkUsersFilterList.contains(row) && (row.getBarcode()).toLowerCase().contains(charString.toLowerCase())) {
+                        } else if (!bulkUsersFilterList.contains(row) && (row.getBarcode()).toLowerCase().contains(charString.toLowerCase())) {
                             bulkUsersFilterList.add(row);
                         }
                     }
