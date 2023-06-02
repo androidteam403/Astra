@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -10,6 +10,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen5dp"
+            android:layout_marginEnd="@dimen/dimen5dp"
             android:background="@color/white"
             android:orientation="horizontal"
             android:padding="@dimen/dimen5dp"
@@ -18,7 +19,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".8"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 android:weightSum="1">
 
@@ -26,43 +27,43 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="1">
+                    android:weightSum=".75">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".20"
+                        android:layout_weight=".10"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Name"
                         android:textColor="@color/bluetooth_header_bg"
-                        android:textSize="@dimen/dimen14sp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".18"
+                        android:layout_weight=".14"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Employee Id"
                         android:textColor="@color/bluetooth_header_bg"
-                        android:textSize="@dimen/dimen14sp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".22"
+                        android:layout_weight=".13"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Dc Name"
                         android:textColor="@color/bluetooth_header_bg"
-                        android:textSize="@dimen/dimen14sp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".15"
+                        android:layout_weight=".11"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Role"
                         android:textColor="@color/bluetooth_header_bg"
-                        android:textSize="@dimen/dimen14sp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -71,17 +72,16 @@
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Login Date"
                         android:textColor="@color/bluetooth_header_bg"
-                        android:textSize="@dimen/dimen14sp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".15"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="Logout Date"
+                        android:text="Logout Date "
                         android:textColor="@color/bluetooth_header_bg"
-                        android:textSize="@dimen/dimen14sp" />
-
+                        android:textSize="14sp" />
 
 
                 </LinearLayout>
@@ -90,54 +90,59 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="1">
+                    android:weightSum=".75">
 
                     <TextView
                         android:id="@+id/name"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight=".20"
+                        android:layout_weight=".10"
+                        android:text="-"
                         android:fontFamily="@font/poppins_semibold"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen12sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/empid"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".18"
-                        android:layout_marginEnd="@dimen/dimen2dp"
+                        android:layout_weight=".14"
+                        android:text="-"
                         android:fontFamily="@font/poppins_semibold"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen12sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/dcname"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".22"
+                        android:layout_weight=".13"
+                        android:text="-"
+
                         android:fontFamily="@font/poppins_semibold"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen12sp" />
+                        android:textSize="12sp" />
 
 
                     <TextView
                         android:id="@+id/role"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".15"
+                        android:layout_weight=".11"
+                        android:text="-"
                         android:fontFamily="@font/poppins_semibold"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen12sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/logindate"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".15"
+                        android:text="-"
                         android:fontFamily="@font/poppins_semibold"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen12sp" />
+                        android:textSize="12sp" />
 
                     <TextView
 
@@ -145,53 +150,34 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".15"
+                        android:text="-"
+
                         android:fontFamily="@font/poppins_semibold"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen12sp" />
-
-
-
+                        android:textSize="12sp" />
 
 
 
                 </LinearLayout>
 
-            </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/approvelayout"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".2"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="1">
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="@dimen/dimen150dp"
-                    android:text="LogOut"
-                    android:background="@color/yellow"
-                    android:textSize="12sp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:fontFamily="@font/roboto_bold"
-                    android:layout_marginTop="@dimen/dimen5dp"
-                    android:textColor="@color/black"
-                    android:layout_height="38dp"/>
 
-                <!--                <TextView-->
-                <!--                    android:id="@+id/approvebutton"-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:background="@color/red"-->
-                <!--                    android:fontFamily="@font/poppins_semibold"-->
-                <!--                    android:paddingStart="@dimen/dimen14sp"-->
-                <!--                    android:paddingTop="2dp"-->
-                <!--                    android:paddingEnd="@dimen/dimen14sp"-->
-                <!--                    android:text="Action"-->
-                <!--                    android:textColor="@color/white"-->
-                <!--                    android:textSize="@dimen/dimen14sp" />-->
+
 
             </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="110dp"
+                android:text="LogOut"
+                android:background="@color/yellow"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:textSize="12sp"
+                android:id="@+id/logout"
+                android:fontFamily="@font/roboto_bold"
+                android:layout_marginTop="@dimen/dimen5dp"
+                android:textColor="@color/black"
+                android:layout_height="33dp"/>
         </LinearLayout>
 
 

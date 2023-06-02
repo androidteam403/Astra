@@ -244,12 +244,12 @@
                                     android:orientation="vertical">
 
                                     <ImageView
-                                        android:layout_width="@dimen/dimen30dp"
-                                        android:layout_height="@dimen/dimen30dp"
+                                        android:layout_width="25dp"
+                                        android:layout_height="25dp"
                                         android:layout_gravity="center"
                                         android:layout_marginTop="5dp"
                                         android:contentDescription="@string/app_name"
-                                        android:src="@drawable/baseline_app_settings_alt_24"
+                                        android:src="@drawable/logoutastra"
                                         android:tint="@{selectedMenu == 3 ? @color/black : @color/white}" />
 
                                     <TextView
@@ -257,6 +257,7 @@
                                         android:layout_height="wrap_content"
                                         android:fontFamily="@font/poppins_bold"
                                         android:gravity="center"
+                                        android:layout_marginTop="3dp"
                                         android:text="Users"
                                         android:textColor="@{selectedMenu == 3 ? @color/black : @color/white}"
                                         android:textSize="@dimen/dimen10sp" />
@@ -299,13 +300,13 @@
                                     android:orientation="vertical">
 
                                     <ImageView
-                                        android:layout_width="@dimen/dimen30dp"
-                                        android:layout_height="@dimen/dimen30dp"
+                                        android:layout_width="33dp"
+                                        android:layout_height="33dp"
                                         android:layout_gravity="center"
                                         android:layout_marginTop="5dp"
 
                                         android:contentDescription="@string/app_name"
-                                        android:src="@drawable/baseline_manage_history_24"
+                                        android:src="@drawable/bulkupdate"
                                         android:tint="@{selectedMenu == 4 ? @color/black : @color/white}" />
 
                                     <TextView
@@ -373,20 +374,26 @@
                                         android:textColor="@color/white"
                                         android:textSize="@dimen/dimen10sp"
                                         android:visibility="visible" />
-
-                                    <TextView
+                                    <LinearLayout
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:background="@drawable/red_round_corners_bg"
-                                        android:fontFamily="@font/poppins_bold"
-                                        android:paddingStart="@dimen/dimen8dp"
-                                        android:layout_marginStart="10dp"
-                                        android:paddingTop="@dimen/dimen2dp"
-                                        android:paddingEnd="@dimen/dimen8dp"
-                                        android:paddingBottom="@dimen/dimen2dp"
-                                        android:text="@{BuildConfig.ENVIRONMENT}"
-                                        android:textColor="@color/white"
-                                        android:textSize="@dimen/dimen10sp" />
+                                        android:layout_gravity="center"
+                                        android:orientation="vertical">
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:background="@drawable/red_round_corners_bg"
+                                            android:fontFamily="@font/poppins_bold"
+                                            android:paddingStart="@dimen/dimen8dp"
+                                            android:paddingTop="@dimen/dimen2dp"
+                                            android:paddingEnd="@dimen/dimen8dp"
+                                            android:paddingBottom="@dimen/dimen2dp"
+                                            android:text="@{BuildConfig.ENVIRONMENT}"
+                                            android:textColor="@color/white"
+                                            android:textSize="@dimen/dimen10sp" />
+                                    </LinearLayout>
+
+
 
                                     <TextView
                                         android:layout_width="match_parent"

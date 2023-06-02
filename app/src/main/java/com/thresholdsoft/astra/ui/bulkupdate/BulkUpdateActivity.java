@@ -164,7 +164,11 @@ public class BulkUpdateActivity extends BaseActivity implements CustomMenuSuperv
 
     @Override
     public void onClickBarCode() {
-
+        Intent intent = new Intent(BulkUpdateActivity.this, BarCodeActivity.class);
+        intent.putExtra("pickerrequest", "Picker " + "\n" + "Request");
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+        finish();
     }
 
     @Override

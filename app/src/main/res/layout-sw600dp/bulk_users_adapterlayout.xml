@@ -31,12 +31,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum=".65">
+                        android:weightSum=".68">
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".11"
+                            android:layout_weight=".14"
                             android:fontFamily="@font/poppins_semibold"
                             android:text="Item Name"
                             android:textColor="@color/bluetooth_header_bg"
@@ -45,7 +45,7 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".12"
+                            android:layout_weight=".11"
                             android:fontFamily="@font/poppins_semibold"
                             android:text="Item Code"
                             android:textColor="@color/bluetooth_header_bg"
@@ -63,7 +63,7 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".08"
+                            android:layout_weight=".07"
                             android:fontFamily="@font/poppins_semibold"
                             android:paddingStart="4dp"
                             android:text="Mrp"
@@ -82,7 +82,7 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".11"
+                            android:layout_weight=".10"
                             android:fontFamily="@font/poppins_semibold"
                             android:text="Bulk Scan"
                             android:textColor="@color/bluetooth_header_bg"
@@ -95,13 +95,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum=".65">
+                        android:weightSum=".68">
 
                         <TextView
                             android:id="@+id/itemname"
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight=".11"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".14"
+                            android:layout_marginTop="7dp"
+
                             android:fontFamily="@font/poppins_semibold"
                             android:text="Dolo"
                             android:textColor="@color/black"
@@ -111,7 +113,9 @@
                             android:id="@+id/itemcode"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".12"
+                            android:layout_weight=".11"
+                            android:layout_marginTop="7dp"
+
                             android:fontFamily="@font/poppins_semibold"
                             android:text="Dolo8627"
                             android:textColor="@color/black"
@@ -124,6 +128,8 @@
                             android:layout_weight=".11"
                             android:fontFamily="@font/poppins_semibold"
                             android:text="Dolo8627"
+                            android:layout_marginTop="7dp"
+
                             android:textColor="@color/black"
                             android:textSize="12sp" />
 
@@ -131,21 +137,23 @@
                             android:id="@+id/mrp_textview"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".08"
-                            android:paddingStart="@dimen/dimen7sp"
+                            android:layout_weight=".07"
                             android:fontFamily="@font/poppins_semibold"
+                            android:paddingStart="@dimen/dimen7sp"
                             android:text="20"
+                            android:layout_marginTop="7dp"
+
                             android:textColor="@color/black"
                             android:textSize="12sp" />
 
                         <LinearLayout
+                            android:id="@+id/mrp_layout"
                             android:layout_width="@dimen/dimen0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".08"
-                            android:id="@+id/mrp_layout"
-                            android:visibility="gone"
+                            android:layout_weight=".07"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
                             <EditText
                                 android:id="@+id/mrp"
@@ -170,31 +178,24 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".12"
-                            android:paddingStart="@dimen/dimen7sp"
                             android:fontFamily="@font/poppins_semibold"
+                            android:paddingStart="@dimen/dimen7sp"
+                            android:layout_marginTop="7dp"
+
                             android:text="Dolo123"
                             android:textColor="@color/black"
                             android:textSize="12sp" />
-                        <TextView
-                            android:id="@+id/bulkscan_textview"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".10"
-                            android:paddingStart="@dimen/dimen7sp"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:text="Yes"
-                            android:textColor="@color/black"
-                            android:textSize="12sp" />
+
 
                         <LinearLayout
-                            android:layout_width="@dimen/dimen0dp"
                             android:id="@+id/barcode_layout"
+                            android:layout_width="@dimen/dimen0dp"
 
                             android:layout_height="wrap_content"
                             android:layout_weight=".12"
-                            android:visibility="gone"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
                             <EditText
                                 android:id="@+id/barcode"
@@ -202,19 +203,31 @@
                                 android:layout_height="35dp"
                                 android:layout_marginEnd="8dp"
                                 android:background="@drawable/bg_approval_qty_edit"
+                                android:editable="false"
+                                android:enabled="false"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:gravity="center"
                                 android:imeOptions="actionDone"
                                 android:inputType="text"
                                 android:text="Dolo123"
-                                android:editable="false"
-                                android:enabled="false"
 
                                 android:textColor="@color/black"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
 
+                        <TextView
+                            android:id="@+id/bulkscan_textview"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".11"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:paddingStart="@dimen/dimen7sp"
+                            android:layout_marginTop="7dp"
+
+                            android:text="Yes"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
 
 
                         <LinearLayout
@@ -228,7 +241,7 @@
                                 android:id="@+id/bulkscan_spinner"
                                 style="@style/spinner_style"
                                 android:layout_width="0dp"
-                                android:layout_height="28dp"
+                                android:layout_height="35dp"
                                 android:layout_weight=".12"
                                 android:spinnerMode="dropdown"
                                 android:visibility="gone" />
@@ -243,27 +256,28 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/action_bar_spinner_layout"
                 android:layout_width="@dimen/dimen0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".35"
-                android:id="@+id/action_bar_spinner_layout"
+                android:layout_marginTop="24dp"
 
-                android:layout_marginTop="5dp"
+                android:layout_weight=".35"
                 android:weightSum=".35">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen5dp"
-                    android:layout_weight=".25"
-                    android:background="@drawable/square_stroke_bg">
+                    android:layout_weight=".22"
+                    android:background="@drawable/square_stroke_bg"
+                    android:weightSum="1">
 
                     <Spinner
                         android:id="@+id/action"
                         style="@style/spinner_style"
-                        android:layout_width="match_parent"
-
-                        android:layout_height="45dp"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:paddingStart="4dp"
+                        android:layout_weight=".99"
                         android:spinnerMode="dropdown" />
                 </LinearLayout>
 
@@ -271,10 +285,10 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/apply"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="35dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="1dp"
-                    android:layout_weight=".1"
+                    android:layout_weight=".11"
                     android:background="@color/grey"
                     android:fontFamily="@font/roboto_bold"
                     android:paddingTop="5dp"
