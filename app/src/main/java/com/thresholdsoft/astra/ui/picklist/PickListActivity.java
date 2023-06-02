@@ -190,6 +190,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     }
 
     private void setUp() {
+        getController().checkItemUpdate();
 //        this.scanStartDateTime = CommonUtils.getCurrentDateAndTime();
         activityPickListBinding.setAssignedOrdersCount("0");
         activityPickListBinding.setAssignedLines("0");

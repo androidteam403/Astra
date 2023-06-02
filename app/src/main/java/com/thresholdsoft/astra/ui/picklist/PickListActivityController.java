@@ -449,7 +449,7 @@ public class PickListActivityController {
         }
     }
 
-    public void checkItemUpdate(String pdfUrl, File file) {
+    public void checkItemUpdate() {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
             ApiInterface api = ApiClient.getApiServiceAds();
