@@ -22,6 +22,7 @@ import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalRequest;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataRequest;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
+import com.thresholdsoft.astra.ui.picklist.model.CheckItemUpdateResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataRequest;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineRequest;
@@ -59,7 +60,8 @@ public interface ApiInterface {
     @POST("StatusUpdate")
     Call<StatusUpdateResponse> STATUS_UPDATE_API_CALL(@Header("Auth-Token") String authToken, @Body StatusUpdateRequest statusUpdateRequest);
 
-    @GET//GetModeofDelivery
+    @GET
+//GetModeofDelivery
     Call<GetModeofDeliveryResponse> GET_MODEOF_DELIVERY_API_CALL(@Url String url, @Header("Auth-Token") String authToken);
 
     @GET("GetWithHoldRemarks")
@@ -76,6 +78,7 @@ public interface ApiInterface {
 
     @POST("https://online.apollopharmacy.org/Digital/Apollo/AHL/getlogindetails")
     Call<LoginResetResponse> LOGIN_USERS_RESET_API_CALL(@Header("Auth-Token") String authToken, @Body LoginDetailsRequest logoutRequest);
+
     @POST("https://online.apollopharmacy.org/Digital/Apollo/AHL/getlogindetails")
     Call<LoginDetailsResponse> LOGIN_USERS_API_CALL(@Header("Auth-Token") String authToken, @Body LoginDetailsRequest logoutRequest);
 
@@ -99,12 +102,17 @@ public interface ApiInterface {
 
     @POST("https://online.apollopharmacy.org/ASTRAUAT/Apollo/SAVEPDF/GENERATEPDFBYPRNOFORASTHRA")
     Call<PackingLabelResponse> PACKING_LABEL_RESPONSE_CALL(@Header("token") String authToken, @Body PackingLabelRequest packingLabelRequest);
+
     @POST("GetBarcodePrint")
-    Call<GetBarCodeResponse> BARCODE_API_CALL( @Header("Auth-Token") String authToken,@Body GetBarCodeRequest barCodeRequest);
+    Call<GetBarCodeResponse> BARCODE_API_CALL(@Header("Auth-Token") String authToken, @Body GetBarCodeRequest barCodeRequest);
+
     @GET
     Call<ResponseBody> doDownloadFile(@Url String fileUrl);
 
     @POST("checkqoh")
     Call<CheckQohResponse> CHECK_QOH_API_CALL(@Header("Auth-Token") String authToken, @Body CheckQohRequest checkQohRequest);
+
+    @GET("https://jsonblob.com/api/jsonBlob/1114174843355676672")
+    Call<CheckItemUpdateResponse> CHECK_ITEM_UPDATE_API_CALL();
 
 }

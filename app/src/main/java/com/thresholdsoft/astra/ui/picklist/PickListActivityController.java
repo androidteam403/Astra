@@ -11,6 +11,7 @@ import com.thresholdsoft.astra.ui.commonmodel.LogoutRequest;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.CheckQohRequest;
 import com.thresholdsoft.astra.ui.pickerrequests.model.CheckQohResponse;
+import com.thresholdsoft.astra.ui.picklist.model.CheckItemUpdateResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataRequest;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineRequest;
@@ -448,5 +449,28 @@ public class PickListActivityController {
         }
     }
 
+    public void checkItemUpdate(String pdfUrl, File file) {
+        if (NetworkUtils.isNetworkConnected(mContext)) {
+            ActivityUtils.showDialog(mContext, "Please wait.");
+            ApiInterface api = ApiClient.getApiServiceAds();
+            Call<CheckItemUpdateResponse> call = api.CHECK_ITEM_UPDATE_API_CALL();
+            call.enqueue(new Callback<CheckItemUpdateResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<CheckItemUpdateResponse> call, @NotNull Response<CheckItemUpdateResponse> response) {
+                    ActivityUtils.hideDialog();
+                    if (response.isSuccessful() && response.body() != null) {
+
+
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<CheckItemUpdateResponse> call, @NotNull Throwable t) {
+                    ActivityUtils.hideDialog();
+                }
+            });
+        }
+    }
 }
 
+//https://jsonblob.com/api/jsonBlob/1114174843355676672
