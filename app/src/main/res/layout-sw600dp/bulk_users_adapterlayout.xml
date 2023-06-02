@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/parent_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen5dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="@dimen/dimen5dp"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="@dimen/dimen0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".65">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum=".65">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".11"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Item Name"
+                            android:textColor="@color/bluetooth_header_bg"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".12"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Item Code"
+                            android:textColor="@color/bluetooth_header_bg"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".11"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Batch"
+                            android:textColor="@color/bluetooth_header_bg"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".08"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:paddingStart="4dp"
+                            android:text="Mrp"
+                            android:textColor="@color/bluetooth_header_bg"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".12"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Barcode"
+                            android:textColor="@color/bluetooth_header_bg"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".11"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Bulk Scan"
+                            android:textColor="@color/bluetooth_header_bg"
+                            android:textSize="14sp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum=".65">
+
+                        <TextView
+                            android:id="@+id/itemname"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight=".11"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Dolo"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/itemcode"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".12"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Dolo8627"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/batch"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".11"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Dolo8627"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/mrp_textview"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".08"
+                            android:paddingStart="@dimen/dimen7sp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="20"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <LinearLayout
+                            android:layout_width="@dimen/dimen0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".08"
+                            android:id="@+id/mrp_layout"
+                            android:visibility="gone"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/mrp"
+                                android:layout_width="match_parent"
+                                android:layout_height="35dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="@drawable/bg_approval_qty_edit"
+                                android:editable="false"
+                                android:enabled="false"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center"
+                                android:imeOptions="actionDone"
+                                android:inputType="numberDecimal"
+                                android:text="67"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/barcode_textview"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".12"
+                            android:paddingStart="@dimen/dimen7sp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Dolo123"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+                        <TextView
+                            android:id="@+id/bulkscan_textview"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".10"
+                            android:paddingStart="@dimen/dimen7sp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Yes"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <LinearLayout
+                            android:layout_width="@dimen/dimen0dp"
+                            android:id="@+id/barcode_layout"
+
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".12"
+                            android:visibility="gone"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/barcode"
+                                android:layout_width="match_parent"
+                                android:layout_height="35dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="@drawable/bg_approval_qty_edit"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center"
+                                android:imeOptions="actionDone"
+                                android:inputType="text"
+                                android:text="Dolo123"
+                                android:editable="false"
+                                android:enabled="false"
+
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+
+
+                        <LinearLayout
+                            android:layout_width="@dimen/dimen0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".11"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <Spinner
+                                android:id="@+id/bulkscan_spinner"
+                                style="@style/spinner_style"
+                                android:layout_width="0dp"
+                                android:layout_height="28dp"
+                                android:layout_weight=".12"
+                                android:spinnerMode="dropdown"
+                                android:visibility="gone" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/dimen0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".35"
+                android:id="@+id/action_bar_spinner_layout"
+
+                android:layout_marginTop="5dp"
+                android:weightSum=".35">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen5dp"
+                    android:layout_weight=".25"
+                    android:background="@drawable/square_stroke_bg">
+
+                    <Spinner
+                        android:id="@+id/action"
+                        style="@style/spinner_style"
+                        android:layout_width="match_parent"
+
+                        android:layout_height="45dp"
+                        android:spinnerMode="dropdown" />
+                </LinearLayout>
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/apply"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_weight=".1"
+                    android:background="@color/grey"
+                    android:fontFamily="@font/roboto_bold"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="Apply"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</layout>

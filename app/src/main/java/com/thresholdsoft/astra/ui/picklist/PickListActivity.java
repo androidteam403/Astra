@@ -82,6 +82,7 @@ import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.db.room.AppDatabase;
 import com.thresholdsoft.astra.ui.CustomMenuCallback;
 import com.thresholdsoft.astra.ui.barcode.BarCodeActivity;
+import com.thresholdsoft.astra.ui.bulkupdate.BulkUpdateActivity;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.home.dashboard.DashBoard;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
@@ -1970,6 +1971,13 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     @Override
     public void onClickPickList() {
 
+    }
+
+    @Override
+    public void onClickBulkUpdate() {
+        Intent intent = new Intent(PickListActivity.this, BulkUpdateActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }
 
     @Override

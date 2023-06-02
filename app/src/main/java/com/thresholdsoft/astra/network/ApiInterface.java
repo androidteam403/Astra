@@ -3,10 +3,19 @@ package com.thresholdsoft.astra.network;
 
 import com.thresholdsoft.astra.ui.barcode.GetBarCodeRequest;
 import com.thresholdsoft.astra.ui.barcode.GetBarCodeResponse;
+import com.thresholdsoft.astra.ui.bulkupdate.model.BarcodeChangeRequest;
+import com.thresholdsoft.astra.ui.bulkupdate.model.BulkChangeResponse;
+import com.thresholdsoft.astra.ui.bulkupdate.model.BulkListRequest;
+import com.thresholdsoft.astra.ui.bulkupdate.model.BulkListResponse;
+import com.thresholdsoft.astra.ui.bulkupdate.model.BulkScanChangeRequest;
+import com.thresholdsoft.astra.ui.bulkupdate.model.MrpChangeRequest;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutRequest;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelRequest;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
+import com.thresholdsoft.astra.ui.logout.model.LoginDetailsRequest;
+import com.thresholdsoft.astra.ui.logout.model.LoginDetailsResponse;
+import com.thresholdsoft.astra.ui.logout.model.LoginResetResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.CheckQohRequest;
 import com.thresholdsoft.astra.ui.pickerrequests.model.CheckQohResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalRequest;
@@ -64,6 +73,23 @@ public interface ApiInterface {
 
     @POST("WithHoldApproval")
     Call<WithHoldApprovalResponse> WITH_HOLD_APPROVAL_API_CALL(@Header("Auth-Token") String authToken, @Body ArrayList<WithHoldApprovalRequest> withHoldApprovalRequest);
+
+    @POST("https://online.apollopharmacy.org/Digital/Apollo/AHL/getlogindetails")
+    Call<LoginResetResponse> LOGIN_USERS_RESET_API_CALL(@Header("Auth-Token") String authToken, @Body LoginDetailsRequest logoutRequest);
+    @POST("https://online.apollopharmacy.org/Digital/Apollo/AHL/getlogindetails")
+    Call<LoginDetailsResponse> LOGIN_USERS_API_CALL(@Header("Auth-Token") String authToken, @Body LoginDetailsRequest logoutRequest);
+
+    @POST("https://online.apollopharmacy.org/Digital/Apollo/AHL/Modificationrequest")
+    Call<BulkChangeResponse> UPDATE_BARCODEACTION_API_CALL(@Header("Auth-Token") String authToken, @Body BarcodeChangeRequest barcodeChangeRequest);
+
+    @POST("https://online.apollopharmacy.org/Digital/Apollo/AHL/Modificationrequest")
+    Call<BulkChangeResponse> UPDATE_BULKACTION_API_CALL(@Header("Auth-Token") String authToken, @Body BulkScanChangeRequest bulkScanChangeRequest);
+
+    @POST("https://online.apollopharmacy.org/Digital/Apollo/AHL/Modificationrequest")
+    Call<BulkChangeResponse> UPDATE_MRPACTION_API_CALL(@Header("Auth-Token") String authToken, @Body MrpChangeRequest mrpChangeRequest);
+
+    @POST("https://online.apollopharmacy.org/Digital/Apollo/AHL/Modificationrequest")
+    Call<BulkListResponse> GETDETAILS_API_CALL(@Header("Auth-Token") String authToken, @Body BulkListRequest bulkListRequest);
 
     @POST("logout")
     Call<LogoutResponse> LOGOUT_API_CALL(@Header("Auth-Token") String authToken, @Body LogoutRequest logoutRequest);

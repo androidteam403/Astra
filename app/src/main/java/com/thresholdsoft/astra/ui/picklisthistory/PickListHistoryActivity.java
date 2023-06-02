@@ -190,6 +190,11 @@ public class PickListHistoryActivity extends BaseActivity implements CustomMenuC
     }
 
     @Override
+    public void onClickBulkUpdate() {
+
+    }
+
+    @Override
     public void onClickBarCode() {
 
     }

@@ -181,6 +181,14 @@
                     <!--                            android:textColor="@{selectedMenu == 2 ? @color/black : @color/white}"-->
                     <!--                            android:textSize="@dimen/dimen10sp" />-->
                     <!--                    </LinearLayout>-->
+
+
+
+
+
+
+
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height=".0dp"
@@ -204,7 +212,7 @@
                         android:layout_height="0dp"
                         android:layout_weight=".28"
                         android:gravity="center"
-                        android:onClick="@{()-> customMenuCallback.onClickLogout()}"
+                        android:onClick="@{()-> customMenuCallback.onClickDashboard()}"
                         android:orientation="vertical">
 
                         <ImageView
@@ -280,7 +288,6 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_marginTop="@dimen/dimen5dp"
 
                         android:layout_weight=".23"
                         android:background="@{selectedMenu == 2 ? @color/yellow : @color/transperancy}" />

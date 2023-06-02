@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/parent_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen5dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="@dimen/dimen5dp"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".8"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".20"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Name"
+                        android:textColor="@color/bluetooth_header_bg"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".18"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Employee Id"
+                        android:textColor="@color/bluetooth_header_bg"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".22"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Dc Name"
+                        android:textColor="@color/bluetooth_header_bg"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".15"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Role"
+                        android:textColor="@color/bluetooth_header_bg"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".15"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Login Date"
+                        android:textColor="@color/bluetooth_header_bg"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".15"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Logout Date"
+                        android:textColor="@color/bluetooth_header_bg"
+                        android:textSize="@dimen/dimen14sp" />
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".20"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen12sp" />
+
+                    <TextView
+                        android:id="@+id/empid"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".18"
+                        android:layout_marginEnd="@dimen/dimen2dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen12sp" />
+
+                    <TextView
+                        android:id="@+id/dcname"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".22"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen12sp" />
+
+
+                    <TextView
+                        android:id="@+id/role"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".15"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen12sp" />
+
+                    <TextView
+                        android:id="@+id/logindate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".15"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen12sp" />
+
+                    <TextView
+
+                        android:id="@+id/logoutdate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".15"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen12sp" />
+
+
+
+
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/approvelayout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="@dimen/dimen150dp"
+                    android:text="LogOut"
+                    android:background="@color/yellow"
+                    android:textSize="12sp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:layout_marginTop="@dimen/dimen5dp"
+                    android:textColor="@color/black"
+                    android:layout_height="38dp"/>
+
+                <!--                <TextView-->
+                <!--                    android:id="@+id/approvebutton"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:background="@color/red"-->
+                <!--                    android:fontFamily="@font/poppins_semibold"-->
+                <!--                    android:paddingStart="@dimen/dimen14sp"-->
+                <!--                    android:paddingTop="2dp"-->
+                <!--                    android:paddingEnd="@dimen/dimen14sp"-->
+                <!--                    android:text="Action"-->
+                <!--                    android:textColor="@color/white"-->
+                <!--                    android:textSize="@dimen/dimen14sp" />-->
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</layout>

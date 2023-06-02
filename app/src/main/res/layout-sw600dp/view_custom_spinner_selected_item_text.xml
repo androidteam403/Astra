@@ -7,20 +7,22 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/selected_status_id"
+        android:id="@+id/bulk_selected_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/dimen8dp"
         android:fontFamily="@font/poppins_semibold"
         android:textColor="@color/black"
-        android:textSize="@dimen/dimen14sp" />
+        android:textSize="14sp" />
 
     <ImageView
         android:id="@+id/close"
         android:layout_width="@dimen/dimen30dp"
         android:layout_height="@dimen/dimen30dp"
         android:layout_alignParentEnd="true"
+        android:visibility="gone"
+
         android:layout_centerVertical="true"
         android:contentDescription="@string/app_name"
         android:src="@drawable/bg_drop_down" />

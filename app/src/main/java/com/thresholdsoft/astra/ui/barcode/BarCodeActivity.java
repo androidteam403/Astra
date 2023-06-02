@@ -620,6 +620,16 @@ public class BarCodeActivity extends BaseActivity implements BarCodeActivityCall
     }
 
     @Override
+    public void onClickLogOutUsers() {
+
+    }
+
+    @Override
+    public void onClickBulkUpdate() {
+
+    }
+
+    @Override
     public void onClickBarCode() {
 
     }

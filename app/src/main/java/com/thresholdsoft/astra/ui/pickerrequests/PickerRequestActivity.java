@@ -35,8 +35,10 @@ import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.ui.alertdialogs.AlertBox;
 import com.thresholdsoft.astra.ui.barcode.BarCodeActivity;
+import com.thresholdsoft.astra.ui.bulkupdate.BulkUpdateActivity;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
+import com.thresholdsoft.astra.ui.logout.LogOutUsersActivity;
 import com.thresholdsoft.astra.ui.menucallbacks.CustomMenuSupervisorCallback;
 import com.thresholdsoft.astra.ui.pickerrequests.adapter.CheckQohAdapter;
 import com.thresholdsoft.astra.ui.pickerrequests.adapter.PickerListAdapter;
@@ -894,6 +896,24 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     @Override
     public void onClickPickerRequests() {
 
+    }
+
+    @Override
+    public void onClickLogOutUsers() {
+        Intent intent = new Intent(PickerRequestActivity.this, LogOutUsersActivity.class);
+
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+        finish();
+    }
+
+    @Override
+    public void onClickBulkUpdate() {
+        Intent intent = new Intent(PickerRequestActivity.this, BulkUpdateActivity.class);
+
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+        finish();
     }
 
     @Override
