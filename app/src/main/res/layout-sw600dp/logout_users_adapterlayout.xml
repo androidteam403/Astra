@@ -41,7 +41,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".14"
+                        android:layout_weight=".11"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Employee Id"
                         android:textColor="@color/bluetooth_header_bg"
@@ -50,7 +50,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".13"
+                        android:layout_weight=".15"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Dc Name"
                         android:textColor="@color/bluetooth_header_bg"
@@ -59,16 +59,18 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".11"
+                        android:layout_weight=".12"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Role"
+                        android:paddingStart="@dimen/dimen3dp"
+
                         android:textColor="@color/bluetooth_header_bg"
                         android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".15"
+                        android:layout_weight=".14"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Login Date"
                         android:textColor="@color/bluetooth_header_bg"
@@ -77,7 +79,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".15"
+                        android:layout_weight=".14"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Logout Date "
                         android:textColor="@color/bluetooth_header_bg"
@@ -106,7 +108,7 @@
                         android:id="@+id/empid"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".14"
+                        android:layout_weight=".11"
                         android:text="-"
                         android:fontFamily="@font/poppins_semibold"
                         android:textColor="@color/black"
@@ -116,7 +118,7 @@
                         android:id="@+id/dcname"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".13"
+                        android:layout_weight=".15"
                         android:text="-"
 
                         android:fontFamily="@font/poppins_semibold"
@@ -128,8 +130,9 @@
                         android:id="@+id/role"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".11"
+                        android:layout_weight=".12"
                         android:text="-"
+                        android:paddingStart="@dimen/dimen3dp"
                         android:fontFamily="@font/poppins_semibold"
                         android:textColor="@color/black"
                         android:textSize="12sp" />
@@ -138,7 +141,7 @@
                         android:id="@+id/logindate"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".15"
+                        android:layout_weight=".14"
                         android:text="-"
                         android:fontFamily="@font/poppins_semibold"
                         android:textColor="@color/black"
@@ -149,7 +152,7 @@
                         android:id="@+id/logoutdate"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".15"
+                        android:layout_weight=".14"
                         android:text="-"
 
                         android:fontFamily="@font/poppins_semibold"

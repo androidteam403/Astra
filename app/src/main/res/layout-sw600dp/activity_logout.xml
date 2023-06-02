@@ -48,7 +48,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen10dp"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="LogOut Users"
+                        android:text="Logout Users"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
@@ -93,7 +93,7 @@
                                     android:layout_weight=".90"
                                     android:background="@drawable/b_edit_text"
                                     android:fontFamily="@font/poppins_semibold"
-                                    android:hint="Search By Item ID"
+                                    android:hint="Search By Employee ID"
                                     android:imeOptions="actionDone"
                                     android:importantForAutofill="no"
                                     android:inputType="text"

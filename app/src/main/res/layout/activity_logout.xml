@@ -98,7 +98,7 @@
 
                                     android:background="@drawable/b_edit_text"
                                     android:fontFamily="@font/poppins_semibold"
-                                    android:hint="Search Users"
+                                    android:hint="Search By Employee ID"
                                     android:importantForAutofill="no"
                                     android:inputType="text"
                                     android:paddingStart="10dp"
