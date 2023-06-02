@@ -226,54 +226,39 @@ public class BulkUsersListAdapter extends RecyclerView.Adapter<BulkUsersListAdap
 
 
                 if (statusList[position].equals("MRP Update")) {
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT
-                    );
-                    params.setMargins(0, 11, 0, 0);
-
-                    holder.bulkUsersAdapterlayoutBinding.actionBarSpinnerLayout.setLayoutParams(params);
-
                     holder.bulkUsersAdapterlayoutBinding.mrpLayout.setVisibility(View.VISIBLE);
+                    holder.bulkUsersAdapterlayoutBinding.barcodeLayout.setVisibility(View.GONE);
+                    holder.bulkUsersAdapterlayoutBinding.bulkscanSpinner.setVisibility(View.GONE);
+                    holder.bulkUsersAdapterlayoutBinding.bulkscanTextview.setVisibility(View.VISIBLE);
+                    holder.bulkUsersAdapterlayoutBinding.barcodeTextview.setVisibility(View.VISIBLE);
                     holder.bulkUsersAdapterlayoutBinding.mrpTextview.setVisibility(View.GONE);
                     holder.bulkUsersAdapterlayoutBinding.mrp.setEnabled(true);
                     holder.bulkUsersAdapterlayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#FFCCCC"));
                 } else if (statusList[position].equals("Barcode Update")) {
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT
-                    );
-                    params.setMargins(0, 11, 0, 0);
-
-                    holder.bulkUsersAdapterlayoutBinding.actionBarSpinnerLayout.setLayoutParams(params);
-
-                    holder.bulkUsersAdapterlayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#FFCCCC"));
+          holder.bulkUsersAdapterlayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#FFCCCC"));
                     holder.bulkUsersAdapterlayoutBinding.barcode.setEnabled(true);
                     holder.bulkUsersAdapterlayoutBinding.barcodeLayout.setVisibility(View.VISIBLE);
                     holder.bulkUsersAdapterlayoutBinding.barcodeTextview.setVisibility(View.GONE);
+                    holder.bulkUsersAdapterlayoutBinding.mrpTextview.setVisibility(View.VISIBLE);
+                    holder.bulkUsersAdapterlayoutBinding.mrpLayout.setVisibility(View.GONE);
+                    holder.bulkUsersAdapterlayoutBinding.bulkscanTextview.setVisibility(View.VISIBLE);
+                    holder.bulkUsersAdapterlayoutBinding.bulkscanSpinner.setVisibility(View.GONE);
                     holder.bulkUsersAdapterlayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#87CEFA"));
                 } else if (statusList[position].equals("BulkScan")) {
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT
-                    );
-                    params.setMargins(0, 11, 0, 0);
+                    holder.bulkUsersAdapterlayoutBinding.mrpTextview.setVisibility(View.VISIBLE);
+                    holder.bulkUsersAdapterlayoutBinding.mrpLayout.setVisibility(View.GONE);
+                    holder.bulkUsersAdapterlayoutBinding.barcodeLayout.setVisibility(View.GONE);
+                    holder.bulkUsersAdapterlayoutBinding.barcodeTextview.setVisibility(View.VISIBLE);
 
-                    holder.bulkUsersAdapterlayoutBinding.actionBarSpinnerLayout.setLayoutParams(params);
                     holder.bulkUsersAdapterlayoutBinding.bulkscanSpinner.setVisibility(View.VISIBLE);
                     holder.bulkUsersAdapterlayoutBinding.bulkscanTextview.setVisibility(View.GONE);
                     holder.bulkUsersAdapterlayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#66CDAA"));
                 } else {
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT
-                    );
-                    params.setMargins(0, 0, 0, 0);
+
                     holder.bulkUsersAdapterlayoutBinding.barcodeLayout.setVisibility(View.GONE);
                     holder.bulkUsersAdapterlayoutBinding.barcodeTextview.setVisibility(View.VISIBLE);
                     holder.bulkUsersAdapterlayoutBinding.bulkscanSpinner.setVisibility(View.GONE);
                     holder.bulkUsersAdapterlayoutBinding.bulkscanTextview.setVisibility(View.VISIBLE);
-                    holder.bulkUsersAdapterlayoutBinding.actionBarSpinnerLayout.setLayoutParams(params);
                     holder.bulkUsersAdapterlayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
                     holder.bulkUsersAdapterlayoutBinding.mrpLayout.setVisibility(View.GONE);
                     holder.bulkUsersAdapterlayoutBinding.mrpTextview.setVisibility(View.VISIBLE);
