@@ -2,302 +2,286 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:orientation="vertical">-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:background="@color/imagebackgroundcolor"-->
-<!--                android:orientation="vertical">-->
+            <LinearLayout
+                android:layout_width="170dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:orientation="vertical">-->
+                <LinearLayout
+                    android:layout_width="@dimen/dimen0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".95"
+                    android:background="@color/imagebackgroundcolor"
+                    android:orientation="vertical"
+                    android:weightSum="3">
 
-<!--                    <ImageView-->
-<!--                        android:id="@+id/image"-->
-<!--                        android:layout_width="@dimen/dimen40dp"-->
-<!--                        android:layout_height="@dimen/dimen40dp"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        android:layout_marginTop="@dimen/dimen5dp"-->
-<!--                        android:contentDescription="@string/app_name"-->
-<!--                        android:src="@drawable/apollo_healthco_logo" />-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen0dp"
+                        android:orientation="vertical"
+                        android:layout_weight=".7">
 
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:fontFamily="@font/poppins_bold"-->
-<!--                        android:gravity="center"-->
-<!--                        android:text="@{dcName}"-->
-<!--                        android:textColor="@color/white"-->
-<!--                        android:textSize="@dimen/dimen10sp" />-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="@dimen/dimen5dp"-->
-<!--                        android:fontFamily="@font/poppins_bold"-->
-<!--                        android:gravity="center"-->
-<!--                        android:text="@{userId +` - ` + pickerName}"-->
-<!--                        android:textColor="@color/white"-->
-<!--                        android:textSize="@dimen/dimen10sp" />-->
-
-<!--                </LinearLayout>-->
-
-<!--                <ScrollView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content">-->
-
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="250dp"-->
-<!--                        android:orientation="vertical">-->
-
-<!--                        <LinearLayout-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:onClick="@{()-> customMenuSupervisorCallback.onClickPickerRequests()}"-->
-
-<!--                            android:orientation="horizontal"-->
-<!--                            android:weightSum="1">-->
-
-<!--                            <LinearLayout-->
-<!--                                android:layout_width="@dimen/dimen0dp"-->
-<!--                                android:layout_height="@dimen/dimen70dp"-->
-<!--                                android:layout_weight=".95"-->
-<!--                                android:orientation="vertical">-->
-
-<!--                                <ImageView-->
-<!--                                    android:layout_width="@dimen/dimen30dp"-->
-<!--                                    android:layout_height="@dimen/dimen30dp"-->
-<!--                                    android:layout_gravity="center"-->
-<!--                                    android:layout_marginTop="6dp"-->
-<!--                                    android:contentDescription="@string/app_name"-->
-<!--                                    android:src="@drawable/ic_baseline_hail_24"-->
-<!--                                    android:tint="@{selectedMenu == 1 ? @color/black : @color/white}" />-->
-
-<!--                                <TextView-->
-<!--                                    android:layout_width="match_parent"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:fontFamily="@font/poppins_bold"-->
-<!--                                    android:gravity="center"-->
-<!--                                    android:text="@string/label_picker_nrequest"-->
-<!--                                    android:textColor="@{selectedMenu == 1 ? @color/black : @color/white}"-->
-<!--                                    android:textSize="@dimen/dimen10sp" />-->
-
-<!--                            </LinearLayout>-->
-
-<!--                            <LinearLayout-->
-<!--                                android:layout_width="@dimen/dimen0dp"-->
-<!--                                android:layout_height="@dimen/dimen70dp"-->
-<!--                                android:layout_weight=".05"-->
-<!--                                android:orientation="vertical">-->
-
-<!--                                <View-->
-<!--                                    android:id="@+id/pick_list_menu_stroke"-->
-<!--                                    android:layout_width="match_parent"-->
-<!--                                    android:layout_height="match_parent"-->
-<!--                                    android:background="@{selectedMenu == 1 ? @color/yellow : @color/hash_color}" />-->
-
-<!--                            </LinearLayout>-->
-
-<!--                        </LinearLayout>-->
-<!--                        <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                            android:onClick="@{()-> customMenuSupervisorCallback.onClickBarCode()}"-->
-
-<!--                            android:orientation="horizontal"-->
-<!--                        android:weightSum="1">-->
-<!--                        <LinearLayout-->
-<!--                            android:layout_width="@dimen/dimen0dp"-->
-<!--                            android:layout_height="@dimen/dimen70dp"-->
-<!--                            android:layout_weight=".95"-->
-<!--                            android:orientation="vertical">-->
-
-<!--                            <ImageView-->
-<!--                                android:layout_width="@dimen/dimen30dp"-->
-<!--                                android:layout_height="@dimen/dimen30dp"-->
-<!--                                android:layout_gravity="center"-->
-<!--                                android:layout_marginTop="6dp"-->
-<!--                                android:contentDescription="@string/app_name"-->
-<!--                                android:src="@drawable/ic_baseline_print_24"-->
-<!--                                android:tint="@{selectedMenu == 2 ? @color/black : @color/white}" />-->
-
-<!--                            <TextView-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:fontFamily="@font/poppins_bold"-->
-<!--                                android:gravity="center"-->
-<!--                                android:text="Custom Barcode Print"-->
-<!--                                android:textColor="@{selectedMenu == 2 ? @color/black : @color/white}"-->
-<!--                                android:textSize="@dimen/dimen10sp" />-->
-
-<!--                        </LinearLayout>-->
-<!--                        <LinearLayout-->
-<!--                            android:layout_width="@dimen/dimen0dp"-->
-<!--                            android:layout_height="@dimen/dimen70dp"-->
-<!--                            android:layout_weight=".05"-->
-<!--                            android:orientation="vertical">-->
-
-<!--                            <View-->
-<!--                                android:id="@+id/pick_list_menu_stroke"-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="match_parent"-->
-<!--                                android:background="@{selectedMenu == 2 ? @color/yellow : @color/hash_color}" />-->
-
-<!--                        </LinearLayout>-->
-<!--                    </LinearLayout>-->
-<!--                        <LinearLayout-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:onClick="@{()-> customMenuSupervisorCallback.onClickLogOutUsers()}"-->
-<!--                            android:orientation="horizontal"-->
-<!--                            android:weightSum="1">-->
-<!--                            <LinearLayout-->
-<!--                                android:layout_width="@dimen/dimen0dp"-->
-<!--                                android:layout_height="@dimen/dimen70dp"-->
-<!--                                android:layout_weight=".95"-->
-<!--                                android:orientation="vertical">-->
-
-<!--                                <ImageView-->
-<!--                                    android:layout_width="@dimen/dimen30dp"-->
-<!--                                    android:layout_height="@dimen/dimen30dp"-->
-<!--                                    android:layout_gravity="center"-->
-<!--                                    android:layout_marginTop="6dp"-->
-<!--                                    android:contentDescription="@string/app_name"-->
-<!--                                    android:src="@drawable/baseline_app_settings_alt_24"-->
-<!--                                    android:tint="@{selectedMenu == 3 ? @color/black : @color/white}" />-->
-
-<!--                                <TextView-->
-<!--                                    android:layout_width="match_parent"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:fontFamily="@font/poppins_bold"-->
-<!--                                    android:gravity="center"-->
-<!--                                    android:text="Users"-->
-<!--                                    android:textColor="@{selectedMenu == 3 ? @color/black : @color/white}"-->
-<!--                                    android:textSize="@dimen/dimen10sp" />-->
-
-<!--                            </LinearLayout>-->
-<!--                            <LinearLayout-->
-<!--                                android:layout_width="@dimen/dimen0dp"-->
-<!--                                android:layout_height="@dimen/dimen70dp"-->
-<!--                                android:layout_weight=".05"-->
-<!--                                android:orientation="vertical">-->
-
-<!--                                <View-->
-<!--                                    android:id="@+id/pick_list_menu_stroke"-->
-<!--                                    android:layout_width="match_parent"-->
-<!--                                    android:layout_height="match_parent"-->
-<!--                                    android:background="@{selectedMenu == 2 ? @color/yellow : @color/hash_color}" />-->
-
-<!--                            </LinearLayout>-->
-<!--                        </LinearLayout>-->
-
-<!--                        <LinearLayout-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:onClick="@{()-> customMenuSupervisorCallback.onClickBulkUpdate()}"-->
-<!--                            android:orientation="horizontal"-->
-<!--                            android:weightSum="1">-->
-<!--                            <LinearLayout-->
-<!--                                android:layout_width="@dimen/dimen0dp"-->
-<!--                                android:layout_height="@dimen/dimen70dp"-->
-<!--                                android:layout_weight=".95"-->
-<!--                                android:orientation="vertical">-->
-
-<!--                                <ImageView-->
-<!--                                    android:layout_width="@dimen/dimen30dp"-->
-<!--                                    android:layout_height="@dimen/dimen30dp"-->
-<!--                                    android:layout_gravity="center"-->
-<!--                                    android:layout_marginTop="6dp"-->
-<!--                                    android:contentDescription="@string/app_name"-->
-<!--                                    android:src="@drawable/baseline_manage_history_24"-->
-<!--                                    android:tint="@{selectedMenu == 4 ? @color/black : @color/white}" />-->
-
-<!--                                <TextView-->
-<!--                                    android:layout_width="match_parent"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:fontFamily="@font/poppins_bold"-->
-<!--                                    android:gravity="center"-->
-<!--                                    android:text="Bulk Update"-->
-<!--                                    android:textColor="@{selectedMenu == 4 ? @color/black : @color/white}"-->
-<!--                                    android:textSize="@dimen/dimen10sp" />-->
-
-<!--                            </LinearLayout>-->
-<!--                            <LinearLayout-->
-<!--                                android:layout_width="@dimen/dimen0dp"-->
-<!--                                android:layout_height="@dimen/dimen70dp"-->
-<!--                                android:layout_weight=".05"-->
-<!--                                android:orientation="vertical">-->
-
-<!--                                <View-->
-<!--                                    android:id="@+id/pick_list_menu_stroke"-->
-<!--                                    android:layout_width="match_parent"-->
-<!--                                    android:layout_height="match_parent"-->
-<!--                                    android:background="@{selectedMenu == 2 ? @color/yellow : @color/hash_color}" />-->
-
-<!--                            </LinearLayout>-->
-<!--                        </LinearLayout>-->
-
-<!--                    </LinearLayout>-->
-
-<!--                </ScrollView>-->
+                        <ImageView
+                            android:id="@+id/image"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/dimen5dp"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/apollo_healthco_logo" />
 
 
-<!--            </LinearLayout>-->
-<!--        </LinearLayout>-->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center"
+                            android:text="@{dcName}"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen5dp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center"
+                            android:text="@{userId +` - ` + pickerName}"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_weight="1.6"
+                        android:layout_height="0dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="100dp"
+                                android:layout_weight=".95"
+                                android:background="@{selectedMenu == 1 ? @color/yellow : @color/imagebackgroundcolor}"
+
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:layout_gravity="center"
+                                    android:contentDescription="@string/app_name"
+                                    android:src="@drawable/ic_baseline_hail_24"
+                                    android:tint="@{selectedMenu == 1 ? @color/black : @color/white}" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:gravity="center"
+                                    android:text="@string/label_picker_nrequest"
+                                    android:textColor="@{selectedMenu == 1 ? @color/black : @color/white}"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@{selectedMenu == 2 ? @color/yellow : @color/imagebackgroundcolor}"
+
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="8dp"
+                                    android:contentDescription="@string/app_name"
+                                    android:src="@drawable/ic_baseline_print_24"
+                                    android:tint="@{selectedMenu == 2 ? @color/black : @color/white}" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:gravity="center"
+                                    android:text="Barcode \nPrint"
+                                    android:textColor="@{selectedMenu == 2 ? @color/black : @color/white}"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@{selectedMenu == 3 ? @color/yellow : @color/imagebackgroundcolor}"
+
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="45dp"
+                                    android:layout_height="40dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="15dp"
+                                    android:contentDescription="@string/app_name"
+                                    android:src="@drawable/logoutastra"
+                                    android:tint="@{selectedMenu == 3 ? @color/black : @color/white}" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:gravity="center"
+                                    android:layout_marginTop="7dp"
+                                    android:text="Users"
+                                    android:textColor="@{selectedMenu == 3 ? @color/black : @color/white}"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="90dp"
+                                android:background="@{selectedMenu == 4 ? @color/yellow : @color/imagebackgroundcolor}"
+
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="5dp"
+
+                                    android:contentDescription="@string/app_name"
+                                    android:src="@drawable/bulkupdate"
+                                    android:tint="@{selectedMenu == 4 ? @color/black : @color/white}" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:gravity="center"
+                                    android:text="Bulk Update"
+                                    android:textColor="@{selectedMenu == 4 ? @color/black : @color/white}"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
 
 
-<!--        <LinearLayout-->
-<!--            android:id="@+id/logout_menu"-->
-<!--            android:layout_width="100dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_alignParentBottom="true"-->
-<!--            android:gravity="center"-->
-<!--            android:onClick="@{()-> customMenuSupervisorCallback.onClickLogout()}"-->
-<!--            android:orientation="vertical">-->
 
-<!--            <ImageView-->
-<!--                android:layout_width="@dimen/dimen30dp"-->
-<!--                android:layout_height="@dimen/dimen30dp"-->
-<!--                android:contentDescription="@string/app_name"-->
-<!--                android:src="@drawable/ic_logout" />-->
+                        </LinearLayout>
+                    </ScrollView>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen0dp"
+                        android:layout_weight=".7">
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:fontFamily="@font/poppins_bold"-->
-<!--                android:gravity="center"-->
-<!--                android:text="Logout"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="@dimen/dimen10sp" />-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="140dp"
+                            android:background="@color/imagebackgroundcolor"
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:background="@drawable/red_round_corners_bg"-->
-<!--                android:fontFamily="@font/poppins_bold"-->
-<!--                android:gravity="center"-->
-<!--                android:paddingStart="@dimen/dimen8dp"-->
-<!--                android:paddingTop="@dimen/dimen2dp"-->
-<!--                android:paddingEnd="@dimen/dimen8dp"-->
-<!--                android:paddingBottom="@dimen/dimen2dp"-->
-<!--                android:text="@{BuildConfig.ENVIRONMENT}"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="@dimen/dimen10sp" />-->
+                            android:orientation="vertical">
 
-<!--        </LinearLayout>-->
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="8dp"
+                                android:contentDescription="@string/app_name"
+                                android:src="@drawable/ic_logout"
+                                android:visibility="visible" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_bold"
+                                android:gravity="center"
+                                android:text="Logout"
+                                android:textColor="@color/white"
+                                android:textSize="12sp"
+                                android:visibility="visible" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/red_round_corners_bg"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:gravity="center"
+                                    android:paddingStart="@dimen/dimen8dp"
+                                    android:paddingTop="@dimen/dimen2dp"
+                                    android:paddingEnd="@dimen/dimen8dp"
+                                    android:paddingBottom="@dimen/dimen2dp"
+                                    android:text="@{BuildConfig.ENVIRONMENT}"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_bold"
+                                android:gravity="center"
+                                android:text="@{`V `+BuildConfig.VERSION_NAME}"
+                                android:textColor="@color/white"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="@dimen/dimen0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".05"
+                    android:background="@color/hash_color"
+                    android:orientation="vertical"
+                    android:weightSum="3">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen0dp"
+                        android:layout_weight=".7">
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen0dp"
+                        android:layout_weight="1.6">
+                        <ScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+
+                        </ScrollView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen0dp"
+                        android:layout_weight=".7">
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
 
     </RelativeLayout>
-
 
     <data>
 

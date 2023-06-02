@@ -184,7 +184,7 @@ public class BulkUpdateActivity extends BaseActivity implements CustomMenuSuperv
             @Override
             public void onClick(View v) {
                 customDialog.dismiss();
-//                getController().logoutApiCall();
+                getController().logoutApiCall();
             }
         });
         dialogCustomAlertBinding.cancel.setOnClickListener(new View.OnClickListener() {

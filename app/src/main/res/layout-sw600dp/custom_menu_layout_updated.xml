@@ -5,10 +5,12 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
+
         <LinearLayout
             android:layout_width="170dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/transperancy"
+            android:id="@+id/main_layout"
             android:orientation="horizontal"
             android:weightSum="1">
 
@@ -16,6 +18,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:weightSum="1"
                 android:orientation="vertical">
 
 
@@ -75,7 +78,7 @@
 
                         <LinearLayout
                             android:layout_width="@dimen/dimen0dp"
-                            android:layout_height="175dp"
+                            android:layout_height="match_parent"
                             android:layout_weight=".05"
                             android:background="@color/imagebackgroundcolor"
 
@@ -344,7 +347,7 @@
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="match_parent"
                                     android:gravity="center"
 
                                     android:onClick="@{()-> customMenuSupervisorCallback.onClickLogout()}"
@@ -477,66 +480,34 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".05"
-                android:background="@color/hash_color"
-                android:orientation="vertical"
-                android:visibility="gone"
-                android:weightSum="1">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight=".3" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight=".7"
-                    android:orientation="vertical"
-                    android:weightSum="1">
-
-                    <View
-                        android:id="@+id/pick_list_menu_stroke"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight=".24"
-                        android:background="@{selectedMenu == 1 ? @color/yellow : @color/hash_color}" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight=".23"
-                        android:background="@{selectedMenu == 2 ? @color/yellow : @color/hash_color}"
-                        android:visibility="visible" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight=".23"
-                        android:background="@{selectedMenu == 3 ? @color/yellow : @color/hash_color}"
-                        android:visibility="visible" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight=".23"
-                        android:background="@{selectedMenu == 4 ? @color/yellow : @color/hash_color}"
-                        android:visibility="visible" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight=".2"
-                        android:background="@{selectedMenu == 5 ? @color/yellow : @color/transperancy}"
-                        android:visibility="gone" />
-                </LinearLayout>
-            </LinearLayout>
 
 
         </LinearLayout>
+
+<LinearLayout
+    android:layout_width="@dimen/dimen170dp"
+    android:layout_below="@id/main_layout"
+    android:orientation="horizontal"
+    android:weightSum="1"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="@dimen/dimen0dp"
+        android:layout_height="match_parent"
+        android:background="@color/imagebackgroundcolor"
+        android:layout_weight=".95">
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="@dimen/dimen0dp"
+        android:layout_height="match_parent"
+        android:background="@color/hash_color"
+        android:layout_weight=".05">
+
+    </LinearLayout>
+
+</LinearLayout>
+
     </RelativeLayout>
 
     <data>
