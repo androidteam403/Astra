@@ -17,18 +17,18 @@ import java.util.concurrent.TimeUnit;
 
 public class CommonUtils {
     public static String getCurrentDateAndTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
         return sdf.format(new Date());
     }
 
     public static String getCurrentDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
         return sdf.format(new Date());
     }
 
     public static Date getConvertStringToDate(String date) {
         Date date1 = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         try {
             date1 = sdf.parse(date);
         } catch (ParseException e) {
@@ -42,11 +42,11 @@ public class CommonUtils {
         Date c = Calendar.getInstance().getTime();
         System.out.println("Current time => " + c);
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         String formattedDate = df.format(c);
 
         Date date1 = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         try {
             date1 = sdf.parse(formattedDate);
         } catch (ParseException e) {
@@ -57,7 +57,7 @@ public class CommonUtils {
 
     public static String getLastDay() {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
 //        Date date = new Date();
 //        String todate = sdf.format(date);
@@ -76,8 +76,8 @@ public class CommonUtils {
             if (time.contains("Z")) inputPattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
             else inputPattern = "yyyy-MM-dd'T'HH:mm:ss";
             String outputPattern = "dd-MMM-yyyy h:mm a";
-            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, Locale.ENGLISH);
+            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern, Locale.ENGLISH);
 
             Date date = null;
             String str = null;
@@ -100,8 +100,8 @@ public class CommonUtils {
             if (time.contains("Z")) inputPattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
             else inputPattern = "yyyy-MM-dd'T'HH:mm:ss";
             String outputPattern = "dd-MMM-yyyy";
-            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, Locale.ENGLISH);
+            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern, Locale.ENGLISH);
 
             Date date = null;
             String str = null;
@@ -124,8 +124,8 @@ public class CommonUtils {
             if (time.contains("Z")) inputPattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
             else inputPattern = "yyyy-MM-dd'T'HH:mm:ss";
             String outputPattern = "MM-YYYY";
-            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, Locale.ENGLISH);
+            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern, Locale.ENGLISH);
 
             Date date = null;
             String str = null;
@@ -148,7 +148,7 @@ public class CommonUtils {
             try {
                 Date date1;
                 Date date2;
-                SimpleDateFormat dates = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                SimpleDateFormat dates = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
                 date1 = dates.parse(secondDateAndTime);
                 date2 = dates.parse(firstDateAndTime);
                 long difference = Math.abs(date1.getTime() - date2.getTime());
@@ -190,15 +190,15 @@ public class CommonUtils {
     public static String getDateFormatddmmyyyy(long c) {
         Calendar neededTime = Calendar.getInstance();
         neededTime.setTimeInMillis(c);
-        return new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(neededTime.getTime());
+        return new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH).format(neededTime.getTime());
     }
 
     public static String getDateddMMyyyyToyyyyMMddNoTime(String time) {
         if (time != null && !time.isEmpty()) {
             String inputPattern = "dd-MMM-yyyy";
             String outputPattern = "yyyy-MM-dd";
-            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, Locale.ENGLISH);
+            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern, Locale.ENGLISH);
 
             Date date = null;
             String str = null;
@@ -221,8 +221,8 @@ public class CommonUtils {
             if (time.contains("Z")) inputPattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
             else inputPattern = "yyyy-MM-dd'T'HH:mm:ss";
             String outputPattern = "dd-MMM-yyyy";
-            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, Locale.ENGLISH);
+            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern, Locale.ENGLISH);
 
             Date date = null;
             String str = null;
@@ -231,7 +231,7 @@ public class CommonUtils {
             try {
                 date = inputFormat.parse(time);
                 str = outputFormat.format(date);
-                SimpleDateFormat inputFormattest = new SimpleDateFormat(outputPattern);
+                SimpleDateFormat inputFormattest = new SimpleDateFormat(outputPattern, Locale.ENGLISH);
                 date1 = inputFormattest.parse(str);
             } catch (ParseException e) {
                 e.printStackTrace();

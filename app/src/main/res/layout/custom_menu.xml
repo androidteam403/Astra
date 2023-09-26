@@ -212,7 +212,7 @@
                         android:layout_height="0dp"
                         android:layout_weight=".28"
                         android:gravity="center"
-                        android:onClick="@{()-> customMenuCallback.onClickDashboard()}"
+                        android:onClick="@{()-> customMenuCallback.onClickLogout()}"
                         android:orientation="vertical">
 
                         <ImageView

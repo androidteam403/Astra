@@ -289,7 +289,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/picklistrecycleview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:visibility="@{pickListCount == 0 ? view.GONE : view.VISIBLE}" />
 
@@ -1057,7 +1057,7 @@
                                     <androidx.recyclerview.widget.RecyclerView
                                         android:id="@+id/listitem_recycleview"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
+                                        android:layout_height="380dp"
                                         android:orientation="vertical"
                                         android:scrollbars="vertical"
                                         android:visibility="@{itemListCount != 0 ? view.VISIBLE : view.GONE}" />

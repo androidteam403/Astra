@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
+import com.thresholdsoft.astra.ui.bulkupdate.model.BulkListResponse;
+import com.thresholdsoft.astra.ui.logout.model.LoginDetailsResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalRequest;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetModeofDeliveryResponse;
@@ -35,6 +37,9 @@ public class SessionManager {
     private static final String PREF_KEY_STATUS_UPDATE_REQUEST = "PREF_KEY_STATUS_UPDATE_REQUEST";
     private static final String PREF_KEY_WITHHOLDAPPROVAL_REQUEST = "PREF_KEY_WITHHOLDAPPROVAL_REQUEST";
     private static final String PREF_KEY_CUSTOM_BARCODE_PRINT = "PREF_KEY_CUSTOM_BARCODE_PRINT";
+    private static final String PREF_KEY_BULK_LIST_RESPONSE = "PREF_KEY_BULK_LIST_RESPONSE";
+    private static final String PREF_KEY_LOGIN_DETAILS_RESPONSE = "PREF_KEY_LOGIN_DETAILS_RESPONSE";
+
 
     public SessionManager(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -178,5 +183,25 @@ public class SessionManager {
 
     public String getCustomBarcodePrintSize() {
         return preferences.getString(PREF_KEY_CUSTOM_BARCODE_PRINT, "THIRTYEIGHT_FIFTEEN");
+    }
+
+    public void setBulkListResponse(BulkListResponse bulkListResponse) {
+        String getbulkListResponseJsonString = new Gson().toJson(bulkListResponse);
+        preferences.edit().putString(PREF_KEY_BULK_LIST_RESPONSE, getbulkListResponseJsonString).apply();
+    }
+
+    public BulkListResponse getBulkListResponse() {
+        String getBulkListResponseJsonString = preferences.getString(PREF_KEY_BULK_LIST_RESPONSE, "");
+        return new Gson().fromJson(getBulkListResponseJsonString, BulkListResponse.class);
+    }
+
+    public void setLoginDetailsResponse(LoginDetailsResponse loginDetailsResponse) {
+        String getLoginDetailsResponseJsonString = new Gson().toJson(loginDetailsResponse);
+        preferences.edit().putString(PREF_KEY_LOGIN_DETAILS_RESPONSE, getLoginDetailsResponseJsonString).apply();
+    }
+
+    public LoginDetailsResponse getLoginDetailsResponse() {
+        String getLoginDetailsResponseJsonString = preferences.getString(PREF_KEY_LOGIN_DETAILS_RESPONSE, "");
+        return new Gson().fromJson(getLoginDetailsResponseJsonString, LoginDetailsResponse.class);
     }
 }

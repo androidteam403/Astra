@@ -15,10 +15,14 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -30,7 +34,6 @@ import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityPickerRequestsBinding;
 import com.thresholdsoft.astra.databinding.AlertDialogBinding;
-import com.thresholdsoft.astra.databinding.DialogChooseCustomBarcodeSizeBinding;
 import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.ui.alertdialogs.AlertBox;
@@ -66,7 +69,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-public class PickerRequestActivity extends BaseActivity implements PickerRequestCallback, CustomMenuSupervisorCallback {
+public class PickerRequestActivity extends BaseActivity implements PickerRequestCallback, CustomMenuSupervisorCallback, Filterable {
     AlertBox alertBox;
     private ArrayList<WithHoldDataResponse.Withholddetail> withholddetailList = new ArrayList<>();
     private List<WithHoldDataResponse.Withholddetail> withholddetailListTemp;
@@ -99,6 +102,30 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     private boolean isStatusSpinnerReset = false;
     private boolean isRefreshing = false;
     TextView s;
+
+    private List<WithHoldDataResponse.Withholddetail> withholddetailListGlobal = new ArrayList<>();
+    private List<WithHoldDataResponse.Withholddetail> withholddetailfilteredListGlobal = new ArrayList<>();
+
+    private List<WithHoldDataResponse.Withholddetail> withholddetailMainListListGlobal = new ArrayList<>();
+
+
+    //For pagination
+    private List<WithHoldDataResponse.Withholddetail> withholddetailListLoad;
+    private List<WithHoldDataResponse.Withholddetail> withholddetailListMainTemp;
+    private boolean isLoading = false;
+    private boolean isLastRecord = false;
+    private int page = 1;
+    private int pageSize = 10;
+    private String sortRequestSelectedItem = "Purchase Requisition";
+
+    private boolean isNotifying = false;
+
+
+    //For list passing to adapter
+    private List<WithHoldDataResponse.Withholddetail> withholddetailAdapterList = new ArrayList<>();
+    private List<WithHoldDataResponse.Withholddetail> withholddetailAdapterTotalList = new ArrayList<>();
+
+    private boolean isRefresh = true;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -164,9 +191,9 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         getController().getWithHoldApi();
         parentLayoutTouchListener();
         pickerRequestSearchByText();
-        setSortbyDropDown();
-        setRouteDropDown();
+
         setStatusDropDown();
+        setSortbyDropDown();
 
 
     }
@@ -185,7 +212,14 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selecteStatus = statusList.get(position);
                 if (!isStatusSpinnerReset) {
+                    getFilter().filter("");
+                } else {
+                    isStatusSpinnerReset = false;
+                }
+
+               /* if (!isStatusSpinnerReset) {
                     selecteStatus = statusList.get(position);
                     if (pickListHistoryAdapter != null) {
                         pickListHistoryAdapter.setStatus(selecteStatus);
@@ -194,7 +228,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 
                 } else {
                     isStatusSpinnerReset = false;
-                }
+                }*/
             }
 
             @Override
@@ -232,7 +266,6 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             if (remarksdetailsList.get(i).getRemarksdesc().contains("NO_STOCK")) {
                 if (noStockItemList.size() > 0) {
                     noStockLength = String.valueOf(noStockItemList.size());
-
                     remarksdetailsList.get(i).setRemarksdesc(StringUtils.GB2312.replace("GB2312", remarksdetailsList.get(i).getRemarksdesc() + " (" + noStockItemList.size() + ")").substring(0, 11 + noStockLength.length()));
                 }
 
@@ -254,6 +287,15 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         activityPickerRequestsBinding.requestCodeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedRequestType = remarksdetailsList.get(position).getRemarkscode();
+                if (!isRequestTypeSpinnerReset) {
+                    activityPickerRequestsBinding.pickerRequestSearchByText.setText("");
+                } else {
+                    isRequestTypeSpinnerReset = false;
+                }
+
+
+/*
                 if (pickListHistoryAdapter != null) {
 //                    if (remarksdetailsList.get(position).getRemarksdesc().contains("NO_STOCk")){
 //
@@ -268,6 +310,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
                         isRequestTypeSpinnerReset = false;
                     }
                 }
+*/
             }
 
             @Override
@@ -277,10 +320,33 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void setRouteDropDown() {
-        List<WithHoldDataResponse.Withholddetail> withholddetailRoute = new ArrayList<>();
+    private void setRouteSpinnerDropdown() {
+        RouteTypeDropdownSpinner adapter = new RouteTypeDropdownSpinner(this, routeList);
+        activityPickerRequestsBinding.routeSprinner.setAdapter(adapter);
+        activityPickerRequestsBinding.routeSprinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedRoute = routeList.get(position);
+                if (!isRouteSpinnerReset) {
+                    getFilter().filter(routeList.get(position));
+                } else {
+                    isRouteSpinnerReset = false;
+                }
+/*                if (!isRouteSpinnerReset) {
+                    selectedRoute = routeList.get(position);
+                    pickListHistoryAdapter.setRoute(routeList.get(position));
+                    pickListHistoryAdapter.getFilter().filter(routeList.get(position));
+//                        sortRequestList(routeList.get(position));
+                } else {
+                    isRouteSpinnerReset = false;
+                }*/
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
 
@@ -298,11 +364,18 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                sortRequestSelectedItem = sortbyDropDownList.get(position);
                 if (!isSortbySpinnerReset) {
                     sortRequestList(sortbyDropDownList.get(position));
                 } else {
                     isSortbySpinnerReset = false;
                 }
+                /*if (!isSortbySpinnerReset) {
+                    sortRequestSelectedItem = sortbyDropDownList.get(position);
+                    sortRequestList(sortbyDropDownList.get(position));
+                } else {
+                    isSortbySpinnerReset = false;
+                }*/
             }
 
             @Override
@@ -334,8 +407,135 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
 //            }
 //        }
 
+        if (withholddetailMainListListGlobal != null && withholddetailMainListListGlobal.size() > 0) {
 
-        if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
+            switch (sortVariable) {
+                case "Purchase Requisition":
+                    Collections.sort(withholddetailMainListListGlobal, (s1, s2) -> s1.getPurchreqid().compareToIgnoreCase(s2.getPurchreqid()));
+                    if (withholddetailMainListListGlobal != null && withholddetailMainListListGlobal.size() > 0) {
+//                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//                        pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, this);
+//                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+                      /*  activityPickerRequestsBinding.pickerRequestRecycleview.getRecycledViewPool().clear();
+                        pickListHistoryAdapter.setWithholddetailList(withholddetailMainListListGlobal);
+                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+                        pickListHistoryAdapter.setRequestType(selectedRequestType);*/
+//                        pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+                        getFilter().filter(selectedRequestType);
+
+                        noPickerRequestsFound(withholddetailMainListListGlobal.size());
+                    } else {
+                        noPickerRequestsFound(0);
+                    }
+                    break;
+                case "Product Name":
+                    Collections.sort(withholddetailMainListListGlobal, new Comparator<WithHoldDataResponse.Withholddetail>() {
+                        public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                            return s1.getItemname().compareToIgnoreCase(s2.getItemname());
+                        }
+                    });
+                    if (withholddetailMainListListGlobal != null && withholddetailMainListListGlobal.size() > 0) {
+//                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//                        pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, this);
+//                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+                       /* activityPickerRequestsBinding.pickerRequestRecycleview.getRecycledViewPool().clear();
+                        pickListHistoryAdapter.setWithholddetailList(withholddetailListLoad);
+                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+                        pickListHistoryAdapter.setRequestType(selectedRequestType);*/
+//                        pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+                        getFilter().filter(selectedRequestType);
+
+                        noPickerRequestsFound(withholddetailMainListListGlobal.size());
+                    } else {
+                        noPickerRequestsFound(0);
+                    }
+                    break;
+                case "Route":
+                    Collections.sort(withholddetailMainListListGlobal, new Comparator<WithHoldDataResponse.Withholddetail>() {
+                        public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                            return s1.getRoutecode().compareToIgnoreCase(s2.getRoutecode());
+                        }
+                    });
+                    if (withholddetailMainListListGlobal != null && withholddetailMainListListGlobal.size() > 0) {
+//                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//                        pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, this);
+//                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+                       /* activityPickerRequestsBinding.pickerRequestRecycleview.getRecycledViewPool().clear();
+                        pickListHistoryAdapter.setWithholddetailList(withholddetailListLoad);
+                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+                        pickListHistoryAdapter.setRequestType(selectedRequestType);*/
+//                        pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+                        getFilter().filter(selectedRequestType);
+
+                        noPickerRequestsFound(withholddetailMainListListGlobal.size());
+                    } else {
+                        noPickerRequestsFound(0);
+                    }
+                    break;
+
+
+                case "Requested By":
+                    Collections.sort(withholddetailMainListListGlobal, new Comparator<WithHoldDataResponse.Withholddetail>() {
+                        public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                            return s1.getUsername().compareToIgnoreCase(s2.getUsername());
+                        }
+                    });
+                    if (withholddetailMainListListGlobal != null && withholddetailMainListListGlobal.size() > 0) {
+//                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//                        pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, this);
+//                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+                       /* pickListHistoryAdapter.setWithholddetailList(withholddetailListLoad);
+                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+                        pickListHistoryAdapter.setRequestType(selectedRequestType);*/
+//                        pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+                        getFilter().filter(selectedRequestType);
+
+                        noPickerRequestsFound(withholddetailMainListListGlobal.size());
+                    } else {
+                        noPickerRequestsFound(0);
+                    }
+                    break;
+                case "Requested Date":
+                    Collections.sort(withholddetailMainListListGlobal, new Comparator<WithHoldDataResponse.Withholddetail>() {
+                        public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                            return s1.getOnholddatetime().compareToIgnoreCase(s2.getOnholddatetime());
+                        }
+                    });
+                    if (withholddetailMainListListGlobal != null && withholddetailMainListListGlobal.size() > 0) {
+//                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//                        pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListTemp, this);
+//                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+//                        activityPickerRequestsBinding.pickerRequestRecycleview.getRecycledViewPool().clear();
+                        /*pickListHistoryAdapter.setWithholddetailList(withholddetailListLoad);
+                        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+                        pickListHistoryAdapter.setRequestType(selectedRequestType);*/
+//                        pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+                        getFilter().filter(selectedRequestType);
+
+                        noPickerRequestsFound(withholddetailMainListListGlobal.size());
+                    } else {
+                        noPickerRequestsFound(0);
+                    }
+                    break;
+                default:
+            }
+        }
+
+
+
+
+
+        /*if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
 
             switch (sortVariable) {
                 case "Purchase Requisition":
@@ -452,7 +652,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
                     break;
                 default:
             }
-        }
+        }*/
     }
 
     private void pickerRequestSearchByText() {
@@ -479,6 +679,16 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             public void afterTextChanged(Editable editable) {
                 if (editable.length() >= 2) {
                     if (pickListHistoryAdapter != null) {
+                        getFilter().filter(editable);
+                    }
+                } else {
+                    if (pickListHistoryAdapter != null) {
+                        getFilter().filter("");
+
+                    }
+                }
+/*                if (editable.length() >= 2) {
+                    if (pickListHistoryAdapter != null) {
                         pickListHistoryAdapter.setRequestType(selectedRequestType);
                         pickListHistoryAdapter.getFilter().filter(editable);
 
@@ -489,7 +699,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
                         pickListHistoryAdapter.getFilter().filter("");
 
                     }
-                }
+                }*/
             }
         });
     }
@@ -501,19 +711,38 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSuccessWithHoldApi(WithHoldDataResponse withHoldDataResponse, String minDate, String maxDate) {
-
+        isRequestTypeSpinnerReset = true;
+        isRouteSpinnerReset = true;
+        isStatusSpinnerReset = false;
+        isSortbySpinnerReset = false;
+        isLastRecord = false;
 
         this.minDate = CommonUtils.parseDateToddMMyyyyNoTime(minDate);
         this.maxDate = CommonUtils.parseDateToddMMyyyyNoTime(maxDate);
 
-
         activityPickerRequestsBinding.setMinDate(CommonUtils.getCurrentDate());
         activityPickerRequestsBinding.setMaxDate(CommonUtils.getCurrentDate());
-        activityPickerRequestsBinding.setIsSortByRouteWise(true);
+//        activityPickerRequestsBinding.setIsSortByRouteWise(true);
+
+
         if (withHoldDataResponse != null && withHoldDataResponse.getRequeststatus()) {
+            this.withholddetailListGlobal = withHoldDataResponse.getWithholddetails();
+            this.withholddetailMainListListGlobal = withHoldDataResponse.getWithholddetails();
+
+            noStockItemList = withholddetailListGlobal.stream().filter(a -> a.getHoldreasoncode().contains("NO_STOCK")).collect(Collectors.toList());
+            damageItemList = withholddetailListGlobal.stream().filter(a -> a.getHoldreasoncode().contains("DAMAGE_ITEM")).collect(Collectors.toList());
+            setRequestTypeDropDown();
+
+            routeList = withholddetailListGlobal.stream().map(WithHoldDataResponse.Withholddetail::getRoutecode).distinct().collect(Collectors.toList());
+            routeList.add(0, "All");
+            setRouteSpinnerDropdown();
+
+            setWithHoldData(getPendingCurrentDateWithHoldDetails(withHoldDataResponse.getWithholddetails()));
+        }
+      /*  if (withHoldDataResponse != null && withHoldDataResponse.getRequeststatus()) {
             withholddetailList = (ArrayList<WithHoldDataResponse.Withholddetail>) withHoldDataResponse.getWithholddetails();
             withholddetailListTemp = withHoldDataResponse.getWithholddetails();
-
+            page = 1;
             noStockItemList = withholddetailList.stream().filter(a -> a.getHoldreasoncode().contains("NO_STOCK")).collect(Collectors.toList());
 
             damageItemList = withholddetailList.stream().filter(a -> a.getHoldreasoncode().contains("DAMAGE_ITEM")).collect(Collectors.toList());
@@ -544,13 +773,58 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             });
 
 
-            if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
+            withholddetailListMainTemp = withholddetailListTemp;
+            withholddetailListLoad = new ArrayList<>();
+            for (int i = 0; i < withholddetailListMainTemp.size(); i++) {
+                withholddetailListLoad.add(withholddetailListMainTemp.get(i));
+                if (i == ((page * pageSize) - 1)) {
+                    break;
+                }
+            }
+            page++;
+            if (withholddetailListLoad != null && withholddetailListLoad.size() > 0) {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-                pickListHistoryAdapter = new PickerListAdapter(this, getPendingCurrentDateWithHoldDetails(withholddetailListTemp), withholddetailListTemp, this);
-                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
-                pickListHistoryAdapter.setRequestType(selectedRequestType);
+//                pickListHistoryAdapter = new PickerListAdapter(this, getPendingCurrentDateWithHoldDetails(withholddetailListTemp), withholddetailListTemp, this);
+//                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//                pickListHistoryAdapter.setRequestType(selectedRequestType);
                 activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
-                activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+//                activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+
+
+                noPickerRequestsFound(withholddetailListLoad.size());
+                if (isRefreshing) {
+                    isRefreshing = false;
+                    if (activityPickerRequestsBinding.requestCodeSpinner != null) {
+                        isRequestTypeSpinnerReset = true;
+                        activityPickerRequestsBinding.requestCodeSpinner.setSelection(0);
+                    }
+                    if (activityPickerRequestsBinding.sortBySprinner != null) {
+                        isSortbySpinnerReset = true;
+                        activityPickerRequestsBinding.sortBySprinner.setSelection(0);
+                    }
+                    if (activityPickerRequestsBinding.routeSprinner != null) {
+                        isRouteSpinnerReset = true;
+                        activityPickerRequestsBinding.routeSprinner.setSelection(0);
+                    }
+                    if (activityPickerRequestsBinding.statusSpinner != null) {
+                        isStatusSpinnerReset = true;
+                        activityPickerRequestsBinding.statusSpinner.setSelection(1);
+                    }
+                }
+                initAdapter();
+                initScrollListener();
+            } else {
+                noPickerRequestsFound(0);
+            }
+
+
+*//*            if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//                pickListHistoryAdapter = new PickerListAdapter(this, getPendingCurrentDateWithHoldDetails(withholddetailListTemp), withholddetailListTemp, this);
+//                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//                pickListHistoryAdapter.setRequestType(selectedRequestType);
+                activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
+//                activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
 
 
                 noPickerRequestsFound(withholddetailListTemp.size());
@@ -576,12 +850,152 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             } else {
                 noPickerRequestsFound(0);
 //                Toast.makeText(this, withHoldDataResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
+            }*//*
+        } else {
+            noPickerRequestsFound(0);
+//            Toast.makeText(this, withHoldDataResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
+        }*/
+
+    }
+
+    private void setWithHoldData(List<WithHoldDataResponse.Withholddetail> withholddetailsListGlobal) {
+        if (withholddetailsListGlobal != null && withholddetailsListGlobal.size() > 0) {
+            this.withholddetailAdapterTotalList = withholddetailsListGlobal;
+
+            page = 1;
+            withholddetailAdapterList = new ArrayList<>();
+            for (int i = 0; i < withholddetailAdapterTotalList.size(); i++) {
+                withholddetailAdapterList.add(withholddetailAdapterTotalList.get(i));
+                if (i == ((page * pageSize) - 1)) {
+                    break;
+                }
             }
+            page++;
+            if (withholddetailAdapterList.size() > 0) {
+                RecyclerView.LayoutManager mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(mManager);
+                initAdapter();
+                initScrollListener();
+                noPickerRequestsFound(withholddetailAdapterList.size());
+            } else {
+                noPickerRequestsFound(0);
+            }
+
+
+            /*withholddetailList = (ArrayList<WithHoldDataResponse.Withholddetail>) withholddetailsListGlobal;//(ArrayList<WithHoldDataResponse.Withholddetail>) withHoldDataResponse.getWithholddetails();
+            withholddetailListTemp = (ArrayList<WithHoldDataResponse.Withholddetail>) withholddetailsListGlobal;//withHoldDataResponse.getWithholddetails();*/
+           /* page = 1;
+            noStockItemList = withholddetailList.stream().filter(a -> a.getHoldreasoncode().contains("NO_STOCK")).collect(Collectors.toList());
+
+            damageItemList = withholddetailList.stream().filter(a -> a.getHoldreasoncode().contains("DAMAGE_ITEM")).collect(Collectors.toList());
+            setRequestTypeDropDown();
+
+
+            routeList = withholddetailListTemp.stream().map(WithHoldDataResponse.Withholddetail::getRoutecode).distinct().collect(Collectors.toList());
+            routeList.add(0, "All");
+            RouteTypeDropdownSpinner adapter = new RouteTypeDropdownSpinner(this, routeList);
+            activityPickerRequestsBinding.routeSprinner.setAdapter(adapter);
+            activityPickerRequestsBinding.routeSprinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (!isRouteSpinnerReset) {
+                        selectedRoute = routeList.get(position);
+                        pickListHistoryAdapter.setRoute(routeList.get(position));
+                        pickListHistoryAdapter.getFilter().filter(routeList.get(position));
+//                        sortRequestList(routeList.get(position));
+                    } else {
+                        isRouteSpinnerReset = false;
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });*/
+         /*   page = 1;
+            withholddetailListMainTemp = withholddetailListTemp;
+            withholddetailListLoad = new ArrayList<>();
+            for (int i = 0; i < withholddetailListMainTemp.size(); i++) {
+                withholddetailListLoad.add(withholddetailListMainTemp.get(i));
+                if (i == ((page * pageSize) - 1)) {
+                    break;
+                }
+            }
+            page++;
+            if (withholddetailListLoad != null && withholddetailListLoad.size() > 0) {
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//                pickListHistoryAdapter = new PickerListAdapter(this, getPendingCurrentDateWithHoldDetails(withholddetailListTemp), withholddetailListTemp, this);
+//                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//                pickListHistoryAdapter.setRequestType(selectedRequestType);
+                activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
+//                activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+
+
+                noPickerRequestsFound(withholddetailListLoad.size());
+                if (isRefreshing) {
+                    isRefreshing = false;
+                    if (activityPickerRequestsBinding.requestCodeSpinner != null) {
+                        isRequestTypeSpinnerReset = true;
+                        activityPickerRequestsBinding.requestCodeSpinner.setSelection(0);
+                    }
+                    if (activityPickerRequestsBinding.sortBySprinner != null) {
+                        isSortbySpinnerReset = true;
+                        activityPickerRequestsBinding.sortBySprinner.setSelection(0);
+                    }
+                    if (activityPickerRequestsBinding.routeSprinner != null) {
+                        isRouteSpinnerReset = true;
+                        activityPickerRequestsBinding.routeSprinner.setSelection(0);
+                    }
+                    if (activityPickerRequestsBinding.statusSpinner != null) {
+                        isStatusSpinnerReset = true;
+                        activityPickerRequestsBinding.statusSpinner.setSelection(1);
+                    }
+                }
+                initAdapter();
+                initScrollListener();
+            } else {
+                noPickerRequestsFound(0);
+            }*/
+
+
+/*            if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//                pickListHistoryAdapter = new PickerListAdapter(this, getPendingCurrentDateWithHoldDetails(withholddetailListTemp), withholddetailListTemp, this);
+//                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//                pickListHistoryAdapter.setRequestType(selectedRequestType);
+                activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
+//                activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+
+
+                noPickerRequestsFound(withholddetailListTemp.size());
+                if (isRefreshing) {
+                    isRefreshing = false;
+                    if (activityPickerRequestsBinding.requestCodeSpinner != null) {
+                        isRequestTypeSpinnerReset = true;
+                        activityPickerRequestsBinding.requestCodeSpinner.setSelection(0);
+                    }
+                    if (activityPickerRequestsBinding.sortBySprinner != null) {
+                        isSortbySpinnerReset = true;
+                        activityPickerRequestsBinding.sortBySprinner.setSelection(0);
+                    }
+                    if (activityPickerRequestsBinding.routeSprinner != null) {
+                        isRouteSpinnerReset = true;
+                        activityPickerRequestsBinding.routeSprinner.setSelection(0);
+                    }
+                    if (activityPickerRequestsBinding.statusSpinner != null) {
+                        isStatusSpinnerReset = true;
+                        activityPickerRequestsBinding.statusSpinner.setSelection(1);
+                    }
+                }
+            } else {
+                noPickerRequestsFound(0);
+//                Toast.makeText(this, withHoldDataResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
+            }*/
         } else {
             noPickerRequestsFound(0);
 //            Toast.makeText(this, withHoldDataResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
         }
-
     }
 
     @Override
@@ -622,9 +1036,10 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             final DatePickerDialog dialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
                 selectedFromDateCalender.set(year, monthOfYear, dayOfMonth);
                 activityPickerRequestsBinding.setMinDate(CommonUtils.getDateFormatddmmyyyy(selectedFromDateCalender.getTimeInMillis()));
-                pickListHistoryAdapter.setRequestType(selectedRequestType);
-                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
-                pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+//                pickListHistoryAdapter.setRequestType(selectedRequestType);
+//                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//                pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+                getFilter().filter(selectedRequestType);
 //            this.minDate = CommonUtils.getDateFormatddmmyyyy(c.getTimeInMillis());
             }, selectedFromDateCalendermYear, selectedFromDateCalendermMonth, selectedFromDateCalendermDay);
 
@@ -700,9 +1115,10 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             final DatePickerDialog dialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
                 selectedFromDateCalender.set(year, monthOfYear, dayOfMonth);
                 activityPickerRequestsBinding.setMaxDate(CommonUtils.getDateFormatddmmyyyy(selectedFromDateCalender.getTimeInMillis()));
-                pickListHistoryAdapter.setRequestType(selectedRequestType);
-                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
-                pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+//                pickListHistoryAdapter.setRequestType(selectedRequestType);
+//                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//                pickListHistoryAdapter.getFilter().filter(selectedRequestType);
+                getFilter().filter(selectedRequestType);
 //            this.minDate = CommonUtils.getDateFormatddmmyyyy(c.getTimeInMillis());
             }, selectedFromDateCalendermYear, selectedFromDateCalendermMonth, selectedFromDateCalendermDay);
 
@@ -756,6 +1172,38 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             String date1 = activityPickerRequestsBinding.getMinDate();
             String date2 = activityPickerRequestsBinding.getMaxDate();
 
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+            try {
+                Date d1 = sdf.parse(date1);
+                Date d2 = sdf.parse(date2);
+                withholddetailListList.clear();
+                for (WithHoldDataResponse.Withholddetail w : withholddetailListLoad) {
+                    Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(w.getOnholddatetime());
+                    if (!d3.before(d1) && !d3.after(d2)) {
+                        if (selectedRequestType.equalsIgnoreCase("All")) {
+                            withholddetailListList.add(w);
+                        } else {
+                            if ((w.getHoldreasoncode().toLowerCase().contains(selectedRequestType.toLowerCase()))) {
+                                withholddetailListList.add(w);
+                            }
+                        }
+                    }
+                }
+                withholddetailListLoad = withholddetailListList;
+                pickListHistoryAdapter.setRequestType(selectedRequestType);
+                pickListHistoryAdapter.setNotifying(true);
+                pickListHistoryAdapter.setWithholddetailList(withholddetailListLoad);
+                pickListHistoryAdapter.notifyDataSetChanged();
+            } catch (ParseException ex) {
+                Log.v("Exception", ex.getLocalizedMessage());
+            }
+        }
+
+/*
+        if (activityPickerRequestsBinding.getMinDate() != null && !activityPickerRequestsBinding.getMinDate().isEmpty() && activityPickerRequestsBinding.getMaxDate() != null && !activityPickerRequestsBinding.getMaxDate().isEmpty()) {
+            String date1 = activityPickerRequestsBinding.getMinDate();
+            String date2 = activityPickerRequestsBinding.getMaxDate();
+
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
             try {
                 Date d1 = sdf.parse(date1);
@@ -782,6 +1230,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
                 Log.v("Exception", ex.getLocalizedMessage());
             }
         }
+*/
     }
 
     @Override
@@ -834,12 +1283,45 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     @Override
     public void onClickRefreshRequest() {
         isRefreshing = true;
+        isRefresh = true;
+        isStatusSpinnerReset = true;
+        isSortbySpinnerReset = true;
+        setStatusDropDown();
+        setSortbyDropDown();
         getController().getWithHoldApi();
     }
 
     @Override
     public void onClickSortByRoute() {
         activityPickerRequestsBinding.setIsSortByRouteWise(true);
+        if (withholddetailListLoad != null && withholddetailListLoad.size() > 0) {
+            Collections.sort(withholddetailListLoad, new Comparator<WithHoldDataResponse.Withholddetail>() {
+                public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                    return s1.getPurchreqid().compareToIgnoreCase(s2.getPurchreqid());
+                }
+            });
+
+            Collections.sort(withholddetailListLoad, new Comparator<WithHoldDataResponse.Withholddetail>() {
+                public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                    return s1.getRoutecode().compareToIgnoreCase(s2.getRoutecode());
+                }
+            });
+            if (withholddetailListLoad != null && withholddetailListLoad.size() > 0) {
+//                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListLoad, withholddetailListLoad, this);
+                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//                activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
+                activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+
+                noPickerRequestsFound(withholddetailListLoad.size());
+            } else {
+                noPickerRequestsFound(0);
+//                Toast.makeText(this, withHoldDataResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
+      /*  activityPickerRequestsBinding.setIsSortByRouteWise(true);
         if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
             Collections.sort(withholddetailListTemp, new Comparator<WithHoldDataResponse.Withholddetail>() {
                 public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
@@ -864,12 +1346,32 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
                 noPickerRequestsFound(0);
 //                Toast.makeText(this, withHoldDataResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
             }
-        }
+        }*/
     }
 
     @Override
     public void onClickSortByRequestedDate() {
         activityPickerRequestsBinding.setIsSortByRouteWise(false);
+        if (withholddetailListLoad != null && withholddetailListLoad.size() > 0) {
+            Collections.sort(withholddetailListLoad, new Comparator<WithHoldDataResponse.Withholddetail>() {
+                public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
+                    return s1.getOnholddatetime().compareToIgnoreCase(s2.getOnholddatetime());
+                }
+            });
+            if (withholddetailListLoad != null && withholddetailListLoad.size() > 0) {
+//                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                pickListHistoryAdapter = new PickerListAdapter(this, withholddetailListLoad, withholddetailListLoad, this);
+                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//                activityPickerRequestsBinding.pickerRequestRecycleview.setLayoutManager(linearLayoutManager);
+                activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+
+                noPickerRequestsFound(withholddetailListLoad.size());
+            } else {
+                noPickerRequestsFound(0);
+//                Toast.makeText(this, withHoldDataResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+       /* activityPickerRequestsBinding.setIsSortByRouteWise(false);
         if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
             Collections.sort(withholddetailListTemp, new Comparator<WithHoldDataResponse.Withholddetail>() {
                 public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {
@@ -888,7 +1390,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
                 noPickerRequestsFound(0);
 //                Toast.makeText(this, withHoldDataResponse.getRequestmessage(), Toast.LENGTH_SHORT).show();
             }
-        }
+        }*/
 
     }
 
@@ -901,7 +1403,6 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     @Override
     public void onClickLogOutUsers() {
         Intent intent = new Intent(PickerRequestActivity.this, LogOutUsersActivity.class);
-
         startActivity(intent);
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
         finish();
@@ -956,7 +1457,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             if (withholddetail.getStatus().equalsIgnoreCase("PENDING")) {
                 String date1 = CommonUtils.getCurrentDate();
                 String date2 = CommonUtils.getCurrentDate();
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
                 try {
                     Date d1 = sdf.parse(date1);
                     Date d2 = sdf.parse(date2);
@@ -971,5 +1472,302 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         }
 
         return returnWithHoldDetails;
+    }
+
+
+    private void initAdapter() {
+        pickListHistoryAdapter = new PickerListAdapter(this, withholddetailAdapterList, withholddetailListLoad, this);
+//        pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
+//        pickListHistoryAdapter.setRequestType(selectedRequestType);
+//        pickListHistoryAdapter.setisNotifying(isNotifying);
+//        pickListHistoryAdapter.setRoute(selectedRoute);
+//        pickListHistoryAdapter.setStatus(selecteStatus);
+        activityPickerRequestsBinding.pickerRequestRecycleview.setAdapter(pickListHistoryAdapter);
+
+        activityPickerRequestsBinding.pickerRequestRecycleview.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                // At this point the layout is complete and the
+                // dimensions of recyclerView and any child views
+                // are known.
+                activityPickerRequestsBinding.pickerRequestRecycleview.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                isRefresh = false;
+            }
+        });
+    }
+
+    private void initScrollListener() {
+        activityPickerRequestsBinding.pickerRequestRecycleview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+
+                if (!isLoading) {
+                    if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == withholddetailAdapterList.size() - 1) {
+                        //bottom of list!
+                        if (!isLastRecord) {
+                            isLoading = true;
+                            loadMore();
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private void loadMore() {
+        if (withholddetailAdapterList.size() < withholddetailAdapterTotalList.size()) {
+            withholddetailAdapterList.add(null);
+            pickListHistoryAdapter.notifyItemInserted(withholddetailAdapterList.size() - 1);
+            List<WithHoldDataResponse.Withholddetail> withholddetailListLoadTemp = new ArrayList<>();
+            for (int i = withholddetailAdapterList.size() - 1; i < withholddetailAdapterTotalList.size(); i++) {
+                withholddetailListLoadTemp.add(withholddetailAdapterTotalList.get(i));
+                if (i == ((page * pageSize) - 1)) {
+                    break;
+                }
+            }
+            page++;
+            withholddetailAdapterList.remove(withholddetailAdapterList.size() - 1);
+            int scrollPosition = withholddetailAdapterList.size();
+            pickListHistoryAdapter.notifyItemRemoved(scrollPosition);
+            int currentSize = scrollPosition;
+            int nextLimit = 10;
+
+            withholddetailAdapterList.addAll(withholddetailListLoadTemp);
+//            sortRequestList(sortRequestSelectedItem);
+            pickListHistoryAdapter.notifyDataSetChanged();
+            isLoading = false;
+            if (withholddetailAdapterList.size() == withholddetailAdapterTotalList.size()) {
+                this.isLastRecord = true;
+            }
+        } else if (withholddetailAdapterList.size() == withholddetailAdapterTotalList.size()) {
+            this.isLastRecord = true;
+        }
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (selectedRequestType.equals("All") && selectedRoute.equalsIgnoreCase("All") && (charString.equals("All") || charString.isEmpty())) {
+                    withholddetailfilteredListGlobal.clear();
+                    for (WithHoldDataResponse.Withholddetail row : withholddetailMainListListGlobal) {
+                        String date1 = activityPickerRequestsBinding.getMinDate(); //minDate;
+                        String date2 = activityPickerRequestsBinding.getMaxDate(); //maxDate;
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+                        try {
+                            Date d1 = sdf.parse(date1);
+                            Date d2 = sdf.parse(date2);
+                            Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
+                            if (!d3.before(d1) && !d3.after(d2)) {
+                                if (selecteStatus.equalsIgnoreCase("All") || selecteStatus.equalsIgnoreCase(row.getStatus())) {
+                                    isNotifying = true;
+                                    // pickListHistoryAdapter.setisNotifying(true);
+                                    withholddetailfilteredListGlobal.add(row);
+                                }
+                            }
+                        } catch (ParseException ex) {
+                            System.out.println(ex);
+                        }
+                    }
+                    withholddetailListGlobal = withholddetailfilteredListGlobal;
+                } else if (charString.isEmpty()) {
+                    withholddetailfilteredListGlobal.clear();
+                    for (WithHoldDataResponse.Withholddetail row : withholddetailMainListListGlobal) {
+                        if (!selectedRequestType.equalsIgnoreCase("All") && !selectedRoute.equalsIgnoreCase("All")) {
+                            if (!withholddetailfilteredListGlobal.contains(row) && (row.getHoldreasoncode().toLowerCase().contains(pickListHistoryAdapter.getRequestType().toLowerCase())) && row.getRoutecode().toLowerCase().contains(pickListHistoryAdapter.getRoute().toLowerCase())) {
+                                String date1 = activityPickerRequestsBinding.getMinDate(); //minDate;
+                                String date2 = activityPickerRequestsBinding.getMaxDate(); //maxDate;
+                                SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+                                try {
+                                    Date d1 = sdf.parse(date1);
+                                    Date d2 = sdf.parse(date2);
+                                    Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
+                                    if (!d3.before(d1) && !d3.after(d2)) {
+                                        if (selecteStatus.equalsIgnoreCase("All") || selecteStatus.equalsIgnoreCase(row.getStatus())) {
+                                            isNotifying = true;
+                                            //pickListHistoryAdapter.setisNotifying(true);
+                                            withholddetailfilteredListGlobal.add(row);
+                                        }
+                                    }
+                                } catch (ParseException ex) {
+                                    System.out.println(ex);
+                                }
+                            }
+                        } else if (!selectedRequestType.equalsIgnoreCase("All")) {
+                            if (!withholddetailfilteredListGlobal.contains(row) && (row.getHoldreasoncode().toLowerCase().contains(selectedRequestType.toLowerCase()))) {
+                                String date1 = activityPickerRequestsBinding.getMinDate(); //minDate;
+                                String date2 = activityPickerRequestsBinding.getMaxDate(); //maxDate;
+                                SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+                                try {
+                                    Date d1 = sdf.parse(date1);
+                                    Date d2 = sdf.parse(date2);
+                                    Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
+                                    if (!d3.before(d1) && !d3.after(d2)) {
+                                        if (selecteStatus.equalsIgnoreCase("All") || selecteStatus.equalsIgnoreCase(row.getStatus())) {
+                                            isNotifying = true;
+                                            // pickListHistoryAdapter.setisNotifying(true);
+                                            withholddetailfilteredListGlobal.add(row);
+                                        }
+                                    }
+                                } catch (ParseException ex) {
+                                    System.out.println(ex);
+                                }
+                            }
+                        } else if (!selectedRoute.equalsIgnoreCase("All")) {
+                            if (!withholddetailfilteredListGlobal.contains(row) && (row.getRoutecode().toLowerCase().contains(selectedRoute.toLowerCase()))) {
+                                String date1 = activityPickerRequestsBinding.getMinDate(); //minDate;
+                                String date2 = activityPickerRequestsBinding.getMaxDate(); //maxDate;
+                                SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+                                try {
+                                    Date d1 = sdf.parse(date1);
+                                    Date d2 = sdf.parse(date2);
+                                    Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
+                                    if (!d3.before(d1) && !d3.after(d2)) {
+                                        if (selecteStatus.equalsIgnoreCase("All") || selecteStatus.equalsIgnoreCase(row.getStatus())) {
+                                            isNotifying = true;
+                                            //pickListHistoryAdapter.setisNotifying(true);
+                                            withholddetailfilteredListGlobal.add(row);
+                                        }
+                                    }
+                                } catch (ParseException ex) {
+                                    System.out.println(ex);
+                                }
+                            }
+                        }
+                    }
+                    withholddetailListGlobal = withholddetailfilteredListGlobal;
+                } else {
+                    withholddetailfilteredListGlobal.clear();
+                    for (WithHoldDataResponse.Withholddetail row : withholddetailMainListListGlobal) {
+                        if (!selectedRequestType.equalsIgnoreCase("All") && !selectedRoute.equalsIgnoreCase("All")) {
+                            if (!withholddetailfilteredListGlobal.contains(row) && row.getHoldreasoncode().toLowerCase().contains(selectedRequestType.toLowerCase()) && row.getRoutecode().toLowerCase().contains(selectedRoute.toLowerCase())) {
+
+                                if ((row.getPurchreqid().toLowerCase().contains(charString.toLowerCase())) || (row.getUserid().replace(" ", "").toLowerCase().contains(charString.toLowerCase())) || (row.getUsername().replace(" ", "").toLowerCase().contains(charString.toLowerCase())) || (row.getItemname().toLowerCase().contains(charString.toLowerCase())) || (row.getRoutecode().toLowerCase().contains(charString.toLowerCase()))) {
+
+                                    String date1 = activityPickerRequestsBinding.getMinDate(); //minDate;
+                                    String date2 = activityPickerRequestsBinding.getMaxDate(); //maxDate;
+                                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+                                    try {
+                                        Date d1 = sdf.parse(date1);
+                                        Date d2 = sdf.parse(date2);
+                                        Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
+                                        if (!d3.before(d1) && !d3.after(d2)) {
+                                            if (selecteStatus.equalsIgnoreCase("All") || selecteStatus.equalsIgnoreCase(row.getStatus())) {
+                                                isNotifying = true;
+                                                //pickListHistoryAdapter.setisNotifying(true);
+                                                withholddetailfilteredListGlobal.add(row);
+                                            }
+                                        }
+                                    } catch (ParseException ex) {
+                                        System.out.println(ex);
+                                    }
+                                }
+                            }
+                        } else if (!selectedRequestType.equalsIgnoreCase("All")) {
+                            if (!withholddetailfilteredListGlobal.contains(row) && ((row.getHoldreasoncode().toLowerCase().contains(selectedRequestType.toLowerCase())))) {
+
+                                if ((row.getPurchreqid().toLowerCase().contains(charString.toLowerCase())) || (row.getUserid().replace(" ", "").toLowerCase().contains(charString.toLowerCase())) || (row.getUsername().replace(" ", "").toLowerCase().contains(charString.toLowerCase())) || (row.getItemname().toLowerCase().contains(charString.toLowerCase())) || (row.getHoldreasoncode().toLowerCase().contains(charString.toLowerCase())) || (row.getRoutecode().toLowerCase().contains(charString.toLowerCase()) || charString.equalsIgnoreCase("All"))) {
+                                    String date1 = activityPickerRequestsBinding.getMinDate(); //minDate;
+                                    String date2 = activityPickerRequestsBinding.getMaxDate(); //maxDate;
+                                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+                                    try {
+                                        Date d1 = sdf.parse(date1);
+                                        Date d2 = sdf.parse(date2);
+                                        Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
+                                        if (!d3.before(d1) && !d3.after(d2)) {
+                                            if (selecteStatus.equalsIgnoreCase("All") || selecteStatus.equalsIgnoreCase(row.getStatus())) {
+                                                isNotifying = true;
+                                                //pickListHistoryAdapter.setisNotifying(true);
+                                                withholddetailfilteredListGlobal.add(row);
+                                            }
+                                        }
+                                    } catch (ParseException ex) {
+                                        System.out.println(ex);
+                                    }
+                                }
+                            }
+                        } else if (!selectedRoute.equalsIgnoreCase("All")) {
+                            if (!withholddetailfilteredListGlobal.contains(row) && ((row.getRoutecode().toLowerCase().contains(selectedRoute.toLowerCase())))) {
+
+                                if ((row.getPurchreqid().toLowerCase().contains(charString.toLowerCase())) || (row.getUserid().replace(" ", "").toLowerCase().contains(charString.toLowerCase())) || (row.getUsername().replace(" ", "").toLowerCase().contains(charString.toLowerCase())) || (row.getItemname().toLowerCase().contains(charString.toLowerCase())) || (row.getHoldreasoncode().toLowerCase().contains(charString.toLowerCase()) || charString.equalsIgnoreCase("All")) || (row.getRoutecode().toLowerCase().contains(charString.toLowerCase()))) {
+                                    String date1 = activityPickerRequestsBinding.getMinDate(); //minDate;
+                                    String date2 = activityPickerRequestsBinding.getMaxDate(); //maxDate;
+                                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+                                    try {
+                                        Date d1 = sdf.parse(date1);
+                                        Date d2 = sdf.parse(date2);
+                                        Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
+                                        if (!d3.before(d1) && !d3.after(d2)) {
+                                            if (selecteStatus.equalsIgnoreCase("All") || selecteStatus.equalsIgnoreCase(row.getStatus())) {
+                                                isNotifying = true;
+                                                //pickListHistoryAdapter.setisNotifying(true);
+                                                withholddetailfilteredListGlobal.add(row);
+                                            }
+                                        }
+                                    } catch (ParseException ex) {
+                                        System.out.println(ex);
+                                    }
+                                }
+
+                            }
+                        } else {
+                            if (!withholddetailfilteredListGlobal.contains(row) && ((row.getHoldreasoncode().toLowerCase().contains(charString.toLowerCase())) || (row.getPurchreqid().toLowerCase().contains(charString.toLowerCase())) || (row.getUserid().replace(" ", "").toLowerCase().contains(charString.toLowerCase())) || (row.getUsername().replace(" ", "").toLowerCase().contains(charString.toLowerCase())) || (row.getItemname().toLowerCase().contains(charString.toLowerCase())) || (row.getRoutecode().toLowerCase().contains(charString.toLowerCase())))) {
+                                String date1 = activityPickerRequestsBinding.getMinDate(); //minDate;
+                                String date2 = activityPickerRequestsBinding.getMaxDate(); //maxDate;
+                                SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+                                try {
+                                    Date d1 = sdf.parse(date1);
+                                    Date d2 = sdf.parse(date2);
+                                    Date d3 = CommonUtils.parseDateToddMMyyyyNoTimeTDP(row.getOnholddatetime());
+                                    if (!d3.before(d1) && !d3.after(d2)) {
+                                        if (selecteStatus.equalsIgnoreCase("All") || selecteStatus.equalsIgnoreCase(row.getStatus())) {
+                                            isNotifying = true;
+                                            //pickListHistoryAdapter.setisNotifying(true);
+                                            withholddetailfilteredListGlobal.add(row);
+                                        }
+                                    }
+                                } catch (ParseException ex) {
+                                    System.out.println(ex);
+                                }
+                            }
+                        }
+                    }
+//                    withholddetailList = withholddetailfilteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = withholddetailfilteredListGlobal;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                if (withholddetailListGlobal != null && !withholddetailListGlobal.isEmpty()) {
+                    withholddetailListGlobal = (ArrayList<WithHoldDataResponse.Withholddetail>) filterResults.values;
+                    try {
+                        noPickerRequestsFound(withholddetailListGlobal.size());
+                        isLastRecord = false;
+                        setWithHoldData(withholddetailListGlobal);
+//                        notifyDataSetChanged();
+                    } catch (Exception e) {
+                        Log.e("FullfilmentAdapter", e.getMessage());
+                    }
+                } else {
+                    noPickerRequestsFound(0);
+//                    notifyDataSetChanged();
+                }
+            }
+        };
+
     }
 }

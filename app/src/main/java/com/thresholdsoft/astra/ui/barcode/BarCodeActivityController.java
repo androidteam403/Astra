@@ -73,7 +73,7 @@ public class BarCodeActivityController {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<GetBarCodeResponse> call = apiInterface.BARCODE_API_CALL("yvEoG+8MvYiOfhV2wb5jw", barCodeRequest);
+            Call<GetBarCodeResponse> call = apiInterface.BARCODE_API_CALL(BuildConfig.BASE_TOKEN, barCodeRequest);
             call.enqueue(new Callback<GetBarCodeResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetBarCodeResponse> call, @NotNull Response<GetBarCodeResponse> response) {

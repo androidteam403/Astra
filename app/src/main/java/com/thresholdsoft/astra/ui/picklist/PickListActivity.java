@@ -77,6 +77,7 @@ import com.thresholdsoft.astra.databinding.DialogMenuLogisticsBinding;
 import com.thresholdsoft.astra.databinding.DialogModeofDeliveryBinding;
 import com.thresholdsoft.astra.databinding.DialogRequestApprovalBinding;
 import com.thresholdsoft.astra.databinding.DialogScannedBarcodeItemListBinding;
+import com.thresholdsoft.astra.databinding.DialogShowMessageBinding;
 import com.thresholdsoft.astra.databinding.DialogSupervisorRequestRemarksBinding;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.db.room.AppDatabase;
@@ -109,6 +110,7 @@ import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
 import com.thresholdsoft.astra.ui.picklisthistory.PickListHistoryActivity;
 import com.thresholdsoft.astra.ui.requesthistory.RequestHistoryActivity;
 import com.thresholdsoft.astra.ui.scanner.ScannerActivity;
+import com.thresholdsoft.astra.ui.services.model.MrpBarcodeBulkUpdateResponse;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.CommonUtils;
 
@@ -124,6 +126,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class PickListActivity extends PDFCreatorActivity implements PickListActivityCallback, CustomMenuCallback, Filterable {
@@ -167,7 +170,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     private int endIndex = 0;
     private static int pageSize = 15;
 
-
+    Dialog showMessageDialog = null;
     private boolean isItemListRefreshRequired = false;
 
     public static Intent getStartActivity(Context mContext) {
@@ -179,6 +182,44 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        if (intent != null) {
+            String data = intent.getStringExtra("ITEM_UPDATED");
+            GetAllocationLineResponse.Allocationdetail allocationdetailUpdate = (GetAllocationLineResponse.Allocationdetail) intent.getSerializableExtra("NOTIFICATION_DATA");
+            MrpBarcodeBulkUpdateResponse mrpBarcodeBulkUpdateResponse = (MrpBarcodeBulkUpdateResponse) intent.getSerializableExtra("NOTIFICATION_DATA_OBJ");
+            if (allocationdetailUpdate != null && mrpBarcodeBulkUpdateResponse != null) {
+                if (showMessageDialog == null || (!showMessageDialog.isShowing())) {
+                    showItemUpdatePopup(allocationdetailUpdate, mrpBarcodeBulkUpdateResponse);
+                }
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void showItemUpdatePopup(GetAllocationLineResponse.Allocationdetail allocationdetailUpdate, MrpBarcodeBulkUpdateResponse mrpBarcodeBulkUpdateResponse) {
+        showMessageDialog = new Dialog(this);
+        DialogShowMessageBinding dialogShowMessageBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_show_message, null, false);
+        showMessageDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        showMessageDialog.setContentView(dialogShowMessageBinding.getRoot());
+        showMessageDialog.setCancelable(false);
+        StringBuilder sb = new StringBuilder(mrpBarcodeBulkUpdateResponse.getRequesttype().toLowerCase());
+        sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
+        String requestType = sb.toString();
+        dialogShowMessageBinding.message.setText(requestType + " has been updated.");
+        dialogShowMessageBinding.itemName.setText(allocationdetailUpdate.getItemname());
+        dialogShowMessageBinding.itemId.setText(allocationdetailUpdate.getItemid());
+        dialogShowMessageBinding.batchCode.setText(allocationdetailUpdate.getInventbatchid());
+        dialogShowMessageBinding.mrp.setText(String.valueOf(allocationdetailUpdate.getMrp()));
+        dialogShowMessageBinding.barcode.setText(String.valueOf(allocationdetailUpdate.getItembarcode()));
+        dialogShowMessageBinding.bulkScan.setText(allocationdetailUpdate.getIsbulkscanenable() ? "True" : "False");
+        dialogShowMessageBinding.ok.setOnClickListener(v -> {
+            showMessageDialog.dismiss();
+            if (activityPickListBinding.getAllocationData() != null) {
+                onClickPickListItem(activityPickListBinding.getAllocationData());
+            }
+        });
+        if (showMessageDialog != null && !showMessageDialog.isShowing()) {
+            showMessageDialog.show();
+        }
     }
 
     @SuppressLint("ResourceAsColor")
@@ -186,7 +227,64 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityPickListBinding = DataBindingUtil.setContentView(this, R.layout.activity_pick_list);
+        if (getIntent() != null) {
+            Bundle bundle = getIntent().getExtras();
+            if (bundle != null) {
+                //bundle must contain all info sent in "data" field of the notification
+                setNotificationData(bundle);
+            }
+        }
         setUp();
+    }
+
+    private void setNotificationData(Bundle bundle) {
+        String requestType = (String) bundle.get("requesttype");
+        if (requestType != null && !requestType.isEmpty()) {
+            String itemid = (String) bundle.get("itemid");
+            String batch = (String) bundle.get("batch");
+            String newmrp = (String) bundle.get("newmrp");
+            String oldmrp = (String) bundle.get("oldmrp");
+            String newbarcode = (String) bundle.get("newbarcode");
+            String oldbarcode = (String) bundle.get("oldbarcode");
+            String isbulk = (String) bundle.get("isbulk");
+
+            MrpBarcodeBulkUpdateResponse mrpBarcodeBulkUpdateResponse = new MrpBarcodeBulkUpdateResponse();
+            mrpBarcodeBulkUpdateResponse.setRequesttype(requestType);
+            mrpBarcodeBulkUpdateResponse.setItemid(itemid);
+            mrpBarcodeBulkUpdateResponse.setBatch(batch);
+            mrpBarcodeBulkUpdateResponse.setNewmrp(newmrp);
+            mrpBarcodeBulkUpdateResponse.setOldmrp(oldmrp);
+            mrpBarcodeBulkUpdateResponse.setNewbarcode(newbarcode);
+            mrpBarcodeBulkUpdateResponse.setOldbarcode(oldbarcode);
+            mrpBarcodeBulkUpdateResponse.setIsbulk(isbulk);
+
+            mrpBarcodeBulkUpdate(mrpBarcodeBulkUpdateResponse);
+        }
+    }
+
+    private void mrpBarcodeBulkUpdate(MrpBarcodeBulkUpdateResponse mrpBarcodeBulkUpdateResponse) {
+        boolean isUpdated = false;
+        List<GetAllocationLineResponse> getAllocationLineResponseFromDb = AppDatabase.getDatabaseInstance(this).dbDao().getAllAllocationLineList();
+        for (GetAllocationLineResponse getAllocationLineResponse : getAllocationLineResponseFromDb) {
+            List<GetAllocationLineResponse.Allocationdetail> allocationdetailList = getAllocationLineResponse.getAllocationdetails().stream().filter(u -> (u.getItemid().equalsIgnoreCase(mrpBarcodeBulkUpdateResponse.getItemid()) && u.getInventbatchid().equalsIgnoreCase(mrpBarcodeBulkUpdateResponse.getBatch()))).collect(Collectors.toList());
+            if (allocationdetailList.size() > 0) {
+                for (GetAllocationLineResponse.Allocationdetail allocationdetail : allocationdetailList) {
+                    if ((allocationdetail.getAllocatedPackscompleted() - allocationdetail.getSupervisorApprovedQty()) != 0) {
+                        if (mrpBarcodeBulkUpdateResponse.getRequesttype().equalsIgnoreCase("mrp")) {
+                            allocationdetail.setMrp(Double.parseDouble(mrpBarcodeBulkUpdateResponse.getNewmrp()));
+                            isUpdated = true;
+                        } else if (mrpBarcodeBulkUpdateResponse.getRequesttype().equalsIgnoreCase("barcode")) {
+                            allocationdetail.setItembarcode(mrpBarcodeBulkUpdateResponse.getNewbarcode());
+                            isUpdated = true;
+                        } else if (mrpBarcodeBulkUpdateResponse.getRequesttype().equalsIgnoreCase("isbulk")) {
+                            allocationdetail.setIsbulkscanenable(mrpBarcodeBulkUpdateResponse.getIsbulk().equalsIgnoreCase("TRUE"));
+                            isUpdated = true;
+                        }
+                    }
+                }
+            }
+            AppDatabase.getDatabaseInstance(this).dbDao().getAllocationLineUpdate(getAllocationLineResponse);
+        }
     }
 
     private void setUp() {
@@ -409,7 +507,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             for (GetAllocationDataResponse.Allocationhddata allocationhddataAssignedLine : allocationhddataList) {
                 assignedLinesCount = assignedLinesCount + allocationhddataAssignedLine.getAllocatedlines();
             }
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
 
 
 //            List<GetAllocationDataResponse.Allocationhddata> completedAllocationDataCount = new ArrayList<>();
@@ -524,34 +622,41 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             allocationdetailListForAdapter = allocationdetailList.subList(startIndex, endIndex);
 
             activityPickListBinding.setIsPagination(allocationdetailList.size() > pageSize);
+            Handler h = new Handler();
+            h.post(new Runnable() {
+                @Override
+                public void run() {
+                    itemListAdapter = new ItemListAdapter(PickListActivity.this, allocationdetailListForAdapter, PickListActivity.this, activityPickListBinding.getAllocationData().getScanstatus().equalsIgnoreCase("Completed"));
+                    setPagination(allocationdetailList.size() > pageSize);
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PickListActivity.this, LinearLayoutManager.VERTICAL, false);
 
-            itemListAdapter = new ItemListAdapter(this, allocationdetailListForAdapter, this, activityPickListBinding.getAllocationData().getScanstatus().equalsIgnoreCase("Completed"));
-            setPagination(allocationdetailList.size() > pageSize);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            activityPickListBinding.listitemRecycleview.setLayoutManager(layoutManager);
+                    activityPickListBinding.listitemRecycleview.setLayoutManager(layoutManager);
 //            activityPickListBinding.listitemRecycleview.setHasFixedSize(true);
 //            activityPickListBinding.listitemRecycleview.setItemViewCacheSize(10);
 //            activityPickListBinding.listitemRecycleview.setDrawingCacheEnabled(true);
 //            activityPickListBinding.listitemRecycleview.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
-            activityPickListBinding.listitemRecycleview.setAdapter(itemListAdapter);
+                    activityPickListBinding.listitemRecycleview.setAdapter(itemListAdapter);
 
-            String[] statusList = new String[]{"All", "Scanned", "Pending", "Approved", "Completed"};
-            StatusFilterCustomSpinnerAdapter statusFilterCustomSpinnerAdapter = new StatusFilterCustomSpinnerAdapter(this, statusList, this);
-            activityPickListBinding.astramain.setAdapter(statusFilterCustomSpinnerAdapter);
-            activityPickListBinding.astramain.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String[] statusList = new String[]{"All", "Scanned", "Pending", "Approved", "Completed"};
+                    StatusFilterCustomSpinnerAdapter statusFilterCustomSpinnerAdapter = new StatusFilterCustomSpinnerAdapter(PickListActivity.this, statusList, PickListActivity.this);
+                    activityPickListBinding.astramain.setAdapter(statusFilterCustomSpinnerAdapter);
+                    activityPickListBinding.astramain.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //                    itemListAdapter.getFilter().filter(statusList[position]);
-                    activityPickListBinding.setItemListStatus(position);
-                    getFilter().filter(statusList[position]);
-                }
+                            activityPickListBinding.setItemListStatus(position);
+                            getFilter().filter(statusList[position]);
+                        }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
 
+                        }
+                    });
                 }
             });
+
         }
 
 
@@ -584,6 +689,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     @Override
     public void onSuccessStatusUpdateApi(StatusUpdateResponse statusUpdateResponse, String status, boolean ismanuallyEditedScannedPacks, boolean isRequestToSupervisior) {
         if (status.equals("INPROCESS")) {
+            activityPickListBinding.getAllocationData().setScanstatus("INPROCESS");
             if (isRequestToSupervisior) {
 
                 activityPickListBinding.getOrderStatusModel().setStatus("INPROCESS");
@@ -619,6 +725,12 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 activityPickListBinding.setBarcodeScannedItem(barcodeAllocationDetailList.get(0));
                 activityPickListBinding.setIsBarcodeDetailsAvailavble(true);
 
+//                                    int isScanStarted = (Math.round(barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted()));
+//                                    if (isScanStarted == 1) {
+                if (barcodeAllocationDetailList.get(0).getItemScannedStartDateTime() == null || barcodeAllocationDetailList.get(0).getItemScannedStartDateTime().isEmpty()) {
+                    barcodeAllocationDetailList.get(0).setItemScannedStartDateTime(CommonUtils.getCurrentDateAndTime());
+                }
+//                                    }
                 colorAnimation(activityPickListBinding.pendingLayout);
 //                viewVisibleAnimator(activityPickListBinding.productdetails);
 //            activityPickListBinding.productdetails.setVisibility(View.VISIBLE);
@@ -652,6 +764,13 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 barcodeAllocationDetailList.get(0).setScannedDateTime(this.scanStartDateTime);
                 activityPickListBinding.setBarcodeScannedItem(barcodeAllocationDetailList.get(0));
                 activityPickListBinding.setIsBarcodeDetailsAvailavble(true);
+
+                //                                    int isScanStarted = (Math.round(barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted()));
+//                                    if (isScanStarted == 1) {
+                if (barcodeAllocationDetailList.get(0).getItemScannedStartDateTime() == null || barcodeAllocationDetailList.get(0).getItemScannedStartDateTime().isEmpty()) {
+                    barcodeAllocationDetailList.get(0).setItemScannedStartDateTime(CommonUtils.getCurrentDateAndTime());
+                }
+//                                    }
                 colorAnimation(activityPickListBinding.pendingLayout);
 //                viewVisibleAnimator(activityPickListBinding.productdetails);
                 setPendingMoveToFirst();
@@ -659,9 +778,12 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
                 insertOrUpdateAllocationLineList();
                 insertOrUpdateOrderStatusTimeDateEntity();
-                setOrderCompletedPending(activityPickListBinding.getOrderStatusModel().getStatus());
-                pickListAdapter.notifyDataSetChanged();
+                setOrderCompletedPending("INPROCESS");//activityPickListBinding.getOrderStatusModel().getStatus()
+//                pickListAdapter.notifyDataSetChanged();
+                getController().getAllocationDataApiCall(false, false);
             }
+
+
         } else if (status.equals("COMPLETED")) {
             activityPickListBinding.getOrderStatusModel().setStatus("COMPLETED");
             activityPickListBinding.setOrderStatusModel(activityPickListBinding.getOrderStatusModel());
@@ -847,6 +969,9 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             statusUpdateAllocationDetail.setComments("");
             statusUpdateAllocationDetail.setScandatetime(allocationdetail.getScannedDateTime());
             statusUpdateAllocationDetail.setId(allocationdetail.getId());
+            statusUpdateAllocationDetail.setScanstartdatetime(allocationdetail.getItemScannedStartDateTime());
+            statusUpdateAllocationDetail.setScanenddatetime(allocationdetail.getScannedDateTime());
+
             statusUpdateAllocationdetailList.add(statusUpdateAllocationDetail);
         }
         statusUpdateRequest.setAllocationdetails(statusUpdateAllocationdetailList);
@@ -1019,6 +1144,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         barcodeAllocationDetailList.get(0).setAllocatedPackscompleted(barcodeAllocationDetailList.get(0).getAllocatedpacks());
 
         barcodeAllocationDetailList.get(0).setScannedDateTime(CommonUtils.getCurrentDateAndTime());
+        barcodeAllocationDetailList.get(0).setItemScannedStartDateTime("");
         activityPickListBinding.setBarcodeScannedItem(barcodeAllocationDetailList.get(0));
 //        setPendingMoveToFirst();
 
@@ -1154,6 +1280,13 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 barcodeAllocationDetailList.get(0).setScannedDateTime(this.scanStartDateTime);
                 activityPickListBinding.setBarcodeScannedItem(barcodeAllocationDetailList.get(0));
                 activityPickListBinding.setIsBarcodeDetailsAvailavble(true);
+                //                                    int isScanStarted = (Math.round(barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted()));
+//                                    if (isScanStarted == 1) {
+                if (barcodeAllocationDetailList.get(0).getItemScannedStartDateTime() == null || barcodeAllocationDetailList.get(0).getItemScannedStartDateTime().isEmpty()) {
+                    barcodeAllocationDetailList.get(0).setItemScannedStartDateTime(CommonUtils.getCurrentDateAndTime());
+                }
+//                                    }
+
                 colorAnimation(activityPickListBinding.pendingLayout);
 //                viewVisibleAnimator(activityPickListBinding.productdetails);
                 setPendingMoveToFirst();
@@ -1220,6 +1353,13 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                                         barcodeAllocationDetailList.get(0).setScannedDateTime(this.scanStartDateTime);
                                         activityPickListBinding.setBarcodeScannedItem(barcodeAllocationDetailList.get(0));
                                         activityPickListBinding.setIsBarcodeDetailsAvailavble(true);
+
+                                        //                                    int isScanStarted = (Math.round(barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted()));
+//                                    if (isScanStarted == 1) {
+                                        if (barcodeAllocationDetailList.get(0).getItemScannedStartDateTime() == null || barcodeAllocationDetailList.get(0).getItemScannedStartDateTime().isEmpty()) {
+                                            barcodeAllocationDetailList.get(0).setItemScannedStartDateTime(CommonUtils.getCurrentDateAndTime());
+                                        }
+//                                    }
                                         colorAnimation(activityPickListBinding.pendingLayout);
 //                                        viewVisibleAnimator(activityPickListBinding.productdetails);
                                         setPendingMoveToFirst();
@@ -1790,6 +1930,12 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                                     barcodeAllocationDetailList.get(0).setScannedDateTime(this.scanStartDateTime);
                                     activityPickListBinding.setBarcodeScannedItem(barcodeAllocationDetailList.get(0));
                                     activityPickListBinding.setIsBarcodeDetailsAvailavble(true);
+//                                    int isScanStarted = (Math.round(barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted()));
+//                                    if (isScanStarted == 1) {
+                                    if (barcodeAllocationDetailList.get(0).getItemScannedStartDateTime() == null || barcodeAllocationDetailList.get(0).getItemScannedStartDateTime().isEmpty()) {
+                                        barcodeAllocationDetailList.get(0).setItemScannedStartDateTime(CommonUtils.getCurrentDateAndTime());
+                                    }
+//                                    }
                                     colorAnimation(activityPickListBinding.pendingLayout);
 //                                    viewVisibleAnimator(activityPickListBinding.productdetails);
                                     setPendingMoveToFirst();
@@ -1951,6 +2097,13 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                 barcodeAllocationDetailList.get(0).setScannedDateTime(this.scanStartDateTime);
                 activityPickListBinding.setBarcodeScannedItem(barcodeAllocationDetailList.get(0));
                 activityPickListBinding.setIsBarcodeDetailsAvailavble(true);
+
+                //                                    int isScanStarted = (Math.round(barcodeAllocationDetailList.get(0).getAllocatedpacks() - barcodeAllocationDetailList.get(0).getAllocatedPackscompleted()));
+//                                    if (isScanStarted == 1) {
+                if (barcodeAllocationDetailList.get(0).getItemScannedStartDateTime() == null || barcodeAllocationDetailList.get(0).getItemScannedStartDateTime().isEmpty()) {
+                    barcodeAllocationDetailList.get(0).setItemScannedStartDateTime(CommonUtils.getCurrentDateAndTime());
+                }//                                    }
+
                 colorAnimation(activityPickListBinding.pendingLayout);
 //            viewVisibleAnimator(activityPickListBinding.productdetails);
                 setPendingMoveToFirst();
@@ -2022,6 +2175,23 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
 
     @Override
     public void onClickLogout() {
+      /*  // Remove after testing popup
+        for (int i = 0; i < 5; i++) {
+            GetAllocationLineResponse.Allocationdetail allocationdetailUpdate = new GetAllocationLineResponse.Allocationdetail();
+            allocationdetailUpdate.setItembarcode("SAR0001");
+            allocationdetailUpdate.setItemid("SAR0001");
+            allocationdetailUpdate.setInventbatchid("MH2934");
+            allocationdetailUpdate.setMrp(5.45);
+            allocationdetailUpdate.setIsbulkscanenable(true);
+            allocationdetailUpdate.setItemname("SARIDON 50 MG TABLETS 10'S");
+            MrpBarcodeBulkUpdateResponse mrpBarcodeBulkUpdateResponse = new MrpBarcodeBulkUpdateResponse();
+            mrpBarcodeBulkUpdateResponse.setRequesttype("MRP");
+            if (showMessageDialog == null || (!showMessageDialog.isShowing())) {
+                showItemUpdatePopup(allocationdetailUpdate, mrpBarcodeBulkUpdateResponse);
+            }
+
+        }*/
+
         Dialog customDialog = new Dialog(this);
         DialogCustomAlertBinding dialogCustomAlertBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_custom_alert, null, false);
         customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

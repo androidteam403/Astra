@@ -21,8 +21,6 @@
         android:layout_width="@dimen/dimen30dp"
         android:layout_height="@dimen/dimen30dp"
         android:layout_alignParentEnd="true"
-        android:visibility="gone"
-
         android:layout_centerVertical="true"
         android:contentDescription="@string/app_name"
         android:src="@drawable/bg_drop_down" />

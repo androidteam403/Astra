@@ -160,6 +160,13 @@ public class StatusUpdateRequest implements Serializable {
         @SerializedName("id")
         @Expose
         private Integer id;
+        @SerializedName("scanstartdatetime")
+        @Expose
+        private String scanstartdatetime;
+        @SerializedName("scanenddatetime")
+        @Expose
+        private String scanenddatetime;
+
 
         public String getItemid() {
             return itemid;
@@ -257,6 +264,21 @@ public class StatusUpdateRequest implements Serializable {
             this.id = id;
         }
 
+        public String getScanstartdatetime() {
+            return scanstartdatetime;
+        }
+
+        public void setScanstartdatetime(String scanstartdatetime) {
+            this.scanstartdatetime = scanstartdatetime;
+        }
+
+        public String getScanenddatetime() {
+            return scanenddatetime;
+        }
+
+        public void setScanenddatetime(String scanenddatetime) {
+            this.scanenddatetime = scanenddatetime;
+        }
     }
 
 }

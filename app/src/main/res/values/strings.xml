@@ -90,4 +90,5 @@
     <string name="label_100_mm_x_25_mm">100 mm X 25 mm</string>
     <string name="label_38mm_x_15_mm">38mm X 15 mm</string>
     <string name="label_choose_barcode_print_size">Choose barcode print size</string>
+    <string name="label_item_name">Item name:</string>
 </resources>

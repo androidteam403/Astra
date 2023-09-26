@@ -28,10 +28,12 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -99,7 +101,13 @@ public class BarCodeActivity extends BaseActivity implements BarCodeActivityCall
     int j = 1;
     TextView selectedStatusText;
     TextView selectedBatchText;
+    private BarCodeLabelAdapter barCodeLabelAdapter;
     List<GetBarCodeResponse.Barcodedatum> barcodedatumList = new ArrayList<>();
+    List<GetBarCodeResponse.Barcodedatum> barcodedatumListLoad = new ArrayList<>();
+    private boolean isLoading = false;
+    private boolean isLastRecord = false;
+    private int page = 1;
+    private int pageSize = 10;
     String activity;
 
     @Override
@@ -318,10 +326,33 @@ public class BarCodeActivity extends BaseActivity implements BarCodeActivityCall
 
     @Override
     public void onSucessBarCodeResponse(GetBarCodeResponse barCodeResponse) {
-        this.barcodedatumList = barCodeResponse.getBarcodedata();
+        barcodedatumList.clear();
         activityBarCodeBinding.printlayout.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.grey)));
-        if (barCodeResponse.getBarcodedata().size() > 0) {
-            activityBarCodeBinding.empty.setVisibility(View.GONE);
+        if (barCodeResponse.getBarcodedata() != null && barCodeResponse.getBarcodedata().size() > 0) {
+            barcodedatumList = barCodeResponse.getBarcodedata();
+            barcodedatumListLoad = new ArrayList<>();
+            for (int i = 0; i < barcodedatumList.size(); i++) {
+                barcodedatumListLoad.add(barcodedatumList.get(i));
+                if (i == ((page * pageSize) - 1)) {
+                    break;
+                }
+            }
+            page++;
+            if (barcodedatumListLoad != null && barcodedatumListLoad.size() > 0) {
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+                activityBarCodeBinding.barcoderecycleview.setLayoutManager(mLayoutManager);
+                activityBarCodeBinding.barcoderecycleview.setItemAnimator(new DefaultItemAnimator());
+                activityBarCodeBinding.empty.setVisibility(View.GONE);
+                activityBarCodeBinding.barcoderecycleview.setVisibility(View.VISIBLE);
+                initAdapter();
+                initScrollListener();
+            } else {
+                activityBarCodeBinding.barcoderecycleview.setVisibility(View.GONE);
+                activityBarCodeBinding.empty.setVisibility(View.VISIBLE);
+            }
+
+
+            /*activityBarCodeBinding.empty.setVisibility(View.GONE);
             activityBarCodeBinding.barcoderecycleview.setVisibility(View.VISIBLE);
 
 //            List<GetBarCodeResponse> getBarCodeResponses = new ArrayList<>();
@@ -335,10 +366,79 @@ public class BarCodeActivity extends BaseActivity implements BarCodeActivityCall
             activityBarCodeBinding.barcoderecycleview.setAdapter(barCodeLabelAdapter);
         } else {
             activityBarCodeBinding.empty.setVisibility(View.VISIBLE);
+            activityBarCodeBinding.barcoderecycleview.setVisibility(View.GONE);*/
+        } else {
+            barcodedatumList.clear();
+            barcodedatumListLoad.clear();
             activityBarCodeBinding.barcoderecycleview.setVisibility(View.GONE);
+            activityBarCodeBinding.empty.setVisibility(View.VISIBLE);
+
         }
 
+    }
 
+    private void initAdapter() {
+        barCodeLabelAdapter = new BarCodeLabelAdapter(this, barcodedatumListLoad, this);
+        activityBarCodeBinding.barcoderecycleview.setAdapter(barCodeLabelAdapter);
+    }
+
+    private void initScrollListener() {
+        activityBarCodeBinding.barcoderecycleview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+
+                if (!isLoading) {
+                    if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == barcodedatumListLoad.size() - 1) {
+                        //bottom of list!
+                        if (!isLastRecord) {
+                            isLoading = true;
+                            loadMore();
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private void loadMore() {
+        if (barcodedatumListLoad.size() < barcodedatumList.size()) {
+            barcodedatumListLoad.add(null);
+            barCodeLabelAdapter.notifyItemInserted(barcodedatumListLoad.size() - 1);
+            List<GetBarCodeResponse.Barcodedatum> barcodedatumListLoadTemp = new ArrayList<>();
+            for (int i = barcodedatumListLoad.size() - 1; i < barcodedatumList.size(); i++) {
+                barcodedatumListLoadTemp.add(barcodedatumList.get(i));
+                if (i == ((page * pageSize) - 1)) {
+                    break;
+                }
+            }
+            page++;
+            barcodedatumListLoad.remove(barcodedatumListLoad.size() - 1);
+            int scrollPosition = barcodedatumListLoad.size();
+            barCodeLabelAdapter.notifyItemRemoved(scrollPosition);
+            int currentSize = scrollPosition;
+            int nextLimit = 10;
+
+            barcodedatumListLoad.addAll(barcodedatumListLoadTemp);
+            barCodeLabelAdapter.notifyDataSetChanged();
+            isLoading = false;
+            if (barcodedatumListLoad.size() == barcodedatumList.size()) {
+                this.isLastRecord = true;
+            }
+            if (barcodedatumListLoad != null)
+                Toast.makeText(this, "" + barcodedatumListLoad.size(), Toast.LENGTH_SHORT).show();
+        } else if (barcodedatumListLoad.size() == barcodedatumList.size()) {
+            this.isLastRecord = true;
+            if (barcodedatumListLoad != null)
+                Toast.makeText(this, "" + barcodedatumListLoad.size(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -672,22 +772,20 @@ public class BarCodeActivity extends BaseActivity implements BarCodeActivityCall
 
     private void showChooseCustomeBarcodeSize() {
         Dialog chooseCustomeBarcodeSize = new Dialog(this);
-        DialogChooseCustomBarcodeSizeBinding dialogChooseCustomBarcodeSizeBinding = DataBindingUtil.inflate(LayoutInflater.from(this),
-                R.layout.dialog_choose_custom_barcode_size, null, false);
+        DialogChooseCustomBarcodeSizeBinding dialogChooseCustomBarcodeSizeBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_choose_custom_barcode_size, null, false);
         chooseCustomeBarcodeSize.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         chooseCustomeBarcodeSize.setContentView(dialogChooseCustomBarcodeSizeBinding.getRoot());
         String customBarcodeSize = getDataManager().getCustomBarcodePrintSize();
         dialogChooseCustomBarcodeSizeBinding.thirtyeightFifteen.setChecked(customBarcodeSize.equalsIgnoreCase("THIRTYEIGHT_FIFTEEN"));
         dialogChooseCustomBarcodeSizeBinding.hundredTwentyfive.setChecked(customBarcodeSize.equalsIgnoreCase("HUNDRED_TWENTYFIVE"));
 
-        dialogChooseCustomBarcodeSizeBinding.customBarcodeSizeRadioGroup.
-                setOnCheckedChangeListener((group, checkedId) -> {
-                    if (checkedId == R.id.thirtyeight_fifteen) {
-                        getDataManager().setCustomBarcodePrintSize("THIRTYEIGHT_FIFTEEN");
-                    } else {
-                        getDataManager().setCustomBarcodePrintSize("HUNDRED_TWENTYFIVE");
-                    }
-                });
+        dialogChooseCustomBarcodeSizeBinding.customBarcodeSizeRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.thirtyeight_fifteen) {
+                getDataManager().setCustomBarcodePrintSize("THIRTYEIGHT_FIFTEEN");
+            } else {
+                getDataManager().setCustomBarcodePrintSize("HUNDRED_TWENTYFIVE");
+            }
+        });
 
         dialogChooseCustomBarcodeSizeBinding.continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -751,7 +849,7 @@ public class BarCodeActivity extends BaseActivity implements BarCodeActivityCall
             Image image1Qr = new Image(imageData1Qr);
             image1Qr.setWidth(150);
             image1Qr.setHeight(20);
-            image1Qr.scaleToFit(150,20);
+            image1Qr.scaleToFit(150, 20);
             table2.addCell(new Cell().add(image1Qr).setBorder(Border.NO_BORDER));
 
             // table3

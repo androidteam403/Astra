@@ -6,8 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityLoginBinding;
@@ -27,6 +31,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     private String dcName;
     private String dc;
     private ValidateUserModelResponse validateUserModelResponse;
+    private String fcmKey = "";
 
     public static Intent getStartIntent(Context mContext) {
         Intent intent = new Intent(mContext, LoginActivity.class);
@@ -38,7 +43,22 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        generateFcmKey();
         setUp();
+    }
+
+    private void generateFcmKey() {
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Get new FCM registration token
+                        String token = task.getResult();
+                        LoginActivity.this.fcmKey = token;
+                    }
+                });
+//        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
+//            String token = instanceIdResult.getToken();
+//            this.fcmKey = token;
+//        });
     }
 
     private void setUp() {
@@ -99,10 +119,12 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
 
     @Override
     public void onClickLogin() {
-
         if (isLoginValidate()) {
-
-            getController().validateUser(activityLoginBinding.userId.getText().toString(), activityLoginBinding.password.getText().toString());
+            if (fcmKey != null && !fcmKey.isEmpty()) {
+                getController().validateUser(activityLoginBinding.userId.getText().toString(), activityLoginBinding.password.getText().toString(), fcmKey);
+            } else {
+                Toast.makeText(this, "Fcm key not generated", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

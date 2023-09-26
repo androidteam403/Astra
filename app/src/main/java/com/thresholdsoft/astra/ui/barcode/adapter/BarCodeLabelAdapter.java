@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -22,18 +21,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.BarcodeAdapterlayoutBinding;
 import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
+import com.thresholdsoft.astra.databinding.LoadingProgressbarBinding;
 import com.thresholdsoft.astra.ui.barcode.BarCodeActivityCallback;
 import com.thresholdsoft.astra.ui.barcode.GetBarCodeResponse;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class BarCodeLabelAdapter extends RecyclerView.Adapter<BarCodeLabelAdapter.ViewHolder> {
+public class BarCodeLabelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
     private List<GetBarCodeResponse.Barcodedatum> barcodedatumList;
     private BarCodeActivityCallback barCodeActivityCallback;
 
+    private final int VIEW_TYPE_ITEM = 0;
+    private final int VIEW_TYPE_LOADING = 1;
 
     public BarCodeLabelAdapter(Context mContext, List<GetBarCodeResponse.Barcodedatum> barcodedatumList, BarCodeActivityCallback barCodeActivityCallback) {
         this.mContext = mContext;
@@ -45,13 +47,25 @@ public class BarCodeLabelAdapter extends RecyclerView.Adapter<BarCodeLabelAdapte
 
     @NonNull
     @Override
-    public BarCodeLabelAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        BarcodeAdapterlayoutBinding barcodeAdapterlayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.barcode_adapterlayout, parent, false);
-        return new BarCodeLabelAdapter.ViewHolder(barcodeAdapterlayoutBinding);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == VIEW_TYPE_ITEM) {
+            BarcodeAdapterlayoutBinding barcodeAdapterlayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.barcode_adapterlayout, parent, false);
+            return new BarCodeLabelAdapter.ViewHolder(barcodeAdapterlayoutBinding);
+        } else {
+            LoadingProgressbarBinding loadingProgressbarBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.loading_progressbar, parent, false);
+            return new BarCodeLabelAdapter.LoadingViewHolder(loadingProgressbarBinding);
+        }
+
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BarCodeLabelAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        if (holder instanceof BarCodeLabelAdapter.ViewHolder) {
+            onBindViewHolderItem((BarCodeLabelAdapter.ViewHolder) holder, position);
+        }
+    }
+
+    private void onBindViewHolderItem(BarCodeLabelAdapter.ViewHolder holder, int position) {
         GetBarCodeResponse.Barcodedatum barcodedatum = barcodedatumList.get(position);
         if (holder.barcodeAdapterlayoutBinding.qty.getText().toString().isEmpty()) {
 
@@ -120,7 +134,6 @@ public class BarCodeLabelAdapter extends RecyclerView.Adapter<BarCodeLabelAdapte
                 }
             }
         });
-
     }
 
     private void showAlertMessage(String message) {
@@ -140,6 +153,11 @@ public class BarCodeLabelAdapter extends RecyclerView.Adapter<BarCodeLabelAdapte
         return barcodedatumList.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return barcodedatumList.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+    }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         BarcodeAdapterlayoutBinding barcodeAdapterlayoutBinding;
@@ -147,6 +165,15 @@ public class BarCodeLabelAdapter extends RecyclerView.Adapter<BarCodeLabelAdapte
         public ViewHolder(@NonNull BarcodeAdapterlayoutBinding barcodeAdapterlayoutBinding) {
             super(barcodeAdapterlayoutBinding.getRoot());
             this.barcodeAdapterlayoutBinding = barcodeAdapterlayoutBinding;
+        }
+    }
+
+    public class LoadingViewHolder extends RecyclerView.ViewHolder {
+        LoadingProgressbarBinding loadingProgressbarBinding;
+
+        public LoadingViewHolder(@NonNull LoadingProgressbarBinding loadingProgressbarBinding) {
+            super(loadingProgressbarBinding.getRoot());
+            this.loadingProgressbarBinding = loadingProgressbarBinding;
         }
     }
 }

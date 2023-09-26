@@ -54,8 +54,14 @@ public interface ApiInterface {
     @POST("GetAllocationData")
     Call<GetAllocationDataResponse> GET_ALLOCATION_DATA_API_CALL(@Header("Auth-Token") String authToken, @Body GetAllocationDataRequest getAllocationDataRequest);
 
+    @GET("https://jsonblob.com/api/jsonBlob/1152274873422045184")
+    Call<GetAllocationDataResponse> GET_ALLOCATION_DATA_API_CALL();
+
     @POST("GetAllocationLine")
     Call<GetAllocationLineResponse> GET_ALLOCATION_LINE_API_CALL(@Header("Auth-Token") String authToken, @Body GetAllocationLineRequest getAllocationLineRequest);
+
+    @GET("https://jsonblob.com/api/jsonBlob/1152275837445070848")
+    Call<GetAllocationLineResponse> GET_ALLOCATION_LINE_API_CALL();
 
     @POST("StatusUpdate")
     Call<StatusUpdateResponse> STATUS_UPDATE_API_CALL(@Header("Auth-Token") String authToken, @Body StatusUpdateRequest statusUpdateRequest);
@@ -76,22 +82,30 @@ public interface ApiInterface {
     @POST("WithHoldApproval")
     Call<WithHoldApprovalResponse> WITH_HOLD_APPROVAL_API_CALL(@Header("Auth-Token") String authToken, @Body ArrayList<WithHoldApprovalRequest> withHoldApprovalRequest);
 
-    @POST("https://online.apollopharmacy.org/Digital/Apollo/AHL/getlogindetails")
+    @POST("getlogindetails")
+//https://online.apollopharmacy.org/Digital/Apollo/AHL/
     Call<LoginResetResponse> LOGIN_USERS_RESET_API_CALL(@Header("Auth-Token") String authToken, @Body LoginDetailsRequest logoutRequest);
 
-    @POST("https://online.apollopharmacy.org/Digital/Apollo/AHL/getlogindetails")
+    @POST("getlogindetails")
+        //https://online.apollopharmacy.org/Digital/Apollo/AHL/
     Call<LoginDetailsResponse> LOGIN_USERS_API_CALL(@Header("Auth-Token") String authToken, @Body LoginDetailsRequest logoutRequest);
 
-    @POST("https://online.apollopharmacy.org/Digital/Apollo/AHL/Modificationrequest")
+    /*@GET("https://jsonblob.com/api/jsonBlob/1147052417111416832")
+    Call<LoginDetailsResponse> LOGIN_USERS_API_CALL();*/
+    @POST("Modificationrequest")
+//https://online.apollopharmacy.org/Digital/Apollo/AHL/
     Call<BulkChangeResponse> UPDATE_BARCODEACTION_API_CALL(@Header("Auth-Token") String authToken, @Body BarcodeChangeRequest barcodeChangeRequest);
 
-    @POST("https://online.apollopharmacy.org/Digital/Apollo/AHL/Modificationrequest")
+    @POST("Modificationrequest")
+//https://online.apollopharmacy.org/Digital/Apollo/AHL/
     Call<BulkChangeResponse> UPDATE_BULKACTION_API_CALL(@Header("Auth-Token") String authToken, @Body BulkScanChangeRequest bulkScanChangeRequest);
 
-    @POST("https://online.apollopharmacy.org/Digital/Apollo/AHL/Modificationrequest")
+    @POST("Modificationrequest")
+//https://online.apollopharmacy.org/Digital/Apollo/AHL/
     Call<BulkChangeResponse> UPDATE_MRPACTION_API_CALL(@Header("Auth-Token") String authToken, @Body MrpChangeRequest mrpChangeRequest);
 
-    @POST("https://online.apollopharmacy.org/Digital/Apollo/AHL/Modificationrequest")
+    @POST("Modificationrequest")
+//https://online.apollopharmacy.org/Digital/Apollo/AHL/
     Call<BulkListResponse> GETDETAILS_API_CALL(@Header("Auth-Token") String authToken, @Body BulkListRequest bulkListRequest);
 
     @POST("logout")
@@ -100,8 +114,9 @@ public interface ApiInterface {
     @GET("https://jsonblob.com/api/jsonBlob/1041677549033504768")
     Call<WithHoldDataResponse> GET_JSON_WITH_HOLD_RESPONSE(@Header("Auth-Token") String authToken);
 
-    @POST("https://online.apollopharmacy.org/ASTRAUAT/Apollo/SAVEPDF/GENERATEPDFBYPRNOFORASTHRA")
-    Call<PackingLabelResponse> PACKING_LABEL_RESPONSE_CALL(@Header("token") String authToken, @Body PackingLabelRequest packingLabelRequest);
+    //("https://online.apollopharmacy.org/ASTRAUAT/Apollo/SAVEPDF/GENERATEPDFBYPRNOFORASTHRA")
+    @POST
+    Call<PackingLabelResponse> PACKING_LABEL_RESPONSE_CALL(@Url String url, @Header("token") String authToken, @Body PackingLabelRequest packingLabelRequest);
 
     @POST("GetBarcodePrint")
     Call<GetBarCodeResponse> BARCODE_API_CALL(@Header("Auth-Token") String authToken, @Body GetBarCodeRequest barCodeRequest);

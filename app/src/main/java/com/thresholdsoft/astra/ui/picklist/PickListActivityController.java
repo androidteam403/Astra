@@ -56,7 +56,7 @@ public class PickListActivityController {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<PackingLabelResponse> call = apiInterface.PACKING_LABEL_RESPONSE_CALL("h72genrSSNFivOi/cfiX3A==", packingLabelRequest);
+            Call<PackingLabelResponse> call = apiInterface.PACKING_LABEL_RESPONSE_CALL(BuildConfig.GENERATEPDFBYPRNOFORASTHRA, "h72genrSSNFivOi/cfiX3A==", packingLabelRequest);
             call.enqueue(new Callback<PackingLabelResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<PackingLabelResponse> call, @NotNull Response<PackingLabelResponse> response) {
@@ -136,6 +136,7 @@ public class PickListActivityController {
             getAllocationDataRequest.setUserId(getDataManager().getEmplId());
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
+//            Call<GetAllocationDataResponse> call = apiInterface.GET_ALLOCATION_DATA_API_CALL();
             Call<GetAllocationDataResponse> call = apiInterface.GET_ALLOCATION_DATA_API_CALL(BuildConfig.BASE_TOKEN, getAllocationDataRequest);
             call.enqueue(new Callback<GetAllocationDataResponse>() {
                 @Override
@@ -183,6 +184,7 @@ public class PickListActivityController {
             getAllocationLineRequest.setUserid(allocationhddata.getUserid());
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
+//            Call<GetAllocationLineResponse> call = apiInterface.GET_ALLOCATION_LINE_API_CALL();
             Call<GetAllocationLineResponse> call = apiInterface.GET_ALLOCATION_LINE_API_CALL(BuildConfig.BASE_TOKEN, getAllocationLineRequest);
             call.enqueue(new Callback<GetAllocationLineResponse>() {
                 @Override
@@ -459,7 +461,6 @@ public class PickListActivityController {
                 public void onResponse(@NotNull Call<CheckItemUpdateResponse> call, @NotNull Response<CheckItemUpdateResponse> response) {
                     ActivityUtils.hideDialog();
                     if (response.isSuccessful() && response.body() != null) {
-
 
                     }
                 }

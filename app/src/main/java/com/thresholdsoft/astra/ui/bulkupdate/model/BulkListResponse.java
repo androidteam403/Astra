@@ -8,57 +8,57 @@ import java.util.List;
 
 public class BulkListResponse implements Serializable {
 
-        @SerializedName("requeststatus")
-        @Expose
-        private Boolean requeststatus;
-        @SerializedName("requestmessage")
-        @Expose
-        private String requestmessage;
-        @SerializedName("itemdetails")
-        @Expose
-        private List<Itemdetail> itemdetails;
+    @SerializedName("requeststatus")
+    @Expose
+    private Boolean requeststatus;
+    @SerializedName("requestmessage")
+    @Expose
+    private String requestmessage;
+    @SerializedName("itemdetails")
+    @Expose
+    private List<Itemdetail> itemdetails;
 
-        public Boolean getRequeststatus() {
-            return requeststatus;
-        }
+    public Boolean getRequeststatus() {
+        return requeststatus;
+    }
 
-        public void setRequeststatus(Boolean requeststatus) {
-            this.requeststatus = requeststatus;
-        }
+    public void setRequeststatus(Boolean requeststatus) {
+        this.requeststatus = requeststatus;
+    }
 
-        public BulkListResponse withRequeststatus(Boolean requeststatus) {
-            this.requeststatus = requeststatus;
-            return this;
-        }
+    public BulkListResponse withRequeststatus(Boolean requeststatus) {
+        this.requeststatus = requeststatus;
+        return this;
+    }
 
-        public String getRequestmessage() {
-            return requestmessage;
-        }
+    public String getRequestmessage() {
+        return requestmessage;
+    }
 
-        public void setRequestmessage(String requestmessage) {
-            this.requestmessage = requestmessage;
-        }
+    public void setRequestmessage(String requestmessage) {
+        this.requestmessage = requestmessage;
+    }
 
-        public BulkListResponse withRequestmessage(String requestmessage) {
-            this.requestmessage = requestmessage;
-            return this;
-        }
+    public BulkListResponse withRequestmessage(String requestmessage) {
+        this.requestmessage = requestmessage;
+        return this;
+    }
 
-        public List<Itemdetail> getItemdetails() {
-            return itemdetails;
-        }
+    public List<Itemdetail> getItemdetails() {
+        return itemdetails;
+    }
 
-        public void setItemdetails(List<Itemdetail> itemdetails) {
-            this.itemdetails = itemdetails;
-        }
+    public void setItemdetails(List<Itemdetail> itemdetails) {
+        this.itemdetails = itemdetails;
+    }
 
-        public BulkListResponse withItemdetails(List<Itemdetail> itemdetails) {
-            this.itemdetails = itemdetails;
-            return this;
-        }
+    public BulkListResponse withItemdetails(List<Itemdetail> itemdetails) {
+        this.itemdetails = itemdetails;
+        return this;
+    }
 
 
-    public class Itemdetail implements Serializable{
+    public class Itemdetail implements Serializable {
 
         @SerializedName("itemid")
         @Expose
@@ -71,22 +71,91 @@ public class BulkListResponse implements Serializable {
         private String batch;
         @SerializedName("mrp")
         @Expose
-        private Double mrp;
+        private double mrp;
         @SerializedName("requestmrp")
         @Expose
-        private Double requestmrp;
+        private double requestmrp = -0.0;
         @SerializedName("barcode")
         @Expose
         private String barcode;
         @SerializedName("requestbarcode")
         @Expose
-        private String requestbarcode;
+        private String requestbarcode = null;
         @SerializedName("isbulkdatetime")
         @Expose
         private String isbulkdatetime;
         @SerializedName("isbulkupload")
         @Expose
         private Boolean isbulkupload;
+
+        private boolean isUpdated;
+
+        private boolean isBulkScan;
+
+        private int bulkScanPos = -1;
+
+        private boolean isItemUpdated;
+
+        private String updateType;
+
+        private String updatedValue;
+        private int actionType = 1;
+
+        public boolean isUpdated() {
+            return isUpdated;
+        }
+
+        public void setUpdated(boolean updated) {
+            isUpdated = updated;
+        }
+
+        public boolean isBulkScan() {
+            return isBulkScan;
+        }
+
+        public void setBulkScan(boolean bulkScan) {
+            isBulkScan = bulkScan;
+        }
+
+        public int getBulkScanPos() {
+            return bulkScanPos;
+        }
+
+        public void setBulkScanPos(int bulkScanPos) {
+            this.bulkScanPos = bulkScanPos;
+        }
+
+        public boolean isItemUpdated() {
+            return isItemUpdated;
+        }
+
+        public void setItemUpdated(boolean itemUpdated) {
+            isItemUpdated = itemUpdated;
+        }
+
+        public String getUpdateType() {
+            return updateType;
+        }
+
+        public void setUpdateType(String updateType) {
+            this.updateType = updateType;
+        }
+
+        public String getUpdatedValue() {
+            return updatedValue;
+        }
+
+        public void setUpdatedValue(String updatedValue) {
+            this.updatedValue = updatedValue;
+        }
+
+        public int getActionType() {
+            return actionType;
+        }
+
+        public void setActionType(int actionType) {
+            this.actionType = actionType;
+        }
 
         public String getItemid() {
             return itemid;
@@ -127,28 +196,28 @@ public class BulkListResponse implements Serializable {
             return this;
         }
 
-        public Double getMrp() {
+        public double getMrp() {
             return mrp;
         }
 
-        public void setMrp(Double mrp) {
+        public void setMrp(double mrp) {
             this.mrp = mrp;
         }
 
-        public Itemdetail withMrp(Double mrp) {
+        public Itemdetail withMrp(double mrp) {
             this.mrp = mrp;
             return this;
         }
 
-        public Double getRequestmrp() {
+        public double getRequestmrp() {
             return requestmrp;
         }
 
-        public void setRequestmrp(Double requestmrp) {
+        public void setRequestmrp(double requestmrp) {
             this.requestmrp = requestmrp;
         }
 
-        public Itemdetail withRequestmrp(Double requestmrp) {
+        public Itemdetail withRequestmrp(double requestmrp) {
             this.requestmrp = requestmrp;
             return this;
         }

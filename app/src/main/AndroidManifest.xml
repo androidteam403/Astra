@@ -29,6 +29,7 @@
         <activity
             android:name=".ui.splash.SplashActivity"
             android:configChanges="keyboard|keyboardHidden"
+            android:exported="true"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,6 +40,7 @@
         <activity
             android:name=".ui.home.dashboard.DashBoard"
             android:configChanges="keyboard|keyboardHidden"
+            android:exported="true"
             android:screenOrientation="landscape" />
 
         <activity
@@ -65,24 +67,29 @@
         <activity
             android:name=".ui.pickerrequests.PickerRequestActivity"
             android:configChanges="keyboard|keyboardHidden"
+            android:exported="true"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.requesthistory.RequestHistoryActivity"
             android:configChanges="keyboard|keyboardHidden"
+            android:exported="true"
             android:screenOrientation="landscape" />
         <activity
             android:name=".ui.picklisthistory.PickListHistoryActivity"
             android:configChanges="keyboard|keyboardHidden"
+            android:exported="true"
             android:screenOrientation="landscape" />
         <activity
             android:name=".ui.login.userlogin.UserLoginActivity"
             android:configChanges="keyboard|keyboardHidden"
+            android:exported="true"
             android:screenOrientation="landscape" />
         <activity
             android:name=".ui.login.LoginActivity"
             android:configChanges="keyboard|keyboardHidden"
             android:screenOrientation="landscape"
+            android:exported="true"
             android:windowSoftInputMode="adjustPan">
 
 
@@ -108,15 +115,38 @@
             android:name=".ui.picklist.PickListActivity"
             android:configChanges="keyboard|keyboardHidden"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+            android:exported="true"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="com.thresholdsoft.astra.ui.picklist.PickListActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.home.Home"
             android:configChanges="keyboard|keyboardHidden"
+            android:exported="true"
             android:screenOrientation="landscape" />
         <activity
             android:name=".ui.scanner.ScannerActivity"
             android:configChanges="keyboard|keyboardHidden"
+            android:exported="true"
             android:screenOrientation="landscape" />
+
+        <service
+            android:name="com.thresholdsoft.astra.ui.services.MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo_apollo" />
     </application>
 
 </manifest>

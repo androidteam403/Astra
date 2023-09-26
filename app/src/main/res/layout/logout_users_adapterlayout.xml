@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools">
+<layout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -96,8 +96,8 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight=".12"
-                        android:text="-"
                         android:fontFamily="@font/poppins_semibold"
+                        android:text="-"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dimen11sp" />
 
@@ -106,8 +106,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".14"
-                        android:text="-"
                         android:fontFamily="@font/poppins_semibold"
+                        android:text="-"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dimen11sp" />
 
@@ -116,9 +116,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".15"
-                        android:text="-"
-
                         android:fontFamily="@font/poppins_semibold"
+
+                        android:text="-"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dimen11sp" />
 
@@ -128,8 +128,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".11"
-                        android:text="-"
                         android:fontFamily="@font/poppins_semibold"
+                        android:text="-"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dimen11sp" />
 
@@ -138,8 +138,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".15"
-                        android:text="-"
                         android:fontFamily="@font/poppins_semibold"
+                        android:text="-"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dimen11sp" />
 
@@ -149,34 +149,30 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".15"
-                        android:text="-"
-
                         android:fontFamily="@font/poppins_semibold"
+
+                        android:text="-"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dimen11sp" />
-
 
 
                 </LinearLayout>
 
 
-
-
-
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/logout"
                 android:layout_width="80dp"
-                android:text="LogOut"
+                android:layout_height="24dp"
+                android:layout_marginTop="@dimen/dimen5dp"
                 android:background="@color/yellow"
-                android:textSize="10sp"
+                android:fontFamily="@font/roboto_bold"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:id="@+id/logout"
-                android:fontFamily="@font/roboto_bold"
-                android:layout_marginTop="@dimen/dimen5dp"
+                android:text="LogOut"
                 android:textColor="@color/black"
-                android:layout_height="24dp"/>
+                android:textSize="10sp" />
         </LinearLayout>
 
 

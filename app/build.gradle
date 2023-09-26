@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
 //    buildToolsVersion "31.0.0"
 //    dataBinding {
 //        enabled = true
@@ -19,26 +19,30 @@ android {
     defaultConfig {
         applicationId "com.thresholdsoft.astra"
         minSdkVersion 24
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionCode 1
-        versionName "1.0.8"
+        versionName "1.0.9"//1.0.8//1.1.8
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Production
-//        buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/Apollo/AHL/\"")
-//        buildConfigField("String", "BASE_TOKEN", "\"prdyvEoG+8MvYiOfhV2wb5j\"")
-//        buildConfigField("String", "ENVIRONMENT", "\"Production\"")
+        /*buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/Apollo/AHL/\"")
+        buildConfigField("String", "BASE_TOKEN", "\"prdyvEoG+8MvYiOfhV2wb5j\"")
+        buildConfigField("String", "GENERATEPDFBYPRNOFORASTHRA", "\"https://astradc.apollopharmacy.org:8105/Apollo/SAVEPDF/GENERATEPDFBYPRNOFORASTHRA\"")
+        buildConfigField("String", "ENVIRONMENT", "\"Production\"")*/
 
 
         //Pre Production
-//        buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/preprod/Apollo/AHL/\"")
-//        buildConfigField("String", "BASE_TOKEN", "\"prdyvEoG+8MvYiOfhV2wb5j\"")
-//        buildConfigField("String", "ENVIRONMENT", "\"Pre-Prod\"")
+        /*buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/preprod/Apollo/AHL/\"")
+        buildConfigField("String", "BASE_TOKEN", "\"prdyvEoG+8MvYiOfhV2wb5j\"")
+        buildConfigField("String", "GENERATEPDFBYPRNOFORASTHRA", "\"https://astradc.apollopharmacy.org:8105/Apollo/SAVEPDF/GENERATEPDFBYPRNOFORASTHRA\"")
+        buildConfigField("String", "ENVIRONMENT", "\"Pre-Prod\"")*/
 
 
         //Dev
         buildConfigField("String", "BASE_URL", "\"https://online.apollopharmacy.org/Digital/Apollo/AHL/\"")
         buildConfigField("String", "BASE_TOKEN", "\"yvEoG+8MvYiOfhV2wb5jw\"")
+        buildConfigField("String", "GENERATEPDFBYPRNOFORASTHRA", "\"https://online.apollopharmacy.org/ASTRAUT/Apollo/SAVEPDF/GENERATEPDFBYPRNOFORASTHRA\"")
+//https://online.apollopharmacy.org/ASTRAUT/Apollo/SAVEPDF/GENERATEPDFBYPRNOFORASTHRA
         buildConfigField("String", "ENVIRONMENT", "\"UAT\"")
 
     }
@@ -47,16 +51,25 @@ android {
         release {
             minifyEnabled false
             //Production
-            buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/Apollo/AHL/\"")
+            /*buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/Apollo/AHL/\"")
             buildConfigField("String", "BASE_TOKEN", "\"prdyvEoG+8MvYiOfhV2wb5j\"")
+            buildConfigField("String", "GENERATEPDFBYPRNOFORASTHRA", "\"https://astradc.apollopharmacy.org:8105/Apollo/SAVEPDF/GENERATEPDFBYPRNOFORASTHRA\"")
+            buildConfigField("String", "ENVIRONMENT", "\"Production\"")*/
+
 
             //Pre Production
-//            buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/preprod/Apollo/AHL/\"")
-//            buildConfigField("String", "BASE_TOKEN", "\"prdyvEoG+8MvYiOfhV2wb5j\"")
+            /*buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/preprod/Apollo/AHL/\"")
+            buildConfigField("String", "BASE_TOKEN", "\"prdyvEoG+8MvYiOfhV2wb5j\"")
+            buildConfigField("String", "GENERATEPDFBYPRNOFORASTHRA", "\"https://astradc.apollopharmacy.org:8105/Apollo/SAVEPDF/GENERATEPDFBYPRNOFORASTHRA\"")
+            buildConfigField("String", "ENVIRONMENT", "\"Pre-Prod\"")*/
+
 
             //Dev
-//            buildConfigField("String", "BASE_URL", "\"https://online.apollopharmacy.org/Digital/Apollo/AHL/\"")
-//            buildConfigField("String", "BASE_TOKEN", "\"yvEoG+8MvYiOfhV2wb5jw\"")
+            buildConfigField("String", "BASE_URL", "\"https://online.apollopharmacy.org/Digital/Apollo/AHL/\"")
+            buildConfigField("String", "BASE_TOKEN", "\"yvEoG+8MvYiOfhV2wb5jw\"")
+            buildConfigField("String", "GENERATEPDFBYPRNOFORASTHRA", "\"https://online.apollopharmacy.org/ASTRAUT/Apollo/SAVEPDF/GENERATEPDFBYPRNOFORASTHRA\"")
+            //https://online.apollopharmacy.org/ASTRAUT/Apollo/SAVEPDF/GENERATEPDFBYPRNOFORASTHRA
+            buildConfigField("String", "ENVIRONMENT", "\"UAT\"")
         }
     }
     compileOptions {
@@ -111,8 +124,8 @@ dependencies {
     annotationProcessor 'androidx.room:room-compiler:2.2.5'
 
     //firebase
-    implementation 'com.google.firebase:firebase-messaging:21.0.1'
-    implementation 'com.google.firebase:firebase-crashlytics:18.2.1'
+    implementation 'com.google.firebase:firebase-messaging:23.2.0'
+    implementation 'com.google.firebase:firebase-crashlytics:18.4.0'
     implementation 'com.google.firebase:firebase-analytics:18.0.2'
     implementation 'com.itextpdf:itext7-core:7.1.8'
     implementation 'com.itextpdf:itext-pdfa:5.5.9'

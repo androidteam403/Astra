@@ -43,15 +43,31 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen10dp"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:text="Bulk Update"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        android:layout_marginTop="@dimen/dimen10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Bulk Update"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="18sp" />
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen40dp"
+                            android:layout_height="@dimen/dimen40dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="@dimen/dimen10dp"
+                            android:layout_marginEnd="@dimen/dimen10dp"
+                            android:contentDescription="@string/app_name"
+                            android:onClick="@{()-> callback.onClickRefreshIcon()}"
+                            android:src="@drawable/refresh_icon" />
+
+                    </RelativeLayout>
 
                     <TextView
                         android:id="@+id/site_id"
@@ -79,7 +95,7 @@
                             <LinearLayout
                                 android:layout_width="@dimen/dimen0dp"
                                 android:layout_height="match_parent"
-                                android:layout_weight=".9"
+                                android:layout_weight="1"
                                 android:background="@drawable/b_edit_text"
 
                                 android:orientation="horizontal"
@@ -121,9 +137,8 @@
                                 android:background="@drawable/b_edit_text"
                                 android:contentDescription="@string/app_name"
                                 android:paddingTop="5dp"
-                                android:src="@drawable/search_icon" />
-
-
+                                android:src="@drawable/search_icon"
+                                android:visibility="gone" />
 
 
                         </LinearLayout>
@@ -138,7 +153,7 @@
                         android:orientation="vertical" />
 
                     <TextView
-                        android:id="@+id/empty"
+                        android:id="@+id/no_item_found"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/dimen100dp"
@@ -186,7 +201,7 @@
 
         <variable
             name="callback"
-            type="com.thresholdsoft.astra.ui.barcode.BarCodeActivityCallback" />
+            type="com.thresholdsoft.astra.ui.bulkupdate.UpdateActivityCallback" />
 
         <variable
             name="selectedMenu"

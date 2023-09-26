@@ -43,7 +43,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".11"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="Employee Id"
+                        android:text="Employee ID"
                         android:textColor="@color/bluetooth_header_bg"
                         android:textSize="14sp" />
 
@@ -52,7 +52,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".15"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="Dc Name"
+                        android:text="DC Name"
                         android:textColor="@color/bluetooth_header_bg"
                         android:textSize="14sp" />
 

@@ -14,10 +14,6 @@ import com.thresholdsoft.astra.ui.bulkupdate.model.BulkScanChangeRequest;
 import com.thresholdsoft.astra.ui.bulkupdate.model.MrpChangeRequest;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutRequest;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
-import com.thresholdsoft.astra.ui.logout.LogOutActivityCallback;
-import com.thresholdsoft.astra.ui.logout.model.LoginDetailsRequest;
-import com.thresholdsoft.astra.ui.logout.model.LoginDetailsResponse;
-import com.thresholdsoft.astra.ui.logout.model.LoginResetResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.NetworkUtils;
@@ -33,7 +29,7 @@ public class UpdateActivityController {
 
     public UpdateActivityController(Context mContext, UpdateActivityCallback mCallback) {
         this.mContext = mContext;
-        this.mCallback=mCallback;
+        this.mCallback = mCallback;
 
     }
 
@@ -41,7 +37,6 @@ public class UpdateActivityController {
     public void updateBarcodeAction(BarcodeChangeRequest barcodeChangeRequest) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
-
 
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
@@ -76,7 +71,6 @@ public class UpdateActivityController {
             ActivityUtils.showDialog(mContext, "Please wait.");
 
 
-
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
             Call<BulkChangeResponse> call = apiInterface.UPDATE_BULKACTION_API_CALL(BuildConfig.BASE_TOKEN, bulkScanChangeRequest);
 
@@ -107,7 +101,6 @@ public class UpdateActivityController {
     public void updateMrpAction(MrpChangeRequest mrpChangeRequest) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
-
 
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
@@ -142,7 +135,6 @@ public class UpdateActivityController {
             ActivityUtils.showDialog(mContext, "Please wait.");
 
 
-
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
             Call<BulkListResponse> call = apiInterface.GETDETAILS_API_CALL(BuildConfig.BASE_TOKEN, bulkListRequest);
 
@@ -151,6 +143,7 @@ public class UpdateActivityController {
                 public void onResponse(Call<BulkListResponse> call, Response<BulkListResponse> response) {
                     ActivityUtils.hideDialog();
                     if (response.code() == 200 && response.body() != null) {
+                        new SessionManager(mContext).setBulkListResponse(response.body());
                         mCallback.onSuccessBulkListResponse(response.body());
                     } else if (response.code() == 500) {
                         mCallback.onFailureMessage("Internal Server Error");
@@ -206,13 +199,9 @@ public class UpdateActivityController {
     }
 
 
-
-
-
     private SessionManager getDataManager() {
         return new SessionManager(mContext);
     }
-
 
 
 }

@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class WithHoldDataResponse implements Serializable {
 
@@ -404,7 +405,7 @@ public class WithHoldDataResponse implements Serializable {
             String inputPattern = "";
             if (getOnholddatetime().contains("Z")) inputPattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
             else inputPattern = "yyyy-MM-dd'T'HH:mm:ss";
-            SimpleDateFormat format = new SimpleDateFormat(inputPattern);
+            SimpleDateFormat format = new SimpleDateFormat(inputPattern, Locale.ENGLISH);
             try {
                 Date date = format.parse(inputPattern);
                 System.out.println(date);

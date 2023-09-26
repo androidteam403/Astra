@@ -37,6 +37,10 @@ public abstract class AppDatabase extends RoomDatabase {
         mInstance = null;
     }
 
+    public List<GetAllocationLineResponse> getAllAllocationLineList() {
+        return dbDao().getAllAllocationLineList();
+    }
+
     public void insertOrUpdateGetAllocationLineList(GetAllocationLineResponse getAllocationLineResponse) {
 //        if (getAllocationLineResponse != null && getAllocationLineResponse.getAllocationdetails() != null && getAllocationLineResponse.getAllocationdetails().size() > 0) {
 //            for (GetAllocationLineResponse.Allocationdetail allocationdetail : getAllocationLineResponse.getAllocationdetails()) {

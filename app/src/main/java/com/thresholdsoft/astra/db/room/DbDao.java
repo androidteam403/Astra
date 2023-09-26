@@ -25,6 +25,9 @@ public interface DbDao {
     @Update
     void getAllocationLineUpdate(GetAllocationLineResponse getAllocationLineResponse);
 
+    @Query("SELECT * FROM allocation_line_data")
+    List<GetAllocationLineResponse> getAllAllocationLineList();
+
     @Query("SELECT * FROM allocation_line_data WHERE purchreqid == :purchreqid AND areaid == :areaid")
     List<GetAllocationLineResponse> getAllAllocationLineByPurchreqid(String purchreqid, String areaid);
 
