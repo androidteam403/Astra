@@ -19,7 +19,7 @@ import com.thresholdsoft.astra.utils.AppConstants;
 
 public class SplashActivity extends BaseActivity {
     private ActivitySplashBinding splashBinding;
-
+//test
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
