@@ -8,12 +8,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -21,18 +18,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
+import com.thresholdsoft.astra.databinding.LoadingProgressbarBinding;
 import com.thresholdsoft.astra.databinding.PickerrequestAdapterlayoutBinding;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestCallback;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
-import com.thresholdsoft.astra.utils.CommonUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.ViewHolder> implements Filterable {
+public class PickerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {// implements Filterable
     private Activity activity;
     private PickerRequestCallback pickerRequestCallback;
     private List<WithHoldDataResponse.Withholddetail> withholddetailList = new ArrayList<>();
@@ -45,6 +39,8 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
     private String status = "Pending";
     private String minDate, maxDate;
     private boolean isStartView = true;
+    private final int VIEW_TYPE_ITEM = 0;
+    private final int VIEW_TYPE_LOADING = 1;
 
     public PickerListAdapter(Activity activity, List<WithHoldDataResponse.Withholddetail> withholddetailList, List<WithHoldDataResponse.Withholddetail> withholddetailListList, PickerRequestCallback pickerRequestCallback) {
         this.activity = activity;
@@ -82,24 +78,44 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
 
     @NonNull
     @Override
-    public PickerListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        PickerrequestAdapterlayoutBinding pickerrequestAdapterlayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.pickerrequest_adapterlayout, parent, false);
-        return new ViewHolder(pickerrequestAdapterlayoutBinding);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == VIEW_TYPE_ITEM) {
+            PickerrequestAdapterlayoutBinding pickerrequestAdapterlayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.pickerrequest_adapterlayout, parent, false);
+            return new ViewHolder(pickerrequestAdapterlayoutBinding);
+        } else {
+            LoadingProgressbarBinding loadingProgressbarBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.loading_progressbar, parent, false);
+            return new PickerListAdapter.LoadingViewHolder(loadingProgressbarBinding);
+        }
+
+//        PickerrequestAdapterlayoutBinding pickerrequestAdapterlayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.pickerrequest_adapterlayout, parent, false);
+//        return new ViewHolder(pickerrequestAdapterlayoutBinding);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull PickerListAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        if (holder instanceof PickerListAdapter.ViewHolder) {
+            onBindViewHolderItem((PickerListAdapter.ViewHolder) holder, position);
+        }
+    }
+
+    private void onBindViewHolderItem(PickerListAdapter.ViewHolder holder, int position) {
         if (withholddetailList.size() > position) {
             WithHoldDataResponse.Withholddetail pickListItems = withholddetailList.get(position);
             if (pickListItems != null) {
                 isStartView = true;
 
-                if (pickListItems.getStatus().equalsIgnoreCase("PENDING"))
+                if (pickListItems.getStatus().equalsIgnoreCase("PENDING")) {
+                    holder.pickerrequestAdapterlayoutBinding.approvebutton.setEnabled(true);
+                    holder.pickerrequestAdapterlayoutBinding.approvebutton.setImageDrawable(activity.getResources().getDrawable(R.drawable.edit_view));
                     holder.pickerrequestAdapterlayoutBinding.parentLayout.setBackgroundColor(activity.getResources().getColor(R.color.picker_request_pending));
-                else if (pickListItems.getStatus().equalsIgnoreCase("APPROVED")) {
+                } else if (pickListItems.getStatus().equalsIgnoreCase("APPROVED")) {
+                    holder.pickerrequestAdapterlayoutBinding.approvebutton.setEnabled(false);
+                    holder.pickerrequestAdapterlayoutBinding.approvebutton.setImageDrawable(activity.getResources().getDrawable(R.drawable.edit_view_disable));
                     holder.pickerrequestAdapterlayoutBinding.parentLayout.setBackgroundColor(activity.getResources().getColor(R.color.picker_request_approved));
                 } else if (pickListItems.getStatus().equalsIgnoreCase("REJECTED")) {
+                    holder.pickerrequestAdapterlayoutBinding.approvebutton.setEnabled(false);
+                    holder.pickerrequestAdapterlayoutBinding.approvebutton.setImageDrawable(activity.getResources().getDrawable(R.drawable.edit_view_disable));
                     holder.pickerrequestAdapterlayoutBinding.parentLayout.setBackgroundColor(activity.getResources().getColor(R.color.picker_request_rejected));
                 }
 //        String holdres = pickListItems.getHoldreasoncode();
@@ -191,6 +207,7 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
         return withholddetailList.size();
     }
 
+/*
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -396,9 +413,33 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
                     notifyDataSetChanged();
                 }
             }
-        }
+        };
+    }
+*/
 
-                ;
+    public String getRequestType() {
+        return requestType;
+    }
+
+    public String getRoute() {
+        return route;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public boolean isNotifying() {
+        return isNotifying;
+    }
+
+    public void setisNotifying(boolean isNotifying) {
+        this.isNotifying = isNotifying;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return withholddetailList.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
     }
 
 
@@ -408,6 +449,15 @@ public class PickerListAdapter extends RecyclerView.Adapter<PickerListAdapter.Vi
         public ViewHolder(@NonNull PickerrequestAdapterlayoutBinding pickerrequestAdapterlayoutBinding) {
             super(pickerrequestAdapterlayoutBinding.getRoot());
             this.pickerrequestAdapterlayoutBinding = pickerrequestAdapterlayoutBinding;
+        }
+    }
+
+    public class LoadingViewHolder extends RecyclerView.ViewHolder {
+        LoadingProgressbarBinding loadingProgressbarBinding;
+
+        public LoadingViewHolder(@NonNull LoadingProgressbarBinding loadingProgressbarBinding) {
+            super(loadingProgressbarBinding.getRoot());
+            this.loadingProgressbarBinding = loadingProgressbarBinding;
         }
     }
 }

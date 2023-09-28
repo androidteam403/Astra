@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/parent_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen5dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="@dimen/dimen5dp"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="@dimen/dimen0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".65">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum=".68">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".14"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Item Name"
+                            android:textColor="@color/bluetooth_header_bg"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".11"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Item Code"
+                            android:textColor="@color/bluetooth_header_bg"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".11"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Batch"
+                            android:textColor="@color/bluetooth_header_bg"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".07"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:paddingStart="4dp"
+                            android:text="MRP"
+                            android:textColor="@color/bluetooth_header_bg"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".12"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Barcode"
+                            android:textColor="@color/bluetooth_header_bg"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".11"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Bulk Scan"
+                            android:textColor="@color/bluetooth_header_bg"
+                            android:textSize="14sp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum=".68">
+
+                        <TextView
+                            android:id="@+id/itemname"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:layout_weight=".14"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Dolo"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/itemcode"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:layout_weight=".11"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Dolo8627"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/batch"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:layout_weight=".11"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Dolo8627"
+
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/mrp_textview"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:layout_weight=".07"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:paddingStart="@dimen/dimen7sp"
+                            android:text="20"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <!--                        <LinearLayout-->
+                        <!--                            android:id="@+id/mrp_layout"-->
+                        <!--                            android:layout_width="@dimen/dimen0dp"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:layout_weight=".07"-->
+                        <!--                            android:gravity="center_vertical"-->
+                        <!--                            android:orientation="horizontal"-->
+                        <!--                            android:visibility="gone">-->
+
+                        <!--                            <EditText-->
+                        <!--                                android:id="@+id/mrp"-->
+                        <!--                                android:layout_width="match_parent"-->
+                        <!--                                android:layout_height="35dp"-->
+                        <!--                                android:layout_marginEnd="8dp"-->
+                        <!--                                android:background="@drawable/bg_approval_qty_edit"-->
+                        <!--                                android:editable="false"-->
+                        <!--                                android:enabled="false"-->
+                        <!--                                android:fontFamily="@font/poppins_semibold"-->
+                        <!--                                android:gravity="center"-->
+                        <!--                                android:imeOptions="actionDone"-->
+                        <!--                                android:inputType="numberDecimal"-->
+                        <!--                                android:text="67"-->
+                        <!--                                android:textColor="@color/black"-->
+                        <!--                                android:textSize="12sp" />-->
+
+                        <!--                        </LinearLayout>-->
+
+                        <TextView
+                            android:id="@+id/barcode_textview"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:layout_weight=".12"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Dolo123"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+
+                        <!--                        <LinearLayout-->
+                        <!--                            android:id="@+id/barcode_layout"-->
+                        <!--                            android:layout_width="@dimen/dimen0dp"-->
+
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:layout_weight=".12"-->
+                        <!--                            android:gravity="center_vertical"-->
+                        <!--                            android:orientation="horizontal"-->
+                        <!--                            android:visibility="gone">-->
+
+                        <!--                            <EditText-->
+                        <!--                                android:id="@+id/barcode"-->
+                        <!--                                android:layout_width="match_parent"-->
+                        <!--                                android:layout_height="35dp"-->
+                        <!--                                android:layout_marginEnd="8dp"-->
+                        <!--                                android:background="@drawable/bg_approval_qty_edit"-->
+                        <!--                                android:editable="false"-->
+                        <!--                                android:enabled="false"-->
+                        <!--                                android:fontFamily="@font/poppins_semibold"-->
+                        <!--                                android:gravity="center"-->
+                        <!--                                android:imeOptions="actionDone"-->
+                        <!--                                android:inputType="text"-->
+                        <!--                                android:text="Dolo123"-->
+
+                        <!--                                android:textColor="@color/black"-->
+                        <!--                                android:textSize="12sp" />-->
+
+                        <!--                        </LinearLayout>-->
+
+                        <TextView
+                            android:id="@+id/bulkscan_textview"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:layout_weight=".11"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:paddingStart="@dimen/dimen7sp"
+                            android:text="Yes"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+
+                        <LinearLayout
+                            android:id="@+id/bulk_scan_spinner_layout"
+                            android:layout_width="@dimen/dimen0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".11"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <Spinner
+                                android:id="@+id/bulkscan_spinner"
+                                style="@style/spinner_style"
+                                android:layout_width="0dp"
+                                android:layout_height="35dp"
+                                android:layout_weight=".12"
+                                android:spinnerMode="dropdown" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/update_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <!--                        <LinearLayout-->
+                        <!--                            android:layout_width="match_parent"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:orientation="horizontal"-->
+                        <!--                            android:weightSum=".68">-->
+
+                        <!--                            <TextView-->
+                        <!--                                android:id="@+id/new_mrp"-->
+                        <!--                                android:layout_width="0dp"-->
+                        <!--                                android:layout_height="wrap_content"-->
+                        <!--                                android:layout_weight=".07"-->
+                        <!--                                android:fontFamily="@font/poppins_semibold"-->
+                        <!--                                android:paddingStart="4dp"-->
+                        <!--                                android:text="New mrp"-->
+                        <!--                                android:textColor="@color/bluetooth_header_bg"-->
+                        <!--                                android:textSize="14sp"-->
+                        <!--                                android:visibility="gone" />-->
+
+                        <!--                            <TextView-->
+                        <!--                                android:id="@+id/new_barcode"-->
+                        <!--                                android:layout_width="0dp"-->
+                        <!--                                android:layout_height="wrap_content"-->
+                        <!--                                android:layout_weight=".12"-->
+                        <!--                                android:fontFamily="@font/poppins_semibold"-->
+                        <!--                                android:text="New barcode"-->
+                        <!--                                android:textColor="@color/bluetooth_header_bg"-->
+                        <!--                                android:textSize="14sp"-->
+                        <!--                                android:visibility="gone" />-->
+
+                        <!--                        </LinearLayout>-->
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum=".68">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".14"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".11"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".11"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/mrp_layout_temp"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".07"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+
+                            <LinearLayout
+                                android:id="@+id/mrp_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".07"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:visibility="gone">
+
+                                <EditText
+                                    android:id="@+id/mrp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:background="@drawable/bg_approval_qty_edit"
+                                    android:editable="false"
+                                    android:enabled="false"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:gravity="start|center_vertical"
+                                    android:imeOptions="actionDone"
+                                    android:inputType="numberDecimal"
+                                    android:paddingStart="@dimen/dimen5dp"
+                                    android:text="67"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/barcode_layout_temp"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".12"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+
+                            <LinearLayout
+                                android:id="@+id/barcode_layout"
+                                android:layout_width="@dimen/dimen0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".12"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:visibility="gone">
+
+                                <EditText
+                                    android:id="@+id/barcode"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:background="@drawable/bg_approval_qty_edit"
+                                    android:editable="false"
+                                    android:enabled="false"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:gravity="start|center_vertical"
+                                    android:imeOptions="actionDone"
+                                    android:inputType="text"
+                                    android:paddingStart="@dimen/dimen5dp"
+                                    android:text="Dolo123"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="7dp"
+                                android:layout_weight=".11"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:paddingStart="@dimen/dimen7sp"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+
+                            <!--                            <TextView-->
+                            <!--                                android:id="@+id/update_status"-->
+                            <!--                                android:layout_width="0dp"-->
+                            <!--                                android:layout_height="@dimen/dimen35dp"-->
+                            <!--                                android:layout_weight=".3"-->
+                            <!--                                android:gravity="center"-->
+                            <!--                                android:background="@drawable/bulk_update_status_bg"-->
+                            <!--                                android:fontFamily="@font/poppins_bold"-->
+                            <!--                                android:textColor="@color/green"-->
+                            <!--                                android:textSize="@dimen/dimen12sp"-->
+                            <!--                                android:visibility="gone" />-->
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/action_bar_spinner_layout"
+                android:layout_width="@dimen/dimen0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_weight=".35"
+                android:weightSum=".35">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".22"
+                    android:background="@drawable/square_stroke_bg"
+                    android:weightSum="1">
+
+                    <Spinner
+                        android:id="@+id/action"
+                        style="@style/spinner_style"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_weight=".99"
+                        android:paddingStart="4dp"
+                        android:spinnerMode="dropdown" />
+                </LinearLayout>
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/apply"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_weight=".11"
+                    android:background="@color/grey"
+                    android:fontFamily="@font/roboto_bold"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="Apply"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</layout>

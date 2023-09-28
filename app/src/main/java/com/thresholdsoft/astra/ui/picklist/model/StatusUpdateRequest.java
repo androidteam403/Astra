@@ -36,6 +36,12 @@ public class StatusUpdateRequest implements Serializable {
     @Expose
     private List<Allocationdetail> allocationdetails = null;
 
+    @SerializedName("areaid")
+    @Expose
+    private String areaid;
+
+    //
+
     public String getRequesttype() {
         return requesttype;
     }
@@ -108,6 +114,14 @@ public class StatusUpdateRequest implements Serializable {
         this.allocationdetails = allocationdetails;
     }
 
+    public String getAreaid() {
+        return areaid;
+    }
+
+    public void setAreaid(String areaid) {
+        this.areaid = areaid;
+    }
+
     public static class Allocationdetail implements Serializable {
 
         @SerializedName("itemid")
@@ -146,6 +160,13 @@ public class StatusUpdateRequest implements Serializable {
         @SerializedName("id")
         @Expose
         private Integer id;
+        @SerializedName("scanstartdatetime")
+        @Expose
+        private String scanstartdatetime;
+        @SerializedName("scanenddatetime")
+        @Expose
+        private String scanenddatetime;
+
 
         public String getItemid() {
             return itemid;
@@ -243,6 +264,21 @@ public class StatusUpdateRequest implements Serializable {
             this.id = id;
         }
 
+        public String getScanstartdatetime() {
+            return scanstartdatetime;
+        }
+
+        public void setScanstartdatetime(String scanstartdatetime) {
+            this.scanstartdatetime = scanstartdatetime;
+        }
+
+        public String getScanenddatetime() {
+            return scanenddatetime;
+        }
+
+        public void setScanenddatetime(String scanenddatetime) {
+            this.scanenddatetime = scanenddatetime;
+        }
     }
 
 }

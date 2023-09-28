@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Pair;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.utils.FileUtils;
 import com.thresholdsoft.astra.BuildConfig;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.network.ApiClient;
@@ -13,6 +12,7 @@ import com.thresholdsoft.astra.ui.commonmodel.LogoutRequest;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.CheckQohRequest;
 import com.thresholdsoft.astra.ui.pickerrequests.model.CheckQohResponse;
+import com.thresholdsoft.astra.ui.picklist.model.CheckItemUpdateResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataRequest;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationDataResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineRequest;
@@ -27,7 +27,6 @@ import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateRequest;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
-import com.thresholdsoft.astra.utils.CommonUtils;
 import com.thresholdsoft.astra.utils.NetworkUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -59,7 +58,7 @@ public class PickListActivityController {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<PackingLabelResponse> call = apiInterface.PACKING_LABEL_RESPONSE_CALL("h72genrSSNFivOi/cfiX3A==", packingLabelRequest);
+            Call<PackingLabelResponse> call = apiInterface.PACKING_LABEL_RESPONSE_CALL(BuildConfig.GENERATEPDFBYPRNOFORASTHRA, "h72genrSSNFivOi/cfiX3A==", packingLabelRequest);
             call.enqueue(new Callback<PackingLabelResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<PackingLabelResponse> call, @NotNull Response<PackingLabelResponse> response) {
@@ -139,6 +138,7 @@ public class PickListActivityController {
             getAllocationDataRequest.setUserId(getDataManager().getEmplId());
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
+//            Call<GetAllocationDataResponse> call = apiInterface.GET_ALLOCATION_DATA_API_CALL();
             Call<GetAllocationDataResponse> call = apiInterface.GET_ALLOCATION_DATA_API_CALL(BuildConfig.BASE_TOKEN, getAllocationDataRequest);
             call.enqueue(new Callback<GetAllocationDataResponse>() {
                 @Override
@@ -149,7 +149,7 @@ public class PickListActivityController {
                             if (response.body().getAllocationhddatas().size() > 0) {
 //                                response.body().setAllocationhddatas(response.body().getAllocationhddatas().stream().filter(i -> CommonUtils.getConvertStringToDate(i.getTransdate().substring(0, 10)).before(CommonUtils.getConvertStringToDate(CommonUtils.getCurrentDate()))).collect(Collectors.toList()));
 //                                response.body().setAllocationhddatas(response.body().getAllocationhddatas().stream().filter(i -> !i.getScanstatus().equalsIgnoreCase("COMPLETED") && CommonUtils.getConvertStringToDate(i.getTransdate().substring(0,10)).before(CommonUtils.getCurrentDateDate())).collect(Collectors.toList()));
-                               // response.body().getAllocationhddatas().removeIf(i -> i.getScanstatus().equalsIgnoreCase("COMPLETED") && CommonUtils.getConvertStringToDate(i.getTransdate().substring(0, 10)).before(CommonUtils.getCurrentDateDate()));
+                                // response.body().getAllocationhddatas().removeIf(i -> i.getScanstatus().equalsIgnoreCase("COMPLETED") && CommonUtils.getConvertStringToDate(i.getTransdate().substring(0, 10)).before(CommonUtils.getCurrentDateDate()));
 
                             }
 
@@ -171,10 +171,6 @@ public class PickListActivityController {
                     mCallback.onFailureMessage(t.getMessage());
                 }
             });
-        } else if (!NetworkUtils.isNetworkConnected(mContext)) {
-            if (getDataManager().getAllocationDataResponse() != null)
-                mCallback.onSuccessGetAllocationDataApi(getDataManager().getAllocationDataResponse(), isRequestToSupervisior, isCompletedStatus);
-
         } else {
             mCallback.onFailureMessage("Something went wrong.");
         }
@@ -302,12 +298,12 @@ public class PickListActivityController {
 
     }
 
-    public void getDeliveryofModeApiCall() {
+    public void getDeliveryofModeApiCall(String dcCode) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<GetModeofDeliveryResponse> call = apiInterface.GET_MODEOF_DELIVERY_API_CALL(BuildConfig.BASE_TOKEN);
+            Call<GetModeofDeliveryResponse> call = apiInterface.GET_MODEOF_DELIVERY_API_CALL("GetModeofDelivery/" + dcCode, BuildConfig.BASE_TOKEN);
             call.enqueue(new Callback<GetModeofDeliveryResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetModeofDeliveryResponse> call, @NotNull Response<GetModeofDeliveryResponse> response) {
@@ -431,10 +427,6 @@ public class PickListActivityController {
 
                 }
             });
-        }else{
-            mCallback.onSuccessCheckQohWithoutInternet(getWithHoldRemarksResponse);
-
-
         }
 
     }
@@ -495,5 +487,27 @@ public class PickListActivityController {
         }
     }
 
+    public void checkItemUpdate() {
+        if (NetworkUtils.isNetworkConnected(mContext)) {
+            ActivityUtils.showDialog(mContext, "Please wait.");
+            ApiInterface api = ApiClient.getApiServiceAds();
+            Call<CheckItemUpdateResponse> call = api.CHECK_ITEM_UPDATE_API_CALL();
+            call.enqueue(new Callback<CheckItemUpdateResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<CheckItemUpdateResponse> call, @NotNull Response<CheckItemUpdateResponse> response) {
+                    ActivityUtils.hideDialog();
+                    if (response.isSuccessful() && response.body() != null) {
+
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<CheckItemUpdateResponse> call, @NotNull Throwable t) {
+                    ActivityUtils.hideDialog();
+                }
+            });
+        }
+    }
 }
 
+//https://jsonblob.com/api/jsonBlob/1114174843355676672

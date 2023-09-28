@@ -58,7 +58,9 @@ public class PickerRequestController {
                         }
 
                         if (response.body().getWithholddetails() != null && response.body().getWithholddetails().size() > 0) {
-
+//                            for (int i = 0; i< 30; i++){
+//                                response.body().getWithholddetails().add(response.body().getWithholddetails().get(0));
+//                            }
 
 //                        Collections.sort(response.body().getWithholddetails(), new Comparator<WithHoldDataResponse.Withholddetail>() {
 //                            public int compare(WithHoldDataResponse.Withholddetail s1, WithHoldDataResponse.Withholddetail s2) {

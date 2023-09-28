@@ -1,6 +1,7 @@
 package com.thresholdsoft.astra.ui.login;
 
 import android.content.Context;
+import android.os.Build;
 
 import com.thresholdsoft.astra.BuildConfig;
 import com.thresholdsoft.astra.db.SessionManager;
@@ -30,7 +31,7 @@ public class LoginActivityController {
         this.loginActivityCallback = loginActivityCallback;
     }
 
-    public void validateUser(String userId, String password) {
+    public void validateUser(String userId, String password, String fcmKey) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
@@ -38,6 +39,12 @@ public class LoginActivityController {
             ValidateUserModelRequest reqModel = new ValidateUserModelRequest();
             reqModel.setUserid(userId);
             reqModel.setPassword(password);
+            reqModel.setFcmkey(fcmKey);
+            reqModel.setDevicebrandname(Build.BRAND);
+//            reqModel.setDevicebrandvalue();
+            reqModel.setDeviceid(Build.ID);
+            reqModel.setVersionname(BuildConfig.VERSION_NAME);
+            reqModel.setVersionnumber(String.valueOf(BuildConfig.VERSION_CODE));
 
             Call<ValidateUserModelResponse> call = apiInterface.VALIDATE_USER_API_CALL(BuildConfig.BASE_TOKEN, reqModel);
             call.enqueue(new Callback<ValidateUserModelResponse>() {
@@ -66,12 +73,12 @@ public class LoginActivityController {
         }
     }
 
-    public void getDeliveryofModeApiCall() {
+    public void getDeliveryofModeApiCall(String dcCode) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<GetModeofDeliveryResponse> call = apiInterface.GET_MODEOF_DELIVERY_API_CALL(BuildConfig.BASE_TOKEN);
+            Call<GetModeofDeliveryResponse> call = apiInterface.GET_MODEOF_DELIVERY_API_CALL("GetModeofDelivery/" + dcCode, BuildConfig.BASE_TOKEN);
             call.enqueue(new Callback<GetModeofDeliveryResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetModeofDeliveryResponse> call, @NotNull Response<GetModeofDeliveryResponse> response) {
@@ -117,7 +124,7 @@ public class LoginActivityController {
                         if (response.body().getRequeststatus()) {
                             AppConstants.getWithHoldRemarksResponse = response.body();
                             getDataManager().setGetWithHoldRemarksResponse(response.body());
-//                            mCallback.onSuccessGetWithHoldRemarksApi(response.body());
+                            loginActivityCallback.onSuccessGetWithHoldRemarksApi(response.body());
                         } else {
                             loginActivityCallback.onFailureMessage(response.body().getRequestmessage());
                         }

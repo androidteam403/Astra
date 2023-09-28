@@ -99,7 +99,7 @@ public class GetAllocationLineResponse implements Serializable {
         this.allocationdetails = allocationdetails;
     }
 
-    public static class Allocationdetail {
+    public static class Allocationdetail implements Serializable {
 
         @SerializedName("itemid")
         @Expose
@@ -204,6 +204,8 @@ public class GetAllocationLineResponse implements Serializable {
         private GetWithHoldRemarksResponse.Remarksdetail selectedSupervisorRemarksdetail = null;
 
         private String scannedDateTime;
+
+        private String itemScannedStartDateTime;
         private Boolean isScannedBarcodeItemSelected;
 
         public Boolean getScannedBarcodeItemSelected() {
@@ -388,6 +390,14 @@ public class GetAllocationLineResponse implements Serializable {
 
         public void setScannedDateTime(String scannedDateTime) {
             this.scannedDateTime = scannedDateTime;
+        }
+
+        public String getItemScannedStartDateTime() {
+            return itemScannedStartDateTime;
+        }
+
+        public void setItemScannedStartDateTime(String itemScannedStartDateTime) {
+            this.itemScannedStartDateTime = itemScannedStartDateTime;
         }
 
         public GetWithHoldRemarksResponse.Remarksdetail getSelectedSupervisorRemarksdetail() {

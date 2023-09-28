@@ -14,7 +14,7 @@
         android:layout_marginStart="@dimen/dimen8dp"
         android:fontFamily="@font/poppins_semibold"
         android:textColor="@color/black"
-        android:textSize="@dimen/dimen14sp" />
+        android:textSize="14sp" />
 
     <ImageView
         android:id="@+id/close"

@@ -1,6 +1,7 @@
 package com.thresholdsoft.astra.ui.picklisthistory;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -189,6 +190,16 @@ public class PickListHistoryActivity extends BaseActivity implements CustomMenuC
     }
 
     @Override
+    public void onClickBulkUpdate() {
+
+    }
+
+    @Override
+    public void onClickBarCode() {
+
+    }
+
+    @Override
     public void onClickPickListHistory() {
 
     }
@@ -221,18 +232,13 @@ public class PickListHistoryActivity extends BaseActivity implements CustomMenuC
     }
 
     @Override
-    public void onClickRefreshForInternetSup() {
-
-    }
-
-    @Override
-    public void onClickRefreshForInternet() {
-
-    }
-
-    @Override
     public void onClickLogcat() {
 
+    }
+
+    @Override
+    public void onClickLogistics() {
+        Dialog logisticsMenuDialog = new Dialog(this);
     }
 
 }

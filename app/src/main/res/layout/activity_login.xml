@@ -24,6 +24,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/red_round_corners_bg"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/dimen5dp"
+                android:paddingStart="@dimen/dimen8dp"
+                android:paddingTop="@dimen/dimen2dp"
+                android:paddingEnd="@dimen/dimen8dp"
+                android:paddingBottom="@dimen/dimen2dp"
+                android:text="@{BuildConfig.ENVIRONMENT}"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen5dp"
                 android:text="@string/warehouse_management"
                 android:textColor="@color/white"
@@ -77,7 +92,7 @@
                 android:background="#fdb710"
                 android:onClick="@{()-> callback.onClickLogin()}"
                 android:text="@string/label_login"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="@dimen/dimen18sp" />
         </LinearLayout>
 
@@ -94,6 +109,20 @@
                 android:layout_height="@dimen/dimen100dp"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/apollo_healthco_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/red_round_corners_bg"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:paddingStart="@dimen/dimen8dp"
+                android:paddingTop="@dimen/dimen2dp"
+                android:paddingEnd="@dimen/dimen8dp"
+                android:paddingBottom="@dimen/dimen2dp"
+                android:text="@{BuildConfig.ENVIRONMENT}"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen12sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -156,5 +185,8 @@
         <variable
             name="callback"
             type="com.thresholdsoft.astra.ui.login.LoginActivityCallback" />
+
+        <import type="com.thresholdsoft.astra.BuildConfig" />
+
     </data>
 </layout>

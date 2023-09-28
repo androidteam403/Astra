@@ -325,7 +325,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/picklistrecycleview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:visibility="@{pickListCount == 0 ? view.GONE : view.VISIBLE}" />
 
@@ -950,11 +950,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/dimen10dp"
                             android:layout_weight="1"
-                            android:background="@color/lite_yellow"
+                            android:background="@{allocationData.noofboxes > 0 ? @color/continue_select_color : @color/light_yellow_color}"
                             android:gravity="center"
                             android:onClick="@{()-> callback.onClickPrint()}"
                             android:orientation="horizontal"
-                            android:visibility="@{allocationData.scanstatus.equalsIgnoreCase(`Completed`) ? view.VISIBLE : orderStatusModel.status.equalsIgnoreCase(`Completed`) ? view.VISIBLE : view.GONE}">
+                            android:visibility="@{allocationData.noofboxes == 0 ? view.GONE : allocationData.scanstatus.equalsIgnoreCase(`Completed`)  ? view.VISIBLE : orderStatusModel.status.equalsIgnoreCase(`Completed`) ? view.VISIBLE : view.GONE}">
 
                             <ImageView
                                 android:layout_width="@dimen/dimen20dp"
@@ -1094,7 +1094,7 @@
                                     <androidx.recyclerview.widget.RecyclerView
                                         android:id="@+id/listitem_recycleview"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
+                                        android:layout_height="380dp"
                                         android:orientation="vertical"
                                         android:scrollbars="vertical"
                                         android:visibility="@{itemListCount != 0 ? view.VISIBLE : view.GONE}" />

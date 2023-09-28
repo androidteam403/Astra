@@ -339,7 +339,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/picklistrecycleview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:visibility="@{pickListCount == 0 ? view.GONE : view.VISIBLE}" />
 
@@ -968,7 +968,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginEnd="@dimen/dimen10dp"
                             android:layout_weight="1"
-                            android:background="@color/lite_yellow"
+                            android:background="@{allocationData.noofboxes > 0 ? @color/continue_select_color : @color/light_yellow_color}"
                             android:gravity="center"
                             android:onClick="@{()-> callback.onClickPrint()}"
                             android:orientation="horizontal"
@@ -1115,7 +1115,7 @@
                                     <androidx.recyclerview.widget.RecyclerView
                                         android:id="@+id/listitem_recycleview"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
+                                        android:layout_height="@dimen/dimen400dp"
                                         android:orientation="vertical"
                                         android:scrollbars="vertical"
                                         android:visibility="@{itemListCount != 0 ? view.VISIBLE : view.GONE}" />

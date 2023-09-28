@@ -12,6 +12,9 @@
     <string name="picker_nhistory">PICKER\nHISTORY</string>
     <string name="total_assigned">TOTAL ASSIGNED</string>
     <string name="_120">120</string>
+    <string name="onepointfivebyzeropointnine">1.5</string>
+
+
     <string name="price_format">%,.2f</string>
     <string name="completed">COMPLETED</string>
     <string name="_20">20</string>
@@ -80,4 +83,12 @@
     <string name="label_scan">Scan</string>
     <string name="label_search_by_purchase_requisition">Search by Purchase Requisition</string>
     <string name="label_batch_code">Batch code</string>
+    <string name="mediasize_iso_05">12333</string>
+    <string name="custom_nbarcode_print">Custom\nBarcode Print</string>
+    <string name="label_logistics">Logistics</string>
+    <string name="label_continue">Continue</string>
+    <string name="label_100_mm_x_25_mm">100 mm X 25 mm</string>
+    <string name="label_38mm_x_15_mm">38mm X 15 mm</string>
+    <string name="label_choose_barcode_print_size">Choose barcode print size</string>
+    <string name="label_item_name">Item name:</string>
 </resources>

@@ -2,6 +2,8 @@ package com.thresholdsoft.astra.ui;
 
 public interface CustomMenuCallback {
     void onClickPickList();
+    void onClickBulkUpdate();
+    void onClickBarCode();
 
     void onClickPickListHistory();
 
@@ -12,10 +14,7 @@ public interface CustomMenuCallback {
     void onClickPickerRequest();
 
     void onClickLogout();
-
-    void onClickRefreshForInternetSup();
-
-    void onClickRefreshForInternet();
-
     void onClickLogcat();
+
+    void onClickLogistics();
 }
