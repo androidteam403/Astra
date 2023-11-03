@@ -5,6 +5,8 @@ import androidx.room.TypeConverter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse;
+import com.thresholdsoft.astra.ui.picklist.model.GetModeofDeliveryResponse;
+import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 
 import java.lang.reflect.Type;
 import java.util.Date;
@@ -45,6 +47,28 @@ public class DataConverter {
         Gson gson = new Gson();
         Type type = new TypeToken<List<GetAllocationLineResponse.Allocationdetail>>() {}.getType();
         List<GetAllocationLineResponse.Allocationdetail> countryLangList = gson.fromJson(countryLangString, type);
+        return countryLangList;
+    }
+
+    @TypeConverter
+    public String fromSelectedRemarksdetail(GetWithHoldRemarksResponse.Remarksdetail selectedRemarksDetail) {
+        if (selectedRemarksDetail == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<GetWithHoldRemarksResponse.Remarksdetail>() {}.getType();
+        String json = gson.toJson(selectedRemarksDetail, type);
+        return json;
+    }
+
+    @TypeConverter
+    public GetWithHoldRemarksResponse.Remarksdetail toSelectedRemarksdetail(String selectedRemarksDetail) {
+        if (selectedRemarksDetail == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<GetWithHoldRemarksResponse.Remarksdetail>() {}.getType();
+        GetWithHoldRemarksResponse.Remarksdetail countryLangList = gson.fromJson(selectedRemarksDetail, type);
         return countryLangList;
     }
 

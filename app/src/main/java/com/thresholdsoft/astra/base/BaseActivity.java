@@ -10,11 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.thresholdsoft.astra.db.SessionManager;
+import com.thresholdsoft.astra.db.room.AppDatabase;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
     public SessionManager getDataManager() {
         return new SessionManager(this);
+    }
+
+    public AppDatabase getAppDatabase() {
+        return AppDatabase.getDatabaseInstance(this);
     }
 
     public void hideKeyboard() {

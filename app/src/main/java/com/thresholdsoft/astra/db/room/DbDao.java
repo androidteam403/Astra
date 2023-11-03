@@ -48,4 +48,97 @@ public interface DbDao {
 
     @Query("SELECT * FROM order_status_time_entity WHERE purchreqid == :purchreqid AND areaid == :areaid")
     OrderStatusTimeDateEntity getOrderStatusTimeDateByPurchId(String purchreqid, String areaid);
+
+    //Made changes for code performance optimization.
+    /*@Insert
+    void inserIndent(GetAllocationLineResponse getAllocationLineResponse);*/
+    @Insert
+    void inserLineItemList(List<GetAllocationLineResponse.Allocationdetail> Aalocationdetail);
+
+    @Update
+    void updateLineItem(GetAllocationLineResponse.Allocationdetail Aalocationdetail);
+
+    @Query("SELECT * FROM allocation_line_data_item WHERE uniquekey == :uniqueKey")
+    GetAllocationLineResponse.Allocationdetail getAllocationLineDataItem(int uniqueKey);
+
+    @Query("SELECT * FROM allocation_line_data_item WHERE id_fkAllocationdetail == :foreinKey AND itembarcode == :barcode AND allocatedPackscompleted != 0")
+    List<GetAllocationLineResponse.Allocationdetail> getAllocationLineDataItemByBarcodeForeinKey(String barcode, int foreinKey);
+
+    @Query("SELECT * FROM allocation_line_data_item WHERE id_fkAllocationdetail == :fk")
+    List<GetAllocationLineResponse.Allocationdetail> getAllAllocationDetailsByforeinKey(int fk);
+
+
+    @Query("SELECT * FROM allocation_line_data_item WHERE id_fkAllocationdetail == :fk AND allocatedPackscompleted - supervisorApprovedQty != 0 AND isRequestAccepted == 0 AND selectedSupervisorRemarksdetail IS NULL")
+    List<GetAllocationLineResponse.Allocationdetail> getAllPendingAllocationDetailsByforeinKey(int fk);
+
+    @Query("SELECT * FROM allocation_line_data_item WHERE id_fkAllocationdetail == :fk AND selectedSupervisorRemarksdetail IS NULL")
+    List<GetAllocationLineResponse.Allocationdetail> getAllrequestPendingAllocationDetailsByforeinKey(int fk);
+
+    @Query("SELECT * FROM allocation_line_data_item WHERE id_fkAllocationdetail == :fk AND selectedSupervisorRemarksdetail == null AND (allocatedPackscompleted - supervisorApprovedQty) == 0 OR isRequestAccepted")
+    List<GetAllocationLineResponse.Allocationdetail> getAllcompletedAllocationdetailByforeinKey(int fk);
+
+    @Query("SELECT *\n" +
+            "FROM allocation_line_data_item\n" +
+            "WHERE id_fkAllocationdetail == :fk\n" +
+            "ORDER BY CASE\n" +
+            "    WHEN allocatedPackscompleted - supervisorApprovedQty != 0 AND isRequestAccepted == 0 AND selectedSupervisorRemarksdetail IS NULL THEN 0\n" +
+            "    WHEN selectedSupervisorRemarksdetail IS NOT NULL THEN 1\n" +
+            "    WHEN selectedSupervisorRemarksdetail IS NULL AND allocatedPackscompleted - supervisorApprovedQty == 0 OR isRequestAccepted == 0 THEN 2\n" +
+            "\tELSE 3\n" +
+            "END LIMIT :limit\n" +
+            "OFFSET :offset;")
+    List<GetAllocationLineResponse.Allocationdetail> getAllSortedAllocationDetailsByforeinKey(int fk, int limit, int offset);
+
+    @Query("SELECT * FROM allocation_line_data_item WHERE id_fkAllocationdetail == :fk AND allocatedPackscompleted - supervisorApprovedQty == 0")
+    List<GetAllocationLineResponse.Allocationdetail> getAllallocatedQtyAllocationDetailListByforeinKey(int fk);
+
+    @Query("SELECT * FROM allocation_line_data_item WHERE id_fkAllocationdetail == :fk AND uniquekey = :uniqueKey")
+    List<GetAllocationLineResponse.Allocationdetail> getAllocationDetailListByforeinKeyandUniqueKey(int fk, int uniqueKey);
+
+
+
+    /*List<GetAllocationLineResponse.Allocationdetail> pendingAllocationdetailList = getAllocationdetailItemList().stream().filter(e -> (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) != 0 && !e.isRequestAccepted() && (e.getSelectedSupervisorRemarksdetail() == null)).collect(Collectors.toList());
+        allocationdetailListSort.addAll(pendingAllocationdetailList);
+
+    List<GetAllocationLineResponse.Allocationdetail> requestPendingAllocationDetailsLIst = getAllocationdetailItemList().stream().filter(e -> (e.getSelectedSupervisorRemarksdetail() != null)).collect(Collectors.toList());
+        allocationdetailListSort.addAll(requestPendingAllocationDetailsLIst);
+
+    List<GetAllocationLineResponse.Allocationdetail> completedAllocationdetailList = getAllocationdetailItemList().stream().filter(e -> (e.getSelectedSupervisorRemarksdetail() == null && (e.getAllocatedPackscompleted() - e.getSupervisorApprovedQty()) == 0 || e.isRequestAccepted())).collect(Collectors.toList());
+        allocationdetailListSort.addAll(completedAllocationdetailList);*/
+
+    @Query("DELETE FROM allocation_line_data_item WHERE id_fkAllocationdetail == :id_fkAllocationdetail")
+    void deleteAllocationLineItemDateByForeinKey(int id_fkAllocationdetail);
+
+
+    @Query("SELECT *\n" +
+            "FROM allocation_line_data_item\n" +
+            "WHERE id_fkAllocationdetail == :fk\n" +
+            "AND selectedSupervisorRemarksdetail IS NULL AND allocatedPackscompleted - supervisorApprovedQty == 0 OR isRequestAccepted == 1\n" +
+            "LIMIT :limit\n" +
+            "OFFSET :offset;")
+    List<GetAllocationLineResponse.Allocationdetail> getAllScannedAllocationDetailsByforeinKey(int fk, int limit, int offset);
+
+    @Query("SELECT *\n" +
+            "FROM allocation_line_data_item\n" +
+            "WHERE id_fkAllocationdetail == :fk\n" +
+            "AND allocatedPackscompleted - supervisorApprovedQty != 0 AND isRequestAccepted == 0 AND selectedSupervisorRemarksdetail IS NULL\n" +
+            "LIMIT :limit\n" +
+            "OFFSET :offset;")
+    List<GetAllocationLineResponse.Allocationdetail> getAllPendingAllocationDetailsByforeinKey(int fk, int limit, int offset);
+
+    @Query("SELECT *\n" +
+            "FROM allocation_line_data_item\n" +
+            "WHERE id_fkAllocationdetail == :fk\n" +
+            "AND isRequestAccepted == 1\n" +
+            "LIMIT :limit\n" +
+            "OFFSET :offset;")
+    List<GetAllocationLineResponse.Allocationdetail> getAllApprovedAllocationDetailsByforeinKey(int fk, int limit, int offset);
+
+    @Query("SELECT *\n" +
+            "FROM allocation_line_data_item\n" +
+            "WHERE id_fkAllocationdetail == :fk\n" +
+            "AND allocatedPackscompleted - supervisorApprovedQty == 0 OR isRequestAccepted == 1\n" +
+            "LIMIT :limit\n" +
+            "OFFSET :offset;")
+    List<GetAllocationLineResponse.Allocationdetail> getAllCompletedAllocationDetailsByforeinKey(int fk, int limit, int offset);
 }

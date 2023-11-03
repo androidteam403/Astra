@@ -26,7 +26,6 @@
                 android:textSize="@dimen/dimen14sp" />
 
             <TextView
-                android:id="@+id/itemId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimen3dp"

@@ -1,5 +1,13 @@
 package com.thresholdsoft.astra.ui.picklist.model;
 
+import static androidx.room.ForeignKey.CASCADE;
+
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -43,8 +51,20 @@ public class GetWithHoldRemarksResponse implements Serializable {
         this.remarksdetails = remarksdetails;
     }
 
+//    @Entity(tableName = "remarks_detail")
     public static class Remarksdetail implements Serializable {
+       /* @PrimaryKey(autoGenerate = true)
+        @NonNull
+        @ColumnInfo(name = "uniquekey")
+        private int uniqueKey;
 
+        @ForeignKey
+                (entity = GetAllocationLineResponse.Allocationdetail.class,
+                        parentColumns = "uniquekey",
+                        childColumns = "id_fkcourse",
+                        onDelete = CASCADE
+                )
+        private long id_fkcourse;*/
         @SerializedName("remarkscode")
         @Expose
         private String remarkscode;
@@ -53,6 +73,26 @@ public class GetWithHoldRemarksResponse implements Serializable {
         private String remarksdesc;
 
         private boolean isSelected;
+
+      /*  public int getUniqueKey() {
+            return uniqueKey;
+        }
+
+        public void setUniqueKey(int uniqueKey) {
+            this.uniqueKey = uniqueKey;
+        }
+
+        public long getId_fkcourse() {
+            return id_fkcourse;
+        }
+
+        public void setId_fkcourse(long id_fkcourse) {
+            this.id_fkcourse = id_fkcourse;
+        }*/
+
+        public void setSelected(boolean selected) {
+            isSelected = selected;
+        }
 
         public String getRemarkscode() {
             return remarkscode;
@@ -72,10 +112,6 @@ public class GetWithHoldRemarksResponse implements Serializable {
 
         public Boolean isSelected() {
             return isSelected;
-        }
-
-        public void setSelected(Boolean selected) {
-            isSelected = selected;
         }
     }
 }

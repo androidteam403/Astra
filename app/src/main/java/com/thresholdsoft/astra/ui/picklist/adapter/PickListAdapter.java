@@ -64,7 +64,8 @@ public class PickListAdapter extends RecyclerView.Adapter<PickListAdapter.ViewHo
 
         List<GetAllocationLineResponse> getAllocationLineResponse = AppDatabase.getDatabaseInstance(mContext).dbDao().getAllAllocationLineByPurchreqid(allocationhddata.getPurchreqid(), allocationhddata.getAreaid());
         if (getAllocationLineResponse != null && getAllocationLineResponse.size() > 0) {
-            List<GetAllocationLineResponse.Allocationdetail> completedAllocationLineList = getAllocationLineResponse.get(0).getAllocationdetails().stream()
+            List<GetAllocationLineResponse.Allocationdetail> getAllAllocationdetail = AppDatabase.getDatabaseInstance(mContext).dbDao().getAllAllocationDetailsByforeinKey(getAllocationLineResponse.get(0).getUniqueKey());
+            List<GetAllocationLineResponse.Allocationdetail> completedAllocationLineList = getAllAllocationdetail.stream()
                     .filter(e -> e.getAllocatedPackscompleted() == 0)
                     .collect(Collectors.toList());
             allocationhddata.setCollected(completedAllocationLineList.size());

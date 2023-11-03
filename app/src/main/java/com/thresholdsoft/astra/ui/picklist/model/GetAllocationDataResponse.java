@@ -19,6 +19,7 @@ public class GetAllocationDataResponse implements Serializable {
     @Expose
     private List<Allocationhddata> allocationhddatas = null;
 
+
     public Boolean getRequeststatus() {
         return requeststatus;
     }
@@ -118,6 +119,7 @@ public class GetAllocationDataResponse implements Serializable {
 
         private boolean isSelected;
         private int collected;
+        private int uniqueKey;
 
         public String getInventsiteid() {
             return inventsiteid;
@@ -317,6 +319,14 @@ public class GetAllocationDataResponse implements Serializable {
 
         public void setCollected(int collected) {
             this.collected = collected;
+        }
+
+        public int getUniqueKey() {
+            return uniqueKey;
+        }
+
+        public void setUniqueKey(int uniqueKey) {
+            this.uniqueKey = uniqueKey;
         }
     }
 

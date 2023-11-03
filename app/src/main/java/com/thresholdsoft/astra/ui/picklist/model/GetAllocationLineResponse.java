@@ -1,8 +1,12 @@
 package com.thresholdsoft.astra.ui.picklist.model;
 
+import static androidx.room.ForeignKey.CASCADE;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
@@ -99,7 +103,20 @@ public class GetAllocationLineResponse implements Serializable {
         this.allocationdetails = allocationdetails;
     }
 
+    @Entity(tableName = "allocation_line_data_item")
     public static class Allocationdetail implements Serializable {
+        @PrimaryKey(autoGenerate = true)
+        @NonNull
+        @ColumnInfo(name = "uniquekey")
+        private int uniqueKey;
+
+        @ForeignKey
+                (entity = GetAllocationLineResponse.class,
+                        parentColumns = "uniquekey",
+                        childColumns = "id_fkAllocationdetail",
+                        onDelete = CASCADE
+                )
+        private long id_fkAllocationdetail;
 
         @SerializedName("itemid")
         @Expose
@@ -139,7 +156,7 @@ public class GetAllocationLineResponse implements Serializable {
         private int supervisorApprovedQty = 0;
         private int supervisorApprovalQty = 0;
 
-
+        @Ignore
         private boolean isSelected;
 
         private boolean isRequestAccepted = false;
@@ -222,6 +239,22 @@ public class GetAllocationLineResponse implements Serializable {
 
         public void setItemid(String itemid) {
             this.itemid = itemid;
+        }
+
+        public int getUniqueKey() {
+            return uniqueKey;
+        }
+
+        public void setUniqueKey(int uniqueKey) {
+            this.uniqueKey = uniqueKey;
+        }
+
+        public long getId_fkAllocationdetail() {
+            return id_fkAllocationdetail;
+        }
+
+        public void setId_fkAllocationdetail(long id_fkAllocationdetail) {
+            this.id_fkAllocationdetail = id_fkAllocationdetail;
         }
 
         public String getItemname() {
