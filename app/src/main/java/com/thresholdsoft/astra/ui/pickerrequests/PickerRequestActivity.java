@@ -39,6 +39,7 @@ import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.ui.alertdialogs.AlertBox;
 import com.thresholdsoft.astra.ui.barcode.BarCodeActivity;
 import com.thresholdsoft.astra.ui.bulkupdate.BulkUpdateActivity;
+import com.thresholdsoft.astra.ui.changeuser.ChangeUserActivity;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.logout.LogOutUsersActivity;
@@ -1422,6 +1423,13 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         Intent intent = new Intent(PickerRequestActivity.this, BarCodeActivity.class);
         intent.putExtra("pickerrequest", "Picker " + "\n" + "Request");
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+        finish();
+    }
+
+    @Override
+    public void onClickUserChange() {
+        startActivity(ChangeUserActivity.getStartIntent(this));
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
         finish();
     }

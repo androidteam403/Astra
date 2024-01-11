@@ -75,6 +75,7 @@ import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.ui.barcode.adapter.BarCodeLabelAdapter;
 import com.thresholdsoft.astra.ui.bulkupdate.BulkUpdateActivity;
+import com.thresholdsoft.astra.ui.changeuser.ChangeUserActivity;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.logout.LogOutUsersActivity;
@@ -742,6 +743,13 @@ public class BarCodeActivity extends BaseActivity implements BarCodeActivityCall
     @Override
     public void onClickBarCode() {
 
+    }
+
+    @Override
+    public void onClickUserChange() {
+        startActivity(ChangeUserActivity.getStartIntent(this));
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+        finish();
     }
 
 

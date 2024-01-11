@@ -9,6 +9,8 @@ import com.thresholdsoft.astra.ui.bulkupdate.model.BulkListRequest;
 import com.thresholdsoft.astra.ui.bulkupdate.model.BulkListResponse;
 import com.thresholdsoft.astra.ui.bulkupdate.model.BulkScanChangeRequest;
 import com.thresholdsoft.astra.ui.bulkupdate.model.MrpChangeRequest;
+import com.thresholdsoft.astra.ui.changeuser.model.ChangeUserRequest;
+import com.thresholdsoft.astra.ui.changeuser.model.ChangeUserResponse;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutRequest;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelRequest;
@@ -129,5 +131,9 @@ public interface ApiInterface {
 
     @GET("https://jsonblob.com/api/jsonBlob/1114174843355676672")
     Call<CheckItemUpdateResponse> CHECK_ITEM_UPDATE_API_CALL();
+
+    @POST("changeuser")
+    Call<ChangeUserResponse> CHANGE_REQUEST_API_CALL(@Header("Auth-Token") String authToken, @Body ChangeUserRequest changeUserRequest);
+
 
 }

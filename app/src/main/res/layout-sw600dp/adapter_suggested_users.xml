@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/dimen5dp"
+            android:layout_marginEnd="@dimen/dimen5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@{suggestedUser.userid}"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@{suggestedUser.username}"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@{suggestedUser.axuserid}"
+                android:textColor="@color/black" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <data>
+
+        <variable
+            name="suggestedUserDialog"
+            type="android.app.Dialog" />
+
+        <variable
+            name="callback"
+            type="com.thresholdsoft.astra.ui.changeuser.ChangeUserCallback" />
+
+        <variable
+            name="suggestedUser"
+            type="com.thresholdsoft.astra.ui.changeuser.model.ChangeUserResponse.Suggesteduserlist" />
+    </data>
+</layout>

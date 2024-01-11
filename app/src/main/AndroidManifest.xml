@@ -88,8 +88,8 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:configChanges="keyboard|keyboardHidden"
-            android:screenOrientation="landscape"
             android:exported="true"
+            android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan">
 
 
@@ -114,8 +114,8 @@
         <activity
             android:name=".ui.picklist.PickListActivity"
             android:configChanges="keyboard|keyboardHidden"
-            android:screenOrientation="landscape"
             android:exported="true"
+            android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -134,6 +134,12 @@
             android:configChanges="keyboard|keyboardHidden"
             android:exported="true"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".ui.changeuser.ChangeUserActivity"
+            android:configChanges="keyboard|keyboardHidden"
+            android:exported="true"
+            android:screenOrientation="landscape" />
+
 
         <service
             android:name="com.thresholdsoft.astra.ui.services.MyFirebaseMessagingService"

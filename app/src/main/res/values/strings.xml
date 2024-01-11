@@ -91,4 +91,16 @@
     <string name="label_38mm_x_15_mm">38mm X 15 mm</string>
     <string name="label_choose_barcode_print_size">Choose barcode print size</string>
     <string name="label_item_name">Item name:</string>
+    <string name="label_change_user">Change User</string>
+    <string name="label_reallocate_user">Reallocate Order</string>
+    <string name="label_dc_code">DC Code</string>
+    <string name="label_site_id">Site ID</string>
+    <string name="label_site_name">Site Name</string>
+    <string name="label_area_id">Area ID</string>
+    <string name="label_ax_user_id">AX User ID</string>
+    <string name="label_user_name">User Name</string>
+    <string name="label_re_allocation">Re Allocation</string>
+    <string name="label_select_suggested_user">Select suggested User</string>
+    <string name="label_select_user">Select User</string>
+    <string name="label_reallocate_order">Reallocate Order</string>
 </resources>

@@ -31,6 +31,7 @@ import com.thresholdsoft.astra.databinding.DialogCustomAlertBinding;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.ui.barcode.BarCodeActivity;
 import com.thresholdsoft.astra.ui.bulkupdate.BulkUpdateActivity;
+import com.thresholdsoft.astra.ui.changeuser.ChangeUserActivity;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.logout.adapter.LogOutUsersListAdapter;
@@ -178,8 +179,14 @@ public class LogOutUsersActivity extends BaseActivity implements CustomMenuSuper
     public void onClickBarCode() {
         Intent i = new Intent(this, BarCodeActivity.class);
         i.putExtra("pickerrequest", "Picker " + "\n" + "Request");
-
         startActivity(i);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+        finish();
+    }
+
+    @Override
+    public void onClickUserChange() {
+        startActivity(ChangeUserActivity.getStartIntent(this));
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
         finish();
     }

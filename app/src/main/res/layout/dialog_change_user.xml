@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen5dp"
+        android:background="@drawable/dialog_background"
+        android:padding="@dimen/dimen15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/poppins_bold"
+                android:text="@{isReAllocation ? @string/label_reallocate_user: @string/label_change_user}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/label_dc_code"
+                    android:textColor="@color/bluetooth_header_bg"
+                    android:textSize="@dimen/dimen12sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/purchase_requisition"
+                    android:textColor="@color/bluetooth_header_bg"
+                    android:textSize="@dimen/dimen12sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/label_user_id"
+                    android:textColor="@color/bluetooth_header_bg"
+                    android:textSize="@dimen/dimen12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@{model.dccode}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen12sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@{model.orderid}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen12sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@{model.userid}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/label_site_id"
+                    android:textColor="@color/bluetooth_header_bg"
+                    android:textSize="@dimen/dimen12sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/label_site_name"
+                    android:textColor="@color/bluetooth_header_bg"
+                    android:textSize="@dimen/dimen12sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/label_area_id"
+                    android:textColor="@color/bluetooth_header_bg"
+                    android:textSize="@dimen/dimen12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@{model.siteid}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen12sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@{model.sitename}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen12sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@{model.areaid}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen12sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/select_suggested_user"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen40dp"
+                android:layout_marginTop="@dimen/dimen5dp"
+                android:background="@drawable/b_edit_text"
+                android:backgroundTint="#d3d3d3"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center_vertical"
+                android:hint="@string/label_select_suggested_user"
+                android:padding="@dimen/dimen5dp"
+                android:text="@{suggestedUser != null ? suggestedUser.userid : ``}"
+                android:textAllCaps="true"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen45dp"
+                    android:background="@{isReAllocation ? @drawable/change_user_submit_btn_selected_bg : suggestedUser != null ? @drawable/change_user_submit_btn_selected_bg : @drawable/change_user_submit_btn_unselected_bg}"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center"
+                    android:onClick="@{()-> callback.onClickChangeUserSubmit(isReAllocation, model, dialog, suggestedUser)}"
+                    android:paddingStart="@dimen/dimen5dp"
+                    android:paddingEnd="@dimen/dimen5dp"
+                    android:text="@{isReAllocation ? @string/label_reallocate_order : @string/label_change_user}"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen18sp"
+                    android:visibility="@{isReAllocation ? view.GONE : view.VISIBLE}" />
+
+                <TextView
+                    android:layout_width="@dimen/dimen100dp"
+                    android:layout_height="@dimen/dimen45dp"
+                    android:layout_marginStart="@dimen/dimen10dp"
+                    android:background="@drawable/rounded_corner_bg"
+                    android:backgroundTint="@color/yellow"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center"
+                    android:onClick="@{()-> callback.onClickChangeUserDismissPopup(dialog)}"
+                    android:text="@string/label_cancel"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen18sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <data>
+
+        <variable
+            name="suggestedUser"
+            type="com.thresholdsoft.astra.ui.changeuser.model.ChangeUserResponse.Suggesteduserlist" />
+
+        <variable
+            name="dialog"
+            type="android.app.Dialog" />
+
+        <variable
+            name="callback"
+            type="com.thresholdsoft.astra.ui.changeuser.ChangeUserCallback" />
+
+        <variable
+            name="isReAllocation"
+            type="Boolean" />
+
+        <variable
+            name="model"
+            type="com.thresholdsoft.astra.ui.changeuser.model.ChangeUserResponse.Order" />
+    </data>
+</layout>
