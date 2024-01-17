@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.LogisticsDialogBinding;
 import com.thresholdsoft.astra.ui.logistics.adapter.InvoiceDialogAdapter;
+import com.thresholdsoft.astra.ui.logistics.model.GetDriverMasterResponse;
+import com.thresholdsoft.astra.ui.logistics.model.GetVechicleMasterResponse;
 
 import java.util.ArrayList;
 
@@ -22,20 +24,17 @@ public class LogisticDialog {
     private Dialog dialog;
     private LogisticsDialogBinding logisticsDialogBinding;
     InvoiceDialogAdapter invoiceDialogAdapter;
-    ArrayList<String>  salesList=new ArrayList<>();
 
 
-    public LogisticDialog(Context context) {
+    public LogisticDialog(Context context, ArrayList<GetVechicleMasterResponse.Vehicledetail> vehicledetailsList) {
         dialog = new Dialog(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         logisticsDialogBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.logistics_dialog, null, false);
         dialog.setCancelable(false);
         dialog.setContentView(logisticsDialogBinding.getRoot());
         if (dialog.getWindow() != null)
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        salesList.add("1");
-        salesList.add("1");
-        salesList.add("1");
-        invoiceDialogAdapter = new InvoiceDialogAdapter( context,salesList);
+
+        invoiceDialogAdapter = new InvoiceDialogAdapter( context,vehicledetailsList);
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         logisticsDialogBinding.driverRecycleview.setLayoutManager(layoutManager1);
         logisticsDialogBinding.driverRecycleview.setAdapter(invoiceDialogAdapter);
