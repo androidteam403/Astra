@@ -410,7 +410,7 @@
                                             android:layout_gravity="center"
                                             android:layout_marginTop="5dp"
                                             android:contentDescription="@string/app_name"
-                                            android:src="@drawable/bulkupdate"
+                                            android:src="@drawable/icon_order_dispatched"
                                             android:tint="@{selectedMenu == 6 ? @color/black : @color/white}" />
 
                                         <TextView
