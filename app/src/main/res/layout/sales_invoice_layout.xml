@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/parent_layout"
+
+        android:layout_marginBottom="@dimen/dimen5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/hash"
+            android:id="@+id/header_layout"
+
+            android:layout_marginEnd="@dimen/dimen5dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RPR-EOOO19964"
+                android:paddingTop="@dimen/dimen5dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:textColor="@color/black"
+                android:paddingStart="@dimen/dimen5dp"
+                android:id="@+id/salesInvoiceId"
+                android:textSize="@dimen/dimen11sp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/dimen5dp"
+
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Boxes : "
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textSize="8sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:id="@+id/boxes"
+                    android:textSize="9sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/dimen5dp"
+
+                android:paddingBottom="@dimen/dimen5dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Status : "
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textSize="9sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New"
+                    android:textColor="#096BB4"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:id="@+id/status"
+                    android:textSize="11sp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ewayBillLayout"
+                android:visibility="gone"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="E-Way Bill"
+                    android:paddingStart="@dimen/dimen5dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textSize="9sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EW-25643"
+                    android:paddingStart="@dimen/dimen5dp"
+
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:id="@+id/ewaybillNumber"
+                    android:textSize="10sp"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

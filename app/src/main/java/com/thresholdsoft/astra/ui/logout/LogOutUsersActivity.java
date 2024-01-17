@@ -192,6 +192,11 @@ public class LogOutUsersActivity extends BaseActivity implements CustomMenuSuper
     }
 
     @Override
+    public void onClickLogistics() {
+
+    }
+
+    @Override
     public void onClickLogOutUsers() {
 
     }

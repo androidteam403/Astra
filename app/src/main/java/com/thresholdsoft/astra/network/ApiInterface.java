@@ -15,6 +15,7 @@ import com.thresholdsoft.astra.ui.commonmodel.LogoutRequest;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelRequest;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
+import com.thresholdsoft.astra.ui.logistics.model.AllocationDetailsResponse;
 import com.thresholdsoft.astra.ui.logout.model.LoginDetailsRequest;
 import com.thresholdsoft.astra.ui.logout.model.LoginDetailsResponse;
 import com.thresholdsoft.astra.ui.logout.model.LoginResetResponse;
@@ -37,9 +38,11 @@ import com.thresholdsoft.astra.ui.picklist.model.PackingLabelRequest;
 import com.thresholdsoft.astra.ui.picklist.model.PackingLabelResponse;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateRequest;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
-
+import com.thresholdsoft.astra.ui.stockaudit.model.GetStockAuditDataRequest;
+import com.thresholdsoft.astra.ui.stockaudit.model.GetStockAuditDataResponse;
+import com.thresholdsoft.astra.ui.stockaudit.model.GetStockAuditLineRequest;
+import com.thresholdsoft.astra.ui.stockaudit.model.GetStockAuditLineResponse;
 import java.util.ArrayList;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -134,6 +137,12 @@ public interface ApiInterface {
 
     @POST("changeuser")
     Call<ChangeUserResponse> CHANGE_REQUEST_API_CALL(@Header("Auth-Token") String authToken, @Body ChangeUserRequest changeUserRequest);
-
-
+    @POST("https://online.apollopharmacy.org/Digital/Apollo/GetStockAuditData")
+    Call<GetStockAuditDataResponse> STOCK_AUDIT_DATA_API_CALL(@Header("Auth-Token") String authToken, @Body GetStockAuditDataRequest getStockAuditDataRequest);
+    @POST("https://online.apollopharmacy.org/Digital/Apollo/GetStockAuditLine")
+    Call<GetStockAuditLineResponse> STOCk_AUDIT_LINE_API_CALL(@Header("Auth-Token") String authToken, @Body GetStockAuditLineRequest getStockAuditLineRequest);
+    @GET("https://jsonblob.com/api/jsonBlob/1196803382718619648")
+    Call<AllocationDetailsResponse> ALLOCATION_DETAILS_API_CALL();
+//    @POST("https://jsonblob.com/api/jsonBlob/1171756115855007744")
+//    Call<GetStockAuditDataResponse> STOCK_AUDIT_ITEMS_API_CALL();
 }

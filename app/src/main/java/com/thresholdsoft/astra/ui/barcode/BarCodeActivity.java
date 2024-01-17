@@ -752,6 +752,11 @@ public class BarCodeActivity extends BaseActivity implements BarCodeActivityCall
         finish();
     }
 
+    @Override
+    public void onClickLogistics() {
+
+    }
+
 
     @Override
     public void onClickLogout() {

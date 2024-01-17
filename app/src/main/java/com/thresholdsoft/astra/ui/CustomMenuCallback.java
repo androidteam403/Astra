@@ -10,6 +10,7 @@ public interface CustomMenuCallback {
     void onClickRequestHistory();
 
     void onClickDashboard();
+    void onClickStockAudit();
 
     void onClickPickerRequest();
 

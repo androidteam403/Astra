@@ -125,6 +125,35 @@
                             android:textSize="@dimen/dimen10sp" />
                     </LinearLayout>
 
+
+                    <LinearLayout
+                        android:id="@+id/audit_menu"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight=".23"
+                        android:background="@{selectedMenu == 2 ? @color/yellow : @color/transperancy}"
+                        android:gravity="center"
+                        android:onClick="@{()-> customMenuCallback.onClickStockAudit()}"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen30dp"
+                            android:layout_height="@dimen/dimen30dp"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/stock_audit"
+                            android:tint="@{selectedMenu == 2 ? @color/black : @color/white}" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center"
+                            android:text="Stock Audit"
+                            android:textColor="@{selectedMenu == 1 ? @color/black : @color/white}"
+                            android:textSize="@dimen/dimen10sp" />
+                    </LinearLayout>
+
+
                     <!--                    <LinearLayout-->
                     <!--                        android:layout_width="match_parent"-->
                     <!--                        android:layout_height="0dp"-->

@@ -112,6 +112,7 @@ import com.thresholdsoft.astra.ui.picklisthistory.PickListHistoryActivity;
 import com.thresholdsoft.astra.ui.requesthistory.RequestHistoryActivity;
 import com.thresholdsoft.astra.ui.scanner.ScannerActivity;
 import com.thresholdsoft.astra.ui.services.model.MrpBarcodeBulkUpdateResponse;
+import com.thresholdsoft.astra.ui.stockaudit.StockAuditActvity;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.CommonUtils;
 
@@ -2567,6 +2568,13 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     @Override
     public void onClickDashboard() {
         Intent intent = new Intent(PickListActivity.this, DashBoard.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+    }
+
+    @Override
+    public void onClickStockAudit() {
+        Intent intent = new Intent(PickListActivity.this, StockAuditActvity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }

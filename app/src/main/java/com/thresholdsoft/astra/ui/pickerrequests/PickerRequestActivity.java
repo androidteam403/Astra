@@ -42,6 +42,7 @@ import com.thresholdsoft.astra.ui.bulkupdate.BulkUpdateActivity;
 import com.thresholdsoft.astra.ui.changeuser.ChangeUserActivity;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
+import com.thresholdsoft.astra.ui.logistics.LogisticsActivity;
 import com.thresholdsoft.astra.ui.logout.LogOutUsersActivity;
 import com.thresholdsoft.astra.ui.menucallbacks.CustomMenuSupervisorCallback;
 import com.thresholdsoft.astra.ui.pickerrequests.adapter.CheckQohAdapter;
@@ -1430,6 +1431,14 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     @Override
     public void onClickUserChange() {
         startActivity(ChangeUserActivity.getStartIntent(this));
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+        finish();
+    }
+
+    @Override
+    public void onClickLogistics() {
+        Intent intent = new Intent(PickerRequestActivity.this, LogisticsActivity.class);
+        startActivity(intent);
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
         finish();
     }

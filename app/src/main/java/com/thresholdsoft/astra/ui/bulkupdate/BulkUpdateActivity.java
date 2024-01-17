@@ -210,6 +210,11 @@ public class BulkUpdateActivity extends BaseActivity implements CustomMenuSuperv
     }
 
     @Override
+    public void onClickLogistics() {
+
+    }
+
+    @Override
     public void onClickLogout() {
         Dialog customDialog = new Dialog(this);
         DialogCustomAlertBinding dialogCustomAlertBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_custom_alert, null, false);

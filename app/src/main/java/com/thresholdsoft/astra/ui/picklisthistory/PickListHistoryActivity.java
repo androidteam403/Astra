@@ -220,6 +220,11 @@ public class PickListHistoryActivity extends BaseActivity implements CustomMenuC
     }
 
     @Override
+    public void onClickStockAudit() {
+
+    }
+
+    @Override
     public void onClickPickerRequest() {
         Intent intent = new Intent(PickListHistoryActivity.this, PickerRequestActivity.class);
         startActivity(intent);

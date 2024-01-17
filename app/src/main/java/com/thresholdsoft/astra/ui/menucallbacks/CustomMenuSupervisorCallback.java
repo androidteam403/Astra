@@ -11,6 +11,7 @@ public interface CustomMenuSupervisorCallback {
     void onClickBarCode();
 
     void onClickUserChange();
+    void onClickLogistics();
 
     void onClickLogout();
 }
