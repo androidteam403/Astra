@@ -120,12 +120,15 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_semibold"
                             android:text="Total"
+                            android:id="@+id/totalLayout"
+                            android:background="@{selectedStatus == 1 ? @color/very_light_grey : @color/transperancy}"
+
                             android:textAllCaps="true"
                             android:textColor="@color/black"
                             android:textSize="11sp" />
 
                         <TextView
-                            android:id="@+id/pending_orders_count"
+                            android:id="@+id/total_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_bold"
@@ -142,10 +145,12 @@
                         android:background="@color/grey" />
 
                     <LinearLayout
-                        android:id="@+id/progresslayout"
+                        android:id="@+id/newlayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".3"
+                        android:background="@{selectedStatus == 2 ? @color/very_light_grey : @color/transperancy}"
+
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -159,7 +164,7 @@
                             android:textSize="11sp" />
 
                         <TextView
-                            android:id="@+id/progress_count"
+                            android:id="@+id/new_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_bold"
@@ -182,6 +187,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".4"
                         android:gravity="center"
+                        android:background="@{selectedStatus == 3 ? @color/very_light_grey : @color/transperancy}"
+
                         android:orientation="vertical">
 
                         <TextView

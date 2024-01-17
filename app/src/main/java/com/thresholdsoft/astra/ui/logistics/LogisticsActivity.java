@@ -81,9 +81,6 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         getController().getVehicleMasterResponse();
 
 
-        activityLogisticsBinding.totalCount.setText(String.valueOf(logisticsModelLists.size()));
-//        activityLogisticsBinding.newCount.setText(String.valueOf(logisticsModelLists.stream().filter(i->i.getStatus().equalsIgnoreCase("New")).collect(Collectors.toList()).size()));
-//        activityLogisticsBinding.completecount.setText(String.valueOf(logisticsModelLists.stream().filter(i->i.getStatus().equalsIgnoreCase("Completed")).collect(Collectors.toList()).size()));
 
 
         scannedInvoiceAdapter = new ScannedInvoiceAdapter(this, salesList, this);
@@ -404,6 +401,9 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     @Override
     public void onSuccessAllocationDetailsApiCall(AllocationDetailsResponse allocationDetailsResponse) {
         logisticsModelLists = (ArrayList<AllocationDetailsResponse.Indentdetail>) allocationDetailsResponse.getIndentdetails();
+        activityLogisticsBinding.totalCount.setText(String.valueOf(logisticsModelLists.size()));
+//        activityLogisticsBinding.newCount.setText(String.valueOf(logisticsModelLists.stream().filter(i->i.getStatus().equalsIgnoreCase("New")).collect(Collectors.toList()).size()));
+//        activityLogisticsBinding.completecount.setText(String.valueOf(logisticsModelLists.stream().filter(i->i.getStatus().equalsIgnoreCase("Completed")).collect(Collectors.toList()).size()));
 
         salesInvoiceAdapter = new SalesInvoiceAdapter(this, logisticsModelLists, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
