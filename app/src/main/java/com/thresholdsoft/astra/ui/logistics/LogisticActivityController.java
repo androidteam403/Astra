@@ -9,6 +9,8 @@ import com.thresholdsoft.astra.network.ApiInterface;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutRequest;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.logistics.model.AllocationDetailsResponse;
+import com.thresholdsoft.astra.ui.logistics.model.GetDriverMasterResponse;
+import com.thresholdsoft.astra.ui.logistics.model.GetVechicleMasterResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.NetworkUtils;
@@ -45,6 +47,28 @@ public class LogisticActivityController {
 
                 @Override
                 public void onFailure(@NotNull Call<AllocationDetailsResponse> call, @NotNull Throwable t) {
+                    ActivityUtils.hideDialog();
+                }
+            });
+        }
+    }
+    public void getVehicleMasterResponse() {
+        if (NetworkUtils.isNetworkConnected(mContext)) {
+            ActivityUtils.showDialog(mContext, "Please wait.");
+            ApiInterface api = ApiClient.getApiServiceAds();
+            Call<GetVechicleMasterResponse> call = api.GET_VECHICLE_MASTER_RESPONSE_CALL();
+            call.enqueue(new Callback<GetVechicleMasterResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<GetVechicleMasterResponse> call, @NotNull Response<GetVechicleMasterResponse> response) {
+                    ActivityUtils.hideDialog();
+                    if (response.isSuccessful() && response.body() != null) {
+                        mCallback.onSuccessVehicleApiCall(response.body());
+
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<GetVechicleMasterResponse> call, @NotNull Throwable t) {
                     ActivityUtils.hideDialog();
                 }
             });

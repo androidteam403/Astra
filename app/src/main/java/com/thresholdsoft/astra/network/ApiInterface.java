@@ -16,6 +16,8 @@ import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelRequest;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
 import com.thresholdsoft.astra.ui.logistics.model.AllocationDetailsResponse;
+import com.thresholdsoft.astra.ui.logistics.model.GetDriverMasterResponse;
+import com.thresholdsoft.astra.ui.logistics.model.GetVechicleMasterResponse;
 import com.thresholdsoft.astra.ui.logout.model.LoginDetailsRequest;
 import com.thresholdsoft.astra.ui.logout.model.LoginDetailsResponse;
 import com.thresholdsoft.astra.ui.logout.model.LoginResetResponse;
@@ -143,6 +145,10 @@ public interface ApiInterface {
     Call<GetStockAuditLineResponse> STOCk_AUDIT_LINE_API_CALL(@Header("Auth-Token") String authToken, @Body GetStockAuditLineRequest getStockAuditLineRequest);
     @GET("https://jsonblob.com/api/jsonBlob/1196803382718619648")
     Call<AllocationDetailsResponse> ALLOCATION_DETAILS_API_CALL();
+
+    @GET("https://jsonblob.com/api/jsonBlob/1197119454281850880")
+    Call<GetVechicleMasterResponse> GET_VECHICLE_MASTER_RESPONSE_CALL();
+
 //    @POST("https://jsonblob.com/api/jsonBlob/1171756115855007744")
 //    Call<GetStockAuditDataResponse> STOCK_AUDIT_ITEMS_API_CALL();
 }

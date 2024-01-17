@@ -15,6 +15,7 @@
                 android:layout_width="@dimen/dimen0dp"
                 android:layout_height="wrap_content"
                 android:text="AP28CH5245"
+                android:id="@+id/driverId"
                 android:fontFamily="@font/poppins_semibold"
                 android:textColor="@color/black"
                 android:textSize="12sp"
@@ -27,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="@dimen/dimen12sp"
+                android:id="@+id/driverName"
                 android:text="Vinod Kumar"
                 android:fontFamily="@font/poppins_semibold"
                 android:textColor="@color/black"/>
@@ -35,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="@dimen/dimen12sp"
+                android:id="@+id/contactNumber"
                 android:text="8142357883"
                 android:fontFamily="@font/poppins_semibold"
                 android:textColor="@color/black"/>

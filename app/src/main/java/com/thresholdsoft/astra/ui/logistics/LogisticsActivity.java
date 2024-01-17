@@ -36,6 +36,8 @@ import com.thresholdsoft.astra.ui.logistics.adapter.InvoiceDetailsAdapter;
 import com.thresholdsoft.astra.ui.logistics.adapter.SalesInvoiceAdapter;
 import com.thresholdsoft.astra.ui.logistics.adapter.ScannedInvoiceAdapter;
 import com.thresholdsoft.astra.ui.logistics.model.AllocationDetailsResponse;
+import com.thresholdsoft.astra.ui.logistics.model.GetDriverMasterResponse;
+import com.thresholdsoft.astra.ui.logistics.model.GetVechicleMasterResponse;
 import com.thresholdsoft.astra.ui.logout.LogOutUsersActivity;
 import com.thresholdsoft.astra.ui.menucallbacks.CustomMenuSupervisorCallback;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestActivity;
@@ -57,6 +59,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     private ScannedInvoiceAdapter scannedInvoiceAdapter;
 
     ArrayList<String> salesList = new ArrayList<>();
+    ArrayList<GetVechicleMasterResponse.Vehicledetail> vehicledetailList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +78,12 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         activityLogisticsBinding.setDcName(getSessionManager().getDcName());
         timeHandler();
         getController().getAllocationDetailsResponse();
+        getController().getVehicleMasterResponse();
 
 
         activityLogisticsBinding.totalCount.setText(String.valueOf(logisticsModelLists.size()));
 //        activityLogisticsBinding.newCount.setText(String.valueOf(logisticsModelLists.stream().filter(i->i.getStatus().equalsIgnoreCase("New")).collect(Collectors.toList()).size()));
 //        activityLogisticsBinding.completecount.setText(String.valueOf(logisticsModelLists.stream().filter(i->i.getStatus().equalsIgnoreCase("Completed")).collect(Collectors.toList()).size()));
-
-
 
 
         scannedInvoiceAdapter = new ScannedInvoiceAdapter(this, salesList, this);
@@ -92,7 +94,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         activityLogisticsBinding.generateEwayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                logisticDialog = new LogisticDialog(LogisticsActivity.this);
+                logisticDialog = new LogisticDialog(LogisticsActivity.this, vehicledetailList);
                 logisticDialog.setPositiveListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -408,6 +410,14 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         activityLogisticsBinding.logisticsRecycleview.setLayoutManager(layoutManager);
         activityLogisticsBinding.logisticsRecycleview.setAdapter(salesInvoiceAdapter);
     }
+
+    @Override
+    public void onSuccessVehicleApiCall(GetVechicleMasterResponse getVechicleMasterResponse) {
+        vehicledetailList = (ArrayList<GetVechicleMasterResponse.Vehicledetail>) getVechicleMasterResponse.getVehicledetails();
+
+    }
+
+
 
 
     @Override
