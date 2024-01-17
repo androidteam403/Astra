@@ -296,6 +296,7 @@
                             android:layout_centerHorizontal="true"
                             android:fontFamily="@font/poppins_semibold"
                             android:text="RPR-EOOO19963"
+                            android:id="@+id/indentNumber"
 
                             android:textAllCaps="true"
                             android:textColor="@color/black"
@@ -324,6 +325,7 @@
                             android:layout_centerHorizontal="true"
                             android:fontFamily="@font/poppins_semibold"
                             android:text="SI-A3450087"
+                            android:id="@+id/invoiceNumber"
 
                             android:textAllCaps="true"
                             android:textColor="@color/black"
@@ -358,6 +360,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_bold"
                         android:text="0/"
+                        android:id="@+id/scannedIndentNumber"
+
                         android:textColor="@color/red"
                         android:textSize="12sp" />
 
@@ -366,6 +370,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_bold"
                         android:text="10"
+                        android:id="@+id/totalIndentNumber"
+
                         android:textColor="@color/black"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -377,6 +383,7 @@
                     android:weightSum="1">
 
                     <EditText
+                        android:id="@+id/search_by_boxId"
 
                         android:layout_width="0dp"
                         android:layout_height="@dimen/dimen35dp"
