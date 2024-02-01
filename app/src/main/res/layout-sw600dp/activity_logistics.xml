@@ -23,12 +23,13 @@
 
                 <include
                     android:id="@+id/custom_menu_layout"
-                    layout="@layout/custom_menu_layout_updated"
+                    layout="@layout/custom_menu_layout_updated_logistics"
                     app:customMenuSupervisorCallback="@{customMenuSupervisorCallback}"
                     app:dcName="@{dcName}"
                     app:empRole="@{empRole}"
                     app:pickerName="@{pickerName}"
                     app:selectedMenu="@{selectedMenu}"
+                    app:selectBluetoot="@{selectedBluetoot}"
                     app:userId="@{userId}" />
 
             </RelativeLayout>
@@ -71,6 +72,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:contentDescription="@string/app_name"
+                            android:id="@+id/closeIcon"
                             android:src="@drawable/close_new" />
                     </LinearLayout>
 
@@ -254,17 +256,35 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:paddingStart="15dp"
-                    android:paddingTop="6dp"
-                    android:text="SELECTED SALES INVOICE"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_semibold"
+        android:paddingStart="15dp"
+        android:paddingTop="6dp"
+        android:text="SELECTED SALES INVOICE"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+    <ImageView
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_gravity="center"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="8dp"
+        android:id="@+id/scanIcon"
+
+        android:src="@drawable/scan_icon"
+        android:tint="@color/red" />
+
+</RelativeLayout>
+
+
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -295,7 +315,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:fontFamily="@font/poppins_semibold"
-                            android:text="RPR-EOOO19963"
+                            android:text="-"
                             android:id="@+id/indentNumber"
 
                             android:textAllCaps="true"
@@ -324,7 +344,9 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:fontFamily="@font/poppins_semibold"
-                            android:text="SI-A3450087"
+                            android:text="-"
+                            android:textAlignment="center"
+
                             android:id="@+id/invoiceNumber"
 
                             android:textAllCaps="true"
@@ -953,6 +975,9 @@
 
         <variable
             name="selectedMenu"
+            type="Integer" />
+        <variable
+            name="selectedBluetoot"
             type="Integer" />
 
         <variable

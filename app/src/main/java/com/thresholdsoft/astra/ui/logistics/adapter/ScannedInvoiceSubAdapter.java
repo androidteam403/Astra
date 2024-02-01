@@ -11,19 +11,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.SubInvoiceLayoutBinding;
 import com.thresholdsoft.astra.ui.logistics.LogisticsCallback;
+import com.thresholdsoft.astra.ui.logistics.model.AllocationDetailsResponse;
 
 import java.util.ArrayList;
 
-public class ScannedInvoiceSubAdapter extends RecyclerView.Adapter<ScannedInvoiceSubAdapter.ViewHolder>  {
+public class ScannedInvoiceSubAdapter extends RecyclerView.Adapter<ScannedInvoiceSubAdapter.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<String> salesinvoiceList;
+    private ArrayList<AllocationDetailsResponse.Barcodedetail> salesinvoiceList;
 
     LogisticsCallback callback;
 
-    public ScannedInvoiceSubAdapter(Context mContext, ArrayList<String> salesinvoiceList , LogisticsCallback callback) {
+    public ScannedInvoiceSubAdapter(Context mContext, ArrayList<AllocationDetailsResponse.Barcodedetail> salesinvoiceList, LogisticsCallback callback) {
         this.mContext = mContext;
-        this.callback=callback;
+        this.callback = callback;
         this.salesinvoiceList = salesinvoiceList;
 
 
@@ -39,6 +40,9 @@ public class ScannedInvoiceSubAdapter extends RecyclerView.Adapter<ScannedInvoic
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        AllocationDetailsResponse.Barcodedetail items = salesinvoiceList.get(position);
+
+        holder.subInvoiceLayoutBinding.boxes.setText(items.getId());
 
     }
 

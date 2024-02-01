@@ -99,33 +99,6 @@
                             android:background="@color/imagebackgroundcolor"
                             android:layout_weight=".95">
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="90dp"
-                                android:gravity="center"
-                                android:onClick="@{()-> customMenuSupervisorCallback.onClickLogistics()}"
-                                android:background="@{selectedMenu == 5 ? @color/yellow : @color/imagebackgroundcolor}"
-
-                                android:orientation="vertical">
-                                <ImageView
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
-                                    android:layout_gravity="center"
-                                    android:contentDescription="@string/app_name"
-                                    android:src="@drawable/icon_order_dispatched"
-                                    android:tint="@{selectedMenu == 5 ? @color/black : @color/white}"
-                                    tools:ignore="UseAppTint" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/poppins_bold"
-                                    android:gravity="center"
-                                    android:text="Logistics"
-                                    android:textColor="@{selectedMenu == 5 ? @color/black : @color/white}"
-                                    android:textSize="12sp" />
-
-                            </LinearLayout>
 
 
                             <LinearLayout
@@ -244,6 +217,63 @@
 
                             </LinearLayout>
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="90dp"
+                                android:gravity="center"
+                                android:onClick="@{()-> customMenuSupervisorCallback.onClickUserChange()}"
+                                android:background="@{selectedMenu == 5 ? @color/yellow : @color/imagebackgroundcolor}"
+
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:layout_gravity="center"
+                                    android:contentDescription="@string/app_name"
+                                    android:src="@drawable/icon_order_dispatched"
+                                    android:tint="@{selectedMenu == 5 ? @color/black : @color/white}"
+                                    tools:ignore="UseAppTint" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:gravity="center"
+                                    android:text="Change User"
+                                    android:textColor="@{selectedMenu == 5 ? @color/black : @color/white}"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="90dp"
+                                android:gravity="center"
+                                android:onClick="@{()-> customMenuSupervisorCallback.onClickLogistics()}"
+                                android:background="@{selectedMenu == 6 ? @color/yellow : @color/imagebackgroundcolor}"
+
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:layout_gravity="center"
+                                    android:contentDescription="@string/app_name"
+                                    android:src="@drawable/icon_order_dispatched"
+                                    android:tint="@{selectedMenu == 6 ? @color/black : @color/white}"
+                                    tools:ignore="UseAppTint" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:gravity="center"
+                                    android:text="Logistics"
+                                    android:textColor="@{selectedMenu == 6 ? @color/black : @color/white}"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+
 
                         </LinearLayout>
 
@@ -253,13 +283,7 @@
                             android:orientation="vertical"
                             android:background="@color/white"
                             android:layout_weight=".05">
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="90dp"
-                                android:background="@{selectedMenu == 5 ? @color/yellow : @color/hash_color}"
-                                android:orientation="vertical">
 
-                            </LinearLayout>
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="90dp"
@@ -292,6 +316,24 @@
                                 android:layout_height="90dp"
                                 android:background="@{selectedMenu == 4 ? @color/yellow : @color/hash_color}"
 
+                                android:orientation="vertical">
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="90dp"
+                                android:background="@{selectedMenu == 5 ? @color/yellow : @color/hash_color}"
+                                android:orientation="vertical">
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="90dp"
+                                android:background="@{selectedMenu == 6 ? @color/yellow : @color/hash_color}"
                                 android:orientation="vertical">
 
                             </LinearLayout>

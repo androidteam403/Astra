@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -20,25 +21,26 @@ import com.thresholdsoft.astra.ui.logistics.LogisticsCallback;
 import com.thresholdsoft.astra.ui.logistics.model.AllocationDetailsResponse;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapter.ViewHolder>  implements Filterable {
+public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapter.ViewHolder>  {
 
     private Context mContext;
     private ArrayList<AllocationDetailsResponse.Indentdetail> salesinvoiceList;
-    private ArrayList<AllocationDetailsResponse.Indentdetail> salesInvoiceListList = new ArrayList<>();
-    private ArrayList<AllocationDetailsResponse.Indentdetail> salesInvoiceFilterList = new ArrayList<>();
 
+    public Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList;
 
 
     LogisticsCallback callback;
     String charString;
 
 
-    public SalesInvoiceAdapter(Context mContext, ArrayList<AllocationDetailsResponse.Indentdetail> salesinvoiceList, LogisticsCallback callback) {
+    public SalesInvoiceAdapter(Context mContext, ArrayList<AllocationDetailsResponse.Indentdetail> salesinvoiceList, LogisticsCallback callback, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList) {
         this.mContext = mContext;
         this.salesinvoiceList = salesinvoiceList;
         this.callback = callback;
-        salesInvoiceListList=salesinvoiceList;
+        this.routeIdsGroupedList = routeIdsGroupedList;
 
 
     }
@@ -53,10 +55,38 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        AllocationDetailsResponse.Indentdetail items=salesinvoiceList.get(position);
+        AllocationDetailsResponse.Indentdetail items = salesinvoiceList.get(position);
+        String status = getStatus(items);
+
 //        holder.salesInvoiceLayoutBinding.status.setText(items.getStatus());
         holder.salesInvoiceLayoutBinding.salesInvoiceId.setText(items.getIndentno());
         holder.salesInvoiceLayoutBinding.boxes.setText(items.getNoofboxes().toString());
+
+        items.setStatus(status);
+
+
+        if (items.getStatus().equals("In Progress")) {
+            holder.salesInvoiceLayoutBinding.status.setText(status);
+
+            holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#ffc12f"));
+
+        } else if (items.getStatus().equals("Completed")) {
+            holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#3CB371"));
+            holder.salesInvoiceLayoutBinding.status.setText(status);
+
+        }
+        if (items.isColorChanged()) {
+            holder.salesInvoiceLayoutBinding.ewayBillLayout.setVisibility(View.VISIBLE);
+
+            holder.salesInvoiceLayoutBinding.parentLayout.setBackgroundResource(R.drawable.blue_bg_logistic);
+            holder.salesInvoiceLayoutBinding.headerLayout.setBackgroundResource(R.drawable.blue_bg_logistic);
+        } else {
+//            holder.salesInvoiceLayoutBinding.parentLayout.setBackgroundResource(R.drawable.hash);
+            holder.salesInvoiceLayoutBinding.ewayBillLayout.setVisibility(View.GONE);
+
+            holder.salesInvoiceLayoutBinding.headerLayout.setBackgroundResource(R.drawable.hash);
+        }
+
 //        holder.salesInvoiceLayoutBinding.ewaybillNumber.setText(items.getEwayBill());
 //        if (items.getStatus().equals("In Progress")) {
 //            holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#ffc12f"));
@@ -68,63 +98,55 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
 //        }
         holder.itemView.setOnClickListener(view -> {
 //            if (items.getStatus().equals("In Progress")) {
-                holder.salesInvoiceLayoutBinding.parentLayout.setBackgroundResource(R.drawable.blue_bg_logistic);
-                holder.salesInvoiceLayoutBinding.headerLayout.setBackgroundResource(R.drawable.blue_bg_logistic);
-                holder.salesInvoiceLayoutBinding.ewayBillLayout.setVisibility(View.VISIBLE);
-                holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#ffc12f"));
-                callback.onClick(position,(ArrayList<AllocationDetailsResponse.Barcodedetail>) items.getBarcodedetails());
+
+//                holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#ffc12f"));
+            callback.onClickIndent(position, (ArrayList<AllocationDetailsResponse.Barcodedetail>) items.getBarcodedetails(), salesinvoiceList, routeIdsGroupedList,items.getIndentno());
 //            }
         });
     }
 
+
+    private String getStatus(AllocationDetailsResponse.Indentdetail items) {
+        if (items.getBarcodedetails() != null && !items.getBarcodedetails().isEmpty()) {
+            boolean anyScanned = false;
+            boolean allScanned = true;
+            for (AllocationDetailsResponse.Barcodedetail barcodedetail : items.getBarcodedetails()) {
+                if (barcodedetail.isScanned()) {
+                    anyScanned = true; // At least one barcode is scanned
+                    break;
+                }
+
+            }
+            for (AllocationDetailsResponse.Barcodedetail barcodedetail : items.getBarcodedetails()) {
+                if (!barcodedetail.isScanned()) {
+                    allScanned = false; // At least one barcode is not scanned
+                    break;
+                }
+            }
+
+
+
+
+            if (allScanned) {
+                return "Completed"; // All barcodes are scanned
+
+            } else if (anyScanned) {
+                return "In Progress";
+            } else {
+                return "New"; // None of the barcodes are scanned
+            }
+        } else {
+            return "New"; // No barcodes available
+        }
+    }
+
     @Override
     public int getItemCount() {
+
         return salesinvoiceList.size();
     }
 
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-                charString = charSequence.toString();
-                if (charString.isEmpty()) {
-                    salesinvoiceList = salesInvoiceListList;
-                } else {
-                    salesInvoiceFilterList.clear();
-                    for (AllocationDetailsResponse.Indentdetail row : salesInvoiceListList) {
-                        if (!salesInvoiceFilterList.contains(row) && (row.getIndentno().toLowerCase().contains(charString.toLowerCase()))    ) {
-                            salesInvoiceFilterList.add(row);
 
-                        }
-
-                    }
-                    salesinvoiceList = salesInvoiceFilterList;
-                }
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = salesinvoiceList;
-                return filterResults;
-            }
-
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                if (salesinvoiceList != null && !salesinvoiceList.isEmpty()) {
-                    salesinvoiceList = (ArrayList<AllocationDetailsResponse.Indentdetail>) filterResults.values;
-                    try {
-
-                        notifyDataSetChanged();
-
-                    } catch (Exception e) {
-                        Log.e("FullfilmentAdapter", e.getMessage());
-                    }
-                } else {
-
-                    notifyDataSetChanged();
-                }
-            }
-        };
-    }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {

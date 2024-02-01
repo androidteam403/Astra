@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CC000000"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/yello_outlet"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="@dimen/dimen8dp"
+                    android:layout_marginTop="@dimen/dimen5dp"
+                    android:layout_marginBottom="@dimen/dimen5dp"
+                    android:src="@drawable/scanner" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto_medium"
+                    android:paddingStart="@dimen/dimen10dp"
+                    android:paddingEnd="@dimen/dimen8dp"
+                    android:text="Scanned"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:layout_marginStart="7dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:fontFamily="@font/roboto_medium"
+                    android:paddingStart="@dimen/dimen10dp"
+                    android:paddingEnd="@dimen/dimen8dp"
+                    android:text="Box No:"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto_medium"
+                    android:paddingStart="@dimen/dimen10dp"
+                    android:paddingEnd="@dimen/dimen8dp"
+                    android:text="rprfg-jksjhfjh-zoo1"
+                    android:id="@+id/boxNumber"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="@dimen/dimen5dp"
+                android:layout_marginBottom="@dimen/dimen5dp"
+                android:background="@drawable/backgroundcircle_blue"
+                android:paddingStart="4dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="4dp"
+                android:paddingBottom="3dp"
+                android:src="@drawable/baseline_chat_24" />
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/dimen8dp"
+                android:layout_marginTop="@dimen/dimen5dp"
+                android:id="@+id/ok_btn"
+
+                android:layout_marginBottom="@dimen/dimen5dp"
+                android:src="@drawable/action_accept" />
+
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="12dp"
+                android:backgroundTint="@color/black"
+                android:layout_marginTop="@dimen/dimen5dp"
+                android:layout_marginEnd="@dimen/dimen8dp"
+                android:id="@+id/close"
+                android:layout_marginBottom="@dimen/dimen5dp"
+                android:src="@drawable/close_new" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</layout>

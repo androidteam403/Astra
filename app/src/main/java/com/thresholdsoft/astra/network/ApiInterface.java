@@ -143,7 +143,7 @@ public interface ApiInterface {
     Call<GetStockAuditDataResponse> STOCK_AUDIT_DATA_API_CALL(@Header("Auth-Token") String authToken, @Body GetStockAuditDataRequest getStockAuditDataRequest);
     @POST("https://online.apollopharmacy.org/Digital/Apollo/GetStockAuditLine")
     Call<GetStockAuditLineResponse> STOCk_AUDIT_LINE_API_CALL(@Header("Auth-Token") String authToken, @Body GetStockAuditLineRequest getStockAuditLineRequest);
-    @GET("https://jsonblob.com/api/jsonBlob/1196803382718619648")
+    @GET("https://jsonblob.com/api/jsonBlob/1199961597719470080")
     Call<AllocationDetailsResponse> ALLOCATION_DETAILS_API_CALL();
 
     @GET("https://jsonblob.com/api/jsonBlob/1197119454281850880")
