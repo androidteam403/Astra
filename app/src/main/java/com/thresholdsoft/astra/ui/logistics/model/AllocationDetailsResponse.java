@@ -123,8 +123,16 @@ public class AllocationDetailsResponse implements Serializable {
 
         @ColumnInfo(name = "isScanned")
         private boolean isScanned=false;
+        @ColumnInfo(name = "scannedTime")
+        private String scannedTime;
 
+        public String scannedTime() {
+            return scannedTime;
+        }
 
+        public void setScannedTime(String selected) {
+            scannedTime = selected;
+        }
         public boolean isScanned() {
             return isScanned;
         }
@@ -197,6 +205,11 @@ public class AllocationDetailsResponse implements Serializable {
         @Expose
         @ColumnInfo(name = "astraroute")
         private String astraroute;
+
+        @SerializedName("distance")
+        @Expose
+        @ColumnInfo(name = "distance")
+        private Double distance;
         @SerializedName("noofboxes")
         @Expose
         @ColumnInfo(name = "noofboxes")
@@ -233,6 +246,11 @@ public class AllocationDetailsResponse implements Serializable {
         @Expose
         @ColumnInfo(name = "transporter")
         private String transporter;
+
+        @SerializedName("transportercode")
+        @Expose
+        @ColumnInfo(name = "transportercode")
+        private String transportercode;
         @SerializedName("barcodedetails")
         @Expose
         @ColumnInfo(name = "barcodedetails")
@@ -246,6 +264,16 @@ public class AllocationDetailsResponse implements Serializable {
 
         @ColumnInfo(name = "status")
         private String status="New";
+        @ColumnInfo(name = "ewayNumber")
+        private String ewayNumber;
+
+        public String getEwayNumber() {
+            return ewayNumber;
+        }
+
+        public void setEwayNumber(String ewayNumber) {
+            this.ewayNumber = ewayNumber;
+        }
 
         public int getUniqueKey() {
             return uniqueKey;
@@ -253,6 +281,22 @@ public class AllocationDetailsResponse implements Serializable {
 
         public void setClicked(boolean clicked) {
             isClicked = clicked;
+        }
+
+        public Double getDistance() {
+            return distance;
+        }
+
+        public void setDistance(Double distance) {
+            this.distance = distance;
+        }
+
+        public String getTransportercode() {
+            return transportercode;
+        }
+
+        public void setTransportercode(String transportercode) {
+            this.transportercode = transportercode;
         }
 
         public void setColorChanged(boolean colorChanged) {
@@ -270,6 +314,7 @@ public class AllocationDetailsResponse implements Serializable {
         public void setId_indentdetail(long id_indentdetail) {
             this.id_indentdetail = id_indentdetail;
         }
+
 
         public String getStatus() {
             return status;

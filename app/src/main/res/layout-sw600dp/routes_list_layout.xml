@@ -2,28 +2,30 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/parent_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/parent_layout"
-
-        android:layout_marginBottom="@dimen/dimen5dp">
+        android:layout_marginBottom="@dimen/dimen5dp"
+        android:background="@color/yello_outlet">
 
         <LinearLayout
+            android:id="@+id/header_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/header_layout"
 
             android:orientation="vertical">
+
             <TextView
+                android:id="@+id/route_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="RPR-EOOO19964"
-                android:paddingTop="@dimen/dimen5dp"
                 android:fontFamily="@font/poppins_semibold"
-                android:textColor="@color/black"
                 android:paddingStart="@dimen/dimen5dp"
-                android:id="@+id/route_number"
-                android:textSize="12sp"/>
+                android:paddingTop="@dimen/dimen5dp"
+                android:text="RPR-EOOO19964"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/logisticsRecycleview"
                 android:layout_width="match_parent"

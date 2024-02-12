@@ -23,6 +23,7 @@ import com.thresholdsoft.astra.ui.logistics.model.AllocationDetailsResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapter.ViewHolder>  {
 
@@ -75,14 +76,21 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
             holder.salesInvoiceLayoutBinding.status.setText(status);
 
         }
-        if (items.isColorChanged()) {
+        if (items.getEwayNumber()!=null){
+            holder.salesInvoiceLayoutBinding.ewaybillNumber.setText(items.getEwayNumber());
             holder.salesInvoiceLayoutBinding.ewayBillLayout.setVisibility(View.VISIBLE);
+        }
+        else {
+            holder.salesInvoiceLayoutBinding.ewayBillLayout.setVisibility(View.GONE);
+        }
+        if (items.isColorChanged()) {
+//            holder.salesInvoiceLayoutBinding.ewayBillLayout.setVisibility(View.VISIBLE);
 
             holder.salesInvoiceLayoutBinding.parentLayout.setBackgroundResource(R.drawable.blue_bg_logistic);
             holder.salesInvoiceLayoutBinding.headerLayout.setBackgroundResource(R.drawable.blue_bg_logistic);
         } else {
 //            holder.salesInvoiceLayoutBinding.parentLayout.setBackgroundResource(R.drawable.hash);
-            holder.salesInvoiceLayoutBinding.ewayBillLayout.setVisibility(View.GONE);
+//            holder.salesInvoiceLayoutBinding.ewayBillLayout.setVisibility(View.GONE);
 
             holder.salesInvoiceLayoutBinding.headerLayout.setBackgroundResource(R.drawable.hash);
         }
@@ -100,7 +108,7 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
 //            if (items.getStatus().equals("In Progress")) {
 
 //                holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#ffc12f"));
-            callback.onClickIndent(position, (ArrayList<AllocationDetailsResponse.Barcodedetail>) items.getBarcodedetails(), salesinvoiceList, routeIdsGroupedList,items.getIndentno());
+            callback.onClickIndent(position, (ArrayList<AllocationDetailsResponse.Barcodedetail>) items.getBarcodedetails().stream().filter(i->!i.isScanned()).collect(Collectors.toList()), salesinvoiceList, routeIdsGroupedList,items.getIndentno());
 //            }
         });
     }

@@ -2,51 +2,93 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/parent_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/parent_layout">
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="4">
+            android:weightSum="7">
+
             <RadioButton
+                android:id="@+id/driverId"
                 android:layout_width="@dimen/dimen0dp"
                 android:layout_height="wrap_content"
-                android:text="AP28CH5245"
-                android:id="@+id/driverId"
+                android:layout_weight="1.2"
                 android:fontFamily="@font/poppins_semibold"
+                android:text="AP28CH5245"
                 android:textColor="@color/black"
-                android:textSize="12sp"
-                android:layout_weight="1.2">
+                android:textSize="11sp">
 
             </RadioButton>
 
             <TextView
-                android:layout_width="@dimen/dimen0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="@dimen/dimen12sp"
                 android:id="@+id/driverName"
-                android:text="Vinod Kumar"
-                android:fontFamily="@font/poppins_semibold"
-                android:textColor="@color/black"/>
-            <TextView
                 android:layout_width="@dimen/dimen0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="@dimen/dimen12sp"
-                android:id="@+id/contactNumber"
-                android:text="8142357883"
                 android:fontFamily="@font/poppins_semibold"
-                android:textColor="@color/black"/>
+                android:text="Vinod Kumar"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/contactNumber"
+                android:layout_width="@dimen/dimen0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="8142357883"
+                android:textColor="@color/black"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/supervisorName"
+                android:layout_width="@dimen/dimen0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Vinod Kumar"
+                android:textColor="@color/black"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/supervisorContactNumber"
+                android:layout_width="@dimen/dimen0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="8142357883"
+                android:textColor="@color/black"
+                android:textSize="11sp" />
+
+            <ImageView
+                android:id="@+id/editActionDriver"
+                android:layout_width="@dimen/dimen0dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/baseline_mode_edit_24" />
+
+            <ImageView
+                android:id="@+id/editActionSupervisor"
+                android:layout_width="@dimen/dimen0dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/baseline_mode_edit_24" />
+
 
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#E7E7E7"/>
+            android:background="#E7E7E7" />
 
     </LinearLayout>
 </layout>

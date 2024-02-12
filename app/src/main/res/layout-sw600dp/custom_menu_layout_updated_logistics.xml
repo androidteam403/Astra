@@ -230,7 +230,7 @@
                                     android:layout_height="50dp"
                                     android:layout_gravity="center"
                                     android:contentDescription="@string/app_name"
-                                    android:src="@drawable/icon_order_dispatched"
+                                    android:src="@drawable/change_user"
                                     android:tint="@{selectedMenu == 5 ? @color/black : @color/white}"
                                     tools:ignore="UseAppTint" />
 

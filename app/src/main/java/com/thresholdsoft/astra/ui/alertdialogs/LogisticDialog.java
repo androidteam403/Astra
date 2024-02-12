@@ -13,20 +13,36 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.LogisticsDialogBinding;
+import com.thresholdsoft.astra.ui.logistics.LogisticsCallback;
 import com.thresholdsoft.astra.ui.logistics.adapter.InvoiceDialogAdapter;
 import com.thresholdsoft.astra.ui.logistics.model.GetDriverMasterResponse;
 import com.thresholdsoft.astra.ui.logistics.model.GetVechicleMasterResponse;
 
 import java.util.ArrayList;
 
-public class LogisticDialog {
+public class LogisticDialog implements LogisticDriversDialog.OnDriverSelectedListener {
 
     private Dialog dialog;
     private LogisticsDialogBinding logisticsDialogBinding;
     InvoiceDialogAdapter invoiceDialogAdapter;
 
+    public interface OnVehicleSelectedListener {
+        void onVehicleSelected(GetVechicleMasterResponse.Vehicledetail selectedVehicle);
+    }
 
-    public LogisticDialog(Context context, ArrayList<GetVechicleMasterResponse.Vehicledetail> vehicledetailsList) {
+    private LogisticDialog.OnVehicleSelectedListener onVehicleSelectedListener;
+
+    public void setonVehicleSelectedListener(LogisticDialog.OnVehicleSelectedListener listener) {
+        this.onVehicleSelectedListener = listener;
+    }
+
+    private void notifyVehicleSelected(GetVechicleMasterResponse.Vehicledetail selectedVehicle) {
+        if (onVehicleSelectedListener != null) {
+            onVehicleSelectedListener.onVehicleSelected(selectedVehicle);
+        }
+    }
+
+    public LogisticDialog(Context context, ArrayList<GetVechicleMasterResponse.Vehicledetail> vehicledetailsList, ArrayList<GetDriverMasterResponse.Driverdetail> driverdetailArrayList, LogisticsCallback logisticsCallback) {
         dialog = new Dialog(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         logisticsDialogBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.logistics_dialog, null, false);
         dialog.setCancelable(false);
@@ -34,15 +50,17 @@ public class LogisticDialog {
         if (dialog.getWindow() != null)
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        invoiceDialogAdapter = new InvoiceDialogAdapter( context,vehicledetailsList);
+        invoiceDialogAdapter = new InvoiceDialogAdapter(context, driverdetailArrayList, vehicledetailsList);
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         logisticsDialogBinding.driverRecycleview.setLayoutManager(layoutManager1);
         logisticsDialogBinding.driverRecycleview.setAdapter(invoiceDialogAdapter);
 
+
+
         logisticsDialogBinding.close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-        dialog.dismiss();
+                dialog.dismiss();
             }
         });
 
@@ -51,7 +69,16 @@ public class LogisticDialog {
 
 
     public void setPositiveListener(View.OnClickListener okListener) {
-        logisticsDialogBinding.continueBtn.setOnClickListener(okListener);
+
+        logisticsDialogBinding.continueBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Call the listener with the selected driver from the adapter
+                GetVechicleMasterResponse.Vehicledetail selectedDriver = invoiceDialogAdapter.getSelectedVehicle();
+                notifyVehicleSelected(selectedDriver);
+                // Dismiss the dialog
+            }
+        });
 
     }
 
@@ -81,6 +108,11 @@ public class LogisticDialog {
 
     public void setTitle(String title) {
         logisticsDialogBinding.title.setText(title);
+    }
+
+    @Override
+    public void onDriverSelected(GetDriverMasterResponse.Driverdetail selectedDriver) {
+
     }
 
 

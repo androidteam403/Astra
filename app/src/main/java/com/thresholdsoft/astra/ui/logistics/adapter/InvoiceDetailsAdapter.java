@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -18,6 +20,7 @@ import com.thresholdsoft.astra.ui.logistics.LogisticsCallback;
 import com.thresholdsoft.astra.ui.logistics.model.AllocationDetailsResponse;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class InvoiceDetailsAdapter extends RecyclerView.Adapter<InvoiceDetailsAdapter.ViewHolder> implements Filterable {
 
@@ -48,15 +51,28 @@ public class InvoiceDetailsAdapter extends RecyclerView.Adapter<InvoiceDetailsAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        AllocationDetailsResponse.Barcodedetail items=salesinvoiceList.get(position);
-        holder.invoiceDetailsLayoutBinding.salesInvoiceId.setText(String.valueOf(position));
-        holder.invoiceDetailsLayoutBinding.boxes.setText(items.getId());
+        AllocationDetailsResponse.Barcodedetail items= salesinvoiceList.stream().filter(i->!i.isScanned()).collect(Collectors.toList()).get(position);
+
+
+        if (salesinvoiceList.stream().filter(i -> !i.isScanned()).collect(Collectors.toList()).size() == 0) {
+            holder.invoiceDetailsLayoutBinding.subParentLayout.setVisibility(View.GONE);
+            holder.invoiceDetailsLayoutBinding.empty.setVisibility(View.VISIBLE);
+        } else {
+            holder.invoiceDetailsLayoutBinding.salesInvoiceId.setText(String.valueOf(position + 1));
+            holder.invoiceDetailsLayoutBinding.boxes.setText(items.getId());
+            holder.invoiceDetailsLayoutBinding.subParentLayout.setVisibility(View.VISIBLE);
+            holder.invoiceDetailsLayoutBinding.empty.setVisibility(View.GONE);
+        }
+
+
+
+
 
     }
 
     @Override
     public int getItemCount() {
-        return salesinvoiceList.size();
+        return salesinvoiceList.stream().filter(i->!i.isScanned()).collect(Collectors.toList()).size();
     }
 
     @Override

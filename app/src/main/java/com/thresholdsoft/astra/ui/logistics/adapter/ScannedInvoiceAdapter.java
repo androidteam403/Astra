@@ -60,7 +60,7 @@ public class ScannedInvoiceAdapter extends RecyclerView.Adapter<ScannedInvoiceAd
         holder.scannedInvoiceLayoutBinding.total.setText((barcodedetailsList.size()+"/"+items.getBarcodedetails().size()).toString());
 
 
-        scannedInvoiceAdapter = new ScannedInvoiceSubAdapter(mContext,barcodedetailsList,callback);
+        scannedInvoiceAdapter = new ScannedInvoiceSubAdapter(mContext,barcodedetailsList,callback,items.getIndentno());
         RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         holder.scannedInvoiceLayoutBinding.subInvoiceRecycleview.setLayoutManager(layoutManager2);
         holder.scannedInvoiceLayoutBinding.subInvoiceRecycleview.setAdapter(scannedInvoiceAdapter);

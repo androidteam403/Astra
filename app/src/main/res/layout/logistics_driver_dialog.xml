@@ -27,22 +27,11 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="SELECT VEHICLE"
+                    android:text="SELECT DRIVER"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
 
-                <CheckBox
-                    android:id="@+id/driverCheckBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignRight="@id/close"
-                    android:textSize="13sp"
-
-                    android:layout_marginEnd="55dp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="Available Drivers List"
-                    android:textColor="@color/black" />
 
                 <ImageView
                     android:id="@+id/close"
@@ -65,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:background="#E7E7E7"
                     android:orientation="horizontal"
-                    android:weightSum="7">
+                    android:weightSum="3">
 
                     <TextView
                         android:layout_width="0dp"
@@ -74,11 +63,12 @@
                         android:fontFamily="@font/poppins_bold"
                         android:text="VEHICLE NUMBER"
                         android:paddingTop="5dp"
+                        android:id="@+id/vehicleNumber"
                         android:paddingStart="10dp"
                         android:paddingBottom="5dp"
                         android:textAlignment="textStart"
                         android:textColor="@color/black"
-                        android:textSize="10sp" />
+                        android:textSize="11sp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -87,76 +77,34 @@
                         android:layout_centerVertical="true"
                         android:fontFamily="@font/poppins_bold"
                         android:text="DRIVER NAME"
-                        android:textAlignment="center"
+                        android:id="@+id/driverName"
+                        android:textAlignment="textStart"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:textColor="@color/black"
-                        android:textSize="10sp" />
+                        android:textSize="11sp" />
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="1"                        android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:fontFamily="@font/poppins_bold"
                         android:text="DRIVER MOBILE NO."
+                        android:id="@+id/driverMobileNo"
                         android:textAlignment="textStart"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:textColor="@color/black"
-                        android:textSize="10sp" />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="SUPERVISOR NAME"
-                        android:textAlignment="textStart"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:textColor="@color/black"
-                        android:textSize="10sp" />
-                    <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"                        android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="SUPERVISOR MOBILE NO."
-                    android:textAlignment="textStart"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:textColor="@color/black"
-                        android:textSize="10sp" />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:layout_weight=".8"                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="Select Driver"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="10sp" />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:layout_weight="1"                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="Select Supervisor"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="10sp" />
+                        android:textSize="11sp" />
 
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/driverRecycleview"
+                    android:id="@+id/driversRecycleview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:visibility="visible" />
-                
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

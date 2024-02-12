@@ -221,9 +221,9 @@
                     android:id="@+id/firstRecycleviewLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="4dp"
                     android:layout_marginTop="@dimen/dimen8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="4dp"
                     android:layout_marginBottom="@dimen/dimen5dp"
                     android:orientation="vertical">
 
@@ -652,7 +652,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="12dp"
                                         android:layout_marginTop="5dp"
-                                        android:layout_weight=".8"
+                                        android:layout_weight=".7"
                                         android:orientation="vertical">
 
                                         <LinearLayout
@@ -674,7 +674,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:layout_marginStart="10dp"
                                                 android:fontFamily="@font/poppins_semibold"
-                                                android:text="AP28CH2534"
+                                                android:text=""
                                                 android:textAlignment="center"
                                                 android:textColor="@color/black"
                                                 android:textSize="12sp" />
@@ -699,7 +699,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:layout_marginStart="10dp"
                                                 android:fontFamily="@font/poppins_semibold"
-                                                android:text="Venkateshwar "
+                                                android:text=""
                                                 android:textAlignment="center"
                                                 android:textColor="@color/black"
                                                 android:textSize="12sp" />
@@ -724,7 +724,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:layout_marginStart="10dp"
                                                 android:fontFamily="@font/poppins_semibold"
-                                                android:text="9779876597"
+                                                android:text=""
                                                 android:textAlignment="center"
                                                 android:textColor="@color/black"
                                                 android:textSize="12sp" />
@@ -736,7 +736,7 @@
                                     <LinearLayout
                                         android:layout_width="@dimen/dimen0dp"
                                         android:layout_height="wrap_content"
-                                        android:layout_weight=".2"
+                                        android:layout_weight=".3"
                                         android:orientation="vertical">
 
                                         <ImageView
@@ -750,7 +750,9 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/poppins_semibold"
-                                            android:text="EW-25643"
+                                            android:text=""
+                                            android:id="@+id/ewaybillNumber"
+
                                             android:textAlignment="center"
                                             android:textColor="@color/black"
                                             android:textSize="12sp" />
@@ -792,10 +794,34 @@
 
                     android:orientation="vertical"
                     android:visibility="gone">
+                    <TextView
+                        android:id="@+id/driversDialog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="@dimen/dimen5dp"
+                        android:background="@drawable/red_round_corners_bg"
+                        android:backgroundTint="@color/req_qty_bg"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:paddingStart="6dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="6dp"
+                        android:paddingBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Select Vehicle"
+                        android:textColor="@color/black"
+
+                        android:textSize="12sp" />
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:id="@+id/generateBillLayout"
+                        android:visibility="gone"
+
                         android:orientation="horizontal"
                         android:weightSum="1">
 
@@ -904,6 +930,22 @@
                                         android:textColor="@color/white"
                                         android:textSize="12sp" />
                                 </LinearLayout>
+                                <TextView
+                                    android:id="@+id/availableDriver"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="Select Driver/Supervisor"
+                                    android:textColor="@color/white"
+                                    android:paddingStart="6dp"
+                                    android:layout_marginStart="15dp"
+                                    android:paddingTop="5dp"
+                                    android:paddingEnd="6dp"
+                                    android:paddingBottom="8dp"
+                                    android:background="@drawable/red_round_corners_bg"
+                                    android:backgroundTint="@color/payment_amount_text"
+                                    android:textSize="12sp" />
+
                             </LinearLayout>
 
                         </LinearLayout>

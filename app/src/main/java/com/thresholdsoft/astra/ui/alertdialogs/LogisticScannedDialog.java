@@ -34,6 +34,12 @@ public class LogisticScannedDialog {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         logisticsDialogBinding.boxNumber.setText(invoiceNumber);
+        logisticsDialogBinding.okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
 
         logisticsDialogBinding.close.setOnClickListener(new View.OnClickListener() {
             @Override

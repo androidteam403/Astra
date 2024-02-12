@@ -19,6 +19,7 @@ import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestActivity;
 import com.thresholdsoft.astra.ui.picklist.PickListActivity;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
+import com.thresholdsoft.astra.ui.validate.ValidateRequest;
 import com.thresholdsoft.astra.utils.AppConstants;
 
 import java.util.Objects;
@@ -113,12 +114,17 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     }
 
     @Override
+    public void onSucessfullGetValidateResponse(String validateResponse) {
+
+    }
+
+    @Override
     public void onFailureMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onClickLogin() {
+    public void onClickLogin()  {
         if (isLoginValidate()) {
             if (fcmKey != null && !fcmKey.isEmpty()) {
                 getController().validateUser(activityLoginBinding.userId.getText().toString(), activityLoginBinding.password.getText().toString(), fcmKey);

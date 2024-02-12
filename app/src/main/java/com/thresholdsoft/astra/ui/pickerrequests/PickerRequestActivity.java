@@ -842,7 +842,8 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             }
 
 
-*//*            if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
+*//*
+   if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 //                pickListHistoryAdapter = new PickerListAdapter(this, getPendingCurrentDateWithHoldDetails(withholddetailListTemp), withholddetailListTemp, this);
 //                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
