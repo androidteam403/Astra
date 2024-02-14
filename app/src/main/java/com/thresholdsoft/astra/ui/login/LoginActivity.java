@@ -6,11 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
@@ -30,6 +27,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     private String pickerName;
     private String dcName;
     private String dc;
+    private boolean isCopy;
     private ValidateUserModelResponse validateUserModelResponse;
     private String fcmKey = "";
 
@@ -49,12 +47,12 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
 
     private void generateFcmKey() {
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        // Get new FCM registration token
-                        String token = task.getResult();
-                        LoginActivity.this.fcmKey = token;
-                    }
-                });
+            if (task.isSuccessful()) {
+                // Get new FCM registration token
+                String token = task.getResult();
+                LoginActivity.this.fcmKey = token;
+            }
+        });
 //        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
 //            String token = instanceIdResult.getToken();
 //            this.fcmKey = token;
@@ -135,6 +133,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
             getDataManager().setPickerName(pickerName);
             getDataManager().setDcName(dcName);
             getDataManager().setDc(dc);
+            getDataManager().setCopy(isCopy);
             getDataManager().setIsLoggedIn(true);
             if (empRole.equals("Supervisor")) {
                 Intent intent = new Intent(this, PickerRequestActivity.class);
@@ -157,6 +156,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
         this.pickerName = validateUserModelResponse.getName();
         this.dcName = validateUserModelResponse.getDcname();
         this.dc = validateUserModelResponse.getDc();
+        this.isCopy = validateUserModelResponse.getIscopy();
 
         AppConstants.userId = activityLoginBinding.userId.getText().toString().trim();
         getDataManager().setEmpId(activityLoginBinding.userId.getText().toString().trim());
@@ -168,6 +168,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
             getDataManager().setDcName(dcName);
             getDataManager().setDc(dc);
             getDataManager().setIsLoggedIn(true);
+            getDataManager().setCopy(isCopy);
 
             if (empRole.equals("Supervisor")) {
                 Intent intent = new Intent(this, PickerRequestActivity.class);

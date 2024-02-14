@@ -124,7 +124,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
@@ -299,6 +298,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         activityPickListBinding.setCallback(this);
         activityPickListBinding.setPickListSelectedStatus(1);
         activityPickListBinding.setItemListStatus(0);
+        activityPickListBinding.setIsCopy(getDataManager().isCopy());
         // menu dataset
         activityPickListBinding.setCustomMenuCallback(this);
         activityPickListBinding.setSelectedMenu(1);
@@ -1302,7 +1302,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             itemResetDialog.dismiss();
         }
         this.barcodeAllocationDetailList = getAppDatabase().dbDao().getAllocationDetailListByforeinKeyandUniqueKey(activityPickListBinding.getAllocationData().getUniqueKey(), allocationdetails.getUniqueKey());
-                //allocationdetailList.stream().filter(e -> e.getItembarcode().equalsIgnoreCase(allocationdetails.getItembarcode()) && e.getId() == allocationdetails.getId()).collect(Collectors.toList());
+        //allocationdetailList.stream().filter(e -> e.getItembarcode().equalsIgnoreCase(allocationdetails.getItembarcode()) && e.getId() == allocationdetails.getId()).collect(Collectors.toList());
         barcodeAllocationDetailList.get(0).setAllocatedqtycompleted(barcodeAllocationDetailList.get(0).getAllocatedqty());
         barcodeAllocationDetailList.get(0).setScannedqty(0);//barcodeAllocationDetailList.get(0).getScannedqty() + 1
         barcodeAllocationDetailList.get(0).setShortqty(barcodeAllocationDetailList.get(0).getAllocatedpacks());
@@ -2057,9 +2057,9 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
     @Override
     public void onClickLastPage() {
         int lastPageSize = getAllocationdetailItemList().size() % pageSize;
-        if (lastPageSize == 0){
+        if (lastPageSize == 0) {
             currentPage = getAllocationdetailItemList().size() - pageSize;
-        }else {
+        } else {
             currentPage = getAllocationdetailItemList().size() - lastPageSize;
         }
 
@@ -2256,7 +2256,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
                                 insertOrUpdateAllocationLineList();
                                 insertOrUpdateOrderStatusTimeDateEntity();
                                 setOrderCompletedPending(activityPickListBinding.getOrderStatusModel().getStatus());
-                                getFilter().filter(itemLineStatus+"nopaginationrefreshed");
+                                getFilter().filter(itemLineStatus + "nopaginationrefreshed");
 
 //                                itemListAdapter.notifyDataSetChanged();
                                 pickListAdapter.notifyDataSetChanged();
@@ -2707,9 +2707,9 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String charString = charSequence.toString();
-                if (charString.contains("nopaginationrefreshed")){
+                if (charString.contains("nopaginationrefreshed")) {
                     charString = charString.split("nopaginationrefreshed")[0];
-                }else{
+                } else {
                     currentPage = 0;
                 }
                 itemLineStatus = charString;
