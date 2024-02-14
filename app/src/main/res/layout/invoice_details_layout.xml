@@ -52,5 +52,15 @@
 
 
         </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textColor="@color/red"
+            android:id="@+id/empty"
+            android:visibility="gone"
+            android:fontFamily="@font/poppins_semibold"
+            android:layout_height="match_parent"
+            android:text="No Boxes Found"/>
     </RelativeLayout>
 </layout>

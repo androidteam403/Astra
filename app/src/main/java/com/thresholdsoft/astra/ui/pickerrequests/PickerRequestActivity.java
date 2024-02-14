@@ -3,9 +3,14 @@ package com.thresholdsoft.astra.ui.pickerrequests;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,6 +29,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -59,6 +65,7 @@ import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.CommonUtils;
+import com.thresholdsoft.astra.utils.NetworkUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -83,6 +90,7 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
     public List<WithHoldDataResponse.Withholddetail> damageItemList = new ArrayList<>();
 
     ActivityPickerRequestsBinding activityPickerRequestsBinding;
+    Handler handler = new Handler();
 
 
     //made changes by naveen
@@ -193,10 +201,24 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
         getController().getWithHoldApi();
         parentLayoutTouchListener();
         pickerRequestSearchByText();
+        timeHandler();
 
         setStatusDropDown();
         setSortbyDropDown();
 
+
+    }
+    private void timeHandler() {
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onClickShowSpeed();
+                timeHandler();
+
+
+            }
+        }, 3000);
 
     }
 
@@ -820,7 +842,8 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             }
 
 
-*//*            if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
+*//*
+   if (withholddetailListTemp != null && withholddetailListTemp.size() > 0) {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 //                pickListHistoryAdapter = new PickerListAdapter(this, getPendingCurrentDateWithHoldDetails(withholddetailListTemp), withholddetailListTemp, this);
 //                pickListHistoryAdapter.setMinMaxDates(activityPickerRequestsBinding.getMinDate(), activityPickerRequestsBinding.getMaxDate());
@@ -1566,6 +1589,99 @@ public class PickerRequestActivity extends BaseActivity implements PickerRequest
             }
         } else if (withholddetailAdapterList.size() == withholddetailAdapterTotalList.size()) {
             this.isLastRecord = true;
+        }
+    }
+    public void onClickShowSpeed() {
+        if (NetworkUtils.isNetworkConnected(this)) {
+            ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkCapabilities nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
+            int downSpeed = nc.getLinkDownstreamBandwidthKbps() / 1000;
+            int upSpeed = nc.getLinkUpstreamBandwidthKbps() / 1000;
+            NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+            if (cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+                WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                int linkSpeed = wifiManager.getConnectionInfo().getRssi();
+                int level = WifiManager.calculateSignalLevel(linkSpeed, 5);
+//            Toast.makeText(getApplicationContext(),
+//                    "level: "+level,
+//                    Toast.LENGTH_LONG).show();
+                if (level < 1) {
+                    activityPickerRequestsBinding.customMenuLayout.redSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    activityPickerRequestsBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    activityPickerRequestsBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    activityPickerRequestsBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                } else if (level < 2) {
+                    activityPickerRequestsBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+                    activityPickerRequestsBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    activityPickerRequestsBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    activityPickerRequestsBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                } else if (level < 3) {
+                    activityPickerRequestsBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
+                    activityPickerRequestsBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
+                    activityPickerRequestsBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    activityPickerRequestsBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                } else if (level < 4) {
+                    activityPickerRequestsBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
+                    activityPickerRequestsBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
+                    activityPickerRequestsBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
+                    activityPickerRequestsBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                } else if (level < 5) {
+                    activityPickerRequestsBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                    activityPickerRequestsBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                    activityPickerRequestsBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                    activityPickerRequestsBinding.customMenuLayout.greenSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                }
+            } else if (cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED) {
+
+                //should check null because in airplane mode it will be null
+//            NetworkCapabilities nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
+//            int downSpeed = nc.getLinkDownstreamBandwidthKbps() / 1000;
+//            int upSpeed = nc.getLinkUpstreamBandwidthKbps() / 1000;
+//            Toast.makeText(getApplicationContext(),
+//                    "Up Speed: "+upSpeed,
+//                    Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(),
+//                    "Down Speed: "+downSpeed,
+//                    Toast.LENGTH_LONG).show();
+                if (downSpeed <= 0) {
+//                    activityPickListBinding.customMenuLayout.internetSpeedText.setText(String.valueOf(downSpeed) + "MB/s");
+                    activityPickerRequestsBinding.customMenuLayout.redSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    activityPickerRequestsBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    activityPickerRequestsBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    activityPickerRequestsBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                } else if (downSpeed < 15) {
+//                    activityPickListBinding.customMenuLayout.internetSpeedText.setText(String.valueOf(downSpeed) + "MB/s");
+                    activityPickerRequestsBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+                    activityPickerRequestsBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    activityPickerRequestsBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    activityPickerRequestsBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                } else if (downSpeed < 30) {
+//                    activityPickListBinding.customMenuLayout.internetSpeedText.setText(String.valueOf(downSpeed) + "MB/s");
+                    activityPickerRequestsBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
+                    activityPickerRequestsBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
+                    activityPickerRequestsBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    activityPickerRequestsBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                } else if (downSpeed < 40) {
+//                    activityPickListBinding.customMenuLayout.internetSpeedText.setText(String.valueOf(downSpeed) + "MB/s");
+                    activityPickerRequestsBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
+                    activityPickerRequestsBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
+                    activityPickerRequestsBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
+                    activityPickerRequestsBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                } else if (downSpeed > 50) {
+//                    activityPickListBinding.customMenuLayout.internetSpeedText.setText(String.valueOf(downSpeed) + "MB/s");
+                    activityPickerRequestsBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                    activityPickerRequestsBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                    activityPickerRequestsBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                    activityPickerRequestsBinding.customMenuLayout.greenSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                }
+            }
+        } else {
+//            activityPickListBinding.customMenuLayout.internetSpeedText.setText("");
+            activityPickerRequestsBinding.customMenuLayout.redSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+            activityPickerRequestsBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+            activityPickerRequestsBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+            activityPickerRequestsBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
         }
     }
 

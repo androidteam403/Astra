@@ -3,14 +3,18 @@ package com.thresholdsoft.astra.ui.login;
 import android.content.Context;
 import android.os.Build;
 
+import com.google.gson.Gson;
 import com.thresholdsoft.astra.BuildConfig;
 import com.thresholdsoft.astra.db.SessionManager;
+import com.thresholdsoft.astra.db.room.model.CommonRequest;
 import com.thresholdsoft.astra.network.ApiClient;
 import com.thresholdsoft.astra.network.ApiInterface;
+import com.thresholdsoft.astra.network.Encryption;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelRequest;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetModeofDeliveryResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
+import com.thresholdsoft.astra.ui.validate.ValidateRequest;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.NetworkUtils;
@@ -30,6 +34,8 @@ public class LoginActivityController {
         this.mContext = mContext;
         this.loginActivityCallback = loginActivityCallback;
     }
+
+
 
     public void validateUser(String userId, String password, String fcmKey) {
         if (NetworkUtils.isNetworkConnected(mContext)) {

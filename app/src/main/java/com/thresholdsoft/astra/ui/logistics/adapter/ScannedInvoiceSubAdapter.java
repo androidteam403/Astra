@@ -1,7 +1,9 @@
 package com.thresholdsoft.astra.ui.logistics.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,19 +13,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.SubInvoiceLayoutBinding;
 import com.thresholdsoft.astra.ui.logistics.LogisticsCallback;
+import com.thresholdsoft.astra.ui.logistics.model.AllocationDetailsResponse;
 
 import java.util.ArrayList;
 
-public class ScannedInvoiceSubAdapter extends RecyclerView.Adapter<ScannedInvoiceSubAdapter.ViewHolder>  {
+public class ScannedInvoiceSubAdapter extends RecyclerView.Adapter<ScannedInvoiceSubAdapter.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<String> salesinvoiceList;
+    private ArrayList<AllocationDetailsResponse.Barcodedetail> salesinvoiceList;
 
     LogisticsCallback callback;
+    public String indentNumber;
 
-    public ScannedInvoiceSubAdapter(Context mContext, ArrayList<String> salesinvoiceList , LogisticsCallback callback) {
+    public ScannedInvoiceSubAdapter(Context mContext, ArrayList<AllocationDetailsResponse.Barcodedetail> salesinvoiceList, LogisticsCallback callback,String indentNumber) {
         this.mContext = mContext;
-        this.callback=callback;
+        this.indentNumber=indentNumber;
+        this.callback = callback;
         this.salesinvoiceList = salesinvoiceList;
 
 
@@ -38,7 +43,17 @@ public class ScannedInvoiceSubAdapter extends RecyclerView.Adapter<ScannedInvoic
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        AllocationDetailsResponse.Barcodedetail items = salesinvoiceList.get(position);
+
+        holder.subInvoiceLayoutBinding.boxes.setText(items.getId());
+
+        holder.subInvoiceLayoutBinding.unTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.onClickUnTag(position,salesinvoiceList,indentNumber);
+            }
+        });
 
     }
 

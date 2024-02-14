@@ -8,6 +8,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import com.thresholdsoft.astra.ui.logistics.model.AllocationDetailsResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse;
 import com.thresholdsoft.astra.ui.picklist.model.OrderStatusTimeDateEntity;
 import com.thresholdsoft.astra.utils.AppConstants;
@@ -19,7 +20,7 @@ import java.util.List;
  * Created on : Nov 1, 2022
  * Author     : NAVEEN.M
  */
-@Database(entities = {GetAllocationLineResponse.class, OrderStatusTimeDateEntity.class, GetAllocationLineResponse.Allocationdetail.class}, version = 1, exportSchema = false)
+@Database(entities = {GetAllocationLineResponse.class, OrderStatusTimeDateEntity.class, GetAllocationLineResponse.Allocationdetail.class,AllocationDetailsResponse.class,AllocationDetailsResponse.Indentdetail.class,AllocationDetailsResponse.Barcodedetail.class}, version = 1, exportSchema = false)
 @TypeConverters({DataConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase mInstance;
@@ -41,6 +42,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public List<GetAllocationLineResponse> getAllAllocationLineList() {
         return dbDao().getAllAllocationLineList();
     }
+
+
 
     public void insertOrUpdateGetAllocationLineList(GetAllocationLineResponse getAllocationLineResponse) {
 //        if (getAllocationLineResponse != null && getAllocationLineResponse.getAllocationdetails() != null && getAllocationLineResponse.getAllocationdetails().size() > 0) {
@@ -79,6 +82,9 @@ public abstract class AppDatabase extends RoomDatabase {
             dbDao().orderStatusTimeDateInsert(orderStatusTimeDateEntity);
         }
     }
+    public void updateBarcodeDetail(AllocationDetailsResponse.Barcodedetail barcodeDetail) {
+        dbDao().updateBarcodeDetail(barcodeDetail);
+    }
 
     public String getLastTimeAndDate(String purchId, String areaId) {
         return dbDao().getLatestStartedDateAndTime(purchId, areaId) != null ? dbDao().getLatestStartedDateAndTime(purchId, areaId) : "";
@@ -116,7 +122,11 @@ public abstract class AppDatabase extends RoomDatabase {
         dbDao().deleteAllocationLineItemDateByForeinKey(foreinKey);
     }
 
+    public void insertIndentLogistics(AllocationDetailsResponse getAllocationLineResponse) {
 
+            dbDao().getLogisticAllocationItemsInsert(getAllocationLineResponse);
+
+    }
     public void insertIndent(GetAllocationLineResponse getAllocationLineResponse) {
         List<GetAllocationLineResponse> getAllocationLineResponse1 = dbDao().getAllAllocationLineByPurchreqid(getAllocationLineResponse.getPurchreqid(), getAllocationLineResponse.getAreaid());
         if (getAllocationLineResponse1 != null && getAllocationLineResponse1.size() > 0) {

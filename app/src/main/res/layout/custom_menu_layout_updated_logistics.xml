@@ -100,33 +100,6 @@
                             android:background="@color/imagebackgroundcolor"
                             android:layout_weight=".95">
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/dimen65dp"
-                                android:gravity="center"
-                                android:onClick="@{()-> customMenuSupervisorCallback.onClickLogistics()}"
-                                android:background="@{selectedMenu == 5 ? @color/yellow : @color/imagebackgroundcolor}"
-
-                                android:orientation="vertical">
-                                <ImageView
-                                    android:layout_width="@dimen/dimen30dp"
-                                    android:layout_height="@dimen/dimen30dp"
-                                    android:layout_gravity="center"
-                                    android:contentDescription="@string/app_name"
-                                    android:src="@drawable/icon_order_dispatched"
-                                    android:tint="@{selectedMenu == 5 ? @color/black : @color/white}"
-                                    tools:ignore="UseAppTint" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/poppins_bold"
-                                    android:gravity="center"
-                                    android:text="Logistics"
-                                    android:textColor="@{selectedMenu == 5 ? @color/black : @color/white}"
-                                    android:textSize="@dimen/dimen10sp" />
-
-                            </LinearLayout>
 
 
                             <LinearLayout
@@ -246,6 +219,63 @@
                             </LinearLayout>
 
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dimen65dp"
+                                android:gravity="center"
+                                android:onClick="@{()-> customMenuSupervisorCallback.onClickUserChange()}"
+                                android:background="@{selectedMenu == 5 ? @color/yellow : @color/imagebackgroundcolor}"
+
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="@dimen/dimen30dp"
+                                    android:layout_height="@dimen/dimen30dp"
+                                    android:layout_gravity="center"
+                                    android:contentDescription="@string/app_name"
+                                    android:src="@drawable/change_user"
+                                    android:tint="@{selectedMenu == 5 ? @color/black : @color/white}"
+                                    tools:ignore="UseAppTint" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:gravity="center"
+                                    android:text="Change User"
+                                    android:textColor="@{selectedMenu == 5 ? @color/black : @color/white}"
+                                    android:textSize="@dimen/dimen10sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dimen65dp"
+                                android:gravity="center"
+                                android:onClick="@{()-> customMenuSupervisorCallback.onClickLogistics()}"
+                                android:background="@{selectedMenu == 6 ? @color/yellow : @color/imagebackgroundcolor}"
+
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="@dimen/dimen30dp"
+                                    android:layout_height="@dimen/dimen30dp"
+                                    android:layout_gravity="center"
+                                    android:contentDescription="@string/app_name"
+                                    android:src="@drawable/icon_order_dispatched"
+                                    android:tint="@{selectedMenu == 6 ? @color/black : @color/white}"
+                                    tools:ignore="UseAppTint" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:gravity="center"
+                                    android:text="Logistics"
+                                    android:textColor="@{selectedMenu == 6 ? @color/black : @color/white}"
+                                    android:textSize="@dimen/dimen10sp" />
+
+                            </LinearLayout>
+
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -255,13 +285,6 @@
                             android:background="@color/white"
                             android:layout_weight=".05">
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/dimen65dp"
-                                android:background="@{selectedMenu == 5 ? @color/yellow : @color/white}"
-                                android:orientation="vertical">
-
-                            </LinearLayout>
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/dimen65dp"
@@ -295,6 +318,23 @@
                                 android:layout_height="@dimen/dimen65dp"
                                 android:background="@{selectedMenu == 4 ? @color/yellow : @color/white}"
 
+                                android:orientation="vertical">
+
+                            </LinearLayout>
+
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dimen65dp"
+                                android:background="@{selectedMenu == 5 ? @color/yellow : @color/white}"
+                                android:orientation="vertical">
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dimen65dp"
+                                android:background="@{selectedMenu == 6 ? @color/yellow : @color/white}"
                                 android:orientation="vertical">
 
                             </LinearLayout>
@@ -340,6 +380,8 @@
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
                                 android:layout_marginTop="2dp"
+                                android:tint="@{selectBluetoot == 9 ? @color/bluetootcolors : @color/dark_grey}"
+
                                 android:src="@drawable/bluetoot" />
                         </LinearLayout>
 
@@ -522,6 +564,9 @@
 
         <variable
             name="selectedMenu"
+            type="Integer" />
+        <variable
+            name="selectBluetoot"
             type="Integer" />
 
         <variable

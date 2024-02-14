@@ -1,6 +1,7 @@
 package com.thresholdsoft.astra.network;
 
 
+import com.thresholdsoft.astra.db.room.model.CommonRequest;
 import com.thresholdsoft.astra.ui.barcode.GetBarCodeRequest;
 import com.thresholdsoft.astra.ui.barcode.GetBarCodeResponse;
 import com.thresholdsoft.astra.ui.bulkupdate.model.BarcodeChangeRequest;
@@ -16,8 +17,13 @@ import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelRequest;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
 import com.thresholdsoft.astra.ui.logistics.model.AllocationDetailsResponse;
+import com.thresholdsoft.astra.ui.logistics.model.EwayBillRequest;
+import com.thresholdsoft.astra.ui.logistics.model.EwayBillResponse;
 import com.thresholdsoft.astra.ui.logistics.model.GetDriverMasterResponse;
 import com.thresholdsoft.astra.ui.logistics.model.GetVechicleMasterResponse;
+import com.thresholdsoft.astra.ui.logistics.model.TripCreationRequest;
+import com.thresholdsoft.astra.ui.logistics.model.TripCreationResponse;
+import com.thresholdsoft.astra.ui.logistics.model.VahanApiRequest;
 import com.thresholdsoft.astra.ui.logout.model.LoginDetailsRequest;
 import com.thresholdsoft.astra.ui.logout.model.LoginDetailsResponse;
 import com.thresholdsoft.astra.ui.logout.model.LoginResetResponse;
@@ -55,51 +61,57 @@ import retrofit2.http.Url;
 
 public interface ApiInterface {
 
-    @POST("ValidateUser")
+    @POST("ValidateUser")//4
     Call<ValidateUserModelResponse> VALIDATE_USER_API_CALL(@Header("Auth-Token") String authToken, @Body ValidateUserModelRequest validateUserModelRequest);
 
-    @POST("GetAllocationData")
+
+    //validate vendor
+    @POST("https://phrmapvtuat.apollopharmacy.info:8443/mrodvend/APOLLO/Vendor/VALIDATEVENDOR")
+    Call<String> getValidate(@Header("token")  String token, @Body CommonRequest data);
+
+    //    suspend fun getValidate(@Header("token") token: String, @Body data: CommonRequest): String
+    @POST("GetAllocationData")  //2
     Call<GetAllocationDataResponse> GET_ALLOCATION_DATA_API_CALL(@Header("Auth-Token") String authToken, @Body GetAllocationDataRequest getAllocationDataRequest);
 
     @GET("https://jsonblob.com/api/jsonBlob/1152274873422045184")
     Call<GetAllocationDataResponse> GET_ALLOCATION_DATA_API_CALL();
 
-    @POST("GetAllocationLine")
+    @POST("GetAllocationLine") //3
     Call<GetAllocationLineResponse> GET_ALLOCATION_LINE_API_CALL(@Header("Auth-Token") String authToken, @Body GetAllocationLineRequest getAllocationLineRequest);
 
     @GET("https://jsonblob.com/api/jsonBlob/1152275837445070848")
     Call<GetAllocationLineResponse> GET_ALLOCATION_LINE_API_CALL();
 
-    @POST("StatusUpdate")
+    @POST("StatusUpdate")//5
     Call<StatusUpdateResponse> STATUS_UPDATE_API_CALL(@Header("Auth-Token") String authToken, @Body StatusUpdateRequest statusUpdateRequest);
 
     @GET
-//GetModeofDelivery
+//GetModeofDelivery    //7
     Call<GetModeofDeliveryResponse> GET_MODEOF_DELIVERY_API_CALL(@Url String url, @Header("Auth-Token") String authToken);
 
-    @GET("GetWithHoldRemarks")
+    @GET("GetWithHoldRemarks") //8
     Call<GetWithHoldRemarksResponse> GET_WITH_HOLD_REMARKS_API_CALL(@Header("Auth-Token") String authToken);
 
-    @POST("GetWithHoldStatus")
+    @POST("GetWithHoldStatus") //10
     Call<GetWithHoldStatusResponse> GET_WITH_HOLD_STATUS_API_CALL(@Header("Auth-Token") String authToken, @Body GetWithHoldStatusRequest getWithHoldStatusRequest);
 
-    @POST("GetWithHoldData")
+    @POST("GetWithHoldData")  //9
     Call<WithHoldDataResponse> WITH_HOLD_DATA_RESPONSE_CALL(@Header("Auth-Token") String authToken, @Body WithHoldDataRequest withHoldDataRequest);
 
-    @POST("WithHoldApproval")
+    @POST("WithHoldApproval")//6
     Call<WithHoldApprovalResponse> WITH_HOLD_APPROVAL_API_CALL(@Header("Auth-Token") String authToken, @Body ArrayList<WithHoldApprovalRequest> withHoldApprovalRequest);
 
-    @POST("getlogindetails")
+    @POST("getlogindetails")     //1
 //https://online.apollopharmacy.org/Digital/Apollo/AHL/
     Call<LoginResetResponse> LOGIN_USERS_RESET_API_CALL(@Header("Auth-Token") String authToken, @Body LoginDetailsRequest logoutRequest);
 
-    @POST("getlogindetails")
+    @POST("getlogindetails")//13
         //https://online.apollopharmacy.org/Digital/Apollo/AHL/
     Call<LoginDetailsResponse> LOGIN_USERS_API_CALL(@Header("Auth-Token") String authToken, @Body LoginDetailsRequest logoutRequest);
 
     /*@GET("https://jsonblob.com/api/jsonBlob/1147052417111416832")
     Call<LoginDetailsResponse> LOGIN_USERS_API_CALL();*/
-    @POST("Modificationrequest")
+    @POST("Modificationrequest")  //15
 //https://online.apollopharmacy.org/Digital/Apollo/AHL/
     Call<BulkChangeResponse> UPDATE_BARCODEACTION_API_CALL(@Header("Auth-Token") String authToken, @Body BarcodeChangeRequest barcodeChangeRequest);
 
@@ -115,7 +127,7 @@ public interface ApiInterface {
 //https://online.apollopharmacy.org/Digital/Apollo/AHL/
     Call<BulkListResponse> GETDETAILS_API_CALL(@Header("Auth-Token") String authToken, @Body BulkListRequest bulkListRequest);
 
-    @POST("logout")
+    @POST("logout")//14
     Call<LogoutResponse> LOGOUT_API_CALL(@Header("Auth-Token") String authToken, @Body LogoutRequest logoutRequest);
 
     @GET("https://jsonblob.com/api/jsonBlob/1041677549033504768")
@@ -125,29 +137,39 @@ public interface ApiInterface {
     @POST
     Call<PackingLabelResponse> PACKING_LABEL_RESPONSE_CALL(@Url String url, @Header("token") String authToken, @Body PackingLabelRequest packingLabelRequest);
 
-    @POST("GetBarcodePrint")
+    @POST("GetBarcodePrint") //12
     Call<GetBarCodeResponse> BARCODE_API_CALL(@Header("Auth-Token") String authToken, @Body GetBarCodeRequest barCodeRequest);
 
     @GET
     Call<ResponseBody> doDownloadFile(@Url String fileUrl);
 
-    @POST("checkqoh")
+    @POST("checkqoh") //11
     Call<CheckQohResponse> CHECK_QOH_API_CALL(@Header("Auth-Token") String authToken, @Body CheckQohRequest checkQohRequest);
 
     @GET("https://jsonblob.com/api/jsonBlob/1114174843355676672")
     Call<CheckItemUpdateResponse> CHECK_ITEM_UPDATE_API_CALL();
 
-    @POST("changeuser")
+    @POST("changeuser") //16
     Call<ChangeUserResponse> CHANGE_REQUEST_API_CALL(@Header("Auth-Token") String authToken, @Body ChangeUserRequest changeUserRequest);
-    @POST("https://online.apollopharmacy.org/Digital/Apollo/GetStockAuditData")
+    @POST("https://online.apollopharmacy.org/Digital/Apollo/GetStockAuditData")  //17
     Call<GetStockAuditDataResponse> STOCK_AUDIT_DATA_API_CALL(@Header("Auth-Token") String authToken, @Body GetStockAuditDataRequest getStockAuditDataRequest);
     @POST("https://online.apollopharmacy.org/Digital/Apollo/GetStockAuditLine")
     Call<GetStockAuditLineResponse> STOCk_AUDIT_LINE_API_CALL(@Header("Auth-Token") String authToken, @Body GetStockAuditLineRequest getStockAuditLineRequest);
-    @GET("https://jsonblob.com/api/jsonBlob/1196803382718619648")
-    Call<AllocationDetailsResponse> ALLOCATION_DETAILS_API_CALL();
+    @POST("https://phrmapvtuat.apollopharmacy.info:8443/Astravahan/Apollo/Vahan/AllocationOrders")  //18
+    Call<AllocationDetailsResponse> ALLOCATION_DETAILS_API_CALL(@Header("Auth-Token") String authToken, @Body VahanApiRequest vahanApiRequest);
 
-    @GET("https://jsonblob.com/api/jsonBlob/1197119454281850880")
-    Call<GetVechicleMasterResponse> GET_VECHICLE_MASTER_RESPONSE_CALL();
+    @POST("https://phrmapvtuat.apollopharmacy.info:8443/Astravahan/Apollo/Vahan/GetVechicleMaster") //20
+    Call<GetVechicleMasterResponse> GET_VECHICLE_MASTER_RESPONSE_CALL(@Header("Auth-Token") String authToken, @Body VahanApiRequest vahanApiRequest);
+
+    @POST("https://phrmapvtuat.apollopharmacy.info:8443/Astravahan/Apollo/Vahan/GetDriverMaster") //19
+    Call<GetDriverMasterResponse> GET_DRIVER_MASTER_RESPONSE_CALL(@Header("Auth-Token") String authToken, @Body VahanApiRequest vahanApiRequest);
+
+
+    @POST("https://phrmapvtuat.apollopharmacy.info:8443/Astravahan/Apollo/Vahan/TripCreation") //22
+    Call<TripCreationResponse> GET_TRIP_CREATION_RESPONSE_CALL(@Header("Auth-Token") String authToken, @Body TripCreationRequest tripCreationRequest);
+    @POST("https://phrmapvtuat.apollopharmacy.info:8443/Astravahan/Apollo/Vahan/Ewaybill") //21
+    Call<EwayBillResponse> GET_EWAY_BILL_RESPONSE_CALL(@Header("Auth-Token") String authToken, @Body EwayBillRequest ewayBillRequest);
+
 
 //    @POST("https://jsonblob.com/api/jsonBlob/1171756115855007744")
 //    Call<GetStockAuditDataResponse> STOCK_AUDIT_ITEMS_API_CALL();

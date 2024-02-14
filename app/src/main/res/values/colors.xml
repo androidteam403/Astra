@@ -7,6 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="bluetootcolors">#2596be</color>
+
     <color name="imagebackgroundcolor">#125F6F</color>
     <color name="navy">#8FC3D0</color>
     <color name="silver">#AAA9AD</color>
