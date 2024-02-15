@@ -68,6 +68,8 @@ import com.thresholdsoft.astra.utils.NetworkUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -97,7 +99,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     private BluetoothAdapter bluetoothAdapter;
     private ArrayList<AllocationDetailsResponse.Barcodedetail> barcodedetailsList = new ArrayList<>();
     private ArrayList<AllocationDetailsResponse.Barcodedetail> nonScannedbarcodedetailsList = new ArrayList<>();
-
+    boolean isSortedAscending = false;
 
     int scannedBoxes=0;
     //    private ScannedInvoiceAdapter scannedInvoiceAdapter;
@@ -106,6 +108,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
     int dummyPos = 0;
     ArrayList<AllocationDetailsResponse.Barcodedetail> dummyBarcodedetails;
+    ArrayList<AllocationDetailsResponse.Barcodedetail> originalBarcodedetails;
     ArrayList<AllocationDetailsResponse.Indentdetail> dummyIndentdetailArrayList;
     Map<String, List<AllocationDetailsResponse.Indentdetail>> dummyRouteIdsGroupedList;
     ArrayList<AllocationDetailsResponse.Indentdetail> allocationDetailsList = new ArrayList<>();
@@ -140,98 +143,107 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
             }
         });
+// Flag to keep track of sorting state
 
-        activityLogisticsBinding.closeIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickIndent(dummyPos, dummyBarcodedetails, dummyIndentdetailArrayList, dummyRouteIdsGroupedList, indentNum);
-                activityLogisticsBinding.subMenu.setVisibility(View.GONE);
-                activityLogisticsBinding.selectSalesInvoiceLayout.setVisibility(View.VISIBLE);
-                activityLogisticsBinding.thirdParentLayout.setVisibility(View.GONE);
-                activityLogisticsBinding.startScanLayout.setVisibility(View.GONE);
-                activityLogisticsBinding.scannedAndLoadedLayout.setVisibility(View.GONE);
-                activityLogisticsBinding.scannedInvoiceRecycleview.setVisibility(View.GONE);
 
-                activityLogisticsBinding.checkboxLayout.setVisibility(View.GONE);
+
+            activityLogisticsBinding.sortByBoxId.setOnClickListener(v -> {
+            // Toggle sorting and color
+            if (isSortedAscending) {
+                activityLogisticsBinding.sort.setColorFilter(null);
+
+                dummyBarcodedetails.clear();
+                dummyBarcodedetails.addAll(originalBarcodedetails);
+            } else {
+
+                activityLogisticsBinding.sort.setColorFilter(Color.parseColor("#094144"));
+
+                // Sort the list in ascending order based on boxid
+                Collections.sort(dummyBarcodedetails, Comparator.comparing(AllocationDetailsResponse.Barcodedetail::getId).reversed());
+
             }
+
+            // Toggle the sorting state
+            isSortedAscending = !isSortedAscending;
+
+            // Notify the adapter that the data set has changed
+            invoiceDetailsAdapter.notifyDataSetChanged();
+        });
+
+        activityLogisticsBinding.closeIcon.setOnClickListener(v -> {
+            onClickIndent(dummyPos, dummyBarcodedetails, dummyIndentdetailArrayList, dummyRouteIdsGroupedList, indentNum);
+            activityLogisticsBinding.subMenu.setVisibility(View.GONE);
+            activityLogisticsBinding.selectSalesInvoiceLayout.setVisibility(View.VISIBLE);
+            activityLogisticsBinding.thirdParentLayout.setVisibility(View.GONE);
+            activityLogisticsBinding.startScanLayout.setVisibility(View.GONE);
+            activityLogisticsBinding.scannedAndLoadedLayout.setVisibility(View.GONE);
+            activityLogisticsBinding.scannedInvoiceRecycleview.setVisibility(View.GONE);
+
+            activityLogisticsBinding.checkboxLayout.setVisibility(View.GONE);
         });
         activityLogisticsBinding.driversDialog.setOnClickListener(v -> {
             openLogisticsDialog();
         });
-        activityLogisticsBinding.generateEwayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                List<EwayBillRequest.Ewaybilldetail> detailList = new ArrayList<>();
+        activityLogisticsBinding.generateEwayButton.setOnClickListener(view -> {
+            List<EwayBillRequest.Ewaybilldetail> detailList = new ArrayList<>();
 
-                if (vehicledetail != null) {
-                    for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : filterByIndentNumber(routeIdsGroupedList, indentNum).entrySet()) {
-                        List<AllocationDetailsResponse.Indentdetail> indentDetailList = entry.getValue();
-                        List<TripCreationRequest.Indentdetail> tripIndentdetailsList = new ArrayList<>();
-                        List<TripCreationRequest.Indentdetail.Barcodedetail> tripBarcodedetailsList = new ArrayList<>();
+            if (vehicledetail != null) {
+                for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : filterByIndentNumber(routeIdsGroupedList, indentNum).entrySet()) {
+                    List<AllocationDetailsResponse.Indentdetail> indentDetailList = entry.getValue();
+                    List<TripCreationRequest.Indentdetail> tripIndentdetailsList = new ArrayList<>();
+                    List<TripCreationRequest.Indentdetail.Barcodedetail> tripBarcodedetailsList = new ArrayList<>();
 
-                        for (int j = 0; j < indentDetailList.size(); j++) {
-                            AllocationDetailsResponse.Indentdetail indentDetail = indentDetailList.get(j);
-                            for (int k = 0; k < indentDetail.getBarcodedetails().size(); k++) {
-                                TripCreationRequest.Indentdetail.Barcodedetail barcodedetailTrip = new TripCreationRequest.Indentdetail.Barcodedetail(indentDetail.getBarcodedetails().get(k).getId(), indentDetail.getBarcodedetails().get(k).scannedTime(), (int) Math.round(indentDetail.getBarcodedetails().get(k).getNoofskus()));
-                                tripBarcodedetailsList.add(barcodedetailTrip);
-                            }
-
-                            TripCreationRequest.Indentdetail tripIndentdetail = new TripCreationRequest.Indentdetail(indentNum, (int) Math.round(indentDetail.getNoofboxes()), (int) Math.round(indentDetail.getNoofskus()), indentDetail.getSiteid(), tripBarcodedetailsList);
-                            tripIndentdetailsList.add(tripIndentdetail);
-                            TripCreationRequest tripCreationRequest = new TripCreationRequest(getSessionManager().getEmplId(), getSessionManager().getPickerName(), indentDetail.getVahanroute(), getSessionManager().getDc(), tripIndentdetailsList);
-
-                            EwayBillRequest.Ewaybilldetail ewaybilldetail = new EwayBillRequest.Ewaybilldetail(indentNum, indentDetail.getSiteid(), (int) Math.round(indentDetail.getDistance()), indentDetail.getIrnno(), "BLR T003", indentDetail.getTransporter(), vehicledetail.getVehicleno(), vehicledetail.getVehicleid(), vehicledetail.getAssignedsupervisior(), vehicledetail.getSupervisiorcontactno(), vehicledetail.getDrivername(), vehicledetail.getDrivercontactno());
-
-                            detailList.add(ewaybilldetail);
-                            EwayBillRequest ewayBillRequest = new EwayBillRequest(getSessionManager().getEmplId(), getSessionManager().getDc(), detailList);
-
-                            getController().getEwayBillResponse(ewayBillRequest);
-                            getController().getTripCreationResponse(tripCreationRequest);
+                    for (int j = 0; j < indentDetailList.size(); j++) {
+                        AllocationDetailsResponse.Indentdetail indentDetail = indentDetailList.get(j);
+                        for (int k = 0; k < indentDetail.getBarcodedetails().size(); k++) {
+                            TripCreationRequest.Indentdetail.Barcodedetail barcodedetailTrip = new TripCreationRequest.Indentdetail.Barcodedetail(indentDetail.getBarcodedetails().get(k).getId(), indentDetail.getBarcodedetails().get(k).scannedTime(), (int) Math.round(indentDetail.getBarcodedetails().get(k).getNoofskus()));
+                            tripBarcodedetailsList.add(barcodedetailTrip);
                         }
 
+                        TripCreationRequest.Indentdetail tripIndentdetail = new TripCreationRequest.Indentdetail(indentNum, (int) Math.round(indentDetail.getNoofboxes()), (int) Math.round(indentDetail.getNoofskus()), indentDetail.getSiteid(), tripBarcodedetailsList);
+                        tripIndentdetailsList.add(tripIndentdetail);
+                        TripCreationRequest tripCreationRequest = new TripCreationRequest(getSessionManager().getEmplId(), getSessionManager().getPickerName(), indentDetail.getVahanroute(), getSessionManager().getDc(), tripIndentdetailsList);
 
+                        EwayBillRequest.Ewaybilldetail ewaybilldetail = new EwayBillRequest.Ewaybilldetail(indentNum, indentDetail.getSiteid(), (int) Math.round(indentDetail.getDistance()), indentDetail.getIrnno(), "BLR T003", indentDetail.getTransporter(), vehicledetail.getVehicleno(), vehicledetail.getVehicleid(), vehicledetail.getAssignedsupervisior(), vehicledetail.getSupervisiorcontactno(), vehicledetail.getDrivername(), vehicledetail.getDrivercontactno());
+
+                        detailList.add(ewaybilldetail);
+                        EwayBillRequest ewayBillRequest = new EwayBillRequest(getSessionManager().getEmplId(), getSessionManager().getDc(), detailList);
+
+                        getController().getEwayBillResponse(ewayBillRequest);
+                        getController().getTripCreationResponse(tripCreationRequest);
                     }
 
+
                 }
 
             }
+
         });
-        activityLogisticsBinding.availableDriver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               openLogisticsDialog();
-            }
-        });
+        activityLogisticsBinding.availableDriver.setOnClickListener(v -> openLogisticsDialog());
 
-        activityLogisticsBinding.truckFullCheckBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Check if the CheckBox is checked
-                if (activityLogisticsBinding.truckFullCheckBox.isChecked()) {
-                    // If checked, make the layout visible
-                    activityLogisticsBinding.generateEwayButton.setEnabled(true);
+        activityLogisticsBinding.truckFullCheckBox.setOnClickListener(view -> {
+            // Check if the CheckBox is checked
+            if (activityLogisticsBinding.truckFullCheckBox.isChecked()) {
+                // If checked, make the layout visible
+                activityLogisticsBinding.generateEwayButton.setEnabled(true);
 
-                    activityLogisticsBinding.detailsLayout.setVisibility(View.VISIBLE);
-                    // Also change the background tint color of the button
-                    activityLogisticsBinding.generateEwayButton.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.yellow));
-                } else {
-                    // If not checked, make the layout gone
-                    activityLogisticsBinding.generateEwayButton.setEnabled(false);
-                    activityLogisticsBinding.generateEwayButton.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.req_qty_bg));
+                activityLogisticsBinding.detailsLayout.setVisibility(View.VISIBLE);
+                // Also change the background tint color of the button
+                activityLogisticsBinding.generateEwayButton.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.yellow));
+            } else {
+                // If not checked, make the layout gone
+                activityLogisticsBinding.generateEwayButton.setEnabled(false);
+                activityLogisticsBinding.generateEwayButton.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.req_qty_bg));
 
-                    activityLogisticsBinding.detailsLayout.setVisibility(View.GONE);
-                }
+                activityLogisticsBinding.detailsLayout.setVisibility(View.GONE);
             }
         });
 
 
-        activityLogisticsBinding.startScan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                activityLogisticsBinding.startScanLayout.setVisibility(View.GONE);
-                activityLogisticsBinding.scannedAndLoadedLayout.setVisibility(View.VISIBLE);
-                activityLogisticsBinding.checkboxLayout.setVisibility(View.VISIBLE);
-            }
+        activityLogisticsBinding.startScan.setOnClickListener(view -> {
+            activityLogisticsBinding.startScanLayout.setVisibility(View.GONE);
+            activityLogisticsBinding.scannedAndLoadedLayout.setVisibility(View.VISIBLE);
+            activityLogisticsBinding.checkboxLayout.setVisibility(View.VISIBLE);
         });
 //
 //        activityLogisticsBinding.newlayout.setOnClickListener(new View.OnClickListener() {
@@ -932,6 +944,8 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     public void onClickIndent(int pos, ArrayList<AllocationDetailsResponse.Barcodedetail> barcodedetails, ArrayList<AllocationDetailsResponse.Indentdetail> indentdetailArrayList, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String indentNumber) {
         dummyPos = pos;
         dummyBarcodedetails = barcodedetails;
+        originalBarcodedetails = new ArrayList<>(dummyBarcodedetails);
+
         dummyIndentdetailArrayList = indentdetailArrayList;
         dummyRouteIdsGroupedList = routeIdsGroupedList;
         indentNum = indentNumber;

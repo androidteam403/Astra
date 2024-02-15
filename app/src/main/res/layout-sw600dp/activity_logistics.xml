@@ -404,29 +404,27 @@
                     android:orientation="horizontal"
                     android:weightSum="1">
 
+
                     <EditText
                         android:id="@+id/search_by_boxId"
-
                         android:layout_width="0dp"
-                        android:layout_height="@dimen/dimen35dp"
-                        android:layout_marginStart="@dimen/dimen5dp"
-                        android:layout_weight=".65"
+                        android:layout_weight=".67"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="4dp"
                         android:background="@drawable/bg_edit_text_log"
-                        android:focusable="false"
                         android:fontFamily="@font/poppins_semibold"
-                        android:gravity="center"
+                        android:hint="Search"
                         android:importantForAutofill="no"
                         android:inputType="text"
-                        android:textAlignment="center"
+                        android:paddingStart="@dimen/dimen5dp"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen12sp"
-                        tools:ignore="LabelFor" />
+                        android:textSize="10sp" />
 
                     <LinearLayout
                         android:layout_width="@dimen/dimen0dp"
                         android:layout_height="35dp"
                         android:layout_marginStart="@dimen/dimen5dp"
-                        android:layout_weight=".17"
+                        android:layout_weight=".16"
                         android:background="@drawable/bg_edit_text"
                         android:orientation="vertical">
 
@@ -444,7 +442,8 @@
                         android:layout_height="35dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="5dp"
-                        android:layout_weight=".18"
+                        android:layout_weight=".17"
+                        android:id="@+id/sortByBoxId"
                         android:background="@drawable/bg_edit_text"
                         android:orientation="vertical">
 
@@ -453,6 +452,7 @@
                             android:layout_height="25dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="4dp"
+                            android:id="@+id/sort"
                             android:rotation="90"
                             android:src="@drawable/baseline_sync_alt_24" />
 
