@@ -1,4 +1,4 @@
-package com.thresholdsoft.astra.ui.logistics.model;
+package com.thresholdsoft.astra.ui.logistics.shippinglabel.model;
 
 
 import com.google.gson.annotations.Expose;

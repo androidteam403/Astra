@@ -1,4 +1,4 @@
-package com.thresholdsoft.astra.ui.logistics.model;
+package com.thresholdsoft.astra.ui.logistics.shippinglabel.model;
 
 
 import static androidx.room.ForeignKey.CASCADE;
@@ -11,7 +11,6 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse;
 
 import java.io.Serializable;
 import java.util.ArrayList;

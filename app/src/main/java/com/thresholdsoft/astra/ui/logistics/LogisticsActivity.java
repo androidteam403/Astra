@@ -17,11 +17,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -52,14 +55,14 @@ import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.logistics.adapter.InvoiceDetailsAdapter;
 import com.thresholdsoft.astra.ui.logistics.adapter.RoutesListAdapter;
 import com.thresholdsoft.astra.ui.logistics.adapter.ScannedRoutesListAdapter;
-import com.thresholdsoft.astra.ui.logistics.model.AllocationDetailsResponse;
-import com.thresholdsoft.astra.ui.logistics.model.EwayBillRequest;
-import com.thresholdsoft.astra.ui.logistics.model.EwayBillResponse;
-import com.thresholdsoft.astra.ui.logistics.model.GetDriverMasterResponse;
-import com.thresholdsoft.astra.ui.logistics.model.GetVechicleMasterResponse;
-import com.thresholdsoft.astra.ui.logistics.model.TripCreationRequest;
-import com.thresholdsoft.astra.ui.logistics.model.TripCreationResponse;
-import com.thresholdsoft.astra.ui.logistics.model.VahanApiRequest;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.AllocationDetailsResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.EwayBillRequest;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.EwayBillResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.GetDriverMasterResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.GetVechicleMasterResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.TripCreationRequest;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.TripCreationResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.VahanApiRequest;
 import com.thresholdsoft.astra.ui.logout.LogOutUsersActivity;
 import com.thresholdsoft.astra.ui.menucallbacks.CustomMenuSupervisorCallback;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestActivity;
@@ -99,7 +102,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     private ArrayList<AllocationDetailsResponse.Barcodedetail> nonScannedbarcodedetailsList = new ArrayList<>();
 
 
-    int scannedBoxes=0;
+    int scannedBoxes = 0;
     //    private ScannedInvoiceAdapter scannedInvoiceAdapter;
     private ScannedRoutesListAdapter scannedRoutesListAdapter;
     ArrayList<GetDriverMasterResponse.Driverdetail> driverdetailsList = new ArrayList<>();
@@ -133,6 +136,47 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         getController().getDriverMasterResponse(vahanApiRequest);
         checkBluetoothPermissions();
         registerBluetoothReceiver();
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            activityLogisticsBinding.barcodeScanEdittext.setShowSoftInputOnFocus(false);
+        } else if (Build.VERSION.SDK_INT >= 11) {
+            activityLogisticsBinding.barcodeScanEdittext.setRawInputType(InputType.TYPE_CLASS_TEXT);
+            activityLogisticsBinding.barcodeScanEdittext.setTextIsSelectable(true);
+        } else {
+            activityLogisticsBinding.barcodeScanEdittext.setRawInputType(InputType.TYPE_NULL);
+            activityLogisticsBinding.barcodeScanEdittext.setFocusable(true);
+        }
+        activityLogisticsBinding.barcodeScanEdittext.requestFocus();
+
+
+        activityLogisticsBinding.barcodeScanEdittext.setOnTouchListener(new View.OnTouchListener(){
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int inType = activityLogisticsBinding.barcodeScanEdittext.getInputType(); // backup the input type
+                activityLogisticsBinding.barcodeScanEdittext.setInputType(InputType.TYPE_NULL); // disable soft input
+                activityLogisticsBinding.barcodeScanEdittext.onTouchEvent(event); // call native handler
+                activityLogisticsBinding.barcodeScanEdittext.setInputType(inType); // restore input type
+                return true; // consume touch even
+            }
+        });
+
+        barcodeCodeScanEdittextTextWatcher();
+        parentLayoutTouchListener();
+
+
+        activityLogisticsBinding.searchByItemId.setOnFocusChangeListener((view, hasFocus) -> {
+            if (!hasFocus) {
+                activityLogisticsBinding.barcodeScanEdittext.requestFocus();
+            }
+        });
+        //search_by_text
+        activityLogisticsBinding.searchByBoxId.setOnFocusChangeListener((view, hasFocus) -> {
+            if (!hasFocus) {
+                activityLogisticsBinding.barcodeScanEdittext.requestFocus();
+            }
+        });
+
         activityLogisticsBinding.scanIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,7 +243,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         activityLogisticsBinding.availableDriver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               openLogisticsDialog();
+                openLogisticsDialog();
             }
         });
 
@@ -301,7 +345,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
     }
 
-    private void openLogisticsDialog(){
+    private void openLogisticsDialog() {
         List<AllocationDetailsResponse.Barcodedetail> barcodedetails = new ArrayList<>();
         barcodedetailsList = (ArrayList<AllocationDetailsResponse.Barcodedetail>) filterByIndentNumber(routeIdsGroupedList, indentNum).values().stream()
                 .flatMap(List::stream)
@@ -342,7 +386,6 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                     activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.yellow));
 
                     activityLogisticsBinding.generateBillLayout.setVisibility(View.VISIBLE);
-
 
 
                     logisticDialog.dismiss();
@@ -543,84 +586,90 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         activityLogisticsBinding.scannedInvoiceRecycleview.setVisibility(View.VISIBLE);
         if (Result != null) {
             if (Result.getContents() != null) {
-                activityLogisticsBinding.thirdParentLayout.setVisibility(View.VISIBLE);
-                activityLogisticsBinding.startScanLayout.setVisibility(View.VISIBLE);
-                activityLogisticsBinding.scannedAndLoadedLayout.setVisibility(View.VISIBLE);
-                activityLogisticsBinding.driversDialog.setVisibility(View.VISIBLE);
-                activityLogisticsBinding.checkboxLayout.setVisibility(View.VISIBLE);
-
-                boolean barcodeMatched = false; // Flag to track if any barcode matches the scanned result
-
-                for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : filterByIndentNumber(routeIdsGroupedList, indentNum).entrySet()) {
-                    String routeKey = entry.getKey();
-                    List<AllocationDetailsResponse.Indentdetail> indentDetailList = entry.getValue();
-
-                    for (int j = 0; j < indentDetailList.size(); j++) {
-                        AllocationDetailsResponse.Indentdetail indentDetail = indentDetailList.get(j);
-
-                        if (indentDetail.getBarcodedetails() != null) {
-                            for (int k = 0; k < indentDetail.getBarcodedetails().size(); k++) {
-                                AllocationDetailsResponse.Barcodedetail barcodeDetail = indentDetail.getBarcodedetails().get(k);
-
-                                if (barcodeDetail.getId().equalsIgnoreCase(Result.getContents())) {
-                                    if (barcodeDetail.isScanned()) {
-                                        logisticScannedDialog = new LogisticScannedDialog(LogisticsActivity.this, "Already Scanned");
-                                    } else {
-                                        logisticScannedDialog = new LogisticScannedDialog(LogisticsActivity.this, barcodeDetail.getId().toString());
-                                        barcodeDetail.setisScanned(true);
-                                        long currentTimeMillis = System.currentTimeMillis();
-                                        // Format the current date
-                                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
-                                        String formattedDate = sdf.format(new Date(currentTimeMillis));
-
-                                        barcodeDetail.setScannedTime(formattedDate);
-                                        AppDatabase.getDatabaseInstance(this).updateBarcodeDetail(barcodeDetail);
-                                    }
-                                    // Show the dialog and set the flag
-                                    if (!isFinishing()) logisticScannedDialog.show();
-                                    barcodeMatched = true;
-                                    break; // Exit the loop since a match is found
-                                }
-                            }
-                        }
-                        if (barcodeMatched) break; // Exit the outer loop if a match is found
-                    }
-                    if (barcodeMatched) break; // Exit the outer loop if a match is found
-                }
-
-                // If no match is found, show the "Barcode Not Matching" dialog
-                if (!barcodeMatched) {
-                    logisticScannedDialog = new LogisticScannedDialog(LogisticsActivity.this, "Barcode Not Matching");
-                    if (!isFinishing()) logisticScannedDialog.show();
-                }
-
-                onCallScannedAdapter(routeIdsGroupedList, indentNum);
-
-                barcodedetailsList = (ArrayList<AllocationDetailsResponse.Barcodedetail>) filterByIndentNumber(routeIdsGroupedList, indentNum).values().stream()
-                        .flatMap(List::stream)
-                        .filter(indentDetail -> indentDetail.getIndentno().equals(indentNum))
-                        .flatMap(indentDetail -> indentDetail.getBarcodedetails().stream())
-                        .filter(AllocationDetailsResponse.Barcodedetail::isScanned)
-                        .collect(Collectors.toList());
-                scannedBoxes=barcodedetailsList.size();
-                ArrayList<AllocationDetailsResponse.Barcodedetail> barcodedetailArrayList=new ArrayList<>();
-                barcodedetailArrayList = (ArrayList<AllocationDetailsResponse.Barcodedetail>) filterByIndentNumber(routeIdsGroupedList, indentNum).values().stream()
-                        .flatMap(List::stream)
-                        .filter(indentDetail -> indentDetail.getIndentno().equals(indentNum))
-                        .flatMap(indentDetail -> indentDetail.getBarcodedetails().stream())
-                        .collect(Collectors.toList());
-                boolean allItemsScanned = barcodedetailArrayList.stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned);
-
-                if (allItemsScanned){
-                    activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.yellow));
-                }else {
-                    activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.req_qty_bg));
-
-                }
-                activityLogisticsBinding.scannedIndentNumber.setText(barcodedetailsList.size() + "/");
+                updateScannedBoxID(Result.getContents());
             } else {
                 super.onActivityResult(requestCode, resultCode, data);
             }
+        }
+    }
+
+    private void updateScannedBoxID(String boxID) {
+        {
+            activityLogisticsBinding.thirdParentLayout.setVisibility(View.VISIBLE);
+            activityLogisticsBinding.startScanLayout.setVisibility(View.VISIBLE);
+            activityLogisticsBinding.scannedAndLoadedLayout.setVisibility(View.VISIBLE);
+            activityLogisticsBinding.driversDialog.setVisibility(View.VISIBLE);
+            activityLogisticsBinding.checkboxLayout.setVisibility(View.VISIBLE);
+
+            boolean barcodeMatched = false; // Flag to track if any barcode matches the scanned result
+
+            for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : filterByIndentNumber(routeIdsGroupedList, indentNum).entrySet()) {
+                String routeKey = entry.getKey();
+                List<AllocationDetailsResponse.Indentdetail> indentDetailList = entry.getValue();
+
+                for (int j = 0; j < indentDetailList.size(); j++) {
+                    AllocationDetailsResponse.Indentdetail indentDetail = indentDetailList.get(j);
+
+                    if (indentDetail.getBarcodedetails() != null) {
+                        for (int k = 0; k < indentDetail.getBarcodedetails().size(); k++) {
+                            AllocationDetailsResponse.Barcodedetail barcodeDetail = indentDetail.getBarcodedetails().get(k);
+
+                            if (barcodeDetail.getId().equalsIgnoreCase(boxID)) {//Result.getContents()
+                                if (barcodeDetail.isScanned()) {
+                                    logisticScannedDialog = new LogisticScannedDialog(LogisticsActivity.this, "Already Scanned");
+                                } else {
+                                    logisticScannedDialog = new LogisticScannedDialog(LogisticsActivity.this, barcodeDetail.getId().toString());
+                                    barcodeDetail.setisScanned(true);
+                                    long currentTimeMillis = System.currentTimeMillis();
+                                    // Format the current date
+                                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+                                    String formattedDate = sdf.format(new Date(currentTimeMillis));
+
+                                    barcodeDetail.setScannedTime(formattedDate);
+                                    AppDatabase.getDatabaseInstance(this).updateBarcodeDetail(barcodeDetail);
+                                }
+                                // Show the dialog and set the flag
+                                if (!isFinishing()) logisticScannedDialog.show();
+                                barcodeMatched = true;
+                                break; // Exit the loop since a match is found
+                            }
+                        }
+                    }
+                    if (barcodeMatched) break; // Exit the outer loop if a match is found
+                }
+                if (barcodeMatched) break; // Exit the outer loop if a match is found
+            }
+
+            // If no match is found, show the "Barcode Not Matching" dialog
+            if (!barcodeMatched) {
+                logisticScannedDialog = new LogisticScannedDialog(LogisticsActivity.this, "Barcode Not Matching");
+                if (!isFinishing()) logisticScannedDialog.show();
+            }
+
+            onCallScannedAdapter(routeIdsGroupedList, indentNum);
+
+            barcodedetailsList = (ArrayList<AllocationDetailsResponse.Barcodedetail>) filterByIndentNumber(routeIdsGroupedList, indentNum).values().stream()
+                    .flatMap(List::stream)
+                    .filter(indentDetail -> indentDetail.getIndentno().equals(indentNum))
+                    .flatMap(indentDetail -> indentDetail.getBarcodedetails().stream())
+                    .filter(AllocationDetailsResponse.Barcodedetail::isScanned)
+                    .collect(Collectors.toList());
+            scannedBoxes = barcodedetailsList.size();
+            ArrayList<AllocationDetailsResponse.Barcodedetail> barcodedetailArrayList = new ArrayList<>();
+            barcodedetailArrayList = (ArrayList<AllocationDetailsResponse.Barcodedetail>) filterByIndentNumber(routeIdsGroupedList, indentNum).values().stream()
+                    .flatMap(List::stream)
+                    .filter(indentDetail -> indentDetail.getIndentno().equals(indentNum))
+                    .flatMap(indentDetail -> indentDetail.getBarcodedetails().stream())
+                    .collect(Collectors.toList());
+            boolean allItemsScanned = barcodedetailArrayList.stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned);
+
+            if (allItemsScanned) {
+                activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.yellow));
+            } else {
+                activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.req_qty_bg));
+
+            }
+            activityLogisticsBinding.scannedIndentNumber.setText(barcodedetailsList.size() + "/");
         }
     }
 
@@ -897,7 +946,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
                 salesinvoiceList.get(pos).setScanned(false);
                 dummyBarcodedetails.get(pos).setScanned(false);
-                ArrayList<AllocationDetailsResponse.Barcodedetail> barcodedetailArrayList=new ArrayList<>();
+                ArrayList<AllocationDetailsResponse.Barcodedetail> barcodedetailArrayList = new ArrayList<>();
                 barcodedetailArrayList = (ArrayList<AllocationDetailsResponse.Barcodedetail>) filterByIndentNumber(routeIdsGroupedList, indentNum).values().stream()
                         .flatMap(List::stream)
                         .filter(indentDetail -> indentDetail.getIndentno().equals(indentNum))
@@ -905,9 +954,9 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                         .collect(Collectors.toList());
                 boolean allItemsScanned = barcodedetailArrayList.stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned);
 
-                if (allItemsScanned){
+                if (allItemsScanned) {
                     activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.yellow));
-                }else {
+                } else {
                     activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.req_qty_bg));
 
                 }
@@ -948,8 +997,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                     if (routeKey.equals(indentdetailArrayList.get(pos).getVahanroute()) && j == pos) {
                         // Set isColorChanged to true for the clicked position
                         indentDetail.setisColorChanged(!indentDetail.isColorChanged());
-                    }
-                    else {
+                    } else {
                         // Set isColorChanged to false for other positions
                         indentDetail.setisColorChanged(false);
                     }
@@ -977,7 +1025,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 .flatMap(indentDetail -> indentDetail.getBarcodedetails().stream())
                 .filter(AllocationDetailsResponse.Barcodedetail::isScanned)
                 .collect(Collectors.toList());
-        scannedBoxes=barcodedetailsList.size();
+        scannedBoxes = barcodedetailsList.size();
 
         activityLogisticsBinding.scannedIndentNumber.setText(barcodedetailsList.size() + "/");
         if (barcodedetailsList.size() > 0) {
@@ -990,8 +1038,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             activityLogisticsBinding.driversDialog.setVisibility(View.VISIBLE);
             onCallScannedAdapter(routeIdsGroupedList, indentNum);
 
-        }
-        else {
+        } else {
             activityLogisticsBinding.thirdParentLayout.setVisibility(View.GONE);
             activityLogisticsBinding.startScanLayout.setVisibility(View.GONE);
             activityLogisticsBinding.driversDialog.setVisibility(View.GONE);
@@ -1013,7 +1060,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 0,
                 LinearLayout.LayoutParams.MATCH_PARENT
         );
-        layoutParams3.weight=.4F;
+        layoutParams3.weight = .4F;
         layoutParams.weight = .7F;
         layoutParams.setMargins(8, 0, 0, 0);
         activityLogisticsBinding.firstRecycleviewLayout.setLayoutParams(layoutParams1);
@@ -1031,7 +1078,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
         activityLogisticsBinding.selectSalesInvoiceLayout.setVisibility(View.GONE);
         activityLogisticsBinding.indentNumber.setText(indentNumber);
-        activityLogisticsBinding.totalIndentNumber.setText(String.valueOf(nonScannedbarcodedetailsList.size()+barcodedetailsList.size()));
+        activityLogisticsBinding.totalIndentNumber.setText(String.valueOf(nonScannedbarcodedetailsList.size() + barcodedetailsList.size()));
 
         activityLogisticsBinding.searchByBoxId.addTextChangedListener(new TextWatcher() {
             @Override
@@ -1063,5 +1110,50 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         });
 
 
+    }
+
+    private void barcodeCodeScanEdittextTextWatcher() {
+        activityLogisticsBinding.barcodeScanEdittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                hideKeyboard();
+//                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(activityPickListBinding.barcodeScanEdittext.getWindowToken(), 0);
+                if (s.toString() != null && !s.toString().isEmpty()) {
+                    barcodeScanHandler.removeCallbacks(barcodeScanRunnable);
+                    barcodeScanHandler.postDelayed(barcodeScanRunnable, 250);
+                }
+            }
+        });
+
+    }
+
+    Handler barcodeScanHandler = new Handler();
+    Runnable barcodeScanRunnable = new Runnable() {
+        @Override
+        public void run() {
+            updateScannedBoxID(activityLogisticsBinding.barcodeScanEdittext.getText().toString());
+            activityLogisticsBinding.barcodeScanEdittext.setText("");
+            activityLogisticsBinding.barcodeScanEdittext.requestFocus();
+        }
+    };
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void parentLayoutTouchListener() {
+        activityLogisticsBinding.pickerRequestParentLayout.setOnTouchListener((view, motionEvent) -> {
+            hideKeyboard();
+            activityLogisticsBinding.barcodeScanEdittext.requestFocus();
+            return false;
+        });
     }
 }

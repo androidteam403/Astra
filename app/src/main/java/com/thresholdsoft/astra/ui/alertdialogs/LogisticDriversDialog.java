@@ -12,12 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thresholdsoft.astra.R;
-import com.thresholdsoft.astra.databinding.LogisticsDialogBinding;
 import com.thresholdsoft.astra.databinding.LogisticsDriverDialogBinding;
 import com.thresholdsoft.astra.ui.logistics.adapter.DriversDialogAdapter;
-import com.thresholdsoft.astra.ui.logistics.adapter.InvoiceDialogAdapter;
-import com.thresholdsoft.astra.ui.logistics.model.GetDriverMasterResponse;
-import com.thresholdsoft.astra.ui.logistics.model.GetVechicleMasterResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.GetDriverMasterResponse;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;

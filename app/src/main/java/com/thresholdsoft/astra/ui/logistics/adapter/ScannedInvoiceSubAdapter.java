@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.SubInvoiceLayoutBinding;
 import com.thresholdsoft.astra.ui.logistics.LogisticsCallback;
-import com.thresholdsoft.astra.ui.logistics.model.AllocationDetailsResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.AllocationDetailsResponse;
 
 import java.util.ArrayList;
 

@@ -3,9 +3,7 @@ package com.thresholdsoft.astra.ui.logistics.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -13,10 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.DriverDialogLayoutBinding;
-import com.thresholdsoft.astra.databinding.InvoiceDialogLayoutBinding;
 import com.thresholdsoft.astra.ui.alertdialogs.LogisticDriversDialog;
-import com.thresholdsoft.astra.ui.logistics.model.GetDriverMasterResponse;
-import com.thresholdsoft.astra.ui.logistics.model.GetVechicleMasterResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.GetDriverMasterResponse;
 
 import java.util.ArrayList;
 

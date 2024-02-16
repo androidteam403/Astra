@@ -5,9 +5,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.RadioButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -16,8 +13,8 @@ import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.InvoiceDialogLayoutBinding;
 import com.thresholdsoft.astra.ui.alertdialogs.LogisticDialog;
 import com.thresholdsoft.astra.ui.alertdialogs.LogisticDriversDialog;
-import com.thresholdsoft.astra.ui.logistics.model.GetDriverMasterResponse;
-import com.thresholdsoft.astra.ui.logistics.model.GetVechicleMasterResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.GetDriverMasterResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.GetVechicleMasterResponse;
 import java.util.ArrayList;
 
 public class InvoiceDialogAdapter extends RecyclerView.Adapter<InvoiceDialogAdapter.ViewHolder> {
