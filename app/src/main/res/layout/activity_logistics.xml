@@ -273,7 +273,7 @@
                         android:layout_marginEnd="@dimen/dimen8dp"
                         android:layout_marginTop="@dimen/dimen5dp"
                         android:src="@drawable/scan_icon"/>
-                    <EditText
+                    <com.thresholdsoft.astra.utils.NoImeEditText
                         android:id="@+id/barcode_scan_edittext"
                         android:layout_width="0.1dp"
                         android:layout_height="0.1dp"
@@ -438,8 +438,6 @@
                         android:layout_marginStart="@dimen/dimen5dp"
                         android:layout_marginEnd="2dp"
                         android:layout_weight=".19"
-                        android:id="@+id/sortByBoxId"
-
                         android:background="@drawable/bg_edit_text"
                         android:orientation="vertical">
 
@@ -449,8 +447,6 @@
                             android:layout_gravity="center"
                             android:layout_marginTop="4dp"
                             android:rotation="90"
-                            android:id="@+id/sort"
-
                             android:src="@drawable/baseline_sync_alt_24" />
 
                     </LinearLayout>

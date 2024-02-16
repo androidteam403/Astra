@@ -40,7 +40,7 @@ public class SplashActivity extends BaseActivity implements SplashActivityCallba
         AppConstants.userId = getDataManager().getEmplId();
         Animation animZoomOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_in);
         splashBinding.splashLayout.startAnimation(animZoomOut);
-        getController().getValidateVendor(new ValidateRequest(DEVICE_ID,KEY));
+//        getController().getValidateVendor(new ValidateRequest(DEVICE_ID,KEY));
 
         animZoomOut.setAnimationListener(new Animation.AnimationListener() {
             @Override

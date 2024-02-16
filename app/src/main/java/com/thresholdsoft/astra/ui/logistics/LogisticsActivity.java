@@ -26,6 +26,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -152,7 +153,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         activityLogisticsBinding.barcodeScanEdittext.requestFocus();
 
 
-        activityLogisticsBinding.barcodeScanEdittext.setOnTouchListener(new View.OnTouchListener(){
+        activityLogisticsBinding.barcodeScanEdittext.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -163,7 +164,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 return true; // consume touch even
             }
         });
-
+        barcodeEditTextTouchListener();
         barcodeCodeScanEdittextTextWatcher();
         parentLayoutTouchListener();
 
@@ -190,8 +191,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 // Flag to keep track of sorting state
 
 
-
-            activityLogisticsBinding.sortByBoxId.setOnClickListener(v -> {
+        activityLogisticsBinding.sortByBoxId.setOnClickListener(v -> {
             // Toggle sorting and color
             if (isSortedAscending) {
                 activityLogisticsBinding.sort.setColorFilter(null);
@@ -1170,4 +1170,20 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             return false;
         });
     }
+
+    private void barcodeEditTextTouchListener() {
+        activityLogisticsBinding.barcodeScanEdittext.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.onTouchEvent(event);
+                InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+                return true;
+            }
+        });
+    }
+
 }
