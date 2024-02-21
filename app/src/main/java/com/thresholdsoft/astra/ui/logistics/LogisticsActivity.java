@@ -973,33 +973,6 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             activityLogisticsBinding.scannedIndentNumber.setText(scannedBoxes + "/");
             salesinvoiceList.get(pos).setScanned(false);
             dummyBarcodedetails.get(pos).setScanned(false);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             AllocationDetailsResponse existingAllocationResponse = AppDatabase.getDatabaseInstance(this).dbDao().getLogisticsALlocationList();
             for (int l = 0; l < existingAllocationResponse.getIndentdetails().size(); l++) {
                 for (int m = 0; m < existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().size(); m++) {
@@ -1148,7 +1121,8 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         layoutParams.setMargins(8, 0, 0, 0);
         activityLogisticsBinding.firstRecycleviewLayout.setLayoutParams(layoutParams1);
         layoutParams.setMargins(0, 8, 0, 0);
-        invoiceDetailsAdapter = new InvoiceDetailsAdapter(this, dummyBarcodedetails, this);
+        invoiceDetailsAdapter = new InvoiceDetailsAdapter(this,  dummyBarcodedetails, this);
+
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         activityLogisticsBinding.invoiceRecycleview.setLayoutManager(layoutManager1);
         activityLogisticsBinding.invoiceRecycleview.setAdapter(invoiceDetailsAdapter);

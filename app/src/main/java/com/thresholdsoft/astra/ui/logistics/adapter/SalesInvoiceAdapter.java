@@ -103,7 +103,7 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
 //            if (items.getStatus().equals("In Progress")) {
 
 //                holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#ffc12f"));
-            callback.onClickIndent(position, (ArrayList<AllocationDetailsResponse.Barcodedetail>) items.getBarcodedetails().stream().filter(i->!i.isScanned()).collect(Collectors.toList()), salesinvoiceList, routeIdsGroupedList,items.getIndentno());
+            callback.onClickIndent(position, (ArrayList<AllocationDetailsResponse.Barcodedetail>) items.getBarcodedetails(), salesinvoiceList, routeIdsGroupedList,items.getIndentno());
 //            }
         });
     }
