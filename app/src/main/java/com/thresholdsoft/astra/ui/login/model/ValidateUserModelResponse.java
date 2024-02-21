@@ -20,6 +20,11 @@ public class ValidateUserModelResponse implements Serializable {
     @SerializedName("isotpvalidate")
     @Expose
     private Boolean isotpvalidate;
+
+    @SerializedName("iscopy")
+    @Expose
+    private Boolean iscopy;
+
     @SerializedName("emprole")
     @Expose
     private String emprole;
@@ -64,6 +69,14 @@ public class ValidateUserModelResponse implements Serializable {
 
     public void setIsotpvalidate(Boolean isotpvalidate) {
         this.isotpvalidate = isotpvalidate;
+    }
+
+    public Boolean getIscopy() {
+        return iscopy;
+    }
+
+    public void setIscopy(Boolean iscopy) {
+        this.iscopy = iscopy;
     }
 
     public String getEmprole() {

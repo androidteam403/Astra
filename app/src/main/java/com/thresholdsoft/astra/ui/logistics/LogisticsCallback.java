@@ -1,11 +1,15 @@
 package com.thresholdsoft.astra.ui.logistics;
 
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
-import com.thresholdsoft.astra.ui.logistics.model.AllocationDetailsResponse;
-import com.thresholdsoft.astra.ui.logistics.model.GetDriverMasterResponse;
-import com.thresholdsoft.astra.ui.logistics.model.GetVechicleMasterResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.AllocationDetailsResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.EwayBillResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.GetDriverMasterResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.GetVechicleMasterResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.TripCreationResponse;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public interface LogisticsCallback {
 
@@ -13,8 +17,18 @@ public interface LogisticsCallback {
     void onFailureMessage(String message);
     void onSuccessAllocationDetailsApiCall(AllocationDetailsResponse allocationDetailsResponse);
     void onSuccessVehicleApiCall(GetVechicleMasterResponse getVechicleMasterResponse);
+    void onSuccessDriversApiCall(GetDriverMasterResponse getDriverMasterResponse);
 
-    void onClick(int pos, ArrayList<AllocationDetailsResponse.Barcodedetail> logisticsModelLists);
+
+
+    void onSuccessTripCreationApiCall(TripCreationResponse tripCreationResponse);
+    void onSuccessEwaybillApiCall(EwayBillResponse ewayBillResponse);
+
+    void counts(int newCont,int progress,int completed);
+    void onClickArrow(int pos, ArrayList<AllocationDetailsResponse.Indentdetail> logisticsModelLists,Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList);
+
+    void onClickUnTag(int pos,ArrayList<AllocationDetailsResponse.Barcodedetail> salesinvoiceList,String indentNUmber);
+    void onClickIndent(int pos, ArrayList<AllocationDetailsResponse.Barcodedetail> logisticsModelLists,ArrayList<AllocationDetailsResponse.Indentdetail>  indentdetailArrayList,Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList,String indentNumber);
 
 
 }

@@ -1,10 +1,13 @@
 package com.thresholdsoft.astra.db.room;
 
+import android.util.Log;
+
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.AllocationDetailsResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse;
 import com.thresholdsoft.astra.ui.picklist.model.OrderStatusTimeDateEntity;
 
@@ -22,8 +25,17 @@ public interface DbDao {
     @Insert
     void getAllocationLineInsert(GetAllocationLineResponse getAllocationLineResponse);
 
+    @Insert
+    void getLogisticAllocationItemsInsert(AllocationDetailsResponse allocationDetailsResponse);
+
+    @Update
+    void groupedListUpdate(AllocationDetailsResponse routeList);
+
     @Update
     void getAllocationLineUpdate(GetAllocationLineResponse getAllocationLineResponse);
+
+    @Query("SELECT * FROM logistics_allocation_details_response")
+    AllocationDetailsResponse getLogisticsALlocationList();
 
     @Query("SELECT * FROM allocation_line_data")
     List<GetAllocationLineResponse> getAllAllocationLineList();
@@ -42,6 +54,13 @@ public interface DbDao {
 
     @Insert
     void orderStatusTimeDateInsert(OrderStatusTimeDateEntity orderStatusTimeDateEntity);
+
+    @Update
+    void updateBarcodeDetail(AllocationDetailsResponse.Barcodedetail barcodeDetail);
+
+
+
+
 
     @Update
     void orderStatusTimeDateUpdate(OrderStatusTimeDateEntity orderStatusTimeDateEntity);

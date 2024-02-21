@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CC000000"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="720dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dialog_background"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen10dp"
+            android:stateListAnimator="@null">
+
+            <RelativeLayout
+                android:id="@+id/titlelayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="SELECT DRIVER"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+
+                <ImageView
+                    android:id="@+id/close"
+                    android:layout_width="35dp"
+                    android:layout_height="@dimen/dimen40dp"
+
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/dimen10dp"
+                    android:src="@drawable/ic_baseline_close_24" />
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#E7E7E7"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1.2"                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="VEHICLE NUMBER"
+                        android:paddingTop="5dp"
+                        android:id="@+id/vehicleNumber"
+                        android:paddingStart="10dp"
+                        android:paddingBottom="5dp"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/black"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="DRIVER NAME"
+                        android:id="@+id/driverName"
+                        android:textAlignment="textStart"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="11sp" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="DRIVER MOBILE NO."
+                        android:id="@+id/driverMobileNo"
+                        android:textAlignment="textStart"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="11sp" />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/driversRecycleview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="SELECT &amp; CONTINUE"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen12sp"
+                    android:layout_gravity="center"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:id="@+id/continue_btn"
+                    android:layout_marginTop="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:backgroundTint="@color/yellow"
+                    android:background="@drawable/red_round_corners_bg"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</layout>

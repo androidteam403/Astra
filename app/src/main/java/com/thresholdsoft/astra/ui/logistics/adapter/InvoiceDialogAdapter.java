@@ -3,15 +3,18 @@ package com.thresholdsoft.astra.ui.logistics.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.RadioButton;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.InvoiceDialogLayoutBinding;
-import com.thresholdsoft.astra.ui.logistics.model.GetVechicleMasterResponse;
+import com.thresholdsoft.astra.ui.alertdialogs.LogisticDialog;
+import com.thresholdsoft.astra.ui.alertdialogs.LogisticDriversDialog;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.GetDriverMasterResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.GetVechicleMasterResponse;
 import java.util.ArrayList;
 
 public class InvoiceDialogAdapter extends RecyclerView.Adapter<InvoiceDialogAdapter.ViewHolder> {
@@ -19,9 +22,30 @@ public class InvoiceDialogAdapter extends RecyclerView.Adapter<InvoiceDialogAdap
     private Context mContext;
     private ArrayList<GetVechicleMasterResponse.Vehicledetail> vehicledetailsList;
     private int selectedPosition = -1;
+    private ArrayList<GetDriverMasterResponse.Driverdetail> driverdetailsList;
+    public interface OnVehicleSelectedListener {
+        void onVehicleSelected(GetVechicleMasterResponse.Vehicledetail selectVehicle);
+    }
 
-    public InvoiceDialogAdapter(Context mContext, ArrayList<GetVechicleMasterResponse.Vehicledetail> vehicledetailsList) {
+    public LogisticDialog.OnVehicleSelectedListener onVehicleSelectedListener;
+
+    public void setonVehicleSelectedListener(LogisticDialog.OnVehicleSelectedListener listener) {
+        this.onVehicleSelectedListener = listener;
+    }
+    private GetVechicleMasterResponse.Vehicledetail selectedVehicle;
+
+    public GetVechicleMasterResponse.Vehicledetail getSelectedVehicle() {
+        return selectedVehicle;
+    }
+
+    private void notifyVehicleSelected() {
+        if (onVehicleSelectedListener != null && selectedVehicle != null) {
+            onVehicleSelectedListener.onVehicleSelected(selectedVehicle);
+        }
+    }
+    public InvoiceDialogAdapter(Context mContext,ArrayList<GetDriverMasterResponse.Driverdetail> driverdetailsList, ArrayList<GetVechicleMasterResponse.Vehicledetail> vehicledetailsList) {
         this.mContext = mContext;
+        this.driverdetailsList=driverdetailsList;
         this.vehicledetailsList = vehicledetailsList;
     }
 
@@ -39,16 +63,82 @@ public class InvoiceDialogAdapter extends RecyclerView.Adapter<InvoiceDialogAdap
         holder.invoiceDialogLayoutBinding.driverName.setText(items.getDrivername());
         holder.invoiceDialogLayoutBinding.driverId.setText(items.getVehicleno());
         holder.invoiceDialogLayoutBinding.contactNumber.setText(items.getDrivercontactno());
+        holder.invoiceDialogLayoutBinding.supervisorName.setText(items.getSupervisiorname());
+        holder.invoiceDialogLayoutBinding.supervisorContactNumber.setText(items.getSupervisiorcontactno());
 
         holder.invoiceDialogLayoutBinding.driverId.setChecked(position == selectedPosition);
 
-        holder.invoiceDialogLayoutBinding.driverId.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        holder.invoiceDialogLayoutBinding.editActionSupervisor.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    selectedPosition = position;
-                    notifyDataSetChanged(); // Update the view to reflect the change
-                }
+            public void onClick(View v) {
+                LogisticDriversDialog logisticDriversDialog = new LogisticDriversDialog(mContext, driverdetailsList,false);
+                logisticDriversDialog.show();
+
+                logisticDriversDialog.setOnDriverSelectedListener(selectedDriver -> {
+                    if (selectedDriver!=null){
+                        // Update the item directly in the adapter based on the position
+                        vehicledetailsList.get(position).setSupervisiorname(selectedDriver.getUsername());
+                        vehicledetailsList.get(position).setSupervisiorcontactno(selectedDriver.getContactno());
+                        vehicledetailsList.get(position).setAssignedsupervisior(selectedDriver.getUserid());
+
+                        notifyDataSetChanged();
+                    }
+
+                });
+
+
+                logisticDriversDialog.setPositiveListener(v1 -> {
+                    // Perform actions when a driver is selected
+                    GetVechicleMasterResponse.Vehicledetail selectedDriver = vehicledetailsList.get(selectedPosition);
+
+                    // Dismiss the dialog if needed
+                    logisticDriversDialog.dismiss();
+                });
+
+            }
+        });
+
+        holder.invoiceDialogLayoutBinding.editActionDriver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LogisticDriversDialog logisticDriversDialog = new LogisticDriversDialog(mContext, driverdetailsList,true);
+                logisticDriversDialog.show();
+
+                logisticDriversDialog.setOnDriverSelectedListener(selectedDriver -> {
+                    if (selectedDriver!=null){
+                        vehicledetailsList.get(position).setAssigneddriver(selectedDriver.getUserid());
+                            vehicledetailsList.get(position).setDrivername(selectedDriver.getUsername());
+                            vehicledetailsList.get(position).setDrivercontactno(selectedDriver.getContactno());
+
+                        // Update the item directly in the adapter based on the position
+
+
+//                        vehicledetailsList.get(position).setVehicleno(selectedDriver.getUserid());
+
+                        notifyDataSetChanged();
+                    }
+
+                });
+
+
+                logisticDriversDialog.setPositiveListener(v1 -> {
+                    // Perform actions when a driver is selected
+                    GetVechicleMasterResponse.Vehicledetail selectedDriver = vehicledetailsList.get(selectedPosition);
+
+                    // Dismiss the dialog if needed
+                    logisticDriversDialog.dismiss();
+                });
+
+            }
+        });
+
+        holder.invoiceDialogLayoutBinding.driverId.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                selectedPosition = position;
+                selectedVehicle = items;
+                notifyDataSetChanged();
+                notifyVehicleSelected();
             }
         });
     }

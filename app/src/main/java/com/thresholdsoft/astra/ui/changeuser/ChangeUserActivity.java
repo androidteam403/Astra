@@ -5,7 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -13,6 +18,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,12 +40,14 @@ import com.thresholdsoft.astra.ui.login.LoginActivity;
 import com.thresholdsoft.astra.ui.logout.LogOutUsersActivity;
 import com.thresholdsoft.astra.ui.menucallbacks.CustomMenuSupervisorCallback;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestActivity;
+import com.thresholdsoft.astra.utils.NetworkUtils;
 
 import java.util.List;
 
 public class ChangeUserActivity extends BaseActivity implements ChangeUserCallback, CustomMenuSupervisorCallback {
     private ActivityChangeUserBinding changeUserBinding;
     private ChangeUserAdapter changeUserAdapter;
+    Handler handler = new Handler();
 
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, ChangeUserActivity.class);
@@ -64,6 +72,7 @@ public class ChangeUserActivity extends BaseActivity implements ChangeUserCallba
         changeUserBinding.setDcName(getDataManager().getDcName());
 //        changeUserBinding.searchByPurchaseRequisition.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         changeUserBinding.siteId.setText(getDataManager().getDcName());
+        timeHandler();
 
         //change user list api call
         ChangeUserRequest changeUserRequest = new ChangeUserRequest();
@@ -74,6 +83,19 @@ public class ChangeUserActivity extends BaseActivity implements ChangeUserCallba
 
         //serach by purchase requisition filter
         searchByPurchaseRequisition();
+    }
+    private void timeHandler() {
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onClickShowSpeed();
+                timeHandler();
+
+
+            }
+        }, 3000);
+
     }
 
     private void searchByPurchaseRequisition() {
@@ -93,6 +115,101 @@ public class ChangeUserActivity extends BaseActivity implements ChangeUserCallba
                 changeUserAdapter.getFilter().filter(s.toString());
             }
         });
+    }
+
+
+    public void onClickShowSpeed() {
+        if (NetworkUtils.isNetworkConnected(this)) {
+            ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkCapabilities nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
+            int downSpeed = nc.getLinkDownstreamBandwidthKbps() / 1000;
+            int upSpeed = nc.getLinkUpstreamBandwidthKbps() / 1000;
+            NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+            if (cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+                WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                int linkSpeed = wifiManager.getConnectionInfo().getRssi();
+                int level = WifiManager.calculateSignalLevel(linkSpeed, 5);
+//            Toast.makeText(getApplicationContext(),
+//                    "level: "+level,
+//                    Toast.LENGTH_LONG).show();
+                if (level < 1) {
+                    changeUserBinding.customMenuLayout.redSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    changeUserBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    changeUserBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    changeUserBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                } else if (level < 2) {
+                    changeUserBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+                    changeUserBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    changeUserBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    changeUserBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                } else if (level < 3) {
+                    changeUserBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
+                    changeUserBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
+                    changeUserBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    changeUserBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                } else if (level < 4) {
+                    changeUserBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
+                    changeUserBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
+                    changeUserBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
+                    changeUserBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                } else if (level < 5) {
+                    changeUserBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                    changeUserBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                    changeUserBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                    changeUserBinding.customMenuLayout.greenSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                }
+            } else if (cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED) {
+
+                //should check null because in airplane mode it will be null
+//            NetworkCapabilities nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
+//            int downSpeed = nc.getLinkDownstreamBandwidthKbps() / 1000;
+//            int upSpeed = nc.getLinkUpstreamBandwidthKbps() / 1000;
+//            Toast.makeText(getApplicationContext(),
+//                    "Up Speed: "+upSpeed,
+//                    Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(),
+//                    "Down Speed: "+downSpeed,
+//                    Toast.LENGTH_LONG).show();
+                if (downSpeed <= 0) {
+//                    activityPickListBinding.customMenuLayout.internetSpeedText.setText(String.valueOf(downSpeed) + "MB/s");
+                    changeUserBinding.customMenuLayout.redSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    changeUserBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    changeUserBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    changeUserBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                } else if (downSpeed < 15) {
+//                    activityPickListBinding.customMenuLayout.internetSpeedText.setText(String.valueOf(downSpeed) + "MB/s");
+                    changeUserBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+                    changeUserBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    changeUserBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    changeUserBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                } else if (downSpeed < 30) {
+//                    activityPickListBinding.customMenuLayout.internetSpeedText.setText(String.valueOf(downSpeed) + "MB/s");
+                    changeUserBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
+                    changeUserBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.orange));
+                    changeUserBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                    changeUserBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                } else if (downSpeed < 40) {
+//                    activityPickListBinding.customMenuLayout.internetSpeedText.setText(String.valueOf(downSpeed) + "MB/s");
+                    changeUserBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
+                    changeUserBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
+                    changeUserBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.thick_blue));
+                    changeUserBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+                } else if (downSpeed > 50) {
+//                    activityPickListBinding.customMenuLayout.internetSpeedText.setText(String.valueOf(downSpeed) + "MB/s");
+                    changeUserBinding.customMenuLayout.redSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                    changeUserBinding.customMenuLayout.orangeSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                    changeUserBinding.customMenuLayout.blueSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                    changeUserBinding.customMenuLayout.greenSignal.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                }
+            }
+        } else {
+//            activityPickListBinding.customMenuLayout.internetSpeedText.setText("");
+            changeUserBinding.customMenuLayout.redSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+            changeUserBinding.customMenuLayout.orangeSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+            changeUserBinding.customMenuLayout.blueSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+            changeUserBinding.customMenuLayout.greenSignal.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_signal));
+        }
     }
 
     @Override

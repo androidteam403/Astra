@@ -4,8 +4,8 @@ import androidx.room.TypeConverter;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.AllocationDetailsResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse;
-import com.thresholdsoft.astra.ui.picklist.model.GetModeofDeliveryResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 
 import java.lang.reflect.Type;
@@ -37,6 +37,78 @@ public class DataConverter {
         Type type = new TypeToken<List<GetAllocationLineResponse.Allocationdetail>>() {}.getType();
         String json = gson.toJson(allocationdetailList, type);
         return json;
+    }
+
+
+
+
+    @TypeConverter
+    public static String fromListList(List<List<AllocationDetailsResponse.Indentdetail>> listList) {
+        if (listList == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<AllocationDetailsResponse.Barcodedetail>>() {}.getType();
+        String json = gson.toJson(listList, type);
+        return json;
+    }
+
+    @TypeConverter
+    public List<List<AllocationDetailsResponse.Indentdetail>> toListList(String allocationList) {
+        if (allocationList == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<List<AllocationDetailsResponse.Indentdetail>>>() {}.getType();
+        List<List<AllocationDetailsResponse.Indentdetail>> indentdetailList = gson.fromJson(allocationList, type);
+        return indentdetailList;
+    }
+    @TypeConverter
+    public String fromLogisticsBarcodeResponse(List<AllocationDetailsResponse.Barcodedetail> allocationdetailList) {
+        if (allocationdetailList == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<AllocationDetailsResponse.Barcodedetail>>() {}.getType();
+        String json = gson.toJson(allocationdetailList, type);
+        return json;
+    }
+    @TypeConverter
+    public List<AllocationDetailsResponse.Barcodedetail> toLogisticsBarcodeResponse(String allocationList) {
+        if (allocationList == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<AllocationDetailsResponse.Barcodedetail>>() {}.getType();
+        List<AllocationDetailsResponse.Barcodedetail> indentdetailList = gson.fromJson(allocationList, type);
+        return indentdetailList;
+    }
+
+
+
+
+
+
+
+    @TypeConverter
+    public String fromLogisticsALlocationResponse(List<AllocationDetailsResponse.Indentdetail> allocationdetailList) {
+        if (allocationdetailList == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<AllocationDetailsResponse.Indentdetail>>() {}.getType();
+        String json = gson.toJson(allocationdetailList, type);
+        return json;
+    }
+    @TypeConverter
+    public List<AllocationDetailsResponse.Indentdetail> toLogisticsALlocationResponse(String allocationList) {
+        if (allocationList == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<AllocationDetailsResponse.Indentdetail>>() {}.getType();
+        List<AllocationDetailsResponse.Indentdetail> indentdetailList = gson.fromJson(allocationList, type);
+        return indentdetailList;
     }
 
     @TypeConverter

@@ -58,18 +58,18 @@ android {
 
 
             //Pre Production
-            buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/preprod/Apollo/AHL/\"")
+            /*buildConfigField("String", "BASE_URL", "\"https://astradc.apollopharmacy.org:8101/preprod/Apollo/AHL/\"")
             buildConfigField("String", "BASE_TOKEN", "\"prdyvEoG+8MvYiOfhV2wb5j\"")
             buildConfigField("String", "GENERATEPDFBYPRNOFORASTHRA", "\"https://astradc.apollopharmacy.org:8105/Apollo/SAVEPDF/GENERATEPDFBYPRNOFORASTHRA\"")
-            buildConfigField("String", "ENVIRONMENT", "\"Pre-Prod\"")
+            buildConfigField("String", "ENVIRONMENT", "\"Pre-Prod\"")*/
 
 
             //Dev
-            /*buildConfigField("String", "BASE_URL", "\"https://online.apollopharmacy.org/Digital/Apollo/AHL/\"")
+            buildConfigField("String", "BASE_URL", "\"https://online.apollopharmacy.org/Digital/Apollo/AHL/\"")
             buildConfigField("String", "BASE_TOKEN", "\"yvEoG+8MvYiOfhV2wb5jw\"")
             buildConfigField("String", "GENERATEPDFBYPRNOFORASTHRA", "\"https://online.apollopharmacy.org/ASTRAUT/Apollo/SAVEPDF/GENERATEPDFBYPRNOFORASTHRA\"")
             //https://online.apollopharmacy.org/ASTRAUT/Apollo/SAVEPDF/GENERATEPDFBYPRNOFORASTHRA
-            buildConfigField("String", "ENVIRONMENT", "\"UAT\"")*/
+            buildConfigField("String", "ENVIRONMENT", "\"UAT\"")
         }
     }
     compileOptions {
