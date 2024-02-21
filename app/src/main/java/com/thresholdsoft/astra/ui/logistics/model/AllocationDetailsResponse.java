@@ -137,9 +137,6 @@ public class AllocationDetailsResponse implements Serializable {
             return isScanned;
         }
 
-        public void setisScanned(boolean selected) {
-            isScanned = selected;
-        }
 
         public void setScanned(boolean scanned) {
             isScanned = scanned;
