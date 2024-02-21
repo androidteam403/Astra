@@ -15,8 +15,8 @@ import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.LogisticsDialogBinding;
 import com.thresholdsoft.astra.ui.logistics.LogisticsCallback;
 import com.thresholdsoft.astra.ui.logistics.adapter.InvoiceDialogAdapter;
-import com.thresholdsoft.astra.ui.logistics.model.GetDriverMasterResponse;
-import com.thresholdsoft.astra.ui.logistics.model.GetVechicleMasterResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.GetDriverMasterResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.GetVechicleMasterResponse;
 
 import java.util.ArrayList;
 

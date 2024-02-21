@@ -43,6 +43,8 @@ public class SessionManager {
     private static final String PREF_KEY_BULK_LIST_RESPONSE = "PREF_KEY_BULK_LIST_RESPONSE";
     private static final String PREF_KEY_LOGIN_DETAILS_RESPONSE = "PREF_KEY_LOGIN_DETAILS_RESPONSE";
 
+    private static final String PREF_KEY_IS_COPY = "PREF_KEY_IS_COPY";
+
 
     public SessionManager(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -216,5 +218,13 @@ public class SessionManager {
     public LoginDetailsResponse getLoginDetailsResponse() {
         String getLoginDetailsResponseJsonString = preferences.getString(PREF_KEY_LOGIN_DETAILS_RESPONSE, "");
         return new Gson().fromJson(getLoginDetailsResponseJsonString, LoginDetailsResponse.class);
+    }
+
+    public void setCopy(boolean isCopy) {
+        preferences.edit().putBoolean(PREF_KEY_IS_COPY, isCopy).apply();
+    }
+
+    public Boolean isCopy() {
+        return true;
     }
 }

@@ -1178,7 +1178,8 @@
                                         android:onClick="@{()-> callback.onClickSubmitBarcodeorId()}"
                                         android:orientation="horizontal"
                                         android:paddingStart="@dimen/dimen5dp"
-                                        android:paddingEnd="@dimen/dimen5dp">
+                                        android:paddingEnd="@dimen/dimen5dp"
+                                        android:visibility="@{isCopy ? view.VISIBLE : view.GONE}">
 
                                         <ImageView
                                             android:layout_width="@dimen/dimen15dp"
@@ -2477,6 +2478,10 @@
         <variable
             name="itemListStatus"
             type="Integer" />
+
+        <variable
+            name="isCopy"
+            type="Boolean" />
 
     </data>
 </layout>

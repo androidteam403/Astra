@@ -1,11 +1,11 @@
 package com.thresholdsoft.astra.ui.logistics;
 
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
-import com.thresholdsoft.astra.ui.logistics.model.AllocationDetailsResponse;
-import com.thresholdsoft.astra.ui.logistics.model.EwayBillResponse;
-import com.thresholdsoft.astra.ui.logistics.model.GetDriverMasterResponse;
-import com.thresholdsoft.astra.ui.logistics.model.GetVechicleMasterResponse;
-import com.thresholdsoft.astra.ui.logistics.model.TripCreationResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.AllocationDetailsResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.EwayBillResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.GetDriverMasterResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.GetVechicleMasterResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.TripCreationResponse;
 
 import java.util.ArrayList;
 import java.util.List;

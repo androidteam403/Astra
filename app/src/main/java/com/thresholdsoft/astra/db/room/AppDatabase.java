@@ -2,25 +2,30 @@ package com.thresholdsoft.astra.db.room;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.Transaction;
 import androidx.room.TypeConverters;
 
-import com.thresholdsoft.astra.ui.logistics.model.AllocationDetailsResponse;
+import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.AllocationDetailsResponse;
 import com.thresholdsoft.astra.ui.picklist.model.GetAllocationLineResponse;
 import com.thresholdsoft.astra.ui.picklist.model.OrderStatusTimeDateEntity;
 import com.thresholdsoft.astra.utils.AppConstants;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 
 /**
  * Created on : Nov 1, 2022
  * Author     : NAVEEN.M
  */
-@Database(entities = {GetAllocationLineResponse.class, OrderStatusTimeDateEntity.class, GetAllocationLineResponse.Allocationdetail.class,AllocationDetailsResponse.class,AllocationDetailsResponse.Indentdetail.class,AllocationDetailsResponse.Barcodedetail.class}, version = 1, exportSchema = false)
+@Database(entities = {GetAllocationLineResponse.class, OrderStatusTimeDateEntity.class, GetAllocationLineResponse.Allocationdetail.class, AllocationDetailsResponse.class, AllocationDetailsResponse.Indentdetail.class, AllocationDetailsResponse.Barcodedetail.class}, version = 1, exportSchema = false)
 @TypeConverters({DataConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase mInstance;
@@ -42,7 +47,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public List<GetAllocationLineResponse> getAllAllocationLineList() {
         return dbDao().getAllAllocationLineList();
     }
-
 
 
     public void insertOrUpdateGetAllocationLineList(GetAllocationLineResponse getAllocationLineResponse) {
@@ -82,8 +86,12 @@ public abstract class AppDatabase extends RoomDatabase {
             dbDao().orderStatusTimeDateInsert(orderStatusTimeDateEntity);
         }
     }
+
     public void updateBarcodeDetail(AllocationDetailsResponse.Barcodedetail barcodeDetail) {
+
+
         dbDao().updateBarcodeDetail(barcodeDetail);
+
     }
 
     public String getLastTimeAndDate(String purchId, String areaId) {
@@ -93,6 +101,109 @@ public abstract class AppDatabase extends RoomDatabase {
     public OrderStatusTimeDateEntity getOrderStatusTimeDateEntity(String purchId, String areaId) {
         return dbDao().getOrderStatusTimeDateByPurchId(purchId, areaId);
     }
+
+
+//    public void insertOrUpdateAllocationResponse(AllocationDetailsResponse groupByRouteList) {
+//        AllocationDetailsResponse allocationdetail1 = dbDao().getLogisticsALlocationList();
+//        groupByRouteList.setUniqueKey(allocationdetail1.getUniqueKey());
+//
+//        if (allocationdetail1.groupByRouteList != null) {
+//            Log.d("list","updated");
+//            dbDao().groupedListUpdate(groupByRouteList);
+//        }
+//    }
+
+
+    public void insertOrUpdateAllocationResponse(AllocationDetailsResponse groupByRouteList, boolean update) {
+        AllocationDetailsResponse allocationdetail1 = dbDao().getLogisticsALlocationList();
+        allocationdetail1.setUniqueKey(groupByRouteList.getUniqueKey());
+        if (update) {
+            if (allocationdetail1.groupByRouteList != null) {
+                Log.d("list", "updated");
+                dbDao().groupedListUpdate(groupByRouteList);
+            }
+        }
+
+        else  if (allocationdetail1.groupByRouteList.size()==0){
+            dbDao().groupedListUpdate(groupByRouteList);
+
+        }else {
+            boolean boxExists = false;
+            int i=0,j = 0,m=0,k=0,l=0,n=0;
+            for ( i = 0; i < allocationdetail1.groupByRouteList.size(); i++) {
+                for ( k = 0; k < allocationdetail1.groupByRouteList.get(i).size(); k++) {
+                    for ( m = 0; m < allocationdetail1.groupByRouteList.get(i).get(k).getBarcodedetails().size(); m++) {
+                        String existingBoxId = allocationdetail1.groupByRouteList.get(i).get(k).getBarcodedetails().get(m).getId();
+                        for ( j = 0; j < groupByRouteList.groupByRouteList.size(); j++) {
+                            for ( l = 0; l < groupByRouteList.groupByRouteList.get(j).size(); l++) {
+                                for ( n = 0; n < groupByRouteList.groupByRouteList.get(j).get(l).getBarcodedetails().size(); n++) {
+                                    String newBoxId = groupByRouteList.groupByRouteList.get(j).get(l).getBarcodedetails().get(n).getId();
+                                    if (existingBoxId.equals(newBoxId)) {
+                                        boxExists = true;
+                                        break;
+                                    }
+                                }
+                                if (boxExists) {
+                                    break;
+                                }
+                            }
+                            if (boxExists) {
+                                break;
+                            }
+                        }
+                        if (boxExists) {
+                            break;
+                        }
+                    }
+                    if (boxExists) {
+                        break;
+                    }
+                }
+                if (boxExists) {
+                    break;
+                }
+            }
+
+            if (!boxExists) {
+                Log.e("msg","Not Exists");
+                allocationdetail1.groupByRouteList.get(i).get(k).getBarcodedetails().add(groupByRouteList.groupByRouteList.get(j).get(l).getBarcodedetails().get(n));
+            }
+
+
+        }
+    }
+
+
+    public boolean areBarcodeListsEqual(List<AllocationDetailsResponse.Barcodedetail> list1, List<AllocationDetailsResponse.Barcodedetail> list2) {
+        if (list1.size() != list2.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < list1.size(); i++) {
+            List<AllocationDetailsResponse.Barcodedetail> sublist1 = (List<AllocationDetailsResponse.Barcodedetail>) list1.get(i);
+            List<AllocationDetailsResponse.Barcodedetail> sublist2 = (List<AllocationDetailsResponse.Barcodedetail>) list2.get(i);
+
+            if (sublist1.size() != sublist2.size()) {
+                return false;
+            }
+
+            for (int j = 0; j < sublist1.size(); j++) {
+                AllocationDetailsResponse.Barcodedetail detail1 = sublist1.get(j);
+                AllocationDetailsResponse.Barcodedetail detail2 = sublist2.get(j);
+
+                // Compare all fields except isScanned
+                if (!Objects.equals(detail1.isScanned(), detail2.isScanned())
+                        || !Objects.equals(detail1.scannedTime(), detail2.scannedTime())
+                    // Add more fields to compare if needed
+                ) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
 
 //Made changes for performance optimization
 
@@ -122,11 +233,88 @@ public abstract class AppDatabase extends RoomDatabase {
         dbDao().deleteAllocationLineItemDateByForeinKey(foreinKey);
     }
 
-    public void insertIndentLogistics(AllocationDetailsResponse getAllocationLineResponse) {
 
+    public void insertIndentLogistics(AllocationDetailsResponse getAllocationLineResponse, Boolean update) {
+        Log.d("Database Update", "Inserted item with unique key: " + getAllocationLineResponse.getUniqueKey());
+
+        if (dbDao().getLogisticsALlocationList() != null) {
+            List<AllocationDetailsResponse.Indentdetail> existingItems = dbDao().getLogisticsALlocationList().getIndentdetails();
+            List<AllocationDetailsResponse.Indentdetail> newItems = new ArrayList<>();
+            for (AllocationDetailsResponse.Indentdetail item : getAllocationLineResponse.getIndentdetails()) {
+                boolean isPresent = false;
+                for (AllocationDetailsResponse.Indentdetail existingItem : existingItems) {
+                    if (item.getIndentno().equals(existingItem.getIndentno())) {
+                        isPresent = true;
+                        break;
+                    }
+                }
+                if (!isPresent) {
+                    newItems.add(item);
+                } else {
+                    // Check for new boxes
+                    AllocationDetailsResponse.Indentdetail existingItem = existingItems.stream()
+                            .filter(i -> i.getIndentno().equals(item.getIndentno()))
+                            .findFirst()
+                            .orElse(null);
+                    if (existingItem != null) {
+                        for (AllocationDetailsResponse.Barcodedetail newBox : item.getBarcodedetails()) {
+                            if (!existingItem.getBarcodedetails().contains(newBox)) {
+                                existingItem.getBarcodedetails().add(newBox);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!newItems.isEmpty()) {
+                AllocationDetailsResponse newAllocationDetailsResponse = new AllocationDetailsResponse();
+                newAllocationDetailsResponse.setIndentdetails(newItems);
+                dbDao().getLogisticAllocationItemsInsert(newAllocationDetailsResponse);
+            }
+        } else {
             dbDao().getLogisticAllocationItemsInsert(getAllocationLineResponse);
-
+        }
     }
+
+
+//    public void insertIndentLogistics(AllocationDetailsResponse getAllocationLineResponse, Boolean update) {
+//        Log.d("Database Update", "Inserted item with unique key: " + getAllocationLineResponse.getUniqueKey());
+//
+//        if (dbDao().getLogisticsALlocationList() != null) {
+//            List<AllocationDetailsResponse.Indentdetail> existingItems = dbDao().getLogisticsALlocationList().getIndentdetails();
+//            List<AllocationDetailsResponse.Indentdetail> newItems = new ArrayList<>();
+//            for (AllocationDetailsResponse.Indentdetail item : getAllocationLineResponse.getIndentdetails()) {
+//                boolean isPresent = false;
+//                for (AllocationDetailsResponse.Indentdetail existingItem : existingItems) {
+//
+//
+//                    if (item.getIndentno().equals(existingItem.getIndentno())) {
+//                        isPresent = true;
+//                        break;
+//                    }
+//                }
+//                if (!isPresent) {
+//                    newItems.add(item);
+//                }
+//            }
+//
+//            if (!newItems.isEmpty()) {
+//                AllocationDetailsResponse newAllocationDetailsResponse = new AllocationDetailsResponse();
+//                newAllocationDetailsResponse.setIndentdetails(newItems);
+//                dbDao().getLogisticAllocationItemsInsert(newAllocationDetailsResponse);
+//            }
+//        } else {
+//            dbDao().getLogisticAllocationItemsInsert(getAllocationLineResponse);
+//        }
+//
+//
+//    }
+
+    //    public void insertIndentLogistics(AllocationDetailsResponse getAllocationLineResponse) {
+//
+//            dbDao().getLogisticAllocationItemsInsert(getAllocationLineResponse);
+//
+//    }
     public void insertIndent(GetAllocationLineResponse getAllocationLineResponse) {
         List<GetAllocationLineResponse> getAllocationLineResponse1 = dbDao().getAllAllocationLineByPurchreqid(getAllocationLineResponse.getPurchreqid(), getAllocationLineResponse.getAreaid());
         if (getAllocationLineResponse1 != null && getAllocationLineResponse1.size() > 0) {

@@ -8,16 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.thresholdsoft.astra.R;
-import com.thresholdsoft.astra.databinding.LogisticsDialogBinding;
 import com.thresholdsoft.astra.databinding.LogisticsScannedDialogBinding;
-import com.thresholdsoft.astra.ui.logistics.adapter.InvoiceDialogAdapter;
-import com.thresholdsoft.astra.ui.logistics.model.GetVechicleMasterResponse;
-
-import java.util.ArrayList;
 
 public class LogisticScannedDialog {
 

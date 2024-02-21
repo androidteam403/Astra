@@ -1247,7 +1247,8 @@
                                         android:onClick="@{()-> callback.onClickSubmitBarcodeorId()}"
                                         android:orientation="horizontal"
                                         android:paddingStart="@dimen/dimen5dp"
-                                        android:paddingEnd="@dimen/dimen5dp">
+                                        android:paddingEnd="@dimen/dimen5dp"
+                                        android:visibility="@{isCopy ? view.VISIBLE : view.GONE}">
 
                                         <ImageView
                                             android:layout_width="wrap_content"
@@ -2563,6 +2564,10 @@
 
         <variable
             name="isLastPage"
+            type="Boolean" />
+
+        <variable
+            name="isCopy"
             type="Boolean" />
 
     </data>
