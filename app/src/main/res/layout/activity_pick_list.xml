@@ -22,7 +22,7 @@
 
                 <include
                     android:id="@+id/custom_menu_layout"
-                    layout="@layout/custom_menu"
+                    layout="@layout/submenulayout"
                     app:customMenuCallback="@{customMenuCallback}"
                     app:dcName="@{dcName}"
                     app:empRole="@{empRole}"

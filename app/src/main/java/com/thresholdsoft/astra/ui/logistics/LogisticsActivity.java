@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,6 +18,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -72,6 +74,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class LogisticsActivity extends BaseActivity implements CustomMenuSupervisorCallback, LogisticsCallback {
@@ -99,7 +102,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     private ArrayList<AllocationDetailsResponse.Barcodedetail> nonScannedbarcodedetailsList = new ArrayList<>();
 
 
-    int scannedBoxes=0;
+    int scannedBoxes = 0;
     //    private ScannedInvoiceAdapter scannedInvoiceAdapter;
     private ScannedRoutesListAdapter scannedRoutesListAdapter;
     ArrayList<GetDriverMasterResponse.Driverdetail> driverdetailsList = new ArrayList<>();
@@ -199,7 +202,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         activityLogisticsBinding.availableDriver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               openLogisticsDialog();
+                openLogisticsDialog();
             }
         });
 
@@ -301,7 +304,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
     }
 
-    private void openLogisticsDialog(){
+    private void openLogisticsDialog() {
         List<AllocationDetailsResponse.Barcodedetail> barcodedetails = new ArrayList<>();
         barcodedetailsList = (ArrayList<AllocationDetailsResponse.Barcodedetail>) filterByIndentNumber(routeIdsGroupedList, indentNum).values().stream()
                 .flatMap(List::stream)
@@ -342,7 +345,6 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                     activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.yellow));
 
                     activityLogisticsBinding.generateBillLayout.setVisibility(View.VISIBLE);
-
 
 
                     logisticDialog.dismiss();
@@ -395,23 +397,56 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         }
     }
 
-    @SuppressLint("MissingPermission")
+
+
     private void checkConnectedDevice() {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter != null) {
-            for (BluetoothDevice device : bluetoothAdapter.getBondedDevices()) {
-                int connectionState = bluetoothAdapter.getProfileConnectionState(BluetoothProfile.A2DP);
-                if (connectionState == BluetoothProfile.STATE_CONNECTED) {
-                    String connectedDeviceName = device.getName();
-                    activityLogisticsBinding.customMenuLayout.setSelectBluetoot(9);
-                    return;
-                }
+            if (bluetoothAdapter.isMultipleAdvertisementSupported()) {
+                bluetoothAdapter.getProfileProxy(this, new BluetoothProfile.ServiceListener() {
+                    @Override
+                    public void onServiceConnected(int profile, BluetoothProfile proxy) {
+                        List<BluetoothDevice> devices = proxy.getConnectedDevices();
+                        for (BluetoothDevice device : devices) {
+                            @SuppressLint("MissingPermission") String connectedDeviceName = device.getName();
+                            activityLogisticsBinding.customMenuLayout.setSelectBluetoot(9);
+                            return; // Assuming you only need the first connected device
+                        }
+                    }
+
+                    @Override
+                    public void onServiceDisconnected(int profile) {
+                    }
+                }, BluetoothProfile.A2DP);
             }
         }
         activityLogisticsBinding.customMenuLayout.setSelectBluetoot(99);
 
         // If no connected device is found
     }
+
+
+
+
+
+
+
+    //    private void checkConnectedDevice() {
+//        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+//        if (bluetoothAdapter != null) {
+//            for (BluetoothDevice device : bluetoothAdapter.getBondedDevices()) {
+//                int connectionState = bluetoothAdapter.getProfileConnectionState(BluetoothProfile.A2DP);
+//                if (connectionState == BluetoothProfile.STATE_CONNECTED) {
+//                    String connectedDeviceName = device.getName();
+//                    activityLogisticsBinding.customMenuLayout.setSelectBluetoot(9);
+//                    return;
+//                }
+//            }
+//        }
+//        activityLogisticsBinding.customMenuLayout.setSelectBluetoot(99);
+//
+//        // If no connected device is found
+//    }
 
     private void registerBluetoothReceiver() {
         IntentFilter filter = new IntentFilter();

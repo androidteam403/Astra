@@ -23,6 +23,9 @@ public class SessionManager {
 
     //Pref keys
     private static final String PREF_KEY_EMP_ROLE = "PREF_KEY_EMP_ROLE";
+    private static final String KEY_API = "KEY_API";
+
+
     private static final String PREF_KEY_EMP_ID = "PREF_KEY_EMP_ID";
     private static final String PREF_KEY_PICKER_NAME = "PREF_KEY_PICKER_NAME";
     private static final String PREF_KEY_DC_NAME = "PREF_KEY_DC_NAME";
@@ -72,6 +75,16 @@ public class SessionManager {
 
     public String getEmplRole() {
         return preferences.getString(PREF_KEY_EMP_ROLE, "");
+    }
+
+
+    public void saveApi(String apiItems) {
+        preferences.edit().putString(KEY_API, apiItems).apply();
+    }
+
+
+    public String getApi() {
+        return preferences.getString(KEY_API, "");
     }
 
     public void setEmpId(String empId) {

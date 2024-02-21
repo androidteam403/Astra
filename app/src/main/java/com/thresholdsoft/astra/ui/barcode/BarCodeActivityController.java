@@ -3,12 +3,14 @@ package com.thresholdsoft.astra.ui.barcode;
 import android.content.Context;
 import android.util.Pair;
 
+import com.google.gson.Gson;
 import com.thresholdsoft.astra.BuildConfig;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.network.ApiClient;
 import com.thresholdsoft.astra.network.ApiInterface;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutRequest;
 import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
+import com.thresholdsoft.astra.ui.validate.ValidateResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.NetworkUtils;
@@ -38,12 +40,22 @@ public class BarCodeActivityController {
     public void logoutApiCall() {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
-
+            String url = getDataManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("Logout")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             LogoutRequest logoutRequest = new LogoutRequest();
             logoutRequest.setUserid(AppConstants.userId);
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<LogoutResponse> call = apiInterface.LOGOUT_API_CALL(BuildConfig.BASE_TOKEN, logoutRequest);
+            Call<LogoutResponse> call = apiInterface.LOGOUT_API_CALL(baseUrl,token, logoutRequest);
 
             call.enqueue(new Callback<LogoutResponse>() {
                 @Override
@@ -72,8 +84,20 @@ public class BarCodeActivityController {
     public void getBarCodeResponse(GetBarCodeRequest barCodeRequest) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
+
+            String url = getDataManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("GetBarcodePrint")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<GetBarCodeResponse> call = apiInterface.BARCODE_API_CALL(BuildConfig.BASE_TOKEN, barCodeRequest);
+            Call<GetBarCodeResponse> call = apiInterface.BARCODE_API_CALL(baseUrl,token, barCodeRequest);
             call.enqueue(new Callback<GetBarCodeResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetBarCodeResponse> call, @NotNull Response<GetBarCodeResponse> response) {

@@ -1,32 +1,20 @@
 package com.thresholdsoft.astra.ui.splash;
 
 import android.content.Context;
+import android.widget.Toast;
 
-import androidx.datastore.preferences.protobuf.Api;
-
-import com.bumptech.glide.load.HttpException;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.thresholdsoft.astra.BuildConfig;
+import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.db.room.model.CommonRequest;
 import com.thresholdsoft.astra.network.ApiClient;
 import com.thresholdsoft.astra.network.ApiInterface;
-import com.thresholdsoft.astra.network.ApiResult;
 import com.thresholdsoft.astra.network.Encryption;
-import com.thresholdsoft.astra.ui.login.LoginActivityCallback;
 import com.thresholdsoft.astra.ui.validate.ValidateRequest;
+import com.thresholdsoft.astra.ui.validate.ValidateResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.NetworkUtils;
-import com.thresholdsoft.astra.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
-import java.util.concurrent.TimeoutException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,7 +32,9 @@ public class SplashActivityController {
         this.mContext = mContext;
         this.splashActivityCallback = splashActivityCallback;
     }
-
+    public SessionManager getDataManager() {
+        return new SessionManager(mContext);
+    }
     public void getValidateVendor(ValidateRequest validateRequest) throws Exception {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
@@ -65,7 +55,9 @@ public class SplashActivityController {
                     if (response.isSuccessful() && response.body() != null) {
                         if (response.body()!=null) {
                             String decryptData = Encryption.decryptData(response.body(), VALIDATEVENDOR_ENCRIPTION_KEY);
+                            ValidateResponse actualResponse = new Gson().fromJson(decryptData, ValidateResponse.class);
 
+                            getDataManager().saveApi(new Gson().toJson(actualResponse));
                             System.out.println(decryptData);
 //                            loginActivityCallback.onSucessfullGetValidateResponse(response.body());
                         }

@@ -2,6 +2,7 @@ package com.thresholdsoft.astra.ui.logistics;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.thresholdsoft.astra.BuildConfig;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.network.ApiClient;
@@ -16,11 +17,14 @@ import com.thresholdsoft.astra.ui.logistics.model.GetVechicleMasterResponse;
 import com.thresholdsoft.astra.ui.logistics.model.TripCreationRequest;
 import com.thresholdsoft.astra.ui.logistics.model.TripCreationResponse;
 import com.thresholdsoft.astra.ui.logistics.model.VahanApiRequest;
+import com.thresholdsoft.astra.ui.validate.ValidateResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.NetworkUtils;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.prefs.Preferences;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,12 +38,26 @@ public class LogisticActivityController {
         this.mContext = mContext;
         this.mCallback = mCallback;
     }
-
+    private SessionManager getSessionManager() {
+        return new SessionManager(mContext);
+    }
     public void getAllocationDetailsResponse(VahanApiRequest vahanApiRequest) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
+            String url = getSessionManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("VahanAllocationOrders")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
+
             ApiInterface api = ApiClient.getApiServiceAds();
-            Call<AllocationDetailsResponse> call = api.ALLOCATION_DETAILS_API_CALL(BuildConfig.BASE_TOKEN,vahanApiRequest);
+            Call<AllocationDetailsResponse> call = api.ALLOCATION_DETAILS_API_CALL(baseUrl,token,vahanApiRequest);
             call.enqueue(new Callback<AllocationDetailsResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<AllocationDetailsResponse> call, @NotNull Response<AllocationDetailsResponse> response) {
@@ -60,8 +78,20 @@ public class LogisticActivityController {
     public void getVehicleMasterResponse(VahanApiRequest vahanApiRequest) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
+            String url = getSessionManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("GetVechicleMaster")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
+
             ApiInterface api = ApiClient.getApiServiceAds();
-            Call<GetVechicleMasterResponse> call = api.GET_VECHICLE_MASTER_RESPONSE_CALL(BuildConfig.BASE_TOKEN,vahanApiRequest);
+            Call<GetVechicleMasterResponse> call = api.GET_VECHICLE_MASTER_RESPONSE_CALL(baseUrl,token,vahanApiRequest);
             call.enqueue(new Callback<GetVechicleMasterResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetVechicleMasterResponse> call, @NotNull Response<GetVechicleMasterResponse> response) {
@@ -82,8 +112,19 @@ public class LogisticActivityController {
     public void getDriverMasterResponse(VahanApiRequest vahanApiRequest) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
+            String url = getSessionManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("GetDriverMaster")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             ApiInterface api = ApiClient.getApiServiceAds();
-            Call<GetDriverMasterResponse> call = api.GET_DRIVER_MASTER_RESPONSE_CALL(BuildConfig.BASE_TOKEN,vahanApiRequest);
+            Call<GetDriverMasterResponse> call = api.GET_DRIVER_MASTER_RESPONSE_CALL(baseUrl,token,vahanApiRequest);
             call.enqueue(new Callback<GetDriverMasterResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetDriverMasterResponse> call, @NotNull Response<GetDriverMasterResponse> response) {
@@ -106,8 +147,19 @@ public class LogisticActivityController {
     public void getTripCreationResponse(TripCreationRequest tripCreationRequest) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
+            String url = getSessionManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("VahanTripCreation")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             ApiInterface api = ApiClient.getApiServiceAds();
-            Call<TripCreationResponse> call = api.GET_TRIP_CREATION_RESPONSE_CALL(BuildConfig.BASE_TOKEN,tripCreationRequest);
+            Call<TripCreationResponse> call = api.GET_TRIP_CREATION_RESPONSE_CALL(baseUrl,token,tripCreationRequest);
             call.enqueue(new Callback<TripCreationResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<TripCreationResponse> call, @NotNull Response<TripCreationResponse> response) {
@@ -128,8 +180,19 @@ public class LogisticActivityController {
     public void getEwayBillResponse(EwayBillRequest ewayBillRequest) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
+            String url = getSessionManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("ApolloVahanEwaybill")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             ApiInterface api = ApiClient.getApiServiceAds();
-            Call<EwayBillResponse> call = api.GET_EWAY_BILL_RESPONSE_CALL(BuildConfig.BASE_TOKEN,ewayBillRequest);
+            Call<EwayBillResponse> call = api.GET_EWAY_BILL_RESPONSE_CALL(baseUrl,token,ewayBillRequest);
             call.enqueue(new Callback<EwayBillResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<EwayBillResponse> call, @NotNull Response<EwayBillResponse> response) {
@@ -151,12 +214,22 @@ public class LogisticActivityController {
     public void logoutApiCall() {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
-
+            String url = getSessionManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("Logout")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             LogoutRequest logoutRequest = new LogoutRequest();
             logoutRequest.setUserid(AppConstants.userId);
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<LogoutResponse> call = apiInterface.LOGOUT_API_CALL(BuildConfig.BASE_TOKEN, logoutRequest);
+            Call<LogoutResponse> call = apiInterface.LOGOUT_API_CALL(baseUrl,token, logoutRequest);
 
             call.enqueue(new Callback<LogoutResponse>() {
                 @Override

@@ -2,6 +2,7 @@ package com.thresholdsoft.astra.ui.logout;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.thresholdsoft.astra.BuildConfig;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.network.ApiClient;
@@ -11,6 +12,7 @@ import com.thresholdsoft.astra.ui.commonmodel.LogoutResponse;
 import com.thresholdsoft.astra.ui.logout.model.LoginDetailsRequest;
 import com.thresholdsoft.astra.ui.logout.model.LoginDetailsResponse;
 import com.thresholdsoft.astra.ui.logout.model.LoginResetResponse;
+import com.thresholdsoft.astra.ui.validate.ValidateResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.NetworkUtils;
@@ -41,7 +43,17 @@ public class LogOutActivityController {
     public void loginUsersDetails() {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
-
+            String url = getDataManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("GetLogindetails")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             LoginDetailsRequest loginDetailsRequest = new LoginDetailsRequest();
             loginDetailsRequest.setUserid(AppConstants.userId);
             loginDetailsRequest.setDccode(getDataManager().getDc());
@@ -49,7 +61,7 @@ public class LogOutActivityController {
             loginDetailsRequest.setActiontype("LOGINDETAILS");
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<LoginDetailsResponse> call = apiInterface.LOGIN_USERS_API_CALL(BuildConfig.BASE_TOKEN, loginDetailsRequest);
+            Call<LoginDetailsResponse> call = apiInterface.LOGIN_USERS_API_CALL(baseUrl,token, loginDetailsRequest);
 //            Call<LoginDetailsResponse> call = apiInterface.LOGIN_USERS_API_CALL();
 
             call.enqueue(new Callback<LoginDetailsResponse>() {
@@ -98,7 +110,17 @@ public class LogOutActivityController {
     public void resetApiCall(LoginDetailsRequest loginDetailsRequest) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
-
+            String url = getDataManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("GetLogindetails")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
 //            LoginDetailsRequest loginDetailsRequest = new LoginDetailsRequest();
 //            loginDetailsRequest.setUserid(AppConstants.userId);
 //            loginDetailsRequest.setDccode(getDataManager().getDc());
@@ -106,7 +128,7 @@ public class LogOutActivityController {
 //            loginDetailsRequest.setActiontype("RESET");
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<LoginResetResponse> call = apiInterface.LOGIN_USERS_RESET_API_CALL(BuildConfig.BASE_TOKEN, loginDetailsRequest);
+            Call<LoginResetResponse> call = apiInterface.LOGIN_USERS_RESET_API_CALL(baseUrl,token, loginDetailsRequest);
 
             call.enqueue(new Callback<LoginResetResponse>() {
                 @Override
@@ -135,12 +157,22 @@ public class LogOutActivityController {
     public void logoutApiCall() {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
-
+            String url = getDataManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("Logout")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             LogoutRequest logoutRequest = new LogoutRequest();
             logoutRequest.setUserid(AppConstants.userId);
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<LogoutResponse> call = apiInterface.LOGOUT_API_CALL(BuildConfig.BASE_TOKEN, logoutRequest);
+            Call<LogoutResponse> call = apiInterface.LOGOUT_API_CALL(baseUrl,token, logoutRequest);
 
             call.enqueue(new Callback<LogoutResponse>() {
                 @Override

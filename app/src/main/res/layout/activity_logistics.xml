@@ -472,7 +472,7 @@
                 android:layout_weight=".4"
                 android:background="#bac0ce"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
 
                 <LinearLayout

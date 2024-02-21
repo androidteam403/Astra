@@ -306,7 +306,7 @@ public class PickListActivity extends PDFCreatorActivity implements PickListActi
         activityPickListBinding.setEmpRole(getSessionManager().getEmplRole());
         activityPickListBinding.setPickerName(getSessionManager().getPickerName());
         activityPickListBinding.setDcName(getSessionManager().getDcName());
-        activityPickListBinding.customMenuLayout.setPicker("Pick List");
+//        activityPickListBinding.customMenuLayout.setPicker("Pick List");
 
         if (Build.VERSION.SDK_INT >= 21) {
             activityPickListBinding.barcodeScanEdittext.setShowSoftInputOnFocus(false);

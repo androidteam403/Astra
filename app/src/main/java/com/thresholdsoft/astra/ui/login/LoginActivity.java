@@ -12,14 +12,17 @@ import androidx.databinding.DataBindingUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityLoginBinding;
+import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestActivity;
 import com.thresholdsoft.astra.ui.picklist.PickListActivity;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 import com.thresholdsoft.astra.ui.validate.ValidateRequest;
+import com.thresholdsoft.astra.ui.validate.ValidateResponse;
 import com.thresholdsoft.astra.utils.AppConstants;
 
 import java.util.Objects;
@@ -33,7 +36,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     private String dc;
     private ValidateUserModelResponse validateUserModelResponse;
     private String fcmKey = "";
-
+    String DEVICE_ID = "34.87.87.09.909";
+    String KEY="2047";
     public static Intent getStartIntent(Context mContext) {
         Intent intent = new Intent(mContext, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -65,6 +69,11 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     private void setUp() {
         getDataManager().clearAllSharedPref();
         activityLoginBinding.setCallback(this);
+        try {
+            getController().getValidateVendor(new ValidateRequest(DEVICE_ID,KEY));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 //        getController().getDeliveryofModeApiCall();
         parentLayoutTouchListener();
     }
@@ -127,6 +136,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     public void onClickLogin()  {
         if (isLoginValidate()) {
             if (fcmKey != null && !fcmKey.isEmpty()) {
+
                 getController().validateUser(activityLoginBinding.userId.getText().toString(), activityLoginBinding.password.getText().toString(), fcmKey);
             } else {
                 Toast.makeText(this, "Fcm key not generated", Toast.LENGTH_SHORT).show();

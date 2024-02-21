@@ -2,6 +2,7 @@ package com.thresholdsoft.astra.ui.pickerrequests;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.thresholdsoft.astra.BuildConfig;
 import com.thresholdsoft.astra.databinding.AlertDialogBinding;
 import com.thresholdsoft.astra.db.SessionManager;
@@ -15,6 +16,7 @@ import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalRequest;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldApprovalResponse;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataRequest;
 import com.thresholdsoft.astra.ui.pickerrequests.model.WithHoldDataResponse;
+import com.thresholdsoft.astra.ui.validate.ValidateResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.NetworkUtils;
@@ -41,12 +43,22 @@ public class PickerRequestController {
     public void getWithHoldApi() {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
-
+            String url = getSessionManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("GetWithHoldData")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             WithHoldDataRequest withHoldDataRequest = new WithHoldDataRequest();
             withHoldDataRequest.setUserid(AppConstants.userId);
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<WithHoldDataResponse> call = apiInterface.WITH_HOLD_DATA_RESPONSE_CALL(BuildConfig.BASE_TOKEN, withHoldDataRequest);
+            Call<WithHoldDataResponse> call = apiInterface.WITH_HOLD_DATA_RESPONSE_CALL(baseUrl,token, withHoldDataRequest);
 
             call.enqueue(new Callback<WithHoldDataResponse>() {
                 @Override
@@ -113,9 +125,20 @@ public class PickerRequestController {
     public void getWithHoldApprovalApi(String approvedQty, List<WithHoldDataResponse.Withholddetail> withholddetailArrayList, int pos, String approvalReasonCode, String remarks) {
         ArrayList<WithHoldApprovalRequest> withHoldApprovalRequestList = new ArrayList<>();
 
-
+        String url = getSessionManager().getApi();
+        ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+        String baseUrl = "";
+        String token = "";
+        for (int i = 0; i < data.getApis().size(); i++) {
+            if (data.getApis().get(i).getName().equals("WithHoldApproval")) {
+                baseUrl = data.getApis().get(i).getURL();
+                token = data.getApis().get(i).getToken();
+                break;
+            }
+        }
         if (getSessionManager().getWithHoldApproval()==null) {
             ActivityUtils.showDialog(mContext, "Please wait.");
+
             WithHoldApprovalRequest withholddetail = new WithHoldApprovalRequest();
             withholddetail.setPurchreqid(withholddetailArrayList.get(pos).getPurchreqid());
             withholddetail.setUserid((withholddetailArrayList.get(pos).getUserid()));
@@ -160,7 +183,7 @@ public class PickerRequestController {
 //            withHoldApprovalRequest.setId(withholddetail.getId());
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<WithHoldApprovalResponse> call = apiInterface.WITH_HOLD_APPROVAL_API_CALL(BuildConfig.BASE_TOKEN, withHoldApprovalRequestList);
+            Call<WithHoldApprovalResponse> call = apiInterface.WITH_HOLD_APPROVAL_API_CALL(baseUrl,token, withHoldApprovalRequestList);
 
             call.enqueue(new Callback<WithHoldApprovalResponse>() {
                 @Override
@@ -202,6 +225,17 @@ public class PickerRequestController {
     public void checkQohApiCall(AlertDialogBinding alertDialogBoxBinding, boolean isFirstClick, WithHoldDataResponse.Withholddetail pickListItems) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
+            String url = getSessionManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("Checkqoh")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             CheckQohRequest checkQohRequest = new CheckQohRequest();
             checkQohRequest.setBatchid(pickListItems.getInventbatchid());
             checkQohRequest.setItemid(pickListItems.getItemid());
@@ -209,7 +243,7 @@ public class PickerRequestController {
             String dcCode = dcCodewithname.substring(0, dcCodewithname.indexOf("-"));
             checkQohRequest.setDccode(dcCode);
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<CheckQohResponse> call = apiInterface.CHECK_QOH_API_CALL(BuildConfig.BASE_TOKEN, checkQohRequest);
+            Call<CheckQohResponse> call = apiInterface.CHECK_QOH_API_CALL(baseUrl,token, checkQohRequest);
 
             call.enqueue(new Callback<CheckQohResponse>() {
                 @Override
@@ -238,12 +272,22 @@ public class PickerRequestController {
     public void logoutApiCall() {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
-
+            String url = getSessionManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("Logout")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             LogoutRequest logoutRequest = new LogoutRequest();
             logoutRequest.setUserid(AppConstants.userId);
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<LogoutResponse> call = apiInterface.LOGOUT_API_CALL(BuildConfig.BASE_TOKEN, logoutRequest);
+            Call<LogoutResponse> call = apiInterface.LOGOUT_API_CALL(baseUrl,token, logoutRequest);
 
             call.enqueue(new Callback<LogoutResponse>() {
                 @Override

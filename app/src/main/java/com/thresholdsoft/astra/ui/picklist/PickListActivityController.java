@@ -3,6 +3,7 @@ package com.thresholdsoft.astra.ui.picklist;
 import android.content.Context;
 import android.util.Pair;
 
+import com.google.gson.Gson;
 import com.thresholdsoft.astra.BuildConfig;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.network.ApiClient;
@@ -24,6 +25,7 @@ import com.thresholdsoft.astra.ui.picklist.model.PackingLabelRequest;
 import com.thresholdsoft.astra.ui.picklist.model.PackingLabelResponse;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateRequest;
 import com.thresholdsoft.astra.ui.picklist.model.StatusUpdateResponse;
+import com.thresholdsoft.astra.ui.validate.ValidateResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.NetworkUtils;
@@ -131,13 +133,23 @@ public class PickListActivityController {
     public void getAllocationDataApiCall(boolean isRequestToSupervisior, boolean isCompletedStatus) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
-
+            String url = getDataManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("GetAllocationData")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             GetAllocationDataRequest getAllocationDataRequest = new GetAllocationDataRequest();
             getAllocationDataRequest.setUserId(getDataManager().getEmplId());
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
 //            Call<GetAllocationDataResponse> call = apiInterface.GET_ALLOCATION_DATA_API_CALL();
-            Call<GetAllocationDataResponse> call = apiInterface.GET_ALLOCATION_DATA_API_CALL(BuildConfig.BASE_TOKEN, getAllocationDataRequest);
+            Call<GetAllocationDataResponse> call = apiInterface.GET_ALLOCATION_DATA_API_CALL(baseUrl,token, getAllocationDataRequest);
             call.enqueue(new Callback<GetAllocationDataResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetAllocationDataResponse> call, @NotNull Response<GetAllocationDataResponse> response) {
@@ -177,7 +189,17 @@ public class PickListActivityController {
     public void getAllocationLineApiCall(GetAllocationDataResponse.Allocationhddata allocationhddata) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
-
+            String url = getDataManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("GetAllocationLine")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             GetAllocationLineRequest getAllocationLineRequest = new GetAllocationLineRequest();
             getAllocationLineRequest.setPurchreqid(allocationhddata.getPurchreqid());
             getAllocationLineRequest.setAreaid(allocationhddata.getAreaid());
@@ -185,7 +207,7 @@ public class PickListActivityController {
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
 //            Call<GetAllocationLineResponse> call = apiInterface.GET_ALLOCATION_LINE_API_CALL();
-            Call<GetAllocationLineResponse> call = apiInterface.GET_ALLOCATION_LINE_API_CALL(BuildConfig.BASE_TOKEN, getAllocationLineRequest);
+            Call<GetAllocationLineResponse> call = apiInterface.GET_ALLOCATION_LINE_API_CALL(baseUrl,token, getAllocationLineRequest);
             call.enqueue(new Callback<GetAllocationLineResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetAllocationLineResponse> call, @NotNull Response<GetAllocationLineResponse> response) {
@@ -232,9 +254,19 @@ public class PickListActivityController {
     public void statusUpdateApiCall(StatusUpdateRequest statusUpdateRequest, String status, boolean ismanuallyEditedScannedPacks, boolean isRequestToSupervisior) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
-
+            String url = getDataManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("StatusUpdate")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<StatusUpdateResponse> call = apiInterface.STATUS_UPDATE_API_CALL(BuildConfig.BASE_TOKEN, statusUpdateRequest);
+            Call<StatusUpdateResponse> call = apiInterface.STATUS_UPDATE_API_CALL(baseUrl,token, statusUpdateRequest);
             call.enqueue(new Callback<StatusUpdateResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<StatusUpdateResponse> call, @NotNull Response<StatusUpdateResponse> response) {
@@ -265,9 +297,19 @@ public class PickListActivityController {
     public void getDeliveryofModeApiCall(String dcCode) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
-
+            String url = getDataManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("GetModeofDelivery")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<GetModeofDeliveryResponse> call = apiInterface.GET_MODEOF_DELIVERY_API_CALL("GetModeofDelivery/" + dcCode, BuildConfig.BASE_TOKEN);
+            Call<GetModeofDeliveryResponse> call = apiInterface.GET_MODEOF_DELIVERY_API_CALL(baseUrl+"/" + dcCode, token);
             call.enqueue(new Callback<GetModeofDeliveryResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetModeofDeliveryResponse> call, @NotNull Response<GetModeofDeliveryResponse> response) {
@@ -297,9 +339,19 @@ public class PickListActivityController {
     public void getWithHoldRemarksApiCall() {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
-
+            String url = getDataManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("GetWithHoldRemarks")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<GetWithHoldRemarksResponse> call = apiInterface.GET_WITH_HOLD_REMARKS_API_CALL(BuildConfig.BASE_TOKEN);
+            Call<GetWithHoldRemarksResponse> call = apiInterface.GET_WITH_HOLD_REMARKS_API_CALL(baseUrl,token);
             call.enqueue(new Callback<GetWithHoldRemarksResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetWithHoldRemarksResponse> call, @NotNull Response<GetWithHoldRemarksResponse> response) {
@@ -329,9 +381,19 @@ public class PickListActivityController {
     public void getWithHoldStatusApiCAll(GetWithHoldStatusRequest getWithHoldStatusRequest, boolean isItemClick) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
-
+            String url = getDataManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("GetWithHoldStatus")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<GetWithHoldStatusResponse> call = apiInterface.GET_WITH_HOLD_STATUS_API_CALL(BuildConfig.BASE_TOKEN, getWithHoldStatusRequest);
+            Call<GetWithHoldStatusResponse> call = apiInterface.GET_WITH_HOLD_STATUS_API_CALL(baseUrl,token, getWithHoldStatusRequest);
             call.enqueue(new Callback<GetWithHoldStatusResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetWithHoldStatusResponse> call, @NotNull Response<GetWithHoldStatusResponse> response) {
@@ -362,6 +424,17 @@ public class PickListActivityController {
     public void checkQohApiCall(String inventBatchId, String itemId, GetWithHoldRemarksResponse getWithHoldRemarksResponse) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
+            String url = getDataManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("Checkqoh")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             CheckQohRequest checkQohRequest = new CheckQohRequest();
             checkQohRequest.setBatchid(inventBatchId);
             checkQohRequest.setItemid(itemId);
@@ -369,7 +442,7 @@ public class PickListActivityController {
             String dcCode = dcCodewithname.substring(0, dcCodewithname.indexOf("-"));
             checkQohRequest.setDccode(dcCode);
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<CheckQohResponse> call = apiInterface.CHECK_QOH_API_CALL(BuildConfig.BASE_TOKEN, checkQohRequest);
+            Call<CheckQohResponse> call = apiInterface.CHECK_QOH_API_CALL(baseUrl,token, checkQohRequest);
 
             call.enqueue(new Callback<CheckQohResponse>() {
                 @Override
@@ -398,12 +471,22 @@ public class PickListActivityController {
     public void logoutApiCall() {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
-
+            String url = getDataManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("Logout")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             LogoutRequest logoutRequest = new LogoutRequest();
             logoutRequest.setUserid(AppConstants.userId);
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<LogoutResponse> call = apiInterface.LOGOUT_API_CALL(BuildConfig.BASE_TOKEN, logoutRequest);
+            Call<LogoutResponse> call = apiInterface.LOGOUT_API_CALL(baseUrl,token, logoutRequest);
 
             call.enqueue(new Callback<LogoutResponse>() {
                 @Override

@@ -2,6 +2,7 @@ package com.thresholdsoft.astra.ui.stockaudit;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.thresholdsoft.astra.BuildConfig;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.network.ApiClient;
@@ -12,6 +13,7 @@ import com.thresholdsoft.astra.ui.stockaudit.model.GetStockAuditDataRequest;
 import com.thresholdsoft.astra.ui.stockaudit.model.GetStockAuditDataResponse;
 import com.thresholdsoft.astra.ui.stockaudit.model.GetStockAuditLineRequest;
 import com.thresholdsoft.astra.ui.stockaudit.model.GetStockAuditLineResponse;
+import com.thresholdsoft.astra.ui.validate.ValidateResponse;
 import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.AppConstants;
 import com.thresholdsoft.astra.utils.NetworkUtils;
@@ -56,8 +58,19 @@ public class StockAuditActivityController {
     public void getStockAuditItemsResponse(GetStockAuditDataRequest getStockAuditDataRequest) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
+            String url = getDataManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("GetStockAuditDatas")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             ApiInterface api = ApiClient.getApiServiceAds();
-            Call<GetStockAuditDataResponse> call = api.STOCK_AUDIT_DATA_API_CALL(BuildConfig.BASE_TOKEN,getStockAuditDataRequest);
+            Call<GetStockAuditDataResponse> call = api.STOCK_AUDIT_DATA_API_CALL("https://online.apollopharmacy.org/Digital/Apollo/GetStockAuditData",token,getStockAuditDataRequest);
             call.enqueue(new Callback<GetStockAuditDataResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<GetStockAuditDataResponse> call, @NotNull Response<GetStockAuditDataResponse> response) {
@@ -79,12 +92,22 @@ public class StockAuditActivityController {
     public void logoutApiCall() {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
-
+            String url = getDataManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("Logout")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
             LogoutRequest logoutRequest = new LogoutRequest();
             logoutRequest.setUserid(AppConstants.userId);
 
             ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-            Call<LogoutResponse> call = apiInterface.LOGOUT_API_CALL(BuildConfig.BASE_TOKEN, logoutRequest);
+            Call<LogoutResponse> call = apiInterface.LOGOUT_API_CALL(baseUrl,token, logoutRequest);
 
             call.enqueue(new Callback<LogoutResponse>() {
                 @Override
