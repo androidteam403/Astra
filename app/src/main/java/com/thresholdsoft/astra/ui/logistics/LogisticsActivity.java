@@ -633,7 +633,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                                     logisticScannedDialog = new LogisticScannedDialog(LogisticsActivity.this, "Already Scanned");
                                 } else {
                                     logisticScannedDialog = new LogisticScannedDialog(LogisticsActivity.this, barcodeDetail.getId().toString());
-                                    barcodeDetail.setisScanned(true);
+                                    barcodeDetail.setScanned(true);
                                     long currentTimeMillis = System.currentTimeMillis();
                                     // Format the current date
                                     SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
@@ -645,7 +645,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                                         AllocationDetailsResponse existingAllocationResponse = AppDatabase.getDatabaseInstance(this).dbDao().getLogisticsALlocationList();
                                         for (int l = 0; l < existingAllocationResponse.getIndentdetails().size(); l++) {
                                             for (int m = 0; m < existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().size(); m++) {
-                                                if (existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().get(m).getId().equals(Result.getContents())) {
+                                                if (existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().get(m).getId().equals(boxID)) {
                                                     existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().get(m).setScanned(true);
                                                     existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().get(m).setScannedTime(formattedDate);
 
