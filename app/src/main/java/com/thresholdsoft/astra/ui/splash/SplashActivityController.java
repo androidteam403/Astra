@@ -58,6 +58,7 @@ public class SplashActivityController {
                             ValidateResponse actualResponse = new Gson().fromJson(decryptData, ValidateResponse.class);
 
                             getDataManager().saveApi(new Gson().toJson(actualResponse));
+                            getDataManager().saveGlobalResponse(new Gson().toJson(actualResponse));
                             System.out.println(decryptData);
 //                            loginActivityCallback.onSucessfullGetValidateResponse(response.body());
                         }

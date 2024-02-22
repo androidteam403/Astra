@@ -26,6 +26,8 @@ public class SessionManager {
     private static final String KEY_API = "KEY_API";
 
 
+    private static final String KEY_GLOBAL_RESPONSE = "KEY_GLOBAL_RESPONSE";
+
     private static final String PREF_KEY_EMP_ID = "PREF_KEY_EMP_ID";
     private static final String PREF_KEY_PICKER_NAME = "PREF_KEY_PICKER_NAME";
     private static final String PREF_KEY_DC_NAME = "PREF_KEY_DC_NAME";
@@ -91,6 +93,13 @@ public class SessionManager {
 
     public void setEmpId(String empId) {
         preferences.edit().putString(PREF_KEY_EMP_ID, empId).apply();
+    }
+    public void  saveGlobalResponse(String apiItems) {
+        preferences.edit().putString(KEY_GLOBAL_RESPONSE, apiItems).apply();
+    }
+
+    public String getGlobalResponse(){
+        return preferences.getString(KEY_GLOBAL_RESPONSE, "");
     }
 
     public String getEmplId() {
