@@ -46,9 +46,10 @@ public class SplashActivity extends BaseActivity implements SplashActivityCallba
         AppConstants.getModeofDeliveryResponse = getDataManager().getGetModeofDeliveryResponse();
         AppConstants.getWithHoldRemarksResponse = getDataManager().getGetWithHoldRemarksResponse();
         AppConstants.userId = getDataManager().getEmplId();
+        getController().getValidateVendor(new ValidateRequest(DEVICE_ID,KEY));
+
         Animation animZoomOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_in);
         splashBinding.splashLayout.startAnimation(animZoomOut);
-        getController().getValidateVendor(new ValidateRequest(DEVICE_ID,KEY));
 
         animZoomOut.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -134,7 +135,7 @@ public class SplashActivity extends BaseActivity implements SplashActivityCallba
             if (buildDetailsEntity != null) {
                 if (buildDetailsEntity.getAppAvailability()) {
                     if (Double.parseDouble(buildDetailsEntity.getBuildVersion()) > BuildConfig.VERSION_CODE) {
-                        if (!buildDetailsEntity.getForceDownload()) {
+                        if (buildDetailsEntity.getForceDownload()) {
                             displayAppInfoDialog(
                                     "Update Available",
                                     buildDetailsEntity.getAvailabilityMessage(),
