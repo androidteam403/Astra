@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -20,7 +19,6 @@ import com.thresholdsoft.astra.databinding.ActivitySplashBinding;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.ui.alertdialogs.AppUpdateDialog;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
-import com.thresholdsoft.astra.ui.login.LoginActivityController;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestActivity;
 import com.thresholdsoft.astra.ui.picklist.PickListActivity;
 import com.thresholdsoft.astra.ui.validate.ValidateRequest;
@@ -29,8 +27,12 @@ import com.thresholdsoft.astra.utils.AppConstants;
 
 public class SplashActivity extends BaseActivity implements SplashActivityCallback {
     private ActivitySplashBinding splashBinding;
-   String DEVICE_ID = "34.87.87.09.909";
-   String KEY="2047";
+    String DEVICE_ID = "34.87.87.09.909";
+    String KEY = "2047";
+
+    private boolean isValidateVendorSuccess = false;
+    private boolean isSplashScreenZoomOut = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +48,7 @@ public class SplashActivity extends BaseActivity implements SplashActivityCallba
         AppConstants.getModeofDeliveryResponse = getDataManager().getGetModeofDeliveryResponse();
         AppConstants.getWithHoldRemarksResponse = getDataManager().getGetWithHoldRemarksResponse();
         AppConstants.userId = getDataManager().getEmplId();
-        getController().getValidateVendor(new ValidateRequest(DEVICE_ID,KEY));
+        getController().getValidateVendor(new ValidateRequest(DEVICE_ID, KEY));
 
         Animation animZoomOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_in);
         splashBinding.splashLayout.startAnimation(animZoomOut);
@@ -59,9 +61,8 @@ public class SplashActivity extends BaseActivity implements SplashActivityCallba
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                isSplashScreenZoomOut = true;
                 handleNextIntent();
-
-
             }
 
             @Override
@@ -70,9 +71,12 @@ public class SplashActivity extends BaseActivity implements SplashActivityCallba
             }
         });
     }
+
     private void handleNextIntent() {
-        onCheckBuildDetails();
+        if (isValidateVendorSuccess && isSplashScreenZoomOut)
+            onCheckBuildDetails();
     }
+
     private void handleNextIntentNew() {
         if (getDataManager().getEmplId() != null && !getDataManager().getEmplId().isEmpty() && getDataManager().isLoggedIn()) {
             if (getDataManager().getEmplRole().equals("Supervisor")) {
@@ -126,9 +130,9 @@ public class SplashActivity extends BaseActivity implements SplashActivityCallba
         }
         dialogView.show();
     }
-    private void onCheckBuildDetails() {
 
-        if (getDataManager().getGlobalResponse()!=null&&!getDataManager().getGlobalResponse().isEmpty()) {
+    private void onCheckBuildDetails() {
+        if (getDataManager().getGlobalResponse() != null && !getDataManager().getGlobalResponse().isEmpty()) {
             String globalRes = getDataManager().getGlobalResponse();
             ValidateResponse data = new Gson().fromJson(globalRes, ValidateResponse.class);
             ValidateResponse.BUILDDETAILS buildDetailsEntity = data.getBuildDetails();
@@ -153,10 +157,10 @@ public class SplashActivity extends BaseActivity implements SplashActivityCallba
                             );
                         }
                     } else {
-                    handleNextIntentNew();
+                        handleNextIntentNew();
                     }
                 } else {
-                handleNextIntentNew();
+                    handleNextIntentNew();
                 }
             }
         }
@@ -165,7 +169,15 @@ public class SplashActivity extends BaseActivity implements SplashActivityCallba
     private SplashActivityController getController() {
         return new SplashActivityController(this, this);
     }
+
     public SessionManager getDataManager() {
         return new SessionManager(this);
+    }
+
+    @Override
+    public void onSuccessValidateVendor() {
+        isValidateVendorSuccess = true;
+        if (isValidateVendorSuccess && isSplashScreenZoomOut)
+            onCheckBuildDetails();
     }
 }

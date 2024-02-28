@@ -1,7 +1,6 @@
 package com.thresholdsoft.astra.ui.splash;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.thresholdsoft.astra.db.SessionManager;
@@ -32,9 +31,11 @@ public class SplashActivityController {
         this.mContext = mContext;
         this.splashActivityCallback = splashActivityCallback;
     }
+
     public SessionManager getDataManager() {
         return new SessionManager(mContext);
     }
+
     public void getValidateVendor(ValidateRequest validateRequest) throws Exception {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
@@ -45,22 +46,20 @@ public class SplashActivityController {
             String encryptData = Encryption.encryptData(validateApiRequestJson, VALIDATEVENDOR_ENCRIPTION_KEY);
 
 
-
-
             Call<String> call = apiInterface.getValidate(VALIDATE_VENDOR_TOKEN, new CommonRequest(encryptData));
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
                     ActivityUtils.hideDialog();
                     if (response.isSuccessful() && response.body() != null) {
-                        if (response.body()!=null) {
+                        if (response.body() != null) {
                             String decryptData = Encryption.decryptData(response.body(), VALIDATEVENDOR_ENCRIPTION_KEY);
                             ValidateResponse actualResponse = new Gson().fromJson(decryptData, ValidateResponse.class);
-
+                            actualResponse.getBuildDetails().setAppAvailability(true);
                             getDataManager().saveApi(new Gson().toJson(actualResponse));
                             getDataManager().saveGlobalResponse(new Gson().toJson(actualResponse));
                             System.out.println(decryptData);
-//                            loginActivityCallback.onSucessfullGetValidateResponse(response.body());
+                            splashActivityCallback.onSuccessValidateVendor();
                         }
 
                     }
