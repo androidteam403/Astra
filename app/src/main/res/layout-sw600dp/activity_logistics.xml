@@ -607,6 +607,8 @@
                             android:visibility="visible" />
 
                     </LinearLayout>
+
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -763,6 +765,7 @@
                                             android:fontFamily="@font/poppins_semibold"
                                             android:text=""
                                             android:id="@+id/ewaybillNumber"
+                                            android:visibility="gone"
 
                                             android:textAlignment="center"
                                             android:textColor="@color/black"

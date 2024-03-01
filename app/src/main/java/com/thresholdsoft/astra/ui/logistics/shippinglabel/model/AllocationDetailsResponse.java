@@ -255,6 +255,11 @@ public class AllocationDetailsResponse implements Serializable {
 
         @ColumnInfo(name = "isClicked")
         private boolean isClicked;
+
+        @ColumnInfo(name = "isChecked")
+        private boolean isChecked;
+        @ColumnInfo(name = "isApiCalled")
+        private boolean isApiCalled;
         @ColumnInfo(name = "isColorChanged")
         private boolean isColorChanged;
 
@@ -295,6 +300,14 @@ public class AllocationDetailsResponse implements Serializable {
             this.transportercode = transportercode;
         }
 
+        public boolean isApiCalled() {
+            return isApiCalled;
+        }
+
+        public void setApiCalled(boolean apiCalled) {
+            isApiCalled = apiCalled;
+        }
+
         public void setColorChanged(boolean colorChanged) {
             isColorChanged = colorChanged;
         }
@@ -327,6 +340,15 @@ public class AllocationDetailsResponse implements Serializable {
         public void setisClicked(boolean selected) {
             isClicked = selected;
         }
+
+        public void setChecked(boolean checked) {
+            isChecked = checked;
+        }
+
+        public boolean isChecked() {
+            return isChecked;
+        }
+
 
         public boolean isColorChanged() {
             return isColorChanged;

@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/hash"
-            android:backgroundTint="#EDFEF6"
+            android:backgroundTint="#bcf5bc"
             android:orientation="horizontal">
 
             <ImageView
