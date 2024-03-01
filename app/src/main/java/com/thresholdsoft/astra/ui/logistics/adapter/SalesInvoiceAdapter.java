@@ -71,7 +71,7 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
             holder.salesInvoiceLayoutBinding.status.setText(status);
 
         }
-        if (items.getEwayNumber()!=null){
+        if (items.getEwayNumber()!=null&&!items.getEwayNumber().isEmpty()){
             holder.salesInvoiceLayoutBinding.ewaybillNumber.setText(items.getEwayNumber());
             holder.salesInvoiceLayoutBinding.ewayBillLayout.setVisibility(View.VISIBLE);
         }

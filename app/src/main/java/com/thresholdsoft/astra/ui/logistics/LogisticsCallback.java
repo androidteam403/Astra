@@ -25,7 +25,10 @@ public interface LogisticsCallback {
     void onSuccessEwaybillApiCall(EwayBillResponse ewayBillResponse);
 
     void counts(int newCont,int progress,int completed);
-    void onClickArrow(int pos, ArrayList<AllocationDetailsResponse.Indentdetail> logisticsModelLists,Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList);
+
+    void onClickCheckBox(int pos, ArrayList<AllocationDetailsResponse.Indentdetail> logisticsModelLists,Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList,String indentNo);
+
+    void onClickArrow(int pos, ArrayList<AllocationDetailsResponse.Indentdetail> logisticsModelLists,Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList,String indentNo);
 
     void onClickUnTag(int pos,ArrayList<AllocationDetailsResponse.Barcodedetail> salesinvoiceList,String indentNUmber);
     void onClickIndent(int pos, ArrayList<AllocationDetailsResponse.Barcodedetail> logisticsModelLists,ArrayList<AllocationDetailsResponse.Indentdetail>  indentdetailArrayList,Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList,String indentNumber);

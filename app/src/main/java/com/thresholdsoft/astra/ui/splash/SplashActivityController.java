@@ -55,11 +55,14 @@ public class SplashActivityController {
                         if (response.body() != null) {
                             String decryptData = Encryption.decryptData(response.body(), VALIDATEVENDOR_ENCRIPTION_KEY);
                             ValidateResponse actualResponse = new Gson().fromJson(decryptData, ValidateResponse.class);
-                            actualResponse.getBuildDetails().setAppAvailability(true);
-                            getDataManager().saveApi(new Gson().toJson(actualResponse));
-                            getDataManager().saveGlobalResponse(new Gson().toJson(actualResponse));
-                            System.out.println(decryptData);
-                            splashActivityCallback.onSuccessValidateVendor();
+                            if (actualResponse.getBuildDetails()!=null) {
+                                actualResponse.getBuildDetails().setAppAvailability(true);
+                            }
+                                getDataManager().saveApi(new Gson().toJson(actualResponse));
+                                getDataManager().saveGlobalResponse(new Gson().toJson(actualResponse));
+                                System.out.println(decryptData);
+                                splashActivityCallback.onSuccessValidateVendor();
+
                         }
 
                     }

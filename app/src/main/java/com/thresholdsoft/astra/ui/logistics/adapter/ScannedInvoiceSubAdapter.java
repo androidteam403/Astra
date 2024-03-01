@@ -2,6 +2,8 @@ package com.thresholdsoft.astra.ui.logistics.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,13 +26,17 @@ public class ScannedInvoiceSubAdapter extends RecyclerView.Adapter<ScannedInvoic
 
     LogisticsCallback callback;
     public String indentNumber;
+    Boolean isApiCalled;
 
-    public ScannedInvoiceSubAdapter(Context mContext, ArrayList<AllocationDetailsResponse.Barcodedetail> salesinvoiceList, LogisticsCallback callback,String indentNumber) {
+    public String ewayNumber;
+
+    public ScannedInvoiceSubAdapter(Context mContext, ArrayList<AllocationDetailsResponse.Barcodedetail> salesinvoiceList, LogisticsCallback callback, String indentNumber, Boolean isApiCalled, String ewayNumber) {
         this.mContext = mContext;
-        this.indentNumber=indentNumber;
+        this.indentNumber = indentNumber;
         this.callback = callback;
         this.salesinvoiceList = salesinvoiceList;
-
+        this.isApiCalled = isApiCalled;
+        this.ewayNumber = ewayNumber;
 
     }
 
@@ -46,12 +52,25 @@ public class ScannedInvoiceSubAdapter extends RecyclerView.Adapter<ScannedInvoic
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         AllocationDetailsResponse.Barcodedetail items = salesinvoiceList.get(position);
 
+        if (isApiCalled) {
+            holder.subInvoiceLayoutBinding.subParentLayout.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#f8d2d2")));
+
+
+        } else if (ewayNumber == null || ewayNumber.isEmpty()) {
+            holder.subInvoiceLayoutBinding.subParentLayout.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#EDFEF6")));
+
+
+        } else {
+            holder.subInvoiceLayoutBinding.subParentLayout.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#bcf5bc")));
+
+        }
+
         holder.subInvoiceLayoutBinding.boxes.setText(items.getId());
 
         holder.subInvoiceLayoutBinding.unTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.onClickUnTag(position,salesinvoiceList,indentNumber);
+                callback.onClickUnTag(position, salesinvoiceList, indentNumber);
             }
         });
 
