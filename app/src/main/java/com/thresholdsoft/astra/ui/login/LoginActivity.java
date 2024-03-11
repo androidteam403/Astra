@@ -9,18 +9,15 @@ import android.widget.Toast;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.gson.Gson;
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityLoginBinding;
-import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
 import com.thresholdsoft.astra.ui.logistics.LogisticsActivity;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestActivity;
 import com.thresholdsoft.astra.ui.picklist.PickListActivity;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
 import com.thresholdsoft.astra.ui.validate.ValidateRequest;
-import com.thresholdsoft.astra.ui.validate.ValidateResponse;
 import com.thresholdsoft.astra.utils.AppConstants;
 
 import java.util.Objects;
@@ -36,7 +33,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     private ValidateUserModelResponse validateUserModelResponse;
     private String fcmKey = "";
     String DEVICE_ID = "34.87.87.09.909";
-    String KEY="2047";
+    String KEY = "2047";
+
     public static Intent getStartIntent(Context mContext) {
         Intent intent = new Intent(mContext, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -69,7 +67,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
         getDataManager().clearAllSharedPref();
         activityLoginBinding.setCallback(this);
         try {
-            getController().getValidateVendor(new ValidateRequest(DEVICE_ID,KEY));
+            getController().getValidateVendor(new ValidateRequest(DEVICE_ID, KEY));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -132,7 +130,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
     }
 
     @Override
-    public void onClickLogin()  {
+    public void onClickLogin() {
         if (isLoginValidate()) {
             if (fcmKey != null && !fcmKey.isEmpty()) {
 
@@ -157,14 +155,12 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 finish();
-            }
-            else  if (empRole.equals("Logistics")) {
+            } else if (empRole.equals("Logistics")) {
                 Intent intent = new Intent(this, LogisticsActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 finish();
-            }
-            else {
+            } else {
                 startActivity(PickListActivity.getStartActivity(this));
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 finish();
@@ -199,13 +195,12 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 finish();
-            }
-            else  if (empRole.equals("Logistics")) {
+            } else if (empRole.equals("Logistics")) {
                 Intent intent = new Intent(this, LogisticsActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 finish();
-            }else {
+            } else {
                 startActivity(PickListActivity.getStartActivity(this));
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 finish();
