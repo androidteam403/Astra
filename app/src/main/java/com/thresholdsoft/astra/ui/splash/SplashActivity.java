@@ -19,6 +19,7 @@ import com.thresholdsoft.astra.databinding.ActivitySplashBinding;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.ui.alertdialogs.AppUpdateDialog;
 import com.thresholdsoft.astra.ui.login.LoginActivity;
+import com.thresholdsoft.astra.ui.logistics.LogisticsActivity;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestActivity;
 import com.thresholdsoft.astra.ui.picklist.PickListActivity;
 import com.thresholdsoft.astra.ui.validate.ValidateRequest;
@@ -84,7 +85,14 @@ public class SplashActivity extends BaseActivity implements SplashActivityCallba
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 finish();
-            } else {
+            }
+            else  if (getDataManager().getEmplRole().equals("Logistics")) {
+                Intent intent = new Intent(this, LogisticsActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                finish();
+            }
+            else {
                 startActivity(PickListActivity.getStartActivity(SplashActivity.this));
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 finish();

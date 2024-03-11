@@ -19,7 +19,8 @@ public interface LogisticsCallback {
     void onSuccessVehicleApiCall(GetVechicleMasterResponse getVechicleMasterResponse);
     void onSuccessDriversApiCall(GetDriverMasterResponse getDriverMasterResponse);
 
-
+    void onClickRefresh();
+    void onClickClose();
 
     void onSuccessTripCreationApiCall(TripCreationResponse tripCreationResponse);
     void onSuccessEwaybillApiCall(EwayBillResponse ewayBillResponse);
