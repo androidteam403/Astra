@@ -80,7 +80,9 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
             List<AllocationDetailsResponse.Indentdetail> indentDetails = entry.getValue();
 
             for (AllocationDetailsResponse.Indentdetail indentDetail : indentDetails) {
-                if ("New".equalsIgnoreCase(indentDetail.getStatus()) || Objects.isNull(indentDetail.getStatus())||indentDetail.getNoofboxes()!=0) {
+                boolean allBarcodesScanned = indentDetail.getBarcodedetails().stream()
+                        .allMatch(barcodeDetail -> barcodeDetail.isScanned());
+                if ("New".equalsIgnoreCase(indentDetail.getStatus()) || Objects.isNull(indentDetail.getStatus())&&!allBarcodesScanned) {
                     count++;
                 }
             }
@@ -95,8 +97,10 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
             List<AllocationDetailsResponse.Indentdetail> indentDetails = entry.getValue();
 
             for (AllocationDetailsResponse.Indentdetail indentDetail : indentDetails) {
+                int noOfBoxes = (int) Double.parseDouble(indentDetail.getNoofboxes().toString());
+
                 boolean allBarcodesScanned = indentDetail.getBarcodedetails().stream()
-                        .allMatch(barcodeDetail -> barcodeDetail.isScanned() || indentDetail.getNoofboxes() == 0);
+                        .allMatch(barcodeDetail -> barcodeDetail.isScanned())||noOfBoxes==0;
 
                 if (allBarcodesScanned) {
                     count++;
