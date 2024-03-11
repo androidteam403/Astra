@@ -80,7 +80,7 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
             List<AllocationDetailsResponse.Indentdetail> indentDetails = entry.getValue();
 
             for (AllocationDetailsResponse.Indentdetail indentDetail : indentDetails) {
-                if ("New".equalsIgnoreCase(indentDetail.getStatus()) || Objects.isNull(indentDetail.getStatus())) {
+                if ("New".equalsIgnoreCase(indentDetail.getStatus()) || Objects.isNull(indentDetail.getStatus())||indentDetail.getNoofboxes()!=0) {
                     count++;
                 }
             }
@@ -95,7 +95,8 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
             List<AllocationDetailsResponse.Indentdetail> indentDetails = entry.getValue();
 
             for (AllocationDetailsResponse.Indentdetail indentDetail : indentDetails) {
-                boolean allBarcodesScanned = indentDetail.getBarcodedetails().stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned);
+                boolean allBarcodesScanned = indentDetail.getBarcodedetails().stream()
+                        .allMatch(barcodeDetail -> barcodeDetail.isScanned() || indentDetail.getNoofboxes() == 0);
 
                 if (allBarcodesScanned) {
                     count++;

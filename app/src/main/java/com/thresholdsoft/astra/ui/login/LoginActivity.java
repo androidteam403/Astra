@@ -15,6 +15,7 @@ import com.thresholdsoft.astra.base.BaseActivity;
 import com.thresholdsoft.astra.databinding.ActivityLoginBinding;
 import com.thresholdsoft.astra.db.SessionManager;
 import com.thresholdsoft.astra.ui.login.model.ValidateUserModelResponse;
+import com.thresholdsoft.astra.ui.logistics.LogisticsActivity;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestActivity;
 import com.thresholdsoft.astra.ui.picklist.PickListActivity;
 import com.thresholdsoft.astra.ui.picklist.model.GetWithHoldRemarksResponse;
@@ -156,7 +157,14 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 finish();
-            } else {
+            }
+            else  if (empRole.equals("Logistics")) {
+                Intent intent = new Intent(this, LogisticsActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                finish();
+            }
+            else {
                 startActivity(PickListActivity.getStartActivity(this));
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 finish();
@@ -191,7 +199,13 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 finish();
-            } else {
+            }
+            else  if (empRole.equals("Logistics")) {
+                Intent intent = new Intent(this, LogisticsActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                finish();
+            }else {
                 startActivity(PickListActivity.getStartActivity(this));
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 finish();

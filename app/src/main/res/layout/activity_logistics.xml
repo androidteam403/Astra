@@ -22,8 +22,8 @@
                 android:layout_weight=".1">
 
                 <include
-                    android:id="@+id/custom_menu_layout"
-                    layout="@layout/custom_menu_layout_updated_logistics"
+                    android:id="@+id/customMenuLayout"
+                    layout="@layout/custom_menu_logistics"
                     app:customMenuSupervisorCallback="@{customMenuSupervisorCallback}"
                     app:dcName="@{dcName}"
                     app:empRole="@{empRole}"
@@ -61,9 +61,57 @@
                         android:textAllCaps="true"
                         android:textColor="@color/black"
                         android:textSize="12sp" />
-
                     <LinearLayout
                         android:layout_width="@dimen/dimen25dp"
+                        android:layout_height="@dimen/dimen25dp"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="center"
+                        android:id="@+id/refreshButton"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/refresh_icon" />
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:layout_marginTop="@dimen/dimen10dp"
+                    android:layout_height="wrap_content">
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_weight=".8"
+                        android:layout_height="wrap_content"
+
+                       >
+
+                        <EditText
+                            android:id="@+id/search_by_item_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/dimen25dp"
+                            android:layout_marginEnd="4dp"
+                            android:background="@drawable/bg_edit_text_logoistics"
+                            android:drawableRight="@drawable/search_icon_new"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:hint="Search sales invoice"
+                            android:importantForAutofill="no"
+                            android:inputType="text"
+                            android:paddingStart="@dimen/dimen5dp"
+                            android:textColor="@color/black"
+                            android:textSize="10sp" />
+
+
+
+                    </RelativeLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight=".2"
                         android:layout_height="@dimen/dimen25dp"
                         android:layout_alignParentEnd="true"
                         android:gravity="center"
@@ -76,31 +124,9 @@
                             android:id="@+id/closeIcon"
                             android:src="@drawable/close_new" />
                     </LinearLayout>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen10dp">
-
-                    <EditText
-                        android:id="@+id/search_by_item_id"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen25dp"
-                        android:layout_marginEnd="4dp"
-                        android:background="@drawable/bg_edit_text_logoistics"
-                        android:drawableRight="@drawable/search_icon_new"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:hint="Search sales invoice"
-                        android:importantForAutofill="no"
-                        android:inputType="text"
-                        android:paddingStart="@dimen/dimen5dp"
-                        android:textColor="@color/black"
-                        android:textSize="10sp" />
+                </LinearLayout>
 
 
-                </RelativeLayout>
 
 
                 <LinearLayout

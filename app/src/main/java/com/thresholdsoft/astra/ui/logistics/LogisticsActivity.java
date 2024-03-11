@@ -143,7 +143,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         activityLogisticsBinding.setPickerName(getSessionManager().getPickerName());
         activityLogisticsBinding.setDcName(getSessionManager().getDcName());
         timeHandler();
-        VahanApiRequest vahanApiRequest = new VahanApiRequest("", "ROUTE-2", getSessionManager().getDc());
+        VahanApiRequest vahanApiRequest = new VahanApiRequest(getSessionManager().getEmplId(), "", getSessionManager().getDc());
         getController().getAllocationDetailsResponse(vahanApiRequest);
         getController().getVehicleMasterResponse(vahanApiRequest);
         getController().getDriverMasterResponse(vahanApiRequest);
@@ -161,6 +161,12 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         }
         activityLogisticsBinding.barcodeScanEdittext.requestFocus();
 
+        activityLogisticsBinding.refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickRefresh();
+            }
+        });
 
         activityLogisticsBinding.barcodeScanEdittext.setOnTouchListener(new View.OnTouchListener() {
 
@@ -224,15 +230,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         });
 
         activityLogisticsBinding.closeIcon.setOnClickListener(v -> {
-            onClickIndent(dummyPos, dummyBarcodedetails, dummyIndentdetailArrayList, dummyRouteIdsGroupedList, indentNum);
-            activityLogisticsBinding.subMenu.setVisibility(View.GONE);
-            activityLogisticsBinding.selectSalesInvoiceLayout.setVisibility(View.VISIBLE);
-            activityLogisticsBinding.thirdParentLayout.setVisibility(View.GONE);
-            activityLogisticsBinding.startScanLayout.setVisibility(View.GONE);
-            activityLogisticsBinding.scannedAndLoadedLayout.setVisibility(View.GONE);
-            activityLogisticsBinding.scannedInvoiceRecycleview.setVisibility(View.GONE);
-
-            activityLogisticsBinding.checkboxLayout.setVisibility(View.GONE);
+            onClickClose();
         });
         activityLogisticsBinding.driversDialog.setOnClickListener(v -> {
             openLogisticsDialog();
@@ -669,7 +667,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                         for (int k = 0; k < indentDetail.getBarcodedetails().size(); k++) {
                             AllocationDetailsResponse.Barcodedetail barcodeDetail = indentDetail.getBarcodedetails().get(k);
 
-                            if (barcodeDetail.getId().equalsIgnoreCase(boxID)) {//Result.getContents()
+                            if (barcodeDetail.getId().equalsIgnoreCase(boxID)||indentDetail.getNoofboxes()==0) {//Result.getContents()
                                 if (barcodeDetail.isScanned()) {
                                     logisticScannedDialog = new LogisticScannedDialog(LogisticsActivity.this, "Already Scanned");
                                 } else {
@@ -686,7 +684,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                                     AllocationDetailsResponse existingAllocationResponse = AppDatabase.getDatabaseInstance(this).dbDao().getLogisticsALlocationList();
                                     for (int l = 0; l < existingAllocationResponse.getIndentdetails().size(); l++) {
                                         for (int m = 0; m < existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().size(); m++) {
-                                            if (existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().get(m).getId().equals(boxID)) {
+                                            if (existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().get(m).getId().equals(boxID)||existingAllocationResponse.getIndentdetails().get(l).getNoofboxes()==0) {
                                                 existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().get(m).setScanned(true);
                                                 existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().get(m).setScannedTime(formattedDate);
 
@@ -701,8 +699,8 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                                                 .filter(indentDetails -> indentDetail.getIndentno().equals(indentNum))
                                                 .flatMap(indentDetails -> indentDetail.getBarcodedetails().stream())
                                                 .collect(Collectors.toList());
-                                        boolean allItemsScanned = barcodedetailArrayList.stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned);
-                                        boolean notScannedItems = barcodedetailArrayList.stream().allMatch(barcodeDetails -> !barcodeDetail.isScanned());
+                                        boolean allItemsScanned = barcodedetailArrayList.stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned)||indentDetail.getNoofboxes()==0;
+                                        boolean notScannedItems = barcodedetailArrayList.stream().allMatch(barcodeDetails -> !barcodeDetail.isScanned())||indentDetail.getNoofboxes()!=0;
                                         for (int s = 0; s < indentdetails.size(); s++) {
                                             if (indentdetails.get(s).getIndentno().equals(indentNum)) {
                                                 if (notScannedItems) {
@@ -774,14 +772,13 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     }
 
 
-    public void onCallScannedAdapter
-            (Map<String, List<AllocationDetailsResponse.Indentdetail>> groupedIndentList, String
-                    indentNo) {
+    public void onCallScannedAdapter(Map<String, List<AllocationDetailsResponse.Indentdetail>> groupedIndentList, String indentNo) {
+
 //            scannedRoutesListAdapter = new ScannedRoutesListAdapter(this, filterByIndentNumber(groupedIndentList, indentNo), this);
 //            RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 //            activityLogisticsBinding.scannedInvoiceRecycleview.setLayoutManager(layoutManager2);
 //            activityLogisticsBinding.scannedInvoiceRecycleview.setAdapter(scannedRoutesListAdapter);
-        scannedRoutesListAdapter = new ScannedRoutesListAdapter(this, routeIdsGroupedList, this);
+        scannedRoutesListAdapter = new ScannedRoutesListAdapter(this, groupedIndentList, this);
         RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         activityLogisticsBinding.scannedInvoiceRecycleview.setLayoutManager(layoutManager2);
         activityLogisticsBinding.scannedInvoiceRecycleview.setAdapter(scannedRoutesListAdapter);
@@ -901,12 +898,11 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     }
 
     @Override
-    public void onSuccessAllocationDetailsApiCall(AllocationDetailsResponse
-                                                          allocationDetailsResponse) {
+    public void onSuccessAllocationDetailsApiCall(AllocationDetailsResponse allocationDetailsResponse) {
         if (allocationDetailsResponse.getStatus()) {
             AppDatabase.getDatabaseInstance(this).insertIndentLogistics(allocationDetailsResponse, false);
         }
-        if (AppDatabase.getDatabaseInstance(this).dbDao().getLogisticsALlocationList().getIndentdetails() != null) {
+        if (AppDatabase.getDatabaseInstance(this).dbDao().getLogisticsALlocationList() != null && AppDatabase.getDatabaseInstance(this).dbDao().getLogisticsALlocationList().getIndentdetails() != null) {
 
 
             logisticsModelLists = (ArrayList<AllocationDetailsResponse.Indentdetail>) AppDatabase.getDatabaseInstance(this).dbDao().getLogisticsALlocationList().getIndentdetails();
@@ -950,6 +946,28 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
     }
 
+    @Override
+    public void onClickRefresh() {
+        onClickClose();
+        VahanApiRequest vahanApiRequest = new VahanApiRequest(getSessionManager().getEmplId(), "", getSessionManager().getDc());
+        getController().getAllocationDetailsResponse(vahanApiRequest);
+        getController().getVehicleMasterResponse(vahanApiRequest);
+        getController().getDriverMasterResponse(vahanApiRequest);
+    }
+
+    @Override
+    public void onClickClose() {
+        onClickIndent(dummyPos, dummyBarcodedetails, dummyIndentdetailArrayList, dummyRouteIdsGroupedList, indentNum);
+        activityLogisticsBinding.subMenu.setVisibility(View.GONE);
+        activityLogisticsBinding.selectSalesInvoiceLayout.setVisibility(View.VISIBLE);
+        activityLogisticsBinding.thirdParentLayout.setVisibility(View.GONE);
+        activityLogisticsBinding.startScanLayout.setVisibility(View.GONE);
+        activityLogisticsBinding.scannedAndLoadedLayout.setVisibility(View.GONE);
+        activityLogisticsBinding.scannedInvoiceRecycleview.setVisibility(View.GONE);
+
+        activityLogisticsBinding.checkboxLayout.setVisibility(View.GONE);
+    }
+
 
     @Override
     public void onSuccessTripCreationApiCall(TripCreationResponse tripCreationResponse) {
@@ -976,11 +994,10 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                     if (indentDetailList != null) {
                         for (int j = 0; j < indentDetailList.size(); j++) {
                             if (indentDetailList.get(j).getIndentno().equals(ewayBillResponse.getEwaybilldetails().get(i).getIndentno())) {
-                                if (ewayBillResponse.getEwaybilldetails().get(i).getStatus()==false){
+                                if (ewayBillResponse.getEwaybilldetails().get(i).getStatus() == false) {
                                     indentDetailList.get(j).setApiCalled(true);
 
-                                }
-                                else {
+                                } else {
                                     indentDetailList.get(j).setApiCalled(false);
 
                                 }
@@ -999,11 +1016,10 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 for (int l = 0; l < existingAllocationResponse.getIndentdetails().size(); l++) {
 
                     if (existingAllocationResponse.getIndentdetails().get(l).getIndentno().equals(ewayBillResponse.getEwaybilldetails().get(i).getIndentno())) {
-                        if (ewayBillResponse.getEwaybilldetails().get(i).getStatus()==false){
+                        if (ewayBillResponse.getEwaybilldetails().get(i).getStatus() == false) {
                             existingAllocationResponse.getIndentdetails().get(l).setApiCalled(true);
 
-                        }
-                        else {
+                        } else {
                             existingAllocationResponse.getIndentdetails().get(l).setApiCalled(false);
 
                         }
@@ -1045,7 +1061,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                     }
                 }
 
-                if (tripIndentdetailsList.size()>0){
+                if (tripIndentdetailsList.size() > 0) {
                     TripCreationRequest tripCreationRequest = new TripCreationRequest(getSessionManager().getEmplId(), getSessionManager().getPickerName(), "ROUTE-2", getSessionManager().getDc(), tripIndentdetailsList);
                     getController().getTripCreationResponse(tripCreationRequest);
                     activityLogisticsBinding.thirdParentLayout.setLayoutParams(layoutParams);
@@ -1054,8 +1070,8 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                     activityLogisticsBinding.checkboxLayout.setVisibility(View.GONE);
                     activityLogisticsBinding.subMenu.setVisibility(View.GONE);
 
-                }else {
-                    Toast.makeText(this,"Unable to Generate E-Way Bill",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Unable to Generate E-Way Bill", Toast.LENGTH_LONG).show();
                     activityLogisticsBinding.generateBillLayout.setVisibility(View.GONE);
                     activityLogisticsBinding.driversDialog.setVisibility(View.VISIBLE);
                     activityLogisticsBinding.driversDialog.setEnabled(false);
@@ -1067,8 +1083,6 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 }
 
             }
-
-
 
 
 //            ewayDetailsAdapter = new EwayDetailsAdapter((Context) this, (ArrayList<EwayBillResponse.Ewaybilldetail>) ewayBillResponse.getEwaybilldetails(),this);
@@ -1373,6 +1387,9 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
         activityLogisticsBinding.scannedIndentNumber.setText(barcodedetailsList.size() + "/");
         if (barcodedetailsList.size() > 0) {
+            if (allItemsScanned) {
+                activityLogisticsBinding.scannedInvoiceRecycleview.setVisibility(View.VISIBLE);
+            }
             activityLogisticsBinding.thirdParentLayout.setVisibility(View.VISIBLE);
             activityLogisticsBinding.startScanLayout.setVisibility(View.VISIBLE);
             activityLogisticsBinding.scannedAndLoadedLayout.setVisibility(View.VISIBLE);

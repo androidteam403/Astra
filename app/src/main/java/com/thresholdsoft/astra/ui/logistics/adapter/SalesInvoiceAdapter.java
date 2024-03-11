@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapter.ViewHolder>  {
+public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapter.ViewHolder> {
 
     private Context mContext;
     private ArrayList<AllocationDetailsResponse.Indentdetail> salesinvoiceList;
@@ -60,6 +60,14 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
 
         items.setStatus(status);
 
+        if (items.getNoofboxes() == 0) {
+            if (items.getBarcodedetails().size() > 0) {
+                for (AllocationDetailsResponse.Barcodedetail barcodeDetail : items.getBarcodedetails()) {
+                    barcodeDetail.setScanned(true);
+                }
+            }
+        }
+
 
         if (items.getStatus().equals("In Progress")) {
             holder.salesInvoiceLayoutBinding.status.setText(status);
@@ -71,11 +79,10 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
             holder.salesInvoiceLayoutBinding.status.setText(status);
 
         }
-        if (items.getEwayNumber()!=null&&!items.getEwayNumber().isEmpty()){
+        if (items.getEwayNumber() != null && !items.getEwayNumber().isEmpty()) {
             holder.salesInvoiceLayoutBinding.ewaybillNumber.setText(items.getEwayNumber());
             holder.salesInvoiceLayoutBinding.ewayBillLayout.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             holder.salesInvoiceLayoutBinding.ewayBillLayout.setVisibility(View.GONE);
         }
         if (items.isColorChanged()) {
@@ -103,7 +110,7 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
 //            if (items.getStatus().equals("In Progress")) {
 
 //                holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#ffc12f"));
-            callback.onClickIndent(position, (ArrayList<AllocationDetailsResponse.Barcodedetail>) items.getBarcodedetails(), salesinvoiceList, routeIdsGroupedList,items.getIndentno());
+            callback.onClickIndent(position, (ArrayList<AllocationDetailsResponse.Barcodedetail>) items.getBarcodedetails(), salesinvoiceList, routeIdsGroupedList, items.getIndentno());
 //            }
         });
     }
@@ -128,8 +135,6 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
             }
 
 
-
-
             if (allScanned) {
                 return "Completed"; // All barcodes are scanned
 
@@ -148,8 +153,6 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
 
         return salesinvoiceList.size();
     }
-
-
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
