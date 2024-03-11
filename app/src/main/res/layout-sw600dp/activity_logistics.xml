@@ -79,53 +79,28 @@
 
                 </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen10dp"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
+                    android:layout_marginTop="@dimen/dimen10dp">
 
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_weight=".8"
-                        android:layout_height="wrap_content"
-                        >
-
-                        <EditText
-                            android:id="@+id/search_by_item_id"
-                            android:layout_width="match_parent"
-                            android:layout_height="35dp"
-                            android:layout_marginEnd="4dp"
-                            android:background="@drawable/bg_edit_text_logoistics"
-                            android:drawableRight="@drawable/search_icon_new"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:hint="Search sales invoice"
-                            android:importantForAutofill="no"
-                            android:inputType="text"
-                            android:paddingStart="@dimen/dimen5dp"
-                            android:textColor="@color/black"
-                            android:textSize="12sp" />
+                    <EditText
+                        android:id="@+id/search_by_item_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginEnd="4dp"
+                        android:background="@drawable/bg_edit_text_logoistics"
+                        android:drawableRight="@drawable/search_icon_new"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:hint="Search sales invoice"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:paddingStart="@dimen/dimen5dp"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
 
 
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight=".2"
-                        android:layout_height="30dp"
-                        android:layout_alignParentEnd="true"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/app_name"
-                            android:id="@+id/closeIcon"
-                            android:src="@drawable/close_new" />
-                    </LinearLayout>
-                </LinearLayout>
+                </RelativeLayout>
 
 
 

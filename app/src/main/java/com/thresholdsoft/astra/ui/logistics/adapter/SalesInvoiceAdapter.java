@@ -60,13 +60,6 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
 
         items.setStatus(status);
 
-        if (items.getNoofboxes() == 0) {
-            if (items.getBarcodedetails().size() > 0) {
-                for (AllocationDetailsResponse.Barcodedetail barcodeDetail : items.getBarcodedetails()) {
-                    barcodeDetail.setScanned(true);
-                }
-            }
-        }
 
 
         if (items.getStatus().equals("In Progress")) {
