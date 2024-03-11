@@ -84,15 +84,13 @@
             android:configChanges="keyboard|keyboardHidden"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-            />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".ui.logistics.LogisticsActivity"
             android:configChanges="keyboard|keyboardHidden"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-            />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".ui.picklisthistory.PickListHistoryActivity"
             android:configChanges="keyboard|keyboardHidden"

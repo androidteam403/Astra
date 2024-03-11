@@ -25,7 +25,7 @@ import java.util.Objects;
  * Created on : Nov 1, 2022
  * Author     : NAVEEN.M
  */
-@Database(entities = {GetAllocationLineResponse.class, OrderStatusTimeDateEntity.class, GetAllocationLineResponse.Allocationdetail.class, AllocationDetailsResponse.class, AllocationDetailsResponse.Indentdetail.class, AllocationDetailsResponse.Barcodedetail.class}, version = 1, exportSchema = false)
+@Database(entities = {GetAllocationLineResponse.class, OrderStatusTimeDateEntity.class, GetAllocationLineResponse.Allocationdetail.class, AllocationDetailsResponse.class, AllocationDetailsResponse.Indentdetail.class, AllocationDetailsResponse.Barcodedetail.class}, version = 2, exportSchema = false)
 @TypeConverters({DataConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase mInstance;

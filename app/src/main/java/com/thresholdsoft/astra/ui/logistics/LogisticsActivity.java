@@ -143,7 +143,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         activityLogisticsBinding.setPickerName(getSessionManager().getPickerName());
         activityLogisticsBinding.setDcName(getSessionManager().getDcName());
         timeHandler();
-        VahanApiRequest vahanApiRequest = new VahanApiRequest("", "ROUTE-2", getSessionManager().getDc());
+        VahanApiRequest vahanApiRequest = new VahanApiRequest(getSessionManager().getEmplId(), "ROUTE-2", getSessionManager().getDc());
         getController().getAllocationDetailsResponse(vahanApiRequest);
         getController().getVehicleMasterResponse(vahanApiRequest);
         getController().getDriverMasterResponse(vahanApiRequest);
