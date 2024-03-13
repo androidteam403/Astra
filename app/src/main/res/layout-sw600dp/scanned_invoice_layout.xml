@@ -6,8 +6,8 @@
         android:id="@+id/parent_layout"
         android:layout_height="wrap_content"
         android:background="#bcf5bc"
-        android:layout_marginStart="@dimen/dimen3dp"
-        android:layout_marginEnd="3dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginStart="2dp"
         android:layout_marginBottom="@dimen/dimen5dp">
 
         <LinearLayout

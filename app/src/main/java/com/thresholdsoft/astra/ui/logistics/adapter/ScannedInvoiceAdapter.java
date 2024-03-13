@@ -96,7 +96,12 @@ public class ScannedInvoiceAdapter extends RecyclerView.Adapter<ScannedInvoiceAd
         } else {
             holder.scannedInvoiceLayoutBinding.arrow.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.live_param_divider)));
         }
+        if (items.getBarcodedetails().size()>0) {
 
+            holder.scannedInvoiceLayoutBinding.arrow.setImageTintList(null);
+        } else {
+            holder.scannedInvoiceLayoutBinding.arrow.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.live_param_divider)));
+        }
 
         if (items.isChecked()) {
             holder.scannedInvoiceLayoutBinding.arrow.setImageResource(R.drawable.logisticsright);
@@ -112,14 +117,18 @@ public class ScannedInvoiceAdapter extends RecyclerView.Adapter<ScannedInvoiceAd
         holder.scannedInvoiceLayoutBinding.arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (items.getBarcodedetails().stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned)) {
-                    callback.onClickCheckBox(position, salesinvoiceList, routeIdsGroupedList, items.getIndentno());
+                if (items.getBarcodedetails().size()>0) {
+                    if (items.getBarcodedetails().stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned)) {
+                        callback.onClickCheckBox(position, salesinvoiceList, routeIdsGroupedList, items.getIndentno());
 
-                } else {
-                    Toast.makeText(mContext, "Please Scan All Boxes", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(mContext, "Please Scan All Boxes", Toast.LENGTH_LONG).show();
+
+                    }
+                }else {
+                    Toast.makeText(mContext, "Boxes are Empty", Toast.LENGTH_LONG).show();
 
                 }
-
 
             }
         });

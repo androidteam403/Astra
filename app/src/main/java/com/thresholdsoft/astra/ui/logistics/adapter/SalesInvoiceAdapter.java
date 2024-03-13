@@ -62,14 +62,19 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
 
 
 
-        if (items.getStatus().equals("In Progress")) {
-            holder.salesInvoiceLayoutBinding.status.setText(status);
+        if (items.getCurrentstatus().equalsIgnoreCase("INPROCESS")) {
+            holder.salesInvoiceLayoutBinding.status.setText(items.getCurrentstatus());
 
             holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#ffc12f"));
 
-        } else if (items.getStatus().equals("Completed")) {
+        } else if (items.getCurrentstatus().equalsIgnoreCase("Completed")) {
             holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#3CB371"));
-            holder.salesInvoiceLayoutBinding.status.setText(status);
+            holder.salesInvoiceLayoutBinding.status.setText(items.getCurrentstatus());
+
+        }
+        else if (items.getCurrentstatus().equalsIgnoreCase("New")) {
+            holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#096BB4"));
+            holder.salesInvoiceLayoutBinding.status.setText(items.getCurrentstatus());
 
         }
         if (items.getEwayNumber() != null && !items.getEwayNumber().isEmpty()) {
@@ -81,7 +86,7 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
         if (items.isColorChanged()) {
 //            holder.salesInvoiceLayoutBinding.ewayBillLayout.setVisibility(View.VISIBLE);
 
-            holder.salesInvoiceLayoutBinding.parentLayout.setBackgroundResource(R.drawable.blue_bg_logistic);
+//            holder.salesInvoiceLayoutBinding.parentLayout.setBackgroundResource(R.drawable.blue_bg_logistic);
             holder.salesInvoiceLayoutBinding.headerLayout.setBackgroundResource(R.drawable.blue_bg_logistic);
         } else {
 //            holder.salesInvoiceLayoutBinding.parentLayout.setBackgroundResource(R.drawable.hash);
@@ -103,7 +108,7 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
 //            if (items.getStatus().equals("In Progress")) {
 
 //                holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#ffc12f"));
-            callback.onClickIndent(position, (ArrayList<AllocationDetailsResponse.Barcodedetail>) items.getBarcodedetails(), salesinvoiceList, routeIdsGroupedList, items.getIndentno());
+            callback.onClickIndent(position, (ArrayList<AllocationDetailsResponse.Barcodedetail>) items.getBarcodedetails(), salesinvoiceList, routeIdsGroupedList, items.getIndentno(),items.getInvoicenumber(),items.getSiteid(),items.getSitename());
 //            }
         });
     }
