@@ -32,7 +32,7 @@ public interface LogisticsCallback {
     void onClickArrow(int pos, ArrayList<AllocationDetailsResponse.Indentdetail> logisticsModelLists,Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList,String indentNo);
 
     void onClickUnTag(int pos,ArrayList<AllocationDetailsResponse.Barcodedetail> salesinvoiceList,String indentNUmber);
-    void onClickIndent(int pos, ArrayList<AllocationDetailsResponse.Barcodedetail> logisticsModelLists,ArrayList<AllocationDetailsResponse.Indentdetail>  indentdetailArrayList,Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList,String indentNumber);
+    void onClickIndent(int pos, ArrayList<AllocationDetailsResponse.Barcodedetail> logisticsModelLists,ArrayList<AllocationDetailsResponse.Indentdetail>  indentdetailArrayList,Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList,String indentNumber,String invoiceNum,String siteId,String siteName);
 
 
 }

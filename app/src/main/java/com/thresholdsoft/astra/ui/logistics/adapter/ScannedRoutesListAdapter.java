@@ -60,12 +60,15 @@ public class ScannedRoutesListAdapter extends RecyclerView.Adapter<ScannedRoutes
             // Now you can use routeName and indentDetails as needed
             holder.routesListLayoutBinding.routeNumber.setText(routeName);
 
-            scannedInvoiceAdapter = new ScannedInvoiceAdapter(mContext, new ArrayList<>(entry.getValue().stream().filter(indentdetail ->
-                            indentdetail.getBarcodedetails().stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned))
-                    .collect(Collectors.toList())), callback,routeIdsGroupedList);
+            scannedInvoiceAdapter = new ScannedInvoiceAdapter(mContext, new ArrayList<>(entry.getValue().stream()
+                    .filter(indentdetail -> indentdetail.getNoofboxes() == 0.0 ||
+                            indentdetail.getBarcodedetails().stream().anyMatch(AllocationDetailsResponse.Barcodedetail::isScanned))
+                    .collect(Collectors.toList())), callback, routeIdsGroupedList);
+
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
             holder.routesListLayoutBinding.logisticsRecycleview.setLayoutManager(layoutManager);
             holder.routesListLayoutBinding.logisticsRecycleview.setAdapter(scannedInvoiceAdapter);
+
         }
     }
 

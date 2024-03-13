@@ -82,7 +82,7 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
             for (AllocationDetailsResponse.Indentdetail indentDetail : indentDetails) {
                 boolean allBarcodesScanned = indentDetail.getBarcodedetails().stream()
                         .allMatch(barcodeDetail -> barcodeDetail.isScanned());
-                if ("New".equalsIgnoreCase(indentDetail.getStatus()) || Objects.isNull(indentDetail.getStatus())&&!allBarcodesScanned) {
+                if ("New".equalsIgnoreCase(indentDetail.getCurrentstatus()) || Objects.isNull(indentDetail.getCurrentstatus())) {
                     count++;
                 }
             }
@@ -97,14 +97,17 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
             List<AllocationDetailsResponse.Indentdetail> indentDetails = entry.getValue();
 
             for (AllocationDetailsResponse.Indentdetail indentDetail : indentDetails) {
-                int noOfBoxes = (int) Double.parseDouble(indentDetail.getNoofboxes().toString());
-
-                boolean allBarcodesScanned = indentDetail.getBarcodedetails().stream()
-                        .allMatch(barcodeDetail -> barcodeDetail.isScanned())||noOfBoxes==0;
-
-                if (allBarcodesScanned) {
+//                int noOfBoxes = (int) Double.parseDouble(indentDetail.getNoofboxes().toString());
+//
+//                boolean allBarcodesScanned = indentDetail.getBarcodedetails().stream()
+//                        .allMatch(barcodeDetail -> barcodeDetail.isScanned())||noOfBoxes==0;
+                if ("COMPLETED".equalsIgnoreCase(indentDetail.getCurrentstatus()) ) {
                     count++;
                 }
+
+//                if (allBarcodesScanned) {
+//                    count++;
+//                }
             }
         }
 

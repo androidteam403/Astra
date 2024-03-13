@@ -243,6 +243,14 @@ public class AllocationDetailsResponse implements Serializable {
         @ColumnInfo(name = "transporter")
         private String transporter;
 
+        @SerializedName("invoicenumber")
+        @Expose
+        @ColumnInfo(name = "invoicenumber")
+        private String invoicenumber;
+        @SerializedName("currentstatus")
+        @Expose
+        @ColumnInfo(name = "currentstatus")
+        private String currentstatus;
         @SerializedName("transportercode")
         @Expose
         @ColumnInfo(name = "transportercode")
@@ -349,6 +357,21 @@ public class AllocationDetailsResponse implements Serializable {
             return isChecked;
         }
 
+        public String getInvoicenumber() {
+            return invoicenumber;
+        }
+
+        public void setInvoicenumber(String invoicenumber) {
+            this.invoicenumber = invoicenumber;
+        }
+
+        public String getCurrentstatus() {
+            return currentstatus;
+        }
+
+        public void setCurrentstatus(String currentstatus) {
+            this.currentstatus = currentstatus;
+        }
 
         public boolean isColorChanged() {
             return isColorChanged;

@@ -28,8 +28,8 @@
                     app:dcName="@{dcName}"
                     app:empRole="@{empRole}"
                     app:pickerName="@{pickerName}"
-                    app:selectedMenu="@{selectedMenu}"
                     app:selectBluetoot="@{selectedBluetoot}"
+                    app:selectedMenu="@{selectedMenu}"
 
                     app:userId="@{userId}" />
 
@@ -61,12 +61,13 @@
                         android:textAllCaps="true"
                         android:textColor="@color/black"
                         android:textSize="12sp" />
+
                     <LinearLayout
+                        android:id="@+id/refreshButton"
                         android:layout_width="@dimen/dimen25dp"
                         android:layout_height="@dimen/dimen25dp"
                         android:layout_alignParentEnd="true"
                         android:gravity="center"
-                        android:id="@+id/refreshButton"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -78,6 +79,7 @@
 
 
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -102,8 +104,6 @@
                 </RelativeLayout>
 
 
-
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -115,8 +115,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".326666667"
-                        android:gravity="center"
                         android:background="@{selectedStatus == 1 ? @color/very_light_grey : @color/transperancy}"
+                        android:gravity="center"
 
                         android:orientation="vertical">
 
@@ -266,14 +266,16 @@
                         android:textAllCaps="true"
                         android:textColor="@color/black"
                         android:textSize="12sp" />
+
                     <ImageView
+                        android:id="@+id/scanIcon"
                         android:layout_width="@dimen/dimen25dp"
                         android:layout_height="@dimen/dimen25dp"
                         android:layout_alignParentEnd="true"
-                        android:id="@+id/scanIcon"
-                        android:layout_marginEnd="@dimen/dimen8dp"
                         android:layout_marginTop="@dimen/dimen5dp"
-                        android:src="@drawable/scan_icon"/>
+                        android:layout_marginEnd="@dimen/dimen8dp"
+                        android:src="@drawable/scan_icon" />
+
                     <com.thresholdsoft.astra.utils.NoImeEditText
                         android:id="@+id/barcode_scan_edittext"
                         android:layout_width="0.1dp"
@@ -310,12 +312,12 @@
                             android:textSize="8sp" />
 
                         <TextView
+                            android:id="@+id/indentNumber"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:fontFamily="@font/poppins_semibold"
                             android:text="-"
-                            android:id="@+id/indentNumber"
 
                             android:textAllCaps="true"
                             android:textColor="@color/black"
@@ -339,60 +341,130 @@
                             android:textSize="8sp" />
 
                         <TextView
+                            android:id="@+id/invoiceNumber"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:fontFamily="@font/poppins_semibold"
                             android:text="-"
                             android:textAlignment="center"
-                            android:id="@+id/invoiceNumber"
 
                             android:textAllCaps="true"
                             android:textColor="@color/black"
                             android:textSize="9sp" />
                     </LinearLayout>
 
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/pdf_blue"
-                        android:tint="@color/red" />
 
                 </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="Scanned:"
-                    android:textSize="9sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="13dp"
-                    android:orientation="horizontal">
+                    android:weightSum="3">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="@dimen/dimen0dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="0/"
-                        android:id="@+id/scannedIndentNumber"
-                        android:textColor="@color/red"
-                        android:textSize="10sp" />
+                        android:layout_weight=".7"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Scanned:"
+                            android:textSize="9sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="13dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/scannedIndentNumber"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_bold"
+                                android:text="0/"
+                                android:textColor="@color/red"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/totalIndentNumber"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_bold"
+                                android:text="10"
+                                android:textColor="@color/black"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="@dimen/dimen0dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="10"
-                        android:id="@+id/totalIndentNumber"
-                        android:textColor="@color/black"
-                        android:textSize="10sp" />
+                        android:layout_weight=".7"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Site Id:"
+                            android:textAlignment="center"
+                            android:textAllCaps="true"
+                            android:textSize="8sp" />
+
+                        <TextView
+                            android:id="@+id/site"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="-"
+                            android:textAlignment="center"
+                            android:textAllCaps="true"
+                            android:textColor="@color/black"
+                            android:textSize="9sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="@dimen/dimen0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.6"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Site name:"
+                            android:textAlignment="center"
+
+                            android:textAllCaps="true"
+                            android:textSize="8sp" />
+
+                        <TextView
+                            android:id="@+id/siteName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="-"
+                            android:textAlignment="center"
+
+                            android:textAllCaps="true"
+                            android:textColor="@color/black"
+                            android:textSize="9sp" />
+                    </LinearLayout>
+
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -403,9 +475,9 @@
                     <EditText
                         android:id="@+id/search_by_boxId"
                         android:layout_width="0dp"
-                        android:layout_weight=".62"
                         android:layout_height="30dp"
                         android:layout_marginStart="4dp"
+                        android:layout_weight=".62"
                         android:background="@drawable/bg_edit_text_log"
                         android:fontFamily="@font/poppins_semibold"
                         android:hint="Search"
@@ -434,23 +506,23 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/sortByBoxId"
                         android:layout_width="@dimen/dimen0dp"
                         android:layout_height="30dp"
                         android:layout_marginStart="@dimen/dimen5dp"
                         android:layout_marginEnd="2dp"
                         android:layout_weight=".19"
-                        android:id="@+id/sortByBoxId"
 
                         android:background="@drawable/bg_edit_text"
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/sort"
                             android:layout_width="21dp"
                             android:layout_height="21dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="4dp"
                             android:rotation="90"
-                            android:id="@+id/sort"
 
                             android:src="@drawable/baseline_sync_alt_24" />
 
@@ -516,10 +588,10 @@
                     android:id="@+id/scannedAndLoadedLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:weightSum="1"
                     android:background="@color/white"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    android:weightSum="1">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -566,6 +638,7 @@
                                 android:layout_height="30dp"
                                 android:layout_marginStart="@dimen/dimen5dp"
                                 android:layout_marginTop="5dp"
+                                android:visibility="gone"
                                 android:layout_marginBottom="5dp"
                                 android:background="@drawable/bg_grey"
                                 android:orientation="vertical">
@@ -595,14 +668,15 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ewayBillLayout"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight=".45"
                         android:background="#bac0ce"
-                        android:id="@+id/ewayBillLayout"
-                        android:visibility="gone"
+                        android:orientation="vertical"
 
-                        android:orientation="vertical">
+                        android:visibility="gone">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -612,8 +686,7 @@
                             android:layout_marginEnd="45dp"
 
                             android:background="@drawable/green_bg"
-                            android:orientation="vertical"
-                            >
+                            android:orientation="vertical">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -744,15 +817,15 @@
                                             android:tint="@color/red" />
 
                                         <TextView
+                                            android:id="@+id/ewaybillNumber"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/poppins_semibold"
                                             android:text=""
-                                            android:visibility="gone"
-                                            android:id="@+id/ewaybillNumber"
                                             android:textAlignment="center"
                                             android:textColor="@color/black"
-                                            android:textSize="10sp" />
+                                            android:textSize="10sp"
+                                            android:visibility="gone" />
 
                                     </LinearLayout>
 
@@ -778,8 +851,6 @@
                     </LinearLayout>
 
 
-
-
                 </LinearLayout>
 
 
@@ -799,30 +870,31 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginStart="6dp"
+                        android:layout_marginTop="5dp"
                         android:layout_marginEnd="5dp"
                         android:layout_marginBottom="@dimen/dimen5dp"
                         android:background="@drawable/red_round_corners_bg"
                         android:backgroundTint="@color/req_qty_bg"
+                        android:clickable="false"
+                        android:enabled="false"
                         android:fontFamily="@font/poppins_semibold"
                         android:paddingStart="6dp"
                         android:paddingTop="5dp"
                         android:paddingEnd="6dp"
-                        android:clickable="false"
-                        android:enabled="false"
                         android:paddingBottom="5dp"
-                        android:layout_marginTop="5dp"
+                        android:visibility="visible"
                         android:text="Select Vehicle"
                         android:textColor="@color/black"
 
                         android:textSize="9sp" />
 
                     <LinearLayout
+                        android:id="@+id/generateBillLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/generateBillLayout"
-                        android:visibility="gone"
-
                         android:orientation="horizontal"
+
+                        android:visibility="gone"
                         android:weightSum="1">
 
                         <LinearLayout
@@ -839,7 +911,6 @@
                                 android:text="Truck is full closing the upload"
                                 android:textColor="@color/white"
                                 android:textSize="10sp" />
-
 
 
                             <LinearLayout
@@ -932,20 +1003,21 @@
                                         android:textColor="@color/white"
                                         android:textSize="10sp" />
                                 </LinearLayout>
+
                                 <TextView
                                     android:id="@+id/availableDriver"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/poppins_semibold"
-                                    android:text="Select Driver/Supervisor"
-                                    android:textColor="@color/white"
-                                    android:paddingStart="6dp"
                                     android:layout_marginStart="15dp"
+                                    android:background="@drawable/red_round_corners_bg"
+                                    android:backgroundTint="@color/payment_amount_text"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:paddingStart="6dp"
                                     android:paddingTop="5dp"
                                     android:paddingEnd="6dp"
                                     android:paddingBottom="8dp"
-                                    android:background="@drawable/red_round_corners_bg"
-                                    android:backgroundTint="@color/payment_amount_text"
+                                    android:text="Select Driver/Supervisor"
+                                    android:textColor="@color/white"
                                     android:textSize="10sp" />
                             </LinearLayout>
 
@@ -1056,6 +1128,7 @@
         <variable
             name="maxDate"
             type="String" />
+
         <variable
             name="selectedBluetoot"
             type="Integer" />
