@@ -430,19 +430,12 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             List<AllocationDetailsResponse.Indentdetail> indentDetailList = entry.getValue();
 
             for (int j = 0; j < indentDetailList.size(); j++) {
-
                 AllocationDetailsResponse.Indentdetail indentDetail = indentDetailList.get(j);
                 if (indentDetail.isChecked()) {
-                    barcodedetails = indentDetail.getBarcodedetails();
-
+                    barcodedetails.addAll(indentDetail.getBarcodedetails());
                 }
-
-
             }
-
-
         }
-
 
         if (barcodedetailsList.size() == barcodedetails.size()) {
             logisticDialog = new LogisticDialog(LogisticsActivity.this, vehicledetailList, driverdetailsList, LogisticsActivity.this);
@@ -693,9 +686,9 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                             AllocationDetailsResponse.Barcodedetail barcodeDetail = indentDetail.getBarcodedetails().get(k);
 
                             if (barcodeDetail.getId().equalsIgnoreCase(boxID)) {//Result.getContents()
-                                if (barcodeDetail.isScanned()) {
-                                    logisticScannedDialog = new LogisticScannedDialog(LogisticsActivity.this, "Already Scanned");
-                                } else {
+
+
+                                if(!barcodeDetail.isScanned()) {
                                     logisticScannedDialog = new LogisticScannedDialog(LogisticsActivity.this, barcodeDetail.getId().toString());
                                     barcodeDetail.setScanned(true);
                                     long currentTimeMillis = System.currentTimeMillis();
@@ -709,6 +702,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                                     AllocationDetailsResponse existingAllocationResponse = AppDatabase.getDatabaseInstance(this).dbDao().getLogisticsALlocationList();
                                     for (int l = 0; l < existingAllocationResponse.getIndentdetails().size(); l++) {
                                         for (int m = 0; m < existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().size(); m++) {
+                                            if (existingAllocationResponse.getIndentdetails().get(l).getIndentno().equalsIgnoreCase(indentNum)){
 
                                             if (existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().get(m).getId().equals(boxID)) {
                                                 existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().get(m).setScanned(true);
@@ -716,40 +710,45 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
                                             }
                                         }
-                                    }
-                                    for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entryss : routeIdsGroupedList.entrySet()) {
-                                        List<AllocationDetailsResponse.Indentdetail> indentdetails = entryss.getValue();
-                                        ArrayList<AllocationDetailsResponse.Barcodedetail> barcodedetailArrayList;
-                                        barcodedetailArrayList = (ArrayList<AllocationDetailsResponse.Barcodedetail>) filterByIndentNumber(routeIdsGroupedList, indentNum).values().stream()
-                                                .flatMap(List::stream)
-                                                .filter(indentDetails -> indentDetail.getIndentno().equals(indentNum))
-                                                .flatMap(indentDetails -> indentDetail.getBarcodedetails().stream())
-                                                .collect(Collectors.toList());
-                                        boolean allItemsScanned = barcodedetailArrayList.stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned) || indentDetail.getNoofboxes() == 0;
-                                        boolean notScannedItems = barcodedetailArrayList.stream().allMatch(barcodeDetails -> !barcodeDetail.isScanned()) || indentDetail.getNoofboxes() != 0;
-                                        for (int s = 0; s < indentdetails.size(); s++) {
-                                            if (indentdetails.get(s).getIndentno().equals(indentNum)) {
-                                                if (notScannedItems) {
-                                                    indentdetails.get(s).setStatus("New");
-                                                } else if (allItemsScanned) {
-                                                    indentdetails.get(s).setStatus("Completed");
-
-                                                } else {
-                                                    indentdetails.get(s).setStatus("In Progress");
-
-                                                }
-                                            }
-
                                         }
-
-
-                                        existingAllocationResponse.groupByRouteList.clear();
-                                        existingAllocationResponse.getIndentdetails().clear();
-                                        existingAllocationResponse.setIndentdetails(indentdetails);
-                                        existingAllocationResponse.groupByRouteList.add(indentdetails);
                                     }
+//                                    for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entryss : routeIdsGroupedList.entrySet()) {
+//                                        List<AllocationDetailsResponse.Indentdetail> indentdetails = entryss.getValue();
+//                                        ArrayList<AllocationDetailsResponse.Barcodedetail> barcodedetailArrayList;
+//                                        barcodedetailArrayList = (ArrayList<AllocationDetailsResponse.Barcodedetail>) filterByIndentNumber(routeIdsGroupedList, indentNum).values().stream()
+//                                                .flatMap(List::stream)
+//                                                .filter(indentDetails -> indentDetail.getIndentno().equals(indentNum))
+//                                                .flatMap(indentDetails -> indentDetail.getBarcodedetails().stream())
+//                                                .collect(Collectors.toList());
+//                                        boolean allItemsScanned = barcodedetailArrayList.stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned) || indentDetail.getNoofboxes() == 0;
+//                                        boolean notScannedItems = barcodedetailArrayList.stream().allMatch(barcodeDetails -> !barcodeDetail.isScanned()) || indentDetail.getNoofboxes() != 0;
+////                                        for (int s = 0; s < indentdetails.size(); s++) {
+////                                            if (indentdetails.get(s).getIndentno().equals(indentNum)) {
+////                                                if (notScannedItems) {
+////                                                    indentdetails.get(s).setStatus("New");
+////                                                } else if (allItemsScanned) {
+////                                                    indentdetails.get(s).setStatus("Completed");
+////
+////                                                } else {
+////                                                    indentdetails.get(s).setStatus("In Progress");
+////
+////                                                }
+////                                            }
+////
+////                                        }
+//
+//
+//                                        existingAllocationResponse.groupByRouteList.clear();
+//                                        existingAllocationResponse.getIndentdetails().clear();
+//                                        existingAllocationResponse.setIndentdetails(indentdetails);
+//                                        existingAllocationResponse.groupByRouteList.add(indentdetails);
+//                                    }
                                     AppDatabase.getDatabaseInstance(this).insertOrUpdateAllocationResponse(existingAllocationResponse, true);
 
+
+                                }
+                                else {
+                                    logisticScannedDialog = new LogisticScannedDialog(LogisticsActivity.this, "Already Scanned");
 
                                 }
                                 // Show the dialog and set the flag
@@ -1110,13 +1109,13 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                     }
                 }
 
-                for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entryss : routeIdsGroupedList.entrySet()) {
-                    List<AllocationDetailsResponse.Indentdetail> indentdetails = entryss.getValue();
-                    existingAllocationResponse.groupByRouteList.clear();
-                    existingAllocationResponse.getIndentdetails().clear();
-                    existingAllocationResponse.setIndentdetails(indentdetails);
-                    existingAllocationResponse.groupByRouteList.add(indentdetails);
-                }
+//                for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entryss : routeIdsGroupedList.entrySet()) {
+//                    List<AllocationDetailsResponse.Indentdetail> indentdetails = entryss.getValue();
+//                    existingAllocationResponse.groupByRouteList.clear();
+//                    existingAllocationResponse.getIndentdetails().clear();
+//                    existingAllocationResponse.setIndentdetails(indentdetails);
+//                    existingAllocationResponse.groupByRouteList.add(indentdetails);
+//                }
                 AppDatabase.getDatabaseInstance(this).insertOrUpdateAllocationResponse(existingAllocationResponse, true);
 
             }
@@ -1174,6 +1173,33 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //            ewayDetailsAdapter = new EwayDetailsAdapter((Context) this, (ArrayList<EwayBillResponse.Ewaybilldetail>) ewayBillResponse.getEwaybilldetails(),this);
 //            RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 //            activityLogisticsBinding.ewayDetailsRecycleview.setLayoutManager(layoutManager2);
@@ -1204,7 +1230,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
     @Override
     public void onClickCheckBox(int pos, ArrayList<AllocationDetailsResponse.Indentdetail> logisticsModelLists, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String indentNo) {
-
+        boolean isSelectVahanEnable = false;
         for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : routeIdsGroupedList.entrySet()) {
             String routeKey = entry.getKey();
             List<AllocationDetailsResponse.Indentdetail> indentDetailList = entry.getValue();
@@ -1229,18 +1255,20 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 }
             }
             if (entry.getValue().stream().anyMatch(AllocationDetailsResponse.Indentdetail::isChecked)) {
-                activityLogisticsBinding.driversDialog.setClickable(true);
-                activityLogisticsBinding.driversDialog.setEnabled(true);
-                // At least one item is checked
-                activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.yellow));
-            } else {
-                // No item is checked
-                activityLogisticsBinding.driversDialog.setClickable(false);
-                activityLogisticsBinding.driversDialog.setEnabled(false);
-
-
-                activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.req_qty_bg));
+                isSelectVahanEnable = true;
             }
+
+        }
+        if (isSelectVahanEnable){
+            activityLogisticsBinding.driversDialog.setClickable(true);
+            activityLogisticsBinding.driversDialog.setEnabled(true);
+            // At least one item is checked
+            activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.yellow));
+        } else {
+            // No item is checked
+            activityLogisticsBinding.driversDialog.setClickable(false);
+            activityLogisticsBinding.driversDialog.setEnabled(false);
+            activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.req_qty_bg));
         }
 
 

@@ -145,6 +145,8 @@
                         android:layout_weight=".01"
                         android:background="@color/grey" />
 
+
+
                     <LinearLayout
                         android:id="@+id/newlayout"
                         android:layout_width="0dp"
