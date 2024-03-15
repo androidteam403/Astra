@@ -18,6 +18,8 @@ import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.AllocationDetail
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -32,14 +34,16 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
 
     LogisticsCallback callback;
     String charString;
+    Boolean isCounted;
     public SalesInvoiceAdapter salesInvoiceAdapter;
     public List<Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>>> entryList;
 
-    public RoutesListAdapter(Context mContext, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, LogisticsCallback callback) {
+    public RoutesListAdapter(Context mContext, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, LogisticsCallback callback, Boolean iscounted) {
         this.mContext = mContext;
         this.routeIdsGroupedList = routeIdsGroupedList;
         this.originalList = new ArrayList<>(routeIdsGroupedList.entrySet());
         this.filteredList = new ArrayList<>(originalList);
+        this.isCounted = iscounted;
         this.callback = callback;
     }
 
@@ -52,20 +56,55 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if (salesInvoiceAdapter != null) {
+            salesInvoiceAdapter.notifyDataSetChanged();
 
+        }
         if (position < filteredList.size()) {
             // Access the entry at the specified position
             Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry = filteredList.get(position);
+            if (!isCounted) {
+                callback.counts(countNewStatus(), countinProcessStatus(), countCompleteStatus(), countScannedStatus());
 
-            callback.counts(countNewStatus(),0,countCompleteStatus());
+            }
+
+
             // Access key and value
             String routeName = entry.getKey();
-            List<AllocationDetailsResponse.Indentdetail> indentDetails = entry.getValue();
 
             // Now you can use routeName and indentDetails as needed
             holder.routesListLayoutBinding.routeNumber.setText(routeName);
 
-            salesInvoiceAdapter = new SalesInvoiceAdapter(mContext, (ArrayList<AllocationDetailsResponse.Indentdetail>) entry.getValue(), callback, routeIdsGroupedList);
+            List<AllocationDetailsResponse.Indentdetail> indentDetails = (ArrayList<AllocationDetailsResponse.Indentdetail>) entry.getValue();
+
+// Sort the list based on the current status
+            Collections.sort(indentDetails, new Comparator<AllocationDetailsResponse.Indentdetail>() {
+                @Override
+                public int compare(AllocationDetailsResponse.Indentdetail o1, AllocationDetailsResponse.Indentdetail o2) {
+                    int o1Order = getStatusOrder(o1.getCurrentstatus());
+                    int o2Order = getStatusOrder(o2.getCurrentstatus());
+                    return Integer.compare(o1Order, o2Order);
+                }
+
+                private int getStatusOrder(String status) {
+                    switch (status) {
+                        case "SCANNED":
+                            return 0;
+                        case "ASSIGNED":
+                            return 1;
+                        case "INPROCESS":
+                            return 2;
+                        case "COMPLETE":
+                            return 3;
+                        default:
+                            return 4; // Default to last if status is unknown
+                    }
+                }
+            });
+
+
+
+            salesInvoiceAdapter = new SalesInvoiceAdapter(mContext, (ArrayList<AllocationDetailsResponse.Indentdetail>) indentDetails, callback, routeIdsGroupedList);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
             holder.routesListLayoutBinding.logisticsRecycleview.setLayoutManager(layoutManager);
             holder.routesListLayoutBinding.logisticsRecycleview.setAdapter(salesInvoiceAdapter);
@@ -82,7 +121,7 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
             for (AllocationDetailsResponse.Indentdetail indentDetail : indentDetails) {
                 boolean allBarcodesScanned = indentDetail.getBarcodedetails().stream()
                         .allMatch(barcodeDetail -> barcodeDetail.isScanned());
-                if ("New".equalsIgnoreCase(indentDetail.getCurrentstatus()) || Objects.isNull(indentDetail.getCurrentstatus())) {
+                if ("Assigned".equalsIgnoreCase(indentDetail.getCurrentstatus()) || Objects.isNull(indentDetail.getCurrentstatus())) {
                     count++;
                 }
             }
@@ -90,7 +129,8 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
 
         return count;
     }
-    public int countCompleteStatus() {
+
+    public int countScannedStatus() {
         int count = 0;
 
         for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : originalList) {
@@ -101,7 +141,7 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
 //
 //                boolean allBarcodesScanned = indentDetail.getBarcodedetails().stream()
 //                        .allMatch(barcodeDetail -> barcodeDetail.isScanned())||noOfBoxes==0;
-                if ("COMPLETED".equalsIgnoreCase(indentDetail.getCurrentstatus()) ) {
+                if ("scanned".equalsIgnoreCase(indentDetail.getCurrentstatus())) {
                     count++;
                 }
 
@@ -113,6 +153,55 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
 
         return count;
     }
+
+    public int countinProcessStatus() {
+        int count = 0;
+
+        for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : originalList) {
+            List<AllocationDetailsResponse.Indentdetail> indentDetails = entry.getValue();
+
+            for (AllocationDetailsResponse.Indentdetail indentDetail : indentDetails) {
+//                int noOfBoxes = (int) Double.parseDouble(indentDetail.getNoofboxes().toString());
+//
+//                boolean allBarcodesScanned = indentDetail.getBarcodedetails().stream()
+//                        .allMatch(barcodeDetail -> barcodeDetail.isScanned())||noOfBoxes==0;
+                if ("inprocess".equalsIgnoreCase(indentDetail.getCurrentstatus())) {
+                    count++;
+                }
+
+//                if (allBarcodesScanned) {
+//                    count++;
+//                }
+            }
+        }
+
+        return count;
+    }
+
+    public int countCompleteStatus() {
+        int count = 0;
+
+        for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : originalList) {
+            List<AllocationDetailsResponse.Indentdetail> indentDetails = entry.getValue();
+
+            for (AllocationDetailsResponse.Indentdetail indentDetail : indentDetails) {
+//                int noOfBoxes = (int) Double.parseDouble(indentDetail.getNoofboxes().toString());
+//
+//                boolean allBarcodesScanned = indentDetail.getBarcodedetails().stream()
+//                        .allMatch(barcodeDetail -> barcodeDetail.isScanned())||noOfBoxes==0;
+                if ("COMPLETED".equalsIgnoreCase(indentDetail.getCurrentstatus())) {
+                    count++;
+                }
+
+//                if (allBarcodesScanned) {
+//                    count++;
+//                }
+            }
+        }
+
+        return count;
+    }
+
     @Override
     public int getItemCount() {
         return filteredList.size();
@@ -156,14 +245,14 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
         };
     }
 
-public class ViewHolder extends RecyclerView.ViewHolder {
-    RoutesListLayoutBinding routesListLayoutBinding;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        RoutesListLayoutBinding routesListLayoutBinding;
 
-    public ViewHolder(@NonNull RoutesListLayoutBinding routesListLayoutBinding) {
-        super(routesListLayoutBinding.getRoot());
-        this.routesListLayoutBinding = routesListLayoutBinding;
+        public ViewHolder(@NonNull RoutesListLayoutBinding routesListLayoutBinding) {
+            super(routesListLayoutBinding.getRoot());
+            this.routesListLayoutBinding = routesListLayoutBinding;
+        }
     }
-}
 }
 
 

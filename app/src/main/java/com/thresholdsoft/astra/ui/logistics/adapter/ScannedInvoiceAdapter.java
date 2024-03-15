@@ -66,7 +66,7 @@ public class ScannedInvoiceAdapter extends RecyclerView.Adapter<ScannedInvoiceAd
         holder.scannedInvoiceLayoutBinding.total.setText((barcodedetailsList.size() + "/" + items.getBarcodedetails().size()).toString());
 
 
-        scannedInvoiceAdapter = new ScannedInvoiceSubAdapter(mContext, barcodedetailsList, callback, items.getIndentno(), items.isApiCalled(),items.getEwayNumber());
+        scannedInvoiceAdapter = new ScannedInvoiceSubAdapter(mContext, barcodedetailsList, callback, items.getIndentno(), items.isApiCalled(),items.getEwaybillno());
         RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         holder.scannedInvoiceLayoutBinding.subInvoiceRecycleview.setLayoutManager(layoutManager2);
         holder.scannedInvoiceLayoutBinding.subInvoiceRecycleview.setAdapter(scannedInvoiceAdapter);
@@ -74,7 +74,7 @@ public class ScannedInvoiceAdapter extends RecyclerView.Adapter<ScannedInvoiceAd
             holder.scannedInvoiceLayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#f8d2d2"));
 
 
-        } else if (items != null && (items.getEwayNumber() == null || items.getEwayNumber().isEmpty())) {
+        } else if (items != null && (items.getEwaybillno() == null || items.getEwaybillno().isEmpty())) {
             holder.scannedInvoiceLayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#EDFEF6"));
 
         } else {
@@ -83,7 +83,7 @@ public class ScannedInvoiceAdapter extends RecyclerView.Adapter<ScannedInvoiceAd
         }
 
 
-        if (items != null && (items.getEwayNumber() == null || items.getEwayNumber().isEmpty())) {
+        if (items != null && (items.getEwaybillno() == null || items.getEwaybillno().isEmpty())) {
             holder.scannedInvoiceLayoutBinding.arrow.setVisibility(View.VISIBLE);
             holder.scannedInvoiceLayoutBinding.right.setVisibility(View.GONE);
         } else {
@@ -96,12 +96,12 @@ public class ScannedInvoiceAdapter extends RecyclerView.Adapter<ScannedInvoiceAd
         } else {
             holder.scannedInvoiceLayoutBinding.arrow.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.live_param_divider)));
         }
-        if (items.getBarcodedetails().size()>0) {
-
-            holder.scannedInvoiceLayoutBinding.arrow.setImageTintList(null);
-        } else {
-            holder.scannedInvoiceLayoutBinding.arrow.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.live_param_divider)));
-        }
+//        if (items.getBarcodedetails().size()>0) {
+//
+//            holder.scannedInvoiceLayoutBinding.arrow.setImageTintList(null);
+//        } else {
+//            holder.scannedInvoiceLayoutBinding.arrow.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.live_param_divider)));
+//        }
 
         if (items.isChecked()) {
             holder.scannedInvoiceLayoutBinding.arrow.setImageResource(R.drawable.logisticsright);
@@ -117,7 +117,7 @@ public class ScannedInvoiceAdapter extends RecyclerView.Adapter<ScannedInvoiceAd
         holder.scannedInvoiceLayoutBinding.arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (items.getBarcodedetails().size()>0) {
+
                     if (items.getBarcodedetails().stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned)) {
                         callback.onClickCheckBox(position, salesinvoiceList, routeIdsGroupedList, items.getIndentno());
 
@@ -125,12 +125,9 @@ public class ScannedInvoiceAdapter extends RecyclerView.Adapter<ScannedInvoiceAd
                         Toast.makeText(mContext, "Please Scan All Boxes", Toast.LENGTH_LONG).show();
 
                     }
-                }else {
-                    Toast.makeText(mContext, "Boxes are Empty", Toast.LENGTH_LONG).show();
-
                 }
 
-            }
+
         });
 
 

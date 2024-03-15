@@ -37,7 +37,7 @@ public class LogisticActivityController {
         this.mCallback = mCallback;
     }
 
-    public void getAllocationDetailsResponse(VahanApiRequest vahanApiRequest) {
+    public void getAllocationDetailsResponse(VahanApiRequest vahanApiRequest,boolean isrefresh) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
             ApiInterface api = ApiClient.getApiServiceAds();
@@ -58,7 +58,7 @@ public class LogisticActivityController {
                 public void onResponse(@NotNull Call<AllocationDetailsResponse> call, @NotNull Response<AllocationDetailsResponse> response) {
                     ActivityUtils.hideDialog();
                     if (response.isSuccessful() && response.body() != null) {
-                        mCallback.onSuccessAllocationDetailsApiCall(response.body());
+                        mCallback.onSuccessAllocationDetailsApiCall(response.body(),isrefresh);
 
                     }
                 }
@@ -136,9 +136,7 @@ public class LogisticActivityController {
             });
         }
     }
-
-
-    public void getTripCreationResponse(TripCreationRequest tripCreationRequest) {
+    public void getTripCreationforScanned(TripCreationRequest tripCreationRequest) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
             String url = getDataManager().getApi();
@@ -159,7 +157,42 @@ public class LogisticActivityController {
                 public void onResponse(@NotNull Call<TripCreationResponse> call, @NotNull Response<TripCreationResponse> response) {
                     ActivityUtils.hideDialog();
                     if (response.isSuccessful() && response.body() != null) {
-                        mCallback.onSuccessTripCreationApiCall(response.body());
+                        mCallback.onSuccessTripCreationApiCallForScannedIndenta(response.body());
+
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<TripCreationResponse> call, @NotNull Throwable t) {
+                    ActivityUtils.hideDialog();
+                }
+            });
+        }
+    }
+
+
+    public void getTripCreationResponse(TripCreationRequest tripCreationRequest,EwayBillResponse ewayBillResponse) {
+        if (NetworkUtils.isNetworkConnected(mContext)) {
+            ActivityUtils.showDialog(mContext, "Please wait.");
+            String url = getDataManager().getApi();
+            ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
+            String baseUrl = "";
+            String token = "";
+            for (int i = 0; i < data.getApis().size(); i++) {
+                if (data.getApis().get(i).getName().equals("VahanTripCreation")) {
+                    baseUrl = data.getApis().get(i).getURL();
+                    token = data.getApis().get(i).getToken();
+                    break;
+                }
+            }
+            ApiInterface api = ApiClient.getApiServiceAds();
+            Call<TripCreationResponse> call = api.GET_TRIP_CREATION_RESPONSE_CALL(baseUrl,token,tripCreationRequest);
+            call.enqueue(new Callback<TripCreationResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<TripCreationResponse> call, @NotNull Response<TripCreationResponse> response) {
+                    ActivityUtils.hideDialog();
+                    if (response.isSuccessful() && response.body() != null) {
+                        mCallback.onSuccessTripCreationApiCall(response.body(),ewayBillResponse);
 
                     }
                 }

@@ -20,16 +20,29 @@ public class TripCreationRequest implements Serializable {
     @SerializedName("dccode")
     @Expose
     private String dccode;
+    @SerializedName("requesttype")
+    @Expose
+    private String requesttype;
     @SerializedName("indentdetails")
     @Expose
     private List<Indentdetail> indentdetails;
 
-    public TripCreationRequest(String userid, String username, String routecode, String dccode, List<Indentdetail> indentdetails) {
+
+    public TripCreationRequest(String userid, String username, String routecode, String dccode, String requesttype, List<Indentdetail> indentdetails) {
         this.userid = userid;
         this.username = username;
         this.routecode = routecode;
         this.dccode = dccode;
+        this.requesttype = requesttype;
         this.indentdetails = indentdetails;
+    }
+
+    public String getRequesttype() {
+        return requesttype;
+    }
+
+    public void setRequesttype(String requesttype) {
+        this.requesttype = requesttype;
     }
 
     public String getUserid() {

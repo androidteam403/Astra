@@ -273,15 +273,17 @@ public class AllocationDetailsResponse implements Serializable {
 
         @ColumnInfo(name = "status")
         private String status="New";
-        @ColumnInfo(name = "ewayNumber")
-        private String ewayNumber;
+        @ColumnInfo(name = "ewaybillno")
+        @SerializedName("ewaybillno")
+        @Expose
+        private String ewaybillno;
 
-        public String getEwayNumber() {
-            return ewayNumber;
+        public String getEwaybillno() {
+            return ewaybillno;
         }
 
-        public void setEwayNumber(String ewayNumber) {
-            this.ewayNumber = ewayNumber;
+        public void setEwaybillno(String ewaybillno) {
+            this.ewaybillno = ewaybillno;
         }
 
         public int getUniqueKey() {

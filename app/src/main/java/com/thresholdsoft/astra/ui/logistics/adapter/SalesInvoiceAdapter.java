@@ -72,13 +72,18 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
             holder.salesInvoiceLayoutBinding.status.setText(items.getCurrentstatus());
 
         }
-        else if (items.getCurrentstatus().equalsIgnoreCase("New")) {
+        else if (items.getCurrentstatus().equalsIgnoreCase("New")||items.getCurrentstatus().equalsIgnoreCase("assigned")) {
             holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#096BB4"));
+            holder.salesInvoiceLayoutBinding.status.setText("New");
+
+        }
+        else if (items.getCurrentstatus().equalsIgnoreCase("SCANNED")) {
+            holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#3CB371"));
             holder.salesInvoiceLayoutBinding.status.setText(items.getCurrentstatus());
 
         }
-        if (items.getEwayNumber() != null && !items.getEwayNumber().isEmpty()) {
-            holder.salesInvoiceLayoutBinding.ewaybillNumber.setText(items.getEwayNumber());
+        if (items.getEwaybillno() != null && !items.getEwaybillno().isEmpty()) {
+            holder.salesInvoiceLayoutBinding.ewaybillNumber.setText(items.getEwaybillno());
             holder.salesInvoiceLayoutBinding.ewayBillLayout.setVisibility(View.VISIBLE);
         } else {
             holder.salesInvoiceLayoutBinding.ewayBillLayout.setVisibility(View.GONE);

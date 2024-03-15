@@ -16,7 +16,7 @@
 
 
     <string name="price_format">%,.2f</string>
-    <string name="completed">COMPLETED</string>
+    <string name="completed">SCANNED /COMPLETED</string>
     <string name="_20">20</string>
     <string name="purchase_requisition">Purchase Requisition</string>
     <string name="allocation_date_time">Allocation Date Time</string>
