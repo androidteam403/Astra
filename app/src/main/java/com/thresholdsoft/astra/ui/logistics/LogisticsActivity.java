@@ -976,6 +976,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     public void onClickRefresh() {
         onClickClose();
         activityLogisticsBinding.setSelectedStatus(null);
+        filterByStatus("",0);
         activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.req_qty_bg));
 
         VahanApiRequest vahanApiRequest = new VahanApiRequest(getSessionManager().getEmplId(), "", getSessionManager().getDc());
@@ -990,6 +991,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         if (status.isEmpty()) {
             if (routeIdsGroupedList.size()>0){
                 activityLogisticsBinding.nolistFound.setVisibility(View.GONE);
+
                 activityLogisticsBinding.logisticsRecycleview.setVisibility(View.VISIBLE);
                 routesListAdapter = new RoutesListAdapter(LogisticsActivity.this, routeIdsGroupedList, LogisticsActivity.this, true);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LogisticsActivity.this, LinearLayoutManager.VERTICAL, false);
