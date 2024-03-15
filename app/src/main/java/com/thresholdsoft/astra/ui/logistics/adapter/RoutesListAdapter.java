@@ -34,7 +34,7 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
 
     LogisticsCallback callback;
     String charString;
-    Boolean isCounted;
+    public Boolean isCounted;
     public SalesInvoiceAdapter salesInvoiceAdapter;
     public List<Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>>> entryList;
 
