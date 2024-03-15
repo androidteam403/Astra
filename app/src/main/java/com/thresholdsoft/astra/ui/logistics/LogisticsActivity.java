@@ -962,6 +962,8 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     @Override
     public void onClickRefresh() {
         onClickClose();
+        activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.req_qty_bg));
+
         VahanApiRequest vahanApiRequest = new VahanApiRequest(getSessionManager().getEmplId(), "", getSessionManager().getDc());
         getController().getAllocationDetailsResponse(vahanApiRequest, true);
         getController().getVehicleMasterResponse(vahanApiRequest);
@@ -1595,9 +1597,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
 
     @Override
-    public void onClickIndent(int pos, ArrayList<
-            AllocationDetailsResponse.Barcodedetail> barcodedetails, ArrayList<AllocationDetailsResponse.Indentdetail> indentdetailArrayList, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String
-                                      indentNumber, String invoiceNum, String siteId, String siteName) {
+    public void onClickIndent(int pos, ArrayList<AllocationDetailsResponse.Barcodedetail> barcodedetails, ArrayList<AllocationDetailsResponse.Indentdetail> indentdetailArrayList, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String indentNumber, String invoiceNum, String siteId, String siteName) {
         dummyPos = pos;
         dummyBarcodedetails = barcodedetails;
         originalBarcodedetails = new ArrayList<>(dummyBarcodedetails);
@@ -1614,13 +1614,13 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : routeIdsGroupedList.entrySet()) {
             String routeKey = entry.getKey();
             List<AllocationDetailsResponse.Indentdetail> indentDetailList = entry.getValue();
-            if (entry.getValue().stream().anyMatch(AllocationDetailsResponse.Indentdetail::isChecked)) {
-                // At least one item is checked
-                activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.yellow));
-            } else {
-                // No item is checked
-                activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.req_qty_bg));
-            }
+//            if (entry.getValue().stream().anyMatch(AllocationDetailsResponse.Indentdetail::isChecked)) {
+//                // At least one item is checked
+//                activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.yellow));
+//            } else {
+//                // No item is checked
+//                activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.req_qty_bg));
+//            }
 
 
             if (indentDetailList != null) {
@@ -1707,8 +1707,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
     }
 
-    public void visibleSecondParentLayout
-            (Map<String, List<AllocationDetailsResponse.Indentdetail>> groupedListRoutes) {
+    public void visibleSecondParentLayout(Map<String, List<AllocationDetailsResponse.Indentdetail>> groupedListRoutes) {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
