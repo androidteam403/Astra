@@ -683,7 +683,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                                         TripCreationRequest.Indentdetail.Barcodedetail barcodedetailTrip = new TripCreationRequest.Indentdetail.Barcodedetail(barcodeDetail.getId(), barcodeDetail.scannedTime(), (int) Math.round(barcodeDetail.getNoofskus()));
                                         tripBarcodedetailsList.add(barcodedetailTrip);
                                     }
-                                    TripCreationRequest.Indentdetail tripIndentdetail = new TripCreationRequest.Indentdetail("indentDetail.getIndentno()", (int) Math.round(indentDetail.getNoofboxes()), (int) Math.round(indentDetail.getNoofskus()), indentDetail.getSiteid(), tripBarcodedetailsList);
+                                    TripCreationRequest.Indentdetail tripIndentdetail = new TripCreationRequest.Indentdetail(indentDetail.getIndentno(), (int) Math.round(indentDetail.getNoofboxes()), (int) Math.round(indentDetail.getNoofskus()), indentDetail.getSiteid(), tripBarcodedetailsList);
                                     tripIndentdetailsList.add(tripIndentdetail);
 
                                 }
