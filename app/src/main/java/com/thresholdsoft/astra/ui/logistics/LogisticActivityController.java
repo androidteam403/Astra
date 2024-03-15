@@ -24,6 +24,9 @@ import com.thresholdsoft.astra.utils.NetworkUtils;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -136,7 +139,7 @@ public class LogisticActivityController {
             });
         }
     }
-    public void getTripCreationforScanned(TripCreationRequest tripCreationRequest) {
+    public void getTripCreationforScanned(TripCreationRequest tripCreationRequest, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String indentNo,String boxID) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
             String url = getDataManager().getApi();
@@ -157,7 +160,7 @@ public class LogisticActivityController {
                 public void onResponse(@NotNull Call<TripCreationResponse> call, @NotNull Response<TripCreationResponse> response) {
                     ActivityUtils.hideDialog();
                     if (response.isSuccessful() && response.body() != null) {
-                        mCallback.onSuccessTripCreationApiCallForScannedIndenta(response.body());
+                        mCallback.onSuccessTripCreationApiCallForScannedIndent(response.body(),routeIdsGroupedList,indentNo,boxID);
 
                     }
                 }

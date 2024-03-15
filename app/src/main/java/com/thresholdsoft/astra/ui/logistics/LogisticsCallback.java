@@ -36,7 +36,7 @@ public interface LogisticsCallback {
     void onClickClose();
     void onCLickSort();
 
-    void onSuccessTripCreationApiCallForScannedIndenta(TripCreationResponse tripCreationResponse);
+    void onSuccessTripCreationApiCallForScannedIndent(TripCreationResponse tripCreationResponse,Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList,String indentNo,String boxID);
 
     void onSuccessTripCreationApiCall(TripCreationResponse tripCreationResponse, EwayBillResponse ewayBillResponse);
 

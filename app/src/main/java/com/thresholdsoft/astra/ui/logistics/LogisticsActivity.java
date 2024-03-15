@@ -638,6 +638,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 }
                 if (barcodeMatched) break; // Exit the outer loop if a match is found
 
+                routesListAdapter.isCounted = false;
                 routesListAdapter.notifyDataSetChanged();
 
 
@@ -682,14 +683,14 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                                         TripCreationRequest.Indentdetail.Barcodedetail barcodedetailTrip = new TripCreationRequest.Indentdetail.Barcodedetail(barcodeDetail.getId(), barcodeDetail.scannedTime(), (int) Math.round(barcodeDetail.getNoofskus()));
                                         tripBarcodedetailsList.add(barcodedetailTrip);
                                     }
-                                    TripCreationRequest.Indentdetail tripIndentdetail = new TripCreationRequest.Indentdetail(indentDetail.getIndentno(), (int) Math.round(indentDetail.getNoofboxes()), (int) Math.round(indentDetail.getNoofskus()), indentDetail.getSiteid(), tripBarcodedetailsList);
+                                    TripCreationRequest.Indentdetail tripIndentdetail = new TripCreationRequest.Indentdetail("indentDetail.getIndentno()", (int) Math.round(indentDetail.getNoofboxes()), (int) Math.round(indentDetail.getNoofskus()), indentDetail.getSiteid(), tripBarcodedetailsList);
                                     tripIndentdetailsList.add(tripIndentdetail);
 
                                 }
                                 if (tripIndentdetailsList.size() > 0) {
 
                                     TripCreationRequest tripCreationRequest = new TripCreationRequest(getSessionManager().getEmplId(), getSessionManager().getPickerName(), vahanRoute, getSessionManager().getDc(), "SCANNED", tripIndentdetailsList);
-                                    getController().getTripCreationforScanned(tripCreationRequest);
+                                    getController().getTripCreationforScanned(tripCreationRequest, routeIdsGroupedList, indentNum, boxID);
                                 }
                             }
                         }
@@ -1091,13 +1092,100 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     }
 
     @Override
-    public void onSuccessTripCreationApiCallForScannedIndenta(TripCreationResponse tripCreationResponse) {
-        Toast.makeText(this, tripCreationResponse.getMessage(), Toast.LENGTH_LONG).show();
+    public void onSuccessTripCreationApiCallForScannedIndent(TripCreationResponse tripCreationResponse, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String indentNo, String boxID) {
+        if (tripCreationResponse.getStatus()) {
+            Toast.makeText(this, tripCreationResponse.getMessage(), Toast.LENGTH_LONG).show();
+
+        } else {
+            for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : routeIdsGroupedList.entrySet()) {
+                String routeKey = entry.getKey();
+                List<AllocationDetailsResponse.Indentdetail> indentDetailList = entry.getValue();
+
+                for (int j = 0; j < indentDetailList.size(); j++) {
+                    if (indentDetailList.get(j).getIndentno().equalsIgnoreCase(indentNum)) {
+
+                        AllocationDetailsResponse.Indentdetail indentDetail = indentDetailList.get(j);
+
+                        if (indentDetail.getBarcodedetails() != null) {
+                            for (int k = 0; k < indentDetail.getBarcodedetails().size(); k++) {
+                                AllocationDetailsResponse.Barcodedetail barcodeDetail = indentDetail.getBarcodedetails().get(k);
+
+                                if (barcodeDetail.getId().equalsIgnoreCase(boxID)) {//Result.getContents()
+
+                                    barcodeDetail.setScanned(false);
+                                }
+
+                                if (indentDetail.getBarcodedetails().stream().noneMatch(AllocationDetailsResponse.Barcodedetail::isScanned)){
+                                    indentDetail.setCurrentstatus("ASSIGNED");
+
+                                }
+                               else if (indentDetail.getBarcodedetails().stream().anyMatch(AllocationDetailsResponse.Barcodedetail::isScanned)){
+                                    indentDetail.setCurrentstatus("INPROCESS");
+
+                                } else if (indentDetail.getBarcodedetails().stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned)){
+                                    indentDetail.setCurrentstatus("SCANNED");
+
+                                }
+
+                                AllocationDetailsResponse existingAllocationResponse = AppDatabase.getDatabaseInstance(this).dbDao().getLogisticsALlocationList();
+                                for (int l = 0; l < existingAllocationResponse.getIndentdetails().size(); l++) {
+
+
+                                    for (int m = 0; m < existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().size(); m++) {
+                                        if (existingAllocationResponse.getIndentdetails().get(l).getIndentno().equalsIgnoreCase(indentNum)) {
+                                            if (existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().get(m).getId().equals(boxID)) {
+                                                existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().get(m).setScanned(false);
+                                            }
+
+
+                                            if (existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().stream().noneMatch(AllocationDetailsResponse.Barcodedetail::isScanned)){
+                                                existingAllocationResponse.getIndentdetails().get(l).setCurrentstatus("ASSIGNED");
+
+                                            }
+                                            else if (existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().stream().anyMatch(AllocationDetailsResponse.Barcodedetail::isScanned)){
+                                                existingAllocationResponse.getIndentdetails().get(l).setCurrentstatus("INPROCESS");
+
+                                            }
+                                            else if (existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned)){
+                                                existingAllocationResponse.getIndentdetails().get(l).setCurrentstatus("SCANNED");
+
+                                            }
+                                        }
+
+
+                                    }
+
+
+                                }
+
+
+                                AppDatabase.getDatabaseInstance(this).insertOrUpdateAllocationResponse(existingAllocationResponse, true);
+
+
+                            }
+
+                        }
+
+                        routesListAdapter.notifyDataSetChanged();
+
+
+                    }
+                    Toast.makeText(this, tripCreationResponse.getMessage(), Toast.LENGTH_LONG).show();
+
+                }
+
+            }
+            routesListAdapter.notifyDataSetChanged();
+            invoiceDetailsAdapter.notifyDataSetChanged();
+            scannedRoutesListAdapter.notifyDataSetChanged();
+            routesListAdapter.notifyDataSetChanged();
+        }
     }
 
 
     @Override
-    public void onSuccessTripCreationApiCall(TripCreationResponse tripCreationResponse, EwayBillResponse ewayBillResponse) {
+    public void onSuccessTripCreationApiCall(TripCreationResponse
+                                                     tripCreationResponse, EwayBillResponse ewayBillResponse) {
         Toast.makeText(this, tripCreationResponse.getMessage(), Toast.LENGTH_LONG).show();
 
 
@@ -1272,7 +1360,9 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     }
 
     @Override
-    public void onClickCheckBox(int pos, ArrayList<AllocationDetailsResponse.Indentdetail> logisticsModelLists, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String indentNo) {
+    public void onClickCheckBox(int pos, ArrayList<
+            AllocationDetailsResponse.Indentdetail> logisticsModelLists, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String
+                                        indentNo) {
         boolean isSelectVahanEnable = false;
         for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : routeIdsGroupedList.entrySet()) {
             String routeKey = entry.getKey();
@@ -1320,7 +1410,9 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
 
     @Override
-    public void onClickArrow(int pos, ArrayList<AllocationDetailsResponse.Indentdetail> logisticsModelLists, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String indentNo) {
+    public void onClickArrow(int pos, ArrayList<
+            AllocationDetailsResponse.Indentdetail> logisticsModelLists, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String
+                                     indentNo) {
 
         for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : routeIdsGroupedList.entrySet()) {
             String routeKey = entry.getKey();
@@ -1352,7 +1444,9 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     }
 
     @Override
-    public void onClickUnTag(int pos, ArrayList<AllocationDetailsResponse.Barcodedetail> salesinvoiceList, String indentNumbr, String boxId) {
+    public void onClickUnTag(int pos, ArrayList<
+            AllocationDetailsResponse.Barcodedetail> salesinvoiceList, String
+                                     indentNumbr, String boxId) {
 
         boolean anyScannedinMainList = false; // Assume none are scanned
         boolean allScannedinMainList = false; // Assume all are scanned
@@ -1360,7 +1454,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             List<AllocationDetailsResponse.Indentdetail> indentdetailsList = item.getValue();
             for (int v = 0; v < indentdetailsList.size(); v++) {
                 if (indentdetailsList.get(v).getIndentno().equals(indentNumbr)) {
-                    if (!indentdetailsList.get(v).getCurrentstatus().equalsIgnoreCase("completed")&&!indentdetailsList.get(v).getCurrentstatus().equalsIgnoreCase("scanned")) {
+                    if (!indentdetailsList.get(v).getCurrentstatus().equalsIgnoreCase("completed") && !indentdetailsList.get(v).getCurrentstatus().equalsIgnoreCase("scanned")) {
                         Dialog customDialog = new Dialog(this);
                         DialogCustomAlertBinding dialogCustomAlertBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_custom_alert, null, false);
                         customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -1461,11 +1555,11 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 //                            }
                             AppDatabase.getDatabaseInstance(this).insertOrUpdateAllocationResponse(existingAllocationResponse, true);
 
+                            routesListAdapter.isCounted = false;
 
                             routesListAdapter.notifyDataSetChanged();
                             invoiceDetailsAdapter.notifyDataSetChanged();
                             scannedRoutesListAdapter.notifyDataSetChanged();
-                            routesListAdapter.notifyDataSetChanged();
 
                             customDialog.dismiss();
                         });
@@ -1502,7 +1596,9 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
 
     @Override
-    public void onClickIndent(int pos, ArrayList<AllocationDetailsResponse.Barcodedetail> barcodedetails, ArrayList<AllocationDetailsResponse.Indentdetail> indentdetailArrayList, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String indentNumber, String invoiceNum, String siteId, String siteName) {
+    public void onClickIndent(int pos, ArrayList<
+            AllocationDetailsResponse.Barcodedetail> barcodedetails, ArrayList<AllocationDetailsResponse.Indentdetail> indentdetailArrayList, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String
+                                      indentNumber, String invoiceNum, String siteId, String siteName) {
         dummyPos = pos;
         dummyBarcodedetails = barcodedetails;
         originalBarcodedetails = new ArrayList<>(dummyBarcodedetails);
@@ -1575,7 +1671,8 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         }
     }
 
-    public void visibleThirdParentLayout(Map<String, List<AllocationDetailsResponse.Indentdetail>> groupedListRoutes) {
+    public void visibleThirdParentLayout
+            (Map<String, List<AllocationDetailsResponse.Indentdetail>> groupedListRoutes) {
         boolean isAnyScanned = groupedListRoutes.entrySet().stream()
                 .anyMatch(entry -> entry.getValue().stream()
                         .anyMatch(indentDetail -> indentDetail.getBarcodedetails().stream()
@@ -1611,7 +1708,8 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
     }
 
-    public void visibleSecondParentLayout(Map<String, List<AllocationDetailsResponse.Indentdetail>> groupedListRoutes) {
+    public void visibleSecondParentLayout
+            (Map<String, List<AllocationDetailsResponse.Indentdetail>> groupedListRoutes) {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
@@ -1693,7 +1791,8 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     }
 
 
-    public void visibleSubMenuSecondParentLayout(String indentNumber, ArrayList<AllocationDetailsResponse.Barcodedetail> barcodedetailList, Map<String, List<AllocationDetailsResponse.Indentdetail>> groupedListRoutes) {
+    public void visibleSubMenuSecondParentLayout(String
+                                                         indentNumber, ArrayList<AllocationDetailsResponse.Barcodedetail> barcodedetailList, Map<String, List<AllocationDetailsResponse.Indentdetail>> groupedListRoutes) {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
