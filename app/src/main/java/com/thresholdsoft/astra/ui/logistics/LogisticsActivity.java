@@ -576,7 +576,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                                         String formattedDate = sdf.format(new Date(currentTimeMillis));
 
                                         barcodeDetail.setScannedTime(formattedDate);
-                                        allScannedinMainList = indentDetail.getBarcodedetails().stream().anyMatch(AllocationDetailsResponse.Barcodedetail::isScanned);
+                                        allScannedinMainList = indentDetail.getBarcodedetails().stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned);
 
                                         anyScannedinMainList = indentDetail.getBarcodedetails().stream().anyMatch(AllocationDetailsResponse.Barcodedetail::isScanned);
 //                                        if (barcodeDetail.isScanned()) {
@@ -875,8 +875,8 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 AllocationDetailsResponse.Indentdetail indentDetail = allocationDetailsResponse.getIndentdetails().get(i);
                 int noOfBoxes = (int) Double.parseDouble(indentDetail.getNoofboxes().toString());
 
-                if (noOfBoxes == 0 || indentDetail.getCurrentstatus().equalsIgnoreCase("completed")) {
-                    indentDetail.setCurrentstatus("COMPLETED");
+                if (noOfBoxes == 0 || indentDetail.getCurrentstatus().equalsIgnoreCase("scanned")) {
+                    indentDetail.setCurrentstatus("SCANNED");
                     for (int j = 0; j < allocationDetailsResponse.getIndentdetails().get(i).getBarcodedetails().size(); j++) {
                         AllocationDetailsResponse.Barcodedetail barcodeDetail = indentDetail.getBarcodedetails().get(j);
 
@@ -888,7 +888,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                         barcodeDetail.setScanned(true);
                         barcodeDetail.setScannedTime(formattedDate);
                     }
-                } else if (indentDetail.getCurrentstatus().equalsIgnoreCase("scanned")) {
+                } else if (indentDetail.getCurrentstatus().equalsIgnoreCase("completed")) {
                     for (int j = 0; j < allocationDetailsResponse.getIndentdetails().get(i).getBarcodedetails().size(); j++) {
                         AllocationDetailsResponse.Barcodedetail barcodeDetail = indentDetail.getBarcodedetails().get(j);
 
@@ -1360,7 +1360,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             List<AllocationDetailsResponse.Indentdetail> indentdetailsList = item.getValue();
             for (int v = 0; v < indentdetailsList.size(); v++) {
                 if (indentdetailsList.get(v).getIndentno().equals(indentNumbr)) {
-                    if (!indentdetailsList.get(v).getCurrentstatus().equalsIgnoreCase("scanned")) {
+                    if (!indentdetailsList.get(v).getCurrentstatus().equalsIgnoreCase("completed")&&!indentdetailsList.get(v).getCurrentstatus().equalsIgnoreCase("scanned")) {
                         Dialog customDialog = new Dialog(this);
                         DialogCustomAlertBinding dialogCustomAlertBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_custom_alert, null, false);
                         customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

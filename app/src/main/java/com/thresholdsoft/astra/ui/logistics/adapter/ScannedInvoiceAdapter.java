@@ -83,7 +83,7 @@ public class ScannedInvoiceAdapter extends RecyclerView.Adapter<ScannedInvoiceAd
         }
 
 
-        if (items != null && (items.getEwaybillno() == null || items.getEwaybillno().isEmpty())) {
+        if (items != null &&!items.getCurrentstatus().equalsIgnoreCase("completed")) {
             holder.scannedInvoiceLayoutBinding.arrow.setVisibility(View.VISIBLE);
             holder.scannedInvoiceLayoutBinding.right.setVisibility(View.GONE);
         } else {
