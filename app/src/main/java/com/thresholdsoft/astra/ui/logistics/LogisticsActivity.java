@@ -1184,8 +1184,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
 
     @Override
-    public void onSuccessTripCreationApiCall(TripCreationResponse
-                                                     tripCreationResponse, EwayBillResponse ewayBillResponse) {
+    public void onSuccessTripCreationApiCall(TripCreationResponse tripCreationResponse, EwayBillResponse ewayBillResponse) {
         Toast.makeText(this, tripCreationResponse.getMessage(), Toast.LENGTH_LONG).show();
 
 
@@ -1218,58 +1217,58 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
             activityLogisticsBinding.driversDialog.setEnabled(false);
 
-//            for (int i = 0; i < ewayBillResponse.getEwaybilldetails().size(); i++) {
-////                activityLogisticsBinding.ewaybillNumber.setText(ewayBillResponse.getEwaybilldetails().get(i).getEwaybillnumber());
-//                for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : routeIdsGroupedList.entrySet()) {
-//
-//                    List<AllocationDetailsResponse.Indentdetail> indentDetailList = entry.getValue();
-//                    if (indentDetailList != null) {
-//                        for (int j = 0; j < indentDetailList.size(); j++) {
-//                            if (indentDetailList.get(j).getIndentno().equals(ewayBillResponse.getEwaybilldetails().get(i).getIndentno())) {
-//                                if (ewayBillResponse.getEwaybilldetails().get(i).getStatus() == false) {
-//                                    indentDetailList.get(j).setApiCalled(true);
-//
-//                                } else {
-//                                    indentDetailList.get(j).setApiCalled(false);
-//
-//                                }
+            for (int i = 0; i < ewayBillResponse.getEwaybilldetails().size(); i++) {
+//                activityLogisticsBinding.ewaybillNumber.setText(ewayBillResponse.getEwaybilldetails().get(i).getEwaybillnumber());
+                for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : routeIdsGroupedList.entrySet()) {
+
+                    List<AllocationDetailsResponse.Indentdetail> indentDetailList = entry.getValue();
+                    if (indentDetailList != null) {
+                        for (int j = 0; j < indentDetailList.size(); j++) {
+                            if (indentDetailList.get(j).getIndentno().equals(ewayBillResponse.getEwaybilldetails().get(i).getIndentno())) {
+                                if (ewayBillResponse.getEwaybilldetails().get(i).getStatus() == false) {
+                                    indentDetailList.get(j).setApiCalled(true);
+
+                                } else {
+                                    indentDetailList.get(j).setApiCalled(false);
+
+                                }
 //                                indentDetailList.get(j).setEwayNumber(ewayBillResponse.getEwaybilldetails().get(i).getEwaybillnumber());
-//
-//                            }
-//
-//
-//                            routesListAdapter.notifyDataSetChanged();
-//                        }
-//                    }
-//
-//
-//                }
-//                AllocationDetailsResponse existingAllocationResponse = AppDatabase.getDatabaseInstance(this).dbDao().getLogisticsALlocationList();
-//                for (int l = 0; l < existingAllocationResponse.getIndentdetails().size(); l++) {
-//
-//                    if (existingAllocationResponse.getIndentdetails().get(l).getIndentno().equals(ewayBillResponse.getEwaybilldetails().get(i).getIndentno())) {
-//                        if (ewayBillResponse.getEwaybilldetails().get(i).getStatus() == false) {
-//                            existingAllocationResponse.getIndentdetails().get(l).setApiCalled(true);
-//
-//                        } else {
-//                            existingAllocationResponse.getIndentdetails().get(l).setApiCalled(false);
-//
-//                        }
+
+                            }
+
+
+                            routesListAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+
+                }
+                AllocationDetailsResponse existingAllocationResponse = AppDatabase.getDatabaseInstance(this).dbDao().getLogisticsALlocationList();
+                for (int l = 0; l < existingAllocationResponse.getIndentdetails().size(); l++) {
+
+                    if (existingAllocationResponse.getIndentdetails().get(l).getIndentno().equals(ewayBillResponse.getEwaybilldetails().get(i).getIndentno())) {
+                        if (ewayBillResponse.getEwaybilldetails().get(i).getStatus() == false) {
+                            existingAllocationResponse.getIndentdetails().get(l).setApiCalled(true);
+
+                        } else {
+                            existingAllocationResponse.getIndentdetails().get(l).setApiCalled(false);
+
+                        }
 //                        existingAllocationResponse.getIndentdetails().get(l).setEwayNumber(ewayBillResponse.getEwaybilldetails().get(i).getEwaybillnumber());
-//
-//                    }
+
+                    }
+                }
+
+//                for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entryss : routeIdsGroupedList.entrySet()) {
+//                    List<AllocationDetailsResponse.Indentdetail> indentdetails = entryss.getValue();
+//                    existingAllocationResponse.groupByRouteList.clear();
+//                    existingAllocationResponse.getIndentdetails().clear();
+//                    existingAllocationResponse.setIndentdetails(indentdetails);
+//                    existingAllocationResponse.groupByRouteList.add(indentdetails);
 //                }
-//
-////                for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entryss : routeIdsGroupedList.entrySet()) {
-////                    List<AllocationDetailsResponse.Indentdetail> indentdetails = entryss.getValue();
-////                    existingAllocationResponse.groupByRouteList.clear();
-////                    existingAllocationResponse.getIndentdetails().clear();
-////                    existingAllocationResponse.setIndentdetails(indentdetails);
-////                    existingAllocationResponse.groupByRouteList.add(indentdetails);
-////                }
-//                AppDatabase.getDatabaseInstance(this).insertOrUpdateAllocationResponse(existingAllocationResponse, true);
-//
-//            }
+                AppDatabase.getDatabaseInstance(this).insertOrUpdateAllocationResponse(existingAllocationResponse, true);
+
+            }
 
             callTripCreationApi(ewayBillResponse);
 
