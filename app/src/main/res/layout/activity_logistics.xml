@@ -132,7 +132,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_semibold"
-                            android:text="       Total"
+                            android:text="Total"
 
                             android:textAlignment="center"
 
@@ -175,7 +175,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_semibold"
-                            android:text="       NEW"
+                            android:text="NEW"
                             android:textAlignment="center"
                             android:textAllCaps="true"
                             android:textColor="@color/black"
@@ -214,7 +214,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_semibold"
-                            android:text="       INPROCESS"
+                            android:text="INPROCESS"
                             android:textAlignment="center"
                             android:textAllCaps="true"
                             android:textColor="@color/black"
