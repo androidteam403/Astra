@@ -255,6 +255,19 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             }
 
 // Update the adapter and notify data set changed
+            if (completedIndents.size()>0){
+                activityLogisticsBinding.nolistFound.setVisibility(View.GONE);
+                activityLogisticsBinding.logisticsRecycleview.setVisibility(View.VISIBLE);
+                routesListAdapter = new RoutesListAdapter(LogisticsActivity.this, completedIndents, LogisticsActivity.this, true);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LogisticsActivity.this, LinearLayoutManager.VERTICAL, false);
+                activityLogisticsBinding.logisticsRecycleview.setLayoutManager(layoutManager);
+                activityLogisticsBinding.logisticsRecycleview.setAdapter(routesListAdapter);
+            }
+            else {
+                activityLogisticsBinding.nolistFound.setVisibility(View.VISIBLE);
+                activityLogisticsBinding.logisticsRecycleview.setVisibility(View.GONE);
+
+            }
 
             routesListAdapter = new RoutesListAdapter(LogisticsActivity.this, completedIndents, LogisticsActivity.this, true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LogisticsActivity.this, LinearLayoutManager.VERTICAL, false);
@@ -974,10 +987,19 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     public void filterByStatus(String status, int setStatus) {
         activityLogisticsBinding.setSelectedStatus(setStatus);
         if (status.isEmpty()) {
-            routesListAdapter = new RoutesListAdapter(LogisticsActivity.this, routeIdsGroupedList, LogisticsActivity.this, true);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LogisticsActivity.this, LinearLayoutManager.VERTICAL, false);
-            activityLogisticsBinding.logisticsRecycleview.setLayoutManager(layoutManager);
-            activityLogisticsBinding.logisticsRecycleview.setAdapter(routesListAdapter);
+            if (routeIdsGroupedList.size()>0){
+                activityLogisticsBinding.nolistFound.setVisibility(View.GONE);
+                activityLogisticsBinding.logisticsRecycleview.setVisibility(View.VISIBLE);
+                routesListAdapter = new RoutesListAdapter(LogisticsActivity.this, routeIdsGroupedList, LogisticsActivity.this, true);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LogisticsActivity.this, LinearLayoutManager.VERTICAL, false);
+                activityLogisticsBinding.logisticsRecycleview.setLayoutManager(layoutManager);
+                activityLogisticsBinding.logisticsRecycleview.setAdapter(routesListAdapter);
+            }
+            else {
+                activityLogisticsBinding.nolistFound.setVisibility(View.VISIBLE);
+                activityLogisticsBinding.logisticsRecycleview.setVisibility(View.GONE);
+            }
+
         } else {
             Map<String, List<AllocationDetailsResponse.Indentdetail>> completedIndents = new HashMap<>();
 
@@ -992,10 +1014,20 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                     completedIndents.put(entry.getKey(), filteredIndents);
                 }
             }
-            routesListAdapter = new RoutesListAdapter(LogisticsActivity.this, completedIndents, LogisticsActivity.this, true);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LogisticsActivity.this, LinearLayoutManager.VERTICAL, false);
-            activityLogisticsBinding.logisticsRecycleview.setLayoutManager(layoutManager);
-            activityLogisticsBinding.logisticsRecycleview.setAdapter(routesListAdapter);
+            if (completedIndents.size()>0){
+                activityLogisticsBinding.nolistFound.setVisibility(View.GONE);
+                activityLogisticsBinding.logisticsRecycleview.setVisibility(View.VISIBLE);
+                routesListAdapter = new RoutesListAdapter(LogisticsActivity.this, completedIndents, LogisticsActivity.this, true);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LogisticsActivity.this, LinearLayoutManager.VERTICAL, false);
+                activityLogisticsBinding.logisticsRecycleview.setLayoutManager(layoutManager);
+                activityLogisticsBinding.logisticsRecycleview.setAdapter(routesListAdapter);
+            }
+            else {
+                activityLogisticsBinding.nolistFound.setVisibility(View.VISIBLE);
+                activityLogisticsBinding.logisticsRecycleview.setVisibility(View.GONE);
+
+            }
+
         }
 
 
