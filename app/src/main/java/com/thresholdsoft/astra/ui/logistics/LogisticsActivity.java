@@ -975,6 +975,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     @Override
     public void onClickRefresh() {
         onClickClose();
+        activityLogisticsBinding.setSelectedStatus(null);
         activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.req_qty_bg));
 
         VahanApiRequest vahanApiRequest = new VahanApiRequest(getSessionManager().getEmplId(), "", getSessionManager().getDc());
@@ -1092,6 +1093,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             onClickIndent(dummyPos, dummyBarcodedetails, dummyIndentdetailArrayList, dummyRouteIdsGroupedList, indentNum, "", "", "");
 
         }
+
         activityLogisticsBinding.subMenu.setVisibility(View.GONE);
         activityLogisticsBinding.selectSalesInvoiceLayout.setVisibility(View.VISIBLE);
         activityLogisticsBinding.thirdParentLayout.setVisibility(View.GONE);
