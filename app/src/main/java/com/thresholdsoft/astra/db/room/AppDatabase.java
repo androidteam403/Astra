@@ -235,47 +235,52 @@ public abstract class AppDatabase extends RoomDatabase {
     public void insertIndentLogistics(AllocationDetailsResponse getAllocationLineResponse, Boolean update) {
         Log.d("Database Update", "Inserted item with unique key: " + getAllocationLineResponse.getUniqueKey());
 
-        if (dbDao().getLogisticsALlocationList() != null) {
-            List<AllocationDetailsResponse.Indentdetail> existingItems = dbDao().getLogisticsALlocationList().getIndentdetails();
-            List<AllocationDetailsResponse.Indentdetail> newItems = new ArrayList<>();
-            for (AllocationDetailsResponse.Indentdetail item : getAllocationLineResponse.getIndentdetails()) {
-                boolean isPresent = false;
-                for (AllocationDetailsResponse.Indentdetail existingItem : existingItems) {
-                    if (item.getIndentno().equals(existingItem.getIndentno())) {
-                        isPresent = true;
-                        // Check if current status is different from existing status
-                        if (!item.getCurrentstatus().equals(existingItem.getCurrentstatus())) {
-                            // Update existing item with new status
-                            existingItem.setCurrentstatus(item.getCurrentstatus());
-                        }
-                        break;
-                    }
-                }
-                if (!isPresent) {
-                    newItems.add(item);
-                } else {
-                    // Check for new boxes
-                    AllocationDetailsResponse.Indentdetail existingItem = existingItems.stream()
-                            .filter(i -> i.getIndentno().equals(item.getIndentno()))
-                            .findFirst()
-                            .orElse(null);
-                    if (existingItem != null) {
-                        for (AllocationDetailsResponse.Barcodedetail newBox : item.getBarcodedetails()) {
-                            if (!existingItem.getBarcodedetails().contains(newBox)) {
-                                existingItem.getBarcodedetails().add(newBox);
-                            }
-                        }
-                    }
-                }
-            }
+        if (update) {
+            // Delete all existing items
+            dbDao().deleteAllLogisticsAllocationItems();
 
-            if (!newItems.isEmpty()) {
-                AllocationDetailsResponse newAllocationDetailsResponse = new AllocationDetailsResponse();
-                newAllocationDetailsResponse.setIndentdetails(newItems);
-                dbDao().getLogisticAllocationItemsInsert(newAllocationDetailsResponse);
-            }
-        } else {
+            // Insert new items
             dbDao().getLogisticAllocationItemsInsert(getAllocationLineResponse);
+        } else {
+            if (dbDao().getLogisticsALlocationList() != null) {
+                List<AllocationDetailsResponse.Indentdetail> existingItems = dbDao().getLogisticsALlocationList().getIndentdetails();
+                List<AllocationDetailsResponse.Indentdetail> newItems = new ArrayList<>();
+                for (AllocationDetailsResponse.Indentdetail item : getAllocationLineResponse.getIndentdetails()) {
+                    boolean isPresent = false;
+                    for (AllocationDetailsResponse.Indentdetail existingItem : existingItems) {
+                        if (item.getIndentno().equals(existingItem.getIndentno())) {
+                            isPresent = true;
+                            // Check if current status is different from existing status
+                            if (!existingItem.getCurrentstatus().equals(item.getCurrentstatus())) {
+                                // Update existing item with new status
+                                existingItem.setCurrentstatus(item.getCurrentstatus());
+                                isPresent = false;
+
+                                // Check for new boxes
+                                for (AllocationDetailsResponse.Barcodedetail newBox : item.getBarcodedetails()) {
+                                    if (!existingItem.getBarcodedetails().contains(newBox)) {
+                                        existingItem.getBarcodedetails().add(newBox);
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    if (!isPresent) {
+                        newItems.add(item);
+                    }
+                }
+
+                if (!newItems.isEmpty()) {
+                    AllocationDetailsResponse newAllocationDetailsResponse = new AllocationDetailsResponse();
+                    newAllocationDetailsResponse.setIndentdetails(newItems);
+                    newAllocationDetailsResponse.setUniqueKey(getAllocationLineResponse.getUniqueKey());
+
+                    dbDao().getLogisticAllocationItemsInsert(newAllocationDetailsResponse);
+                }
+            } else {
+                dbDao().getLogisticAllocationItemsInsert(getAllocationLineResponse);
+            }
         }
     }
 

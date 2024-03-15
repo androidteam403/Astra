@@ -76,7 +76,8 @@ public interface DbDao {
 
     @Update
     void updateLineItem(GetAllocationLineResponse.Allocationdetail Aalocationdetail);
-
+    @Query("DELETE FROM logistics_allocation_details_response")
+    void deleteAllLogisticsAllocationItems();
     @Query("SELECT * FROM allocation_line_data_item WHERE uniquekey == :uniqueKey")
     GetAllocationLineResponse.Allocationdetail getAllocationLineDataItem(int uniqueKey);
 

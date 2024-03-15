@@ -14,25 +14,43 @@ import java.util.Map;
 public interface LogisticsCallback {
 
     void onSuccessLogoutApiCAll(LogoutResponse logoutResponse);
+
     void onFailureMessage(String message);
-    void onSuccessAllocationDetailsApiCall(AllocationDetailsResponse allocationDetailsResponse);
+
+    void onSuccessAllocationDetailsApiCall(AllocationDetailsResponse allocationDetailsResponse, boolean isRefresh);
+
     void onSuccessVehicleApiCall(GetVechicleMasterResponse getVechicleMasterResponse);
+
     void onSuccessDriversApiCall(GetDriverMasterResponse getDriverMasterResponse);
 
     void onClickRefresh();
-    void onClickClose();
 
-    void onSuccessTripCreationApiCall(TripCreationResponse tripCreationResponse);
+    void filterByStatus(String status, int setStatus);
+     void onClickTruck();
+    void onClickVehicle();
+
+     void  onClickGenerateEwayButton();
+
+     void onCLickScan();
+
+    void onClickClose();
+    void onCLickSort();
+
+    void onSuccessTripCreationApiCallForScannedIndenta(TripCreationResponse tripCreationResponse);
+
+    void onSuccessTripCreationApiCall(TripCreationResponse tripCreationResponse, EwayBillResponse ewayBillResponse);
+
     void onSuccessEwaybillApiCall(EwayBillResponse ewayBillResponse);
 
-    void counts(int newCont,int progress,int completed);
+    void counts(int newCont, int progress, int completed, int scanned);
 
-    void onClickCheckBox(int pos, ArrayList<AllocationDetailsResponse.Indentdetail> logisticsModelLists,Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList,String indentNo);
+    void onClickCheckBox(int pos, ArrayList<AllocationDetailsResponse.Indentdetail> logisticsModelLists, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String indentNo);
 
-    void onClickArrow(int pos, ArrayList<AllocationDetailsResponse.Indentdetail> logisticsModelLists,Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList,String indentNo);
+    void onClickArrow(int pos, ArrayList<AllocationDetailsResponse.Indentdetail> logisticsModelLists, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String indentNo);
 
-    void onClickUnTag(int pos,ArrayList<AllocationDetailsResponse.Barcodedetail> salesinvoiceList,String indentNUmber);
-    void onClickIndent(int pos, ArrayList<AllocationDetailsResponse.Barcodedetail> logisticsModelLists,ArrayList<AllocationDetailsResponse.Indentdetail>  indentdetailArrayList,Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList,String indentNumber,String invoiceNum,String siteId,String siteName);
+    void onClickUnTag(int pos, ArrayList<AllocationDetailsResponse.Barcodedetail> salesinvoiceList, String indentNUmber,String boxId);
+
+    void onClickIndent(int pos, ArrayList<AllocationDetailsResponse.Barcodedetail> logisticsModelLists, ArrayList<AllocationDetailsResponse.Indentdetail> indentdetailArrayList, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String indentNumber, String invoiceNum, String siteId, String siteName);
 
 
 }

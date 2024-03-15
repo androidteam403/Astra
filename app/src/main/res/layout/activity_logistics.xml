@@ -68,6 +68,8 @@
                         android:layout_height="@dimen/dimen25dp"
                         android:layout_alignParentEnd="true"
                         android:gravity="center"
+                        android:onClick="@{()-> callback.onClickRefresh()}"
+
                         android:orientation="horizontal">
 
                         <ImageView
@@ -113,29 +115,37 @@
                     <LinearLayout
                         android:id="@+id/totalLayout"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".326666667"
-                        android:background="@{selectedStatus == 1 ? @color/very_light_grey : @color/transperancy}"
-                        android:gravity="center"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".19"
+                        android:visibility="visible"
+                        android:onClick="@{() -> callback.filterByStatus(``, 21)}"
 
-                        android:orientation="vertical">
+                        android:background="@{selectedStatus == 21 ? @color/very_light_grey : @color/transperancy}"
+                        android:gravity="start"
+                        android:orientation="vertical"
+
+                        android:paddingStart="5dp">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_semibold"
                             android:text="Total"
+                            android:textAlignment="center"
+
                             android:textAllCaps="true"
                             android:textColor="@color/black"
-                            android:textSize="8sp" />
+                            android:textSize="6sp" />
 
                         <TextView
                             android:id="@+id/total_count"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_bold"
-                            android:text=""
-                            android:textColor="@color/black" />
+                            android:text="5"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="8sp" />
 
                     </LinearLayout>
 
@@ -143,38 +153,84 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight=".01"
+                        android:visibility="visible"
                         android:background="@color/grey" />
-
-
 
                     <LinearLayout
                         android:id="@+id/newlayout"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".326666667"
-                        android:background="@{selectedStatus == 2 ? @color/very_light_grey : @color/transperancy}"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".18"
+                        android:onClick="@{() -> callback.filterByStatus(`assigned`, 2)}"
 
-                        android:gravity="center"
-                        android:orientation="vertical">
+                        android:background="@{selectedStatus == 2 ? @color/very_light_grey : @color/transperancy}"
+                        android:gravity="start"
+                        android:orientation="vertical"
+                        android:paddingStart="@dimen/dimen5dp">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_semibold"
                             android:text="NEW"
+                            android:textAlignment="center"
                             android:textAllCaps="true"
                             android:textColor="@color/black"
-                            android:textSize="8sp" />
+                            android:textSize="6sp" />
 
                         <TextView
                             android:id="@+id/new_count"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_bold"
                             android:text="0"
-                            android:textColor="@color/black" />
+                            android:textAlignment="center"
+
+                            android:textColor="@color/black"
+                            android:textSize="8sp" />
 
                     </LinearLayout>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".01"
+                        android:background="@color/grey" />
+                    <LinearLayout
+                        android:id="@+id/inprocess"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".27"
+                        android:onClick="@{() -> callback.filterByStatus(`inprocess`, 1)}"
+
+                        android:background="@{selectedStatus == 1 ? @color/very_light_grey : @color/transperancy}"
+                        android:gravity="start"
+                        android:orientation="vertical"
+                        android:paddingStart="2dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="INPROCESS"
+                            android:textAlignment="center"
+                            android:textAllCaps="true"
+                            android:textColor="@color/black"
+                            android:textSize="6sp" />
+
+                        <TextView
+                            android:id="@+id/inprocess_count"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="0"
+                            android:textAlignment="center"
+
+                            android:textColor="@color/black"
+                            android:textSize="8sp" />
+
+                    </LinearLayout>
+
+
 
                     <View
                         android:layout_width="0dp"
@@ -186,31 +242,36 @@
                         android:id="@+id/completetedlayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".326666667"
+                        android:layout_weight=".33"
                         android:background="@{selectedStatus == 3 ? @color/very_light_grey : @color/transperancy}"
 
-                        android:gravity="center"
+                        android:gravity="start"
                         android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_semibold"
                             android:text="@string/completed"
+                            android:textAlignment="center"
                             android:textAllCaps="true"
                             android:textColor="@color/black"
-                            android:textSize="8sp" />
+                            android:textSize="6sp" />
 
                         <TextView
                             android:id="@+id/completecount"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_bold"
                             android:text="0"
+                            android:textAlignment="center"
+                            android:textSize="8sp"
                             android:textColor="@color/black" />
 
 
                     </LinearLayout>
+
+
 
                 </LinearLayout>
 
@@ -275,6 +336,8 @@
                         android:layout_height="@dimen/dimen25dp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginTop="@dimen/dimen5dp"
+                        android:onClick="@{() -> callback.onCLickScan()}"
+
                         android:layout_marginEnd="@dimen/dimen8dp"
                         android:src="@drawable/scan_icon" />
 
@@ -514,6 +577,7 @@
                         android:layout_marginStart="@dimen/dimen5dp"
                         android:layout_marginEnd="2dp"
                         android:layout_weight=".19"
+                        android:onClick="@{() -> callback.onCLickSort()}"
 
                         android:background="@drawable/bg_edit_text"
                         android:orientation="vertical">
@@ -640,10 +704,10 @@
                                 android:layout_height="30dp"
                                 android:layout_marginStart="@dimen/dimen5dp"
                                 android:layout_marginTop="5dp"
-                                android:visibility="gone"
                                 android:layout_marginBottom="5dp"
                                 android:background="@drawable/bg_grey"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:visibility="gone">
 
                                 <ImageView
                                     android:layout_width="19dp"
@@ -882,13 +946,15 @@
                         android:fontFamily="@font/poppins_semibold"
                         android:paddingStart="6dp"
                         android:paddingTop="5dp"
+                        android:onClick="@{() -> callback.onClickVehicle()}"
+
                         android:paddingEnd="6dp"
                         android:paddingBottom="5dp"
-                        android:visibility="visible"
                         android:text="Select Vehicle"
                         android:textColor="@color/black"
+                        android:textSize="9sp"
 
-                        android:textSize="9sp" />
+                        android:visibility="visible" />
 
                     <LinearLayout
                         android:id="@+id/generateBillLayout"
@@ -909,6 +975,7 @@
                                 android:id="@+id/truckFullCheckBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:onClick="@{() -> callback.onClickTruck()}"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:text="Truck is full closing the upload"
                                 android:textColor="@color/white"
@@ -1043,6 +1110,7 @@
                             android:paddingBottom="5dp"
                             android:text="Generate E-way Bill"
                             android:textColor="@color/black"
+                            android:onClick="@{() -> callback.onClickGenerateEwayButton()}"
 
                             android:textSize="9sp" />
 
@@ -1098,6 +1166,11 @@
         <variable
             name="userId"
             type="String" />
+
+        <variable
+            name="callback"
+            type="com.thresholdsoft.astra.ui.logistics.LogisticsCallback" />
+
 
         <variable
             name="selectedStatus"

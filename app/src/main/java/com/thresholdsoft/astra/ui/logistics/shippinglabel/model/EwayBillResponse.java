@@ -56,6 +56,7 @@ public class EwayBillResponse implements Serializable {
         private String siteid;
         @SerializedName("indentno")
         @Expose
+
         private String indentno;
         @SerializedName("irnnumber")
         @Expose
@@ -76,8 +77,17 @@ public class EwayBillResponse implements Serializable {
         @Expose
         private String ewaybillvalidto;
 
+        private Boolean isApiCalled=true;
         public Boolean getStatus() {
             return status;
+        }
+
+        public Boolean getApiCalled() {
+            return isApiCalled;
+        }
+
+        public void setApiCalled(Boolean apiCalled) {
+            isApiCalled = apiCalled;
         }
 
         public void setStatus(Boolean status) {

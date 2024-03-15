@@ -179,6 +179,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityCallback
         this.isCopy = validateUserModelResponse.getIscopy();
 
         AppConstants.userId = activityLoginBinding.userId.getText().toString().trim();
+
         getDataManager().setEmpId(activityLoginBinding.userId.getText().toString().trim());
         if (validateUserModelResponse.getIsotpvalidate()) {
             activityLoginBinding.setIsOtpScreen(true);
