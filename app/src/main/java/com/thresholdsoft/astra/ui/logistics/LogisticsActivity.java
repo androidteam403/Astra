@@ -1032,7 +1032,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                     for (AllocationDetailsResponse.Indentdetail indentDetail : indentDetailList) {
                         if (indentDetail.isChecked()) {
                             indentDetail.setChecked(false);
-                            EwayBillRequest.Ewaybilldetail ewaybilldetail = new EwayBillRequest.Ewaybilldetail(indentDetail.getIndentno(), indentDetail.getSiteid(), (int) Math.round(indentDetail.getDistance()), indentDetail.getIrnno(), "BLR T003", "S L V TRANSPORT", vehicledetail.getVehicleno(), vehicledetail.getVehicleid(), vehicledetail.getAssignedsupervisior(), vehicledetail.getSupervisiorcontactno(), vehicledetail.getDrivername(), vehicledetail.getDrivercontactno());
+                            EwayBillRequest.Ewaybilldetail ewaybilldetail = new EwayBillRequest.Ewaybilldetail(indentDetail.getIndentno(), indentDetail.getSiteid(), (int) Math.round(indentDetail.getDistance()), indentDetail.getIrnno(), indentDetail.getTransportercode(), indentDetail.getTransporter(), vehicledetail.getVehicleno(), vehicledetail.getVehicleid(), vehicledetail.getAssignedsupervisior(), vehicledetail.getSupervisiorcontactno(), vehicledetail.getDrivername(), vehicledetail.getDrivercontactno());
                             indentNumEway = indentDetail.getIndentno();
                             detailList.add(ewaybilldetail);
                         }
@@ -1098,6 +1098,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
     @Override
     public void onSuccessTripCreationApiCall(TripCreationResponse tripCreationResponse, EwayBillResponse ewayBillResponse) {
+        Toast.makeText(this, tripCreationResponse.getMessage(), Toast.LENGTH_LONG).show();
 
 
         EwayBillResponse.Ewaybilldetail ewayBillResponseTemp = null;
