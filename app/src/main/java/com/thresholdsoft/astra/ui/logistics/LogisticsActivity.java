@@ -918,7 +918,6 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             callTripCreationApiForZeroBoxes(allocationDetailsResponse);
 
 
-
             if (isRefresh) {
                 AppDatabase.getDatabaseInstance(this).insertIndentLogistics(allocationDetailsResponse, isRefresh);
 
@@ -979,6 +978,8 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         activityLogisticsBinding.setSelectedStatus(null);
         filterByStatus("", 0);
         activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.req_qty_bg));
+        activityLogisticsBinding.driversDialog.setEnabled(false);
+        activityLogisticsBinding.driversDialog.setClickable(false);
 
         VahanApiRequest vahanApiRequest = new VahanApiRequest(getSessionManager().getEmplId(), "", getSessionManager().getDc());
         getController().getAllocationDetailsResponse(vahanApiRequest, true);
@@ -1271,6 +1272,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             ewayBillData = ewayBillResponse;
 
             activityLogisticsBinding.driversDialog.setEnabled(false);
+            activityLogisticsBinding.driversDialog.setClickable(false);
 
             for (int i = 0; i < ewayBillResponse.getEwaybilldetails().size(); i++) {
 //                activityLogisticsBinding.ewaybillNumber.setText(ewayBillResponse.getEwaybilldetails().get(i).getEwaybillnumber());
@@ -1336,8 +1338,8 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         List<TripCreationRequest.Indentdetail> tripIndentdetailsList = new ArrayList<>();
         List<TripCreationRequest.Indentdetail.Barcodedetail> tripBarcodedetailsList = new ArrayList<>();
         TripCreationRequest tripCreationRequest;
-        for (int i=0;i<allocationDetailsResponse.getIndentdetails().size();i++){
-            if (allocationDetailsResponse.getIndentdetails().get(i).getNoofboxes()==0.0&&!allocationDetailsResponse.getIndentdetails().get(i).getCurrentstatus().equalsIgnoreCase("scanned")){
+        for (int i = 0; i < allocationDetailsResponse.getIndentdetails().size(); i++) {
+            if (allocationDetailsResponse.getIndentdetails().get(i).getNoofboxes() == 0.0 && !allocationDetailsResponse.getIndentdetails().get(i).getCurrentstatus().equalsIgnoreCase("scanned")) {
                 allocationDetailsResponse.getIndentdetails().get(i).setApiCalledForZeroBoxes(true);
                 TripCreationRequest.Indentdetail tripIndentdetail = new TripCreationRequest.Indentdetail(allocationDetailsResponse.getIndentdetails().get(i).getIndentno(), (int) Math.round(allocationDetailsResponse.getIndentdetails().get(i).getNoofboxes()), (int) Math.round(allocationDetailsResponse.getIndentdetails().get(i).getNoofskus()), allocationDetailsResponse.getIndentdetails().get(i).getSiteid(), tripBarcodedetailsList);
                 tripIndentdetailsList.add(tripIndentdetail);
@@ -1413,6 +1415,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 activityLogisticsBinding.checkboxLayout.setVisibility(View.VISIBLE);
 
                 activityLogisticsBinding.driversDialog.setEnabled(false);
+                activityLogisticsBinding.driversDialog.setClickable(false);
 
                 activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.req_qty_bg));
 
