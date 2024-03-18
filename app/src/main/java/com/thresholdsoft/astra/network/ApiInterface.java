@@ -169,7 +169,7 @@ public interface ApiInterface {
     Call<TripCreationResponse> GET_TRIP_CREATION_RESPONSE_CALL(@Url String url,@Header("Auth-Token") String authToken, @Body TripCreationRequest tripCreationRequest);
     @POST//("https://phrmapvtuat.apollopharmacy.info:8443/Astravahan/Apollo/Vahan/Ewaybill") //21
     Call<EwayBillResponse> GET_EWAY_BILL_RESPONSE_CALL(@Url String url,@Header("Auth-Token") String authToken, @Body EwayBillRequest ewayBillRequest);
-
+//    http://www.jsonblob.com/1219145788130451456   of logistics
 
 //    @POST("https://jsonblob.com/api/jsonBlob/1171756115855007744")
 //    Call<GetStockAuditDataResponse> STOCK_AUDIT_ITEMS_API_CALL();

@@ -26,6 +26,9 @@ public class AllocationDetailsResponse implements Serializable {
     @Expose
     @ColumnInfo(name = "status")
     private Boolean status;
+    @ColumnInfo(name = "isApiCalled")
+    private Boolean isApiCalled=true;
+
     @SerializedName("message")
     @Expose
     @ColumnInfo(name = "message")
@@ -60,6 +63,14 @@ public class AllocationDetailsResponse implements Serializable {
 
     public void setUniqueKey(int uniqueKey) {
         this.uniqueKey = uniqueKey;
+    }
+
+    public void setApiCalled(Boolean apiCalled) {
+        isApiCalled = apiCalled;
+    }
+
+    public Boolean getApiCalled() {
+        return isApiCalled;
     }
 
     public String getMessage() {
@@ -268,6 +279,9 @@ public class AllocationDetailsResponse implements Serializable {
         private boolean isChecked;
         @ColumnInfo(name = "isApiCalled")
         private boolean isApiCalled;
+
+        @ColumnInfo(name = "isApiCalledForZeroBoxes")
+        private boolean isApiCalledForZeroBoxes;
         @ColumnInfo(name = "isColorChanged")
         private boolean isColorChanged;
 
@@ -280,6 +294,14 @@ public class AllocationDetailsResponse implements Serializable {
 
         public String getEwaybillno() {
             return ewaybillno;
+        }
+
+        public boolean isApiCalledForZeroBoxes() {
+            return isApiCalledForZeroBoxes;
+        }
+
+        public void setApiCalledForZeroBoxes(boolean apiCalledForZeroBoxes) {
+            isApiCalledForZeroBoxes = apiCalledForZeroBoxes;
         }
 
         public void setEwaybillno(String ewaybillno) {
