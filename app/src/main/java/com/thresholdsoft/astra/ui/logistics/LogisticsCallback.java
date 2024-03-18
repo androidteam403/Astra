@@ -40,6 +40,9 @@ public interface LogisticsCallback {
 
     void onSuccessTripCreationApiCall(TripCreationResponse tripCreationResponse, EwayBillResponse ewayBillResponse);
 
+    void onSuccessTripCreationApiCallForZeroBoxes(TripCreationResponse tripCreationResponse, AllocationDetailsResponse allocationDetailsResponse);
+
+
     void onSuccessEwaybillApiCall(EwayBillResponse ewayBillResponse);
 
     void counts(int newCont, int progress, int completed, int scanned);

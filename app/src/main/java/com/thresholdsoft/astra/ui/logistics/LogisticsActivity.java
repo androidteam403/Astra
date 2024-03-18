@@ -255,15 +255,14 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             }
 
 // Update the adapter and notify data set changed
-            if (completedIndents.size()>0){
+            if (completedIndents.size() > 0) {
                 activityLogisticsBinding.nolistFound.setVisibility(View.GONE);
                 activityLogisticsBinding.logisticsRecycleview.setVisibility(View.VISIBLE);
                 routesListAdapter = new RoutesListAdapter(LogisticsActivity.this, completedIndents, LogisticsActivity.this, true);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LogisticsActivity.this, LinearLayoutManager.VERTICAL, false);
                 activityLogisticsBinding.logisticsRecycleview.setLayoutManager(layoutManager);
                 activityLogisticsBinding.logisticsRecycleview.setAdapter(routesListAdapter);
-            }
-            else {
+            } else {
                 activityLogisticsBinding.nolistFound.setVisibility(View.VISIBLE);
                 activityLogisticsBinding.logisticsRecycleview.setVisibility(View.GONE);
 
@@ -916,6 +915,8 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                     }
                 }
             }
+            callTripCreationApiForZeroBoxes(allocationDetailsResponse);
+
 
 
             if (isRefresh) {
@@ -976,7 +977,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     public void onClickRefresh() {
         onClickClose();
         activityLogisticsBinding.setSelectedStatus(null);
-        filterByStatus("",0);
+        filterByStatus("", 0);
         activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.req_qty_bg));
 
         VahanApiRequest vahanApiRequest = new VahanApiRequest(getSessionManager().getEmplId(), "", getSessionManager().getDc());
@@ -989,7 +990,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     public void filterByStatus(String status, int setStatus) {
         activityLogisticsBinding.setSelectedStatus(setStatus);
         if (status.isEmpty()) {
-            if (routeIdsGroupedList.size()>0){
+            if (routeIdsGroupedList.size() > 0) {
                 activityLogisticsBinding.nolistFound.setVisibility(View.GONE);
 
                 activityLogisticsBinding.logisticsRecycleview.setVisibility(View.VISIBLE);
@@ -997,8 +998,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LogisticsActivity.this, LinearLayoutManager.VERTICAL, false);
                 activityLogisticsBinding.logisticsRecycleview.setLayoutManager(layoutManager);
                 activityLogisticsBinding.logisticsRecycleview.setAdapter(routesListAdapter);
-            }
-            else {
+            } else {
                 activityLogisticsBinding.nolistFound.setVisibility(View.VISIBLE);
                 activityLogisticsBinding.logisticsRecycleview.setVisibility(View.GONE);
             }
@@ -1017,15 +1017,14 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                     completedIndents.put(entry.getKey(), filteredIndents);
                 }
             }
-            if (completedIndents.size()>0){
+            if (completedIndents.size() > 0) {
                 activityLogisticsBinding.nolistFound.setVisibility(View.GONE);
                 activityLogisticsBinding.logisticsRecycleview.setVisibility(View.VISIBLE);
                 routesListAdapter = new RoutesListAdapter(LogisticsActivity.this, completedIndents, LogisticsActivity.this, true);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LogisticsActivity.this, LinearLayoutManager.VERTICAL, false);
                 activityLogisticsBinding.logisticsRecycleview.setLayoutManager(layoutManager);
                 activityLogisticsBinding.logisticsRecycleview.setAdapter(routesListAdapter);
-            }
-            else {
+            } else {
                 activityLogisticsBinding.nolistFound.setVisibility(View.VISIBLE);
                 activityLogisticsBinding.logisticsRecycleview.setVisibility(View.GONE);
 
@@ -1153,14 +1152,13 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                                     barcodeDetail.setScanned(false);
                                 }
 
-                                if (indentDetail.getBarcodedetails().stream().noneMatch(AllocationDetailsResponse.Barcodedetail::isScanned)){
+                                if (indentDetail.getBarcodedetails().stream().noneMatch(AllocationDetailsResponse.Barcodedetail::isScanned)) {
                                     indentDetail.setCurrentstatus("ASSIGNED");
 
-                                }
-                               else if (indentDetail.getBarcodedetails().stream().anyMatch(AllocationDetailsResponse.Barcodedetail::isScanned)){
+                                } else if (indentDetail.getBarcodedetails().stream().anyMatch(AllocationDetailsResponse.Barcodedetail::isScanned)) {
                                     indentDetail.setCurrentstatus("INPROCESS");
 
-                                } else if (indentDetail.getBarcodedetails().stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned)){
+                                } else if (indentDetail.getBarcodedetails().stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned)) {
                                     indentDetail.setCurrentstatus("SCANNED");
 
                                 }
@@ -1176,15 +1174,13 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                                             }
 
 
-                                            if (existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().stream().noneMatch(AllocationDetailsResponse.Barcodedetail::isScanned)){
+                                            if (existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().stream().noneMatch(AllocationDetailsResponse.Barcodedetail::isScanned)) {
                                                 existingAllocationResponse.getIndentdetails().get(l).setCurrentstatus("ASSIGNED");
 
-                                            }
-                                            else if (existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().stream().anyMatch(AllocationDetailsResponse.Barcodedetail::isScanned)){
+                                            } else if (existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().stream().anyMatch(AllocationDetailsResponse.Barcodedetail::isScanned)) {
                                                 existingAllocationResponse.getIndentdetails().get(l).setCurrentstatus("INPROCESS");
 
-                                            }
-                                            else if (existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned)){
+                                            } else if (existingAllocationResponse.getIndentdetails().get(l).getBarcodedetails().stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned)) {
                                                 existingAllocationResponse.getIndentdetails().get(l).setCurrentstatus("SCANNED");
 
                                             }
@@ -1246,6 +1242,27 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         }
 
 
+    }
+
+    @Override
+    public void onSuccessTripCreationApiCallForZeroBoxes(TripCreationResponse tripCreationResponse, AllocationDetailsResponse allocationDetailsResponse) {
+        Toast.makeText(this, tripCreationResponse.getMessage(), Toast.LENGTH_LONG).show();
+
+
+        AllocationDetailsResponse.Indentdetail detailsResponsetemp = null;
+        for (AllocationDetailsResponse.Indentdetail i : allocationDetailsResponse.getIndentdetails()) {
+            if (!i.isApiCalledForZeroBoxes()) {
+                detailsResponsetemp = i;
+                break;
+            }
+        }
+        if (detailsResponsetemp != null) {
+            allocationDetailsResponse.getIndentdetails().clear();
+            allocationDetailsResponse.getIndentdetails().add(detailsResponsetemp);
+            callTripCreationApiForZeroBoxes(allocationDetailsResponse);
+        } else {
+
+        }
     }
 
     @Override
@@ -1314,6 +1331,25 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         }
 
     }
+
+    public void callTripCreationApiForZeroBoxes(AllocationDetailsResponse allocationDetailsResponse) {
+        List<TripCreationRequest.Indentdetail> tripIndentdetailsList = new ArrayList<>();
+        List<TripCreationRequest.Indentdetail.Barcodedetail> tripBarcodedetailsList = new ArrayList<>();
+        TripCreationRequest tripCreationRequest;
+        for (int i=0;i<allocationDetailsResponse.getIndentdetails().size();i++){
+            if (allocationDetailsResponse.getIndentdetails().get(i).getNoofboxes()==0.0&&!allocationDetailsResponse.getIndentdetails().get(i).getCurrentstatus().equalsIgnoreCase("scanned")){
+                allocationDetailsResponse.getIndentdetails().get(i).setApiCalledForZeroBoxes(true);
+                TripCreationRequest.Indentdetail tripIndentdetail = new TripCreationRequest.Indentdetail(allocationDetailsResponse.getIndentdetails().get(i).getIndentno(), (int) Math.round(allocationDetailsResponse.getIndentdetails().get(i).getNoofboxes()), (int) Math.round(allocationDetailsResponse.getIndentdetails().get(i).getNoofskus()), allocationDetailsResponse.getIndentdetails().get(i).getSiteid(), tripBarcodedetailsList);
+                tripIndentdetailsList.add(tripIndentdetail);
+                tripCreationRequest = new TripCreationRequest(getSessionManager().getEmplId(), getSessionManager().getPickerName(), allocationDetailsResponse.getIndentdetails().get(i).getVahanroute(), getSessionManager().getDc(), "SCANNED", tripIndentdetailsList);
+                getController().getTripCreationResponseforZeroBoxes(tripCreationRequest, allocationDetailsResponse);
+
+            }
+        }
+
+
+    }
+
 
     public void callTripCreationApi(EwayBillResponse ewayBillResponse) {
         List<TripCreationRequest.Indentdetail> tripIndentdetailsList = new ArrayList<>();

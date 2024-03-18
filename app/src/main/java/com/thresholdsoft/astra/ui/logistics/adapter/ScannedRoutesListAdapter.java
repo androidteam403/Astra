@@ -15,6 +15,8 @@ import com.thresholdsoft.astra.ui.logistics.LogisticsCallback;
 import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.AllocationDetailsResponse;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -56,11 +58,34 @@ public class ScannedRoutesListAdapter extends RecyclerView.Adapter<ScannedRoutes
             // Access key and value
             String routeName = entry.getKey();
             List<AllocationDetailsResponse.Indentdetail> indentDetails = entry.getValue();
+            Collections.sort(indentDetails, new Comparator<AllocationDetailsResponse.Indentdetail>() {
+                @Override
+                public int compare(AllocationDetailsResponse.Indentdetail o1, AllocationDetailsResponse.Indentdetail o2) {
+                    int o1Order = getStatusOrder(o1.getCurrentstatus());
+                    int o2Order = getStatusOrder(o2.getCurrentstatus());
+                    return Integer.compare(o1Order, o2Order);
+                }
+
+                private int getStatusOrder(String status) {
+                    switch (status) {
+                        case "SCANNED":
+                            return 0;
+                        case "ASSIGNED":
+                            return 1;
+                        case "INPROCESS":
+                            return 2;
+                        case "COMPLETE":
+                            return 3;
+                        default:
+                            return 4; // Default to last if status is unknown
+                    }
+                }
+            });
 
             // Now you can use routeName and indentDetails as needed
             holder.routesListLayoutBinding.routeNumber.setText(routeName);
 
-            scannedInvoiceAdapter = new ScannedInvoiceAdapter(mContext, new ArrayList<>(entry.getValue().stream()
+            scannedInvoiceAdapter = new ScannedInvoiceAdapter(mContext, new ArrayList<>(indentDetails.stream()
                     .filter(indentdetail -> indentdetail.getNoofboxes() == 0.0 ||
                             indentdetail.getBarcodedetails().stream().anyMatch(AllocationDetailsResponse.Barcodedetail::isScanned))
                     .collect(Collectors.toList())), callback, routeIdsGroupedList);

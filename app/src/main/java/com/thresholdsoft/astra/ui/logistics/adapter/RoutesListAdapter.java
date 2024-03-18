@@ -75,7 +75,7 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
             // Now you can use routeName and indentDetails as needed
             holder.routesListLayoutBinding.routeNumber.setText(routeName);
 
-            List<AllocationDetailsResponse.Indentdetail> indentDetails = (ArrayList<AllocationDetailsResponse.Indentdetail>) entry.getValue();
+            List<AllocationDetailsResponse.Indentdetail> indentDetails = entry.getValue();
 
 // Sort the list based on the current status
             Collections.sort(indentDetails, new Comparator<AllocationDetailsResponse.Indentdetail>() {
