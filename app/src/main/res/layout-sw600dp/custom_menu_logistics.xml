@@ -4,20 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
-        android:layout_width="@dimen/dimen170dp"
+        android:layout_width="170dp"
         android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/transperancy"
+            android:background="@color/white"
+
             android:orientation="vertical"
             android:weightSum="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight=".22"
+                android:layout_weight=".35"
                 android:weightSum="1"
                 android:orientation="horizontal">
                 <LinearLayout
@@ -65,13 +66,13 @@
                     android:visibility="visible"
                     android:layout_weight=".05"
 
-                    android:background="@color/hash_color">
+                    android:background="@color/white">
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight=".24"
-                        android:background="@color/hash_color" />
+                        android:background="@color/white" />
 
 
                 </LinearLayout>
@@ -81,7 +82,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight=".53">
+                android:layout_weight=".31">
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -102,12 +103,11 @@
 
 
 
-
-
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="90dp"
+                                android:layout_height="85dp"
                                 android:gravity="center"
+                                android:layout_marginTop="@dimen/dimen5dp"
                                 android:onClick="@{()-> customMenuSupervisorCallback.onClickLogistics()}"
                                 android:background="@{selectedMenu == 6 ? @color/yellow : @color/imagebackgroundcolor}"
 
@@ -117,7 +117,7 @@
                                     android:layout_height="50dp"
                                     android:layout_gravity="center"
                                     android:contentDescription="@string/app_name"
-                                    android:src="@drawable/icon_order_dispatched"
+                                    android:src="@drawable/vahan_icon"
                                     android:tint="@{selectedMenu == 6 ? @color/black : @color/white}"
                                     tools:ignore="UseAppTint" />
 
@@ -139,31 +139,14 @@
                             android:layout_width="@dimen/dimen0dp"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
+                            android:layout_marginTop="@dimen/dimen5dp"
                             android:background="@color/white"
                             android:layout_weight=".05">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="90dp"
-                                android:background="@{selectedMenu == 1 ? @color/yellow : @color/hash_color}"
-                                android:orientation="vertical">
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="90dp"
-                                android:background="@{selectedMenu == 2 ? @color/yellow : @color/hash_color}"
-
-                                android:orientation="vertical">
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="90dp"
-                                android:background="@{selectedMenu == 3 ? @color/yellow : @color/hash_color}"
-
+                                android:layout_height="85dp"
+                                android:background="@{selectedMenu == 6 ? @color/yellow : @color/white}"
                                 android:orientation="vertical">
 
                             </LinearLayout>
@@ -171,8 +154,17 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="90dp"
-                                android:background="@{selectedMenu == 4 ? @color/yellow : @color/hash_color}"
+                                android:layout_height="@dimen/dimen65dp"
+                                android:background="@{selectedMenu == 2 ? @color/yellow : @color/white}"
+
+                                android:orientation="vertical">
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dimen65dp"
+                                android:background="@{selectedMenu == 3 ? @color/yellow : @color/white}"
 
                                 android:orientation="vertical">
 
@@ -181,17 +173,26 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="90dp"
-                                android:background="@{selectedMenu == 5 ? @color/yellow : @color/hash_color}"
+                                android:layout_height="@dimen/dimen65dp"
+                                android:background="@{selectedMenu == 4 ? @color/yellow : @color/white}"
+
                                 android:orientation="vertical">
 
                             </LinearLayout>
 
 
+
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="90dp"
-                                android:background="@{selectedMenu == 6 ? @color/yellow : @color/hash_color}"
+                                android:layout_height="@dimen/dimen65dp"
+                                android:background="@{selectedMenu == 5 ? @color/yellow : @color/white}"
+                                android:orientation="vertical">
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dimen65dp"
+                                android:background="@{selectedMenu == 1 ? @color/yellow : @color/white}"
                                 android:orientation="vertical">
 
                             </LinearLayout>
@@ -211,15 +212,13 @@
                 android:layout_height="0dp"
                 android:orientation="horizontal"
                 android:weightSum="1"
-                android:layout_weight=".25">
+                android:layout_weight=".34">
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-
                     android:background="@color/bluetoot_color"
                     android:layout_weight=".95">
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
@@ -496,7 +495,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:background="@color/hash_color"
+                    android:background="@color/white"
                     android:layout_weight=".05">
 
                 </LinearLayout>
@@ -513,6 +512,9 @@
 
         <variable
             name="selectedMenu"
+            type="Integer" />
+        <variable
+            name="selectBluetoot"
             type="Integer" />
 
         <variable

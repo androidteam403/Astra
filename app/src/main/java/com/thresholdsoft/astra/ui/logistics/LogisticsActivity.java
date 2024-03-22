@@ -125,7 +125,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     ArrayList<GetDriverMasterResponse.Driverdetail> driverdetailsList = new ArrayList<>();
 
     int dummyPos = 0;
-    ArrayList<AllocationDetailsResponse.Barcodedetail> dummyBarcodedetails;
+    ArrayList<AllocationDetailsResponse.Barcodedetail> dummyBarcodedetails = new ArrayList<>();
     ArrayList<AllocationDetailsResponse.Barcodedetail> originalBarcodedetails;
     ArrayList<AllocationDetailsResponse.Indentdetail> dummyIndentdetailArrayList;
     Map<String, List<AllocationDetailsResponse.Indentdetail>> dummyRouteIdsGroupedList;
@@ -227,52 +227,52 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             activityLogisticsBinding.checkboxLayout.setVisibility(View.VISIBLE);
         });
 
-        activityLogisticsBinding.completetedlayout.setOnClickListener(view -> {
-            activityLogisticsBinding.setSelectedStatus(3);
-
-            Map<String, List<AllocationDetailsResponse.Indentdetail>> completedIndents = new HashMap<>();
-
-            for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : routeIdsGroupedList.entrySet()) {
-                List<AllocationDetailsResponse.Indentdetail> filteredIndents = new ArrayList<>();
-                for (AllocationDetailsResponse.Indentdetail indent : entry.getValue()) {
-                    if (indent.getCurrentstatus().equalsIgnoreCase("completed") || indent.getCurrentstatus().equalsIgnoreCase("scanned")) {
-                        filteredIndents.add(indent);
-                    }
-                }
-                Collections.sort(filteredIndents, (o1, o2) -> {
-                    if (o1.getCurrentstatus().equalsIgnoreCase("scanned") && !o2.getCurrentstatus().equalsIgnoreCase("scanned")) {
-                        return -1; // o1 comes before o2
-                    } else if (!o1.getCurrentstatus().equalsIgnoreCase("scanned") && o2.getCurrentstatus().equalsIgnoreCase("scanned")) {
-                        return 1; // o2 comes before o1
-                    } else {
-                        return 0; // maintain the existing order
-                    }
-                });
-
-                if (!filteredIndents.isEmpty()) {
-                    completedIndents.put(entry.getKey(), filteredIndents);
-                }
-            }
-
-// Update the adapter and notify data set changed
-            if (completedIndents.size() > 0) {
-                activityLogisticsBinding.nolistFound.setVisibility(View.GONE);
-                activityLogisticsBinding.logisticsRecycleview.setVisibility(View.VISIBLE);
-                routesListAdapter = new RoutesListAdapter(LogisticsActivity.this, completedIndents, LogisticsActivity.this, true);
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LogisticsActivity.this, LinearLayoutManager.VERTICAL, false);
-                activityLogisticsBinding.logisticsRecycleview.setLayoutManager(layoutManager);
-                activityLogisticsBinding.logisticsRecycleview.setAdapter(routesListAdapter);
-            } else {
-                activityLogisticsBinding.nolistFound.setVisibility(View.VISIBLE);
-                activityLogisticsBinding.logisticsRecycleview.setVisibility(View.GONE);
-
-            }
-
-            routesListAdapter = new RoutesListAdapter(LogisticsActivity.this, completedIndents, LogisticsActivity.this, true);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LogisticsActivity.this, LinearLayoutManager.VERTICAL, false);
-            activityLogisticsBinding.logisticsRecycleview.setLayoutManager(layoutManager);
-            activityLogisticsBinding.logisticsRecycleview.setAdapter(routesListAdapter);
-        });
+//        activityLogisticsBinding.completetedlayout.setOnClickListener(view -> {
+//            activityLogisticsBinding.setSelectedStatus(3);
+//
+//            Map<String, List<AllocationDetailsResponse.Indentdetail>> completedIndents = new HashMap<>();
+//
+//            for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : routeIdsGroupedList.entrySet()) {
+//                List<AllocationDetailsResponse.Indentdetail> filteredIndents = new ArrayList<>();
+//                for (AllocationDetailsResponse.Indentdetail indent : entry.getValue()) {
+//                    if (indent.getCurrentstatus().equalsIgnoreCase("completed") || indent.getCurrentstatus().equalsIgnoreCase("scanned")) {
+//                        filteredIndents.add(indent);
+//                    }
+//                }
+//                Collections.sort(filteredIndents, (o1, o2) -> {
+//                    if (o1.getCurrentstatus().equalsIgnoreCase("scanned") && !o2.getCurrentstatus().equalsIgnoreCase("scanned")) {
+//                        return -1; // o1 comes before o2
+//                    } else if (!o1.getCurrentstatus().equalsIgnoreCase("scanned") && o2.getCurrentstatus().equalsIgnoreCase("scanned")) {
+//                        return 1; // o2 comes before o1
+//                    } else {
+//                        return 0; // maintain the existing order
+//                    }
+//                });
+//
+//                if (!filteredIndents.isEmpty()) {
+//                    completedIndents.put(entry.getKey(), filteredIndents);
+//                }
+//            }
+//
+//// Update the adapter and notify data set changed
+//            if (completedIndents.size() > 0) {
+//                activityLogisticsBinding.nolistFound.setVisibility(View.GONE);
+//                activityLogisticsBinding.logisticsRecycleview.setVisibility(View.VISIBLE);
+//                routesListAdapter = new RoutesListAdapter(LogisticsActivity.this, completedIndents, LogisticsActivity.this, true);
+//                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LogisticsActivity.this, LinearLayoutManager.VERTICAL, false);
+//                activityLogisticsBinding.logisticsRecycleview.setLayoutManager(layoutManager);
+//                activityLogisticsBinding.logisticsRecycleview.setAdapter(routesListAdapter);
+//            } else {
+//                activityLogisticsBinding.nolistFound.setVisibility(View.VISIBLE);
+//                activityLogisticsBinding.logisticsRecycleview.setVisibility(View.GONE);
+//
+//            }
+//
+//            routesListAdapter = new RoutesListAdapter(LogisticsActivity.this, completedIndents, LogisticsActivity.this, true);
+//            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LogisticsActivity.this, LinearLayoutManager.VERTICAL, false);
+//            activityLogisticsBinding.logisticsRecycleview.setLayoutManager(layoutManager);
+//            activityLogisticsBinding.logisticsRecycleview.setAdapter(routesListAdapter);
+//        });
         activityLogisticsBinding.searchByItemId.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1092,7 +1092,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     @Override
     public void onClickClose() {
         if (dummyIndentdetailArrayList != null && dummyBarcodedetails != null) {
-            onClickIndent(dummyPos, dummyBarcodedetails, dummyIndentdetailArrayList, dummyRouteIdsGroupedList, indentNum, "", "", "");
+            onClickIndent(dummyPos, dummyBarcodedetails, dummyIndentdetailArrayList, dummyRouteIdsGroupedList, indentNum, "", "", "", "");
 
         }
 
@@ -1108,6 +1108,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
     @Override
     public void onCLickSort() {
+        if(dummyBarcodedetails.size()>0)
         if (isSortedAscending) {
             activityLogisticsBinding.sort.setColorFilter(null);
 
@@ -1115,7 +1116,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             dummyBarcodedetails.addAll(originalBarcodedetails);
         } else {
 
-            activityLogisticsBinding.sort.setColorFilter(Color.parseColor("#094144"));
+            activityLogisticsBinding.sort.setColorFilter(Color.parseColor("#91A4A8"));
 
             // Sort the list in ascending order based on boxid
             Collections.sort(dummyBarcodedetails, Comparator.comparing(AllocationDetailsResponse.Barcodedetail::getId).reversed());
@@ -1126,7 +1127,10 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         isSortedAscending = !isSortedAscending;
 
         // Notify the adapter that the data set has changed
-        invoiceDetailsAdapter.notifyDataSetChanged();
+
+        if (invoiceDetailsAdapter != null) {
+            invoiceDetailsAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -1268,7 +1272,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
     @Override
     public void onSuccessEwaybillApiCall(EwayBillResponse ewayBillResponse) {
-        if (ewayBillResponse != null) {
+        if (ewayBillResponse != null && ewayBillResponse.getStatus()) {
             ewayBillData = ewayBillResponse;
 
             activityLogisticsBinding.driversDialog.setEnabled(false);
@@ -1330,6 +1334,8 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             callTripCreationApi(ewayBillResponse);
 
 
+        } else {
+            Toast.makeText(this, ewayBillResponse.getMessage(), Toast.LENGTH_LONG).show();
         }
 
     }
@@ -1360,6 +1366,11 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 LinearLayout.LayoutParams.MATCH_PARENT
         );
         layoutParams.weight = .7F;
+        LinearLayout.LayoutParams layoutParamsforThirdParentLAyout = new LinearLayout.LayoutParams(
+
+                LinearLayout.LayoutParams.MATCH_PARENT, 0
+        );
+        layoutParamsforThirdParentLAyout.weight = .55F;
         layoutParams.setMargins(8, 0, 0, 0);
         List<EwayBillResponse.Ewaybilldetail> sortedEwaybilldetails = new ArrayList<>(ewayBillResponse.getEwaybilldetails());
 
@@ -1401,6 +1412,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 TripCreationRequest tripCreationRequest = new TripCreationRequest(getSessionManager().getEmplId(), getSessionManager().getPickerName(), vahanRoute, getSessionManager().getDc(), "TRIPCREATION", tripIndentdetailsList);
                 getController().getTripCreationResponse(tripCreationRequest, ewayBillResponse);
                 activityLogisticsBinding.thirdParentLayout.setLayoutParams(layoutParams);
+                activityLogisticsBinding.thirdParentRecycleviewLayout.setLayoutParams(layoutParamsforThirdParentLAyout);
                 activityLogisticsBinding.scannedAndLoadedLayout.setVisibility(View.VISIBLE);
                 activityLogisticsBinding.ewayBillLayout.setVisibility(View.VISIBLE);
                 activityLogisticsBinding.checkboxLayout.setVisibility(View.GONE);
@@ -1430,8 +1442,9 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     @Override
     public void counts(int newCont, int progress, int completed, int scanned) {
         activityLogisticsBinding.newCount.setText(String.valueOf(newCont));
-        activityLogisticsBinding.completecount.setText(String.valueOf(completed + scanned));
-        activityLogisticsBinding.inprocessCount.setText(String.valueOf(progress));
+        activityLogisticsBinding.completecount.setText(String.valueOf(completed));
+        activityLogisticsBinding.inprocesscount.setText(String.valueOf(progress));
+        activityLogisticsBinding.scannedcount.setText(String.valueOf(scanned));
 
     }
 
@@ -1672,7 +1685,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
 
     @Override
-    public void onClickIndent(int pos, ArrayList<AllocationDetailsResponse.Barcodedetail> barcodedetails, ArrayList<AllocationDetailsResponse.Indentdetail> indentdetailArrayList, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String indentNumber, String invoiceNum, String siteId, String siteName) {
+    public void onClickIndent(int pos, ArrayList<AllocationDetailsResponse.Barcodedetail> barcodedetails, ArrayList<AllocationDetailsResponse.Indentdetail> indentdetailArrayList, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String indentNumber, String invoiceNum, String siteId, String siteName, String vahanRoute) {
         dummyPos = pos;
         dummyBarcodedetails = barcodedetails;
         originalBarcodedetails = new ArrayList<>(dummyBarcodedetails);
@@ -1683,6 +1696,11 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         indentNum = indentNumber;
         activityLogisticsBinding.invoiceNumber.setText(invoiceNum);
         activityLogisticsBinding.site.setText(siteId);
+        activityLogisticsBinding.routeNumber.setText(vahanRoute);
+        int matchingCount = (int) indentdetailArrayList.stream()
+                .filter(detail -> vahanRoute.equals(detail.getVahanroute()))
+                .count();
+        activityLogisticsBinding.itemCount.setText(String.valueOf(matchingCount));
         activityLogisticsBinding.siteName.setText(siteName);
 //        activityLogisticsBinding.scannedAndLoadedLayout.setVisibility(View.GONE);
 //        activityLogisticsBinding.ewayBillLayout.setVisibility(View.GONE);
@@ -1783,6 +1801,8 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     }
 
     public void visibleSecondParentLayout(Map<String, List<AllocationDetailsResponse.Indentdetail>> groupedListRoutes) {
+
+
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
@@ -1796,6 +1816,11 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 0,
                 LinearLayout.LayoutParams.MATCH_PARENT
         );
+        LinearLayout.LayoutParams layoutParamsforThirdParentLAyout = new LinearLayout.LayoutParams(
+
+                LinearLayout.LayoutParams.MATCH_PARENT, 0
+        );
+        layoutParamsforThirdParentLAyout.weight = .85F;
         layoutParams3.weight = .4F;
         layoutParams.weight = .7F;
         layoutParams.setMargins(8, 0, 0, 0);
@@ -1819,7 +1844,12 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             activityLogisticsBinding.site.setText(scannedIndentDetail.getSiteid());
             activityLogisticsBinding.siteName.setText(scannedIndentDetail.getSitename());
             activityLogisticsBinding.invoiceNumber.setText(scannedIndentDetail.getInvoicenumber());
-
+            for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : groupedListRoutes.entrySet()) {
+                if (scannedIndentDetail.getVahanroute().equals(entry.getKey())) {
+                    activityLogisticsBinding.itemCount.setText(String.valueOf(entry.getValue().size())); // Get the size of the list for the matching key
+                    break; // Exit the loop once a match is found
+                }
+            }
 
             activityLogisticsBinding.invoiceRecycleviewLayout.setLayoutParams(layoutParams);
             activityLogisticsBinding.subMenu.setVisibility(View.VISIBLE);
@@ -1827,8 +1857,10 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             activityLogisticsBinding.thirdParentLayout.setVisibility(View.VISIBLE);
             activityLogisticsBinding.startScanLayout.setVisibility(View.VISIBLE);
             activityLogisticsBinding.ewayBillLayout.setVisibility(View.GONE);
-
+            activityLogisticsBinding.thirdParentRecycleviewLayout.setLayoutParams(layoutParamsforThirdParentLAyout);
             activityLogisticsBinding.selectSalesInvoiceLayout.setVisibility(View.GONE);
+            activityLogisticsBinding.routeNumber.setText(scannedIndentDetail.getVahanroute());
+
             activityLogisticsBinding.indentNumber.setText(scannedIndentDetail.getIndentno());
             ArrayList<AllocationDetailsResponse.Barcodedetail> nonScannedbarcodedetailsList = (ArrayList<AllocationDetailsResponse.Barcodedetail>) groupedListRoutes.values().stream()
                     // Flatten the map values to get a stream of List<AllocationDetailsResponse.Indentdetail>
@@ -1879,6 +1911,11 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 0,
                 LinearLayout.LayoutParams.MATCH_PARENT
         );
+        LinearLayout.LayoutParams layoutParamsforThirdParentLAyout = new LinearLayout.LayoutParams(
+
+                LinearLayout.LayoutParams.MATCH_PARENT, 0
+        );
+        layoutParamsforThirdParentLAyout.weight = .85F;
         layoutParams3.weight = .4F;
         layoutParams.weight = .7F;
         layoutParams.setMargins(8, 0, 0, 0);
@@ -1894,6 +1931,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         activityLogisticsBinding.thirdParentLayout.setLayoutParams(layoutParams3);
         activityLogisticsBinding.thirdParentLayout.setVisibility(View.VISIBLE);
         activityLogisticsBinding.startScanLayout.setVisibility(View.VISIBLE);
+        activityLogisticsBinding.thirdParentRecycleviewLayout.setLayoutParams(layoutParamsforThirdParentLAyout);
         activityLogisticsBinding.ewayBillLayout.setVisibility(View.GONE);
 
         activityLogisticsBinding.selectSalesInvoiceLayout.setVisibility(View.GONE);
