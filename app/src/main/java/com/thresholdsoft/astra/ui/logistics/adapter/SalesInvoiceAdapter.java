@@ -68,7 +68,7 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
             holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#ffc12f"));
 
         } else if (items.getCurrentstatus().equalsIgnoreCase("Completed")) {
-            holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#3CB371"));
+            holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#068A67"));
             holder.salesInvoiceLayoutBinding.status.setText(items.getCurrentstatus());
 
         }
@@ -113,7 +113,7 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
 //            if (items.getStatus().equals("In Progress")) {
 
 //                holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#ffc12f"));
-            callback.onClickIndent(position, (ArrayList<AllocationDetailsResponse.Barcodedetail>) items.getBarcodedetails(), salesinvoiceList, routeIdsGroupedList, items.getIndentno(),items.getInvoicenumber(),items.getSiteid(),items.getSitename());
+            callback.onClickIndent(position, (ArrayList<AllocationDetailsResponse.Barcodedetail>) items.getBarcodedetails(), salesinvoiceList, routeIdsGroupedList, items.getIndentno(),items.getInvoicenumber(),items.getSiteid(),items.getSitename(),items.getVahanroute());
 //            }
         });
     }

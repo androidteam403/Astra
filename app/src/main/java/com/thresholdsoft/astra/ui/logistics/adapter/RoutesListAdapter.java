@@ -1,7 +1,10 @@
 package com.thresholdsoft.astra.ui.logistics.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -37,7 +40,7 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
     public Boolean isCounted;
     public SalesInvoiceAdapter salesInvoiceAdapter;
     public List<Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>>> entryList;
-
+    private int selectedItemPosition = -1;
     public RoutesListAdapter(Context mContext, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, LogisticsCallback callback, Boolean iscounted) {
         this.mContext = mContext;
         this.routeIdsGroupedList = routeIdsGroupedList;
@@ -55,16 +58,43 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if (salesInvoiceAdapter != null) {
             salesInvoiceAdapter.notifyDataSetChanged();
 
         }
+        boolean isSelected = position == selectedItemPosition;
+
+        holder.routesListLayoutBinding.logisticsRecycleview.setVisibility(isSelected ? View.VISIBLE : View.GONE);
+        holder.routesListLayoutBinding.arrow.setRotation(isSelected ? 90 : 0);
+
+        // Set click listener to handle item selection
+        holder.itemView.setOnClickListener(v -> {
+            // Update selected item position
+            selectedItemPosition = isSelected ? -1 : position;
+            notifyDataSetChanged(); // Update UI
+        });
         if (position < filteredList.size()) {
             // Access the entry at the specified position
             Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry = filteredList.get(position);
             if (!isCounted) {
                 callback.counts(countNewStatus(), countinProcessStatus(), countCompleteStatus(), countScannedStatus());
+
+            }
+
+            holder.routesListLayoutBinding.itemCount.setText(String.valueOf(filteredList.get(position).getValue().size()));
+
+            if (filteredList.get(position).getValue().stream()
+                    .allMatch(detail -> "COMPLETED".equalsIgnoreCase(detail.getCurrentstatus()))){
+                holder.routesListLayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#068A67"));
+
+            }else if(filteredList.get(position).getValue().stream()
+                    .allMatch(detail -> "ASSIGNED".equalsIgnoreCase(detail.getCurrentstatus()))){
+                holder.routesListLayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#B8C0CE"));
+
+            }
+            else {
+                holder.routesListLayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#93E2A9"));
 
             }
 
@@ -101,6 +131,8 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
                     }
                 }
             });
+
+
 
 
 

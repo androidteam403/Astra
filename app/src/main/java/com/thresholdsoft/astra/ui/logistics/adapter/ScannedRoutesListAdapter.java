@@ -2,6 +2,7 @@ package com.thresholdsoft.astra.ui.logistics.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.thresholdsoft.astra.R;
 import com.thresholdsoft.astra.databinding.RoutesListLayoutBinding;
+import com.thresholdsoft.astra.databinding.ScannedRoutesAdapterLayoutBinding;
 import com.thresholdsoft.astra.ui.logistics.LogisticsCallback;
 import com.thresholdsoft.astra.ui.logistics.shippinglabel.model.AllocationDetailsResponse;
 
@@ -29,7 +31,6 @@ public class ScannedRoutesListAdapter extends RecyclerView.Adapter<ScannedRoutes
     String charString;
     private ScannedInvoiceAdapter scannedInvoiceAdapter;
 
-
     public ScannedRoutesListAdapter(Context mContext, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, LogisticsCallback callback) {
         this.mContext = mContext;
         this.routeIdsGroupedList = routeIdsGroupedList;
@@ -42,18 +43,18 @@ public class ScannedRoutesListAdapter extends RecyclerView.Adapter<ScannedRoutes
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RoutesListLayoutBinding routesListLayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.routes_list_layout, parent, false);
+        ScannedRoutesAdapterLayoutBinding routesListLayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.scanned_routes_adapter_layout, parent, false);
         return new ViewHolder(routesListLayoutBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         List<Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>>> entryList = new ArrayList<>(routeIdsGroupedList.entrySet());
-
         // Ensure that the position is within the valid range
         if (position < entryList.size()&&entryList.get(position).getValue().size()>0) {
             // Access the entry at the specified position
             Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry = entryList.get(position);
+            holder.routesListLayoutBinding.itemCount.setText(String.valueOf(entryList.get(position).getValue().size()));
 
             // Access key and value
             String routeName = entry.getKey();
@@ -107,9 +108,9 @@ public class ScannedRoutesListAdapter extends RecyclerView.Adapter<ScannedRoutes
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        RoutesListLayoutBinding routesListLayoutBinding;
+        ScannedRoutesAdapterLayoutBinding routesListLayoutBinding;
 
-        public ViewHolder(@NonNull RoutesListLayoutBinding routesListLayoutBinding) {
+        public ViewHolder(@NonNull ScannedRoutesAdapterLayoutBinding routesListLayoutBinding) {
             super(routesListLayoutBinding.getRoot());
             this.routesListLayoutBinding = routesListLayoutBinding;
         }

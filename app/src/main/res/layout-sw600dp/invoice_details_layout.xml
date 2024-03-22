@@ -10,23 +10,23 @@
         <LinearLayout
             android:id="@+id/sub_parent_layout"
             android:layout_width="match_parent"
-            android:background="@drawable/hash"
-            android:backgroundTint="@color/white"
+            android:background="@color/white"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_marginStart="4dp"
                 android:text="1"
+                android:visibility="gone"
                 android:layout_marginTop="5dp"
-                android:paddingTop="5dp"
+                android:paddingTop="3dp"
                 android:textAlignment="center"
                 android:background="@drawable/circle_bg"
                 android:fontFamily="@font/poppins_semibold"
 
                 android:id="@+id/salesInvoiceId"
-                android:textSize="12sp"/>
+                android:textSize="10sp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -37,13 +37,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Box No: "
+                    android:visibility="gone"
                     android:fontFamily="@font/poppins_semibold"
-                    android:textSize="11sp"/>
+                    android:textSize="9sp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="RPR-EOOO202049-140-z1-1/10"
                     android:textColor="@color/black"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="@dimen/dimen5dp"
                     android:fontFamily="@font/poppins_semibold"
                     android:id="@+id/boxes"
                     android:textSize="12sp"/>
@@ -52,7 +55,6 @@
 
 
         </LinearLayout>
-
         <TextView
             android:layout_width="match_parent"
             android:textAlignment="center"
@@ -60,7 +62,6 @@
             android:textColor="@color/red"
             android:id="@+id/empty"
             android:visibility="gone"
-            android:textSize="@dimen/dimen12sp"
             android:fontFamily="@font/poppins_semibold"
             android:layout_height="match_parent"
             android:text="No Boxes Found"/>

@@ -117,7 +117,7 @@
                                     android:layout_height="@dimen/dimen30dp"
                                     android:layout_gravity="center"
                                     android:contentDescription="@string/app_name"
-                                    android:src="@drawable/icon_order_dispatched"
+                                    android:src="@drawable/vahan_icon"
                                     android:tint="@{selectedMenu == 6 ? @color/black : @color/white}"
                                     tools:ignore="UseAppTint" />
 
