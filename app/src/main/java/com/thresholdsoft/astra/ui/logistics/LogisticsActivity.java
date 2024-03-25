@@ -654,7 +654,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 }
                 if (barcodeMatched) break; // Exit the outer loop if a match is found
 
-                routesListAdapter.isCounted=false;
+                routesListAdapter.isCounted = false;
                 routesListAdapter.notifyDataSetChanged();
 
 
@@ -890,7 +890,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             for (int i = 0; i < allocationDetailsResponse.getIndentdetails().size(); i++) {
                 AllocationDetailsResponse.Indentdetail indentDetail = allocationDetailsResponse.getIndentdetails().get(i);
                 int noOfBoxes = (int) Double.parseDouble(indentDetail.getNoofboxes().toString());
-                if (noOfBoxes == 0 && indentDetail.getCurrentstatus().equalsIgnoreCase("EWAYBILLGENERATED") || indentDetail.getCurrentstatus().equalsIgnoreCase("EWAYBILLGENERATED")) {
+                if (indentDetail.getCurrentstatus().equalsIgnoreCase("EWAYBILLGENERATED") || indentDetail.getCurrentstatus().equalsIgnoreCase("EWAYBILLGENERATED")) {
                     for (int j = 0; j < allocationDetailsResponse.getIndentdetails().get(i).getBarcodedetails().size(); j++) {
                         AllocationDetailsResponse.Barcodedetail barcodeDetail = indentDetail.getBarcodedetails().get(j);
 
@@ -902,7 +902,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                         barcodeDetail.setScanned(true);
                         barcodeDetail.setScannedTime(formattedDate);
                     }
-                } else if (noOfBoxes == 0 || indentDetail.getCurrentstatus().equalsIgnoreCase("scanned")) {
+                } else if (indentDetail.getCurrentstatus().equalsIgnoreCase("scanned")) {
                     indentDetail.setCurrentstatus("SCANNED");
                     for (int j = 0; j < allocationDetailsResponse.getIndentdetails().get(i).getBarcodedetails().size(); j++) {
                         AllocationDetailsResponse.Barcodedetail barcodeDetail = indentDetail.getBarcodedetails().get(j);
@@ -1045,7 +1045,11 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
 
                 activityLogisticsBinding.logisticsRecycleview.setVisibility(View.VISIBLE);
-                routesListAdapter = new RoutesListAdapter(LogisticsActivity.this, routeIdsGroupedList, LogisticsActivity.this, false);
+                routesListAdapter = new RoutesListAdapter(LogisticsActivity.this, routeIdsGroupedList.entrySet().stream()
+                        .filter(entry -> entry.getValue().stream().anyMatch(indent -> !indent.getCurrentstatus().equalsIgnoreCase("EWAYBILLGENERATED")))
+                        .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().stream()
+                                .filter(indent -> !indent.getCurrentstatus().equalsIgnoreCase("EWAYBILLGENERATED"))
+                                .collect(Collectors.toList()))), LogisticsActivity.this, false);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LogisticsActivity.this, LinearLayoutManager.VERTICAL, false);
                 activityLogisticsBinding.logisticsRecycleview.setLayoutManager(layoutManager);
                 activityLogisticsBinding.logisticsRecycleview.setAdapter(routesListAdapter);
@@ -1054,8 +1058,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 activityLogisticsBinding.logisticsRecycleview.setVisibility(View.GONE);
             }
 
-        }
-        else if (status.equalsIgnoreCase("EWAYBILLGENERATED")) {
+        } else if (status.equalsIgnoreCase("EWAYBILLGENERATED")) {
             Map<String, List<AllocationDetailsResponse.Indentdetail>> completedIndents = new HashMap<>();
 
             for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : groupedByVehicle.entrySet()) {
@@ -1084,7 +1087,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 }
 
 
-                    onCallScannedAdapter(groupedByVehicle, "", true);
+                onCallScannedAdapter(groupedByVehicle, "", true);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
                 layoutParams.weight = .7F;
                 LinearLayout.LayoutParams layoutParamsforThirdParentLAyout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
@@ -1138,7 +1141,6 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                     activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.req_qty_bg));
                 }
             }
-
             onCallScannedAdapter(routeIdsGroupedList.entrySet().stream()
                     .filter(entry -> entry.getValue().stream().anyMatch(indent -> !indent.getCurrentstatus().equalsIgnoreCase("EWAYBILLGENERATED")))
                     .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().stream()
@@ -1404,7 +1406,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         if (tripIndentdetailsList.size() > 0) {
             TripCreationRequest tripCreationRequest = new TripCreationRequest(getSessionManager().getEmplId(), getSessionManager().getPickerName(), vahanRoute, getSessionManager().getDc(), "TRIPCREATION", tripIndentdetailsList);
             getController().getTripCreationResponse(tripCreationRequest, routeIdsGroupedList);
-        }else {
+        } else {
             onClickRefresh();
         }
 
@@ -1428,7 +1430,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             allocationDetailsResponse.getIndentdetails().add(detailsResponsetemp);
             callTripCreationApiForZeroBoxes(allocationDetailsResponse);
         } else {
-
+            onClickRefresh();
         }
     }
 
@@ -1436,7 +1438,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     public void onSuccessEwaybillApiCall(EwayBillResponse ewayBillResponse) {
         if (ewayBillResponse != null && ewayBillResponse.getStatus()) {
             ewayBillData = ewayBillResponse;
-            Toast.makeText(this,ewayBillResponse.getMessage(),Toast.LENGTH_LONG).show();
+            Toast.makeText(this, ewayBillResponse.getMessage(), Toast.LENGTH_LONG).show();
 
             activityLogisticsBinding.driversDialog.setEnabled(false);
             activityLogisticsBinding.driversDialog.setClickable(false);
@@ -1629,7 +1631,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             if (indentDetailList != null) {
                 for (int j = 0; j < indentDetailList.size(); j++) {
                     AllocationDetailsResponse.Indentdetail indentDetail = indentDetailList.get(j);
-                    if (routeKey.contains("ROUTE")){
+                    if (routeKey.contains("ROUTE")) {
                         if (routeKey.equals(logisticsModelLists.get(pos).getVahanroute())) {
                             if (indentDetail.getIndentno().equals(indentNo)) {
                                 if (indentDetail.isClicked()) {
@@ -1642,7 +1644,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
                         }
 
-                    }else {
+                    } else {
                         if (routeKey.equals(logisticsModelLists.get(pos).getVehiclenumber())) {
                             if (indentDetail.getIndentno().equals(indentNo)) {
                                 if (indentDetail.isClicked()) {
@@ -1656,7 +1658,6 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                         }
 
                     }
-
 
 
                 }
@@ -1678,7 +1679,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             List<AllocationDetailsResponse.Indentdetail> indentdetailsList = item.getValue();
             for (int v = 0; v < indentdetailsList.size(); v++) {
                 if (indentdetailsList.get(v).getIndentno().equals(indentNumbr)) {
-                    if (!indentdetailsList.get(v).getCurrentstatus().equalsIgnoreCase("completed") && !indentdetailsList.get(v).getCurrentstatus().equalsIgnoreCase("scanned")&&!indentdetailsList.get(v).getCurrentstatus().equalsIgnoreCase("EWAYBILLGENERATED")) {
+                    if (!indentdetailsList.get(v).getCurrentstatus().equalsIgnoreCase("completed") && !indentdetailsList.get(v).getCurrentstatus().equalsIgnoreCase("scanned") && !indentdetailsList.get(v).getCurrentstatus().equalsIgnoreCase("EWAYBILLGENERATED")) {
                         Dialog customDialog = new Dialog(this);
                         DialogCustomAlertBinding dialogCustomAlertBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_custom_alert, null, false);
                         customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -2040,7 +2041,11 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             activityLogisticsBinding.driversDialog.setVisibility(View.VISIBLE);
             activityLogisticsBinding.checkboxLayout.setVisibility(View.VISIBLE);
 
-            onCallScannedAdapter(routeIdsGroupedList, indentNum, false);
+            onCallScannedAdapter(routeIdsGroupedList.entrySet().stream()
+                    .filter(entry -> entry.getValue().stream().anyMatch(indent -> !indent.getCurrentstatus().equalsIgnoreCase("EWAYBILLGENERATED")))
+                    .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().stream()
+                            .filter(indent -> !indent.getCurrentstatus().equalsIgnoreCase("EWAYBILLGENERATED"))
+                            .collect(Collectors.toList()))), indentNum, false);
 
         } else {
             // No indent of barcode details is scanned
