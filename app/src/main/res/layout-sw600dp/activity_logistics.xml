@@ -362,8 +362,9 @@
                 <LinearLayout
                     android:id="@+id/firstRecycleviewLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="4dp"
+                    android:layout_marginBottom="@dimen/dimen5dp"
                     android:layout_marginEnd="4dp"
                     android:orientation="vertical">
 
