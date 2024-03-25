@@ -86,8 +86,15 @@ public class ScannedRoutesListAdapter extends RecyclerView.Adapter<ScannedRoutes
             });
 
             // Now you can use routeName and indentDetails as needed
-            holder.routesListLayoutBinding.routeNumber.setText(routeName);
             if (isEwayGenerated){
+                if (indentDetails.stream().filter(indentdetail -> indentdetail.getCurrentstatus().equalsIgnoreCase("EWAYBILLGENERATED")).collect(Collectors.toList()).size()>0){
+                    holder.routesListLayoutBinding.routeNumber.setText(routeName);
+                    holder.routesListLayoutBinding.routeLayout.setVisibility(View.VISIBLE);
+
+                }
+                else {
+                    holder.routesListLayoutBinding.routeLayout.setVisibility(View.GONE);
+                }
                 scannedInvoiceAdapter = new ScannedInvoiceAdapter(mContext, new ArrayList<>(indentDetails.stream()
                         .filter(indentdetail -> indentdetail.getCurrentstatus().equalsIgnoreCase("EWAYBILLGENERATED")).collect(Collectors.toList())), callback, routeIdsGroupedList);
 
@@ -95,6 +102,17 @@ public class ScannedRoutesListAdapter extends RecyclerView.Adapter<ScannedRoutes
                 holder.routesListLayoutBinding.logisticsRecycleview.setLayoutManager(layoutManager);
                 holder.routesListLayoutBinding.logisticsRecycleview.setAdapter(scannedInvoiceAdapter);
             }else {
+                if (indentDetails.stream().filter(indentdetail -> indentdetail.getNoofboxes() == 0.0 ||
+                                indentdetail.getBarcodedetails().stream().anyMatch(AllocationDetailsResponse.Barcodedetail::isScanned))
+                        .collect(Collectors.toList()).size()>0){
+                    holder.routesListLayoutBinding.routeNumber.setText(routeName);
+                    holder.routesListLayoutBinding.routeLayout.setVisibility(View.VISIBLE);
+
+                }
+                else {
+                    holder.routesListLayoutBinding.routeLayout.setVisibility(View.GONE);
+
+                }
                 scannedInvoiceAdapter = new ScannedInvoiceAdapter(mContext, new ArrayList<>(indentDetails.stream()
 
                         .filter(indentdetail -> indentdetail.getNoofboxes() == 0.0 ||
