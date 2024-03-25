@@ -207,7 +207,7 @@ public class LogisticActivityController {
     }
 
 
-    public void getTripCreationResponse(TripCreationRequest tripCreationRequest,EwayBillResponse ewayBillResponse) {
+    public void getTripCreationResponse(TripCreationRequest tripCreationRequest,Map<String, List<AllocationDetailsResponse.Indentdetail>> groupedByVehicle) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
             String url = getDataManager().getApi();
@@ -228,7 +228,7 @@ public class LogisticActivityController {
                 public void onResponse(@NotNull Call<TripCreationResponse> call, @NotNull Response<TripCreationResponse> response) {
                     ActivityUtils.hideDialog();
                     if (response.isSuccessful() && response.body() != null) {
-                        mCallback.onSuccessTripCreationApiCall(response.body(),ewayBillResponse);
+                        mCallback.onSuccessTripCreationApiCall(response.body(),groupedByVehicle);
 
                     }
                 }

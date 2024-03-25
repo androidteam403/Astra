@@ -292,6 +292,80 @@ public class AllocationDetailsResponse implements Serializable {
         @Expose
         private String ewaybillno;
 
+
+        @SerializedName("tripid")
+        @Expose
+        @ColumnInfo(name = "tripid")
+        private String tripid;
+        @SerializedName("vehiclenumber")
+        @Expose
+        @ColumnInfo(name = "vehiclenumber")
+        private String vehiclenumber;
+        @SerializedName("supervisorname")
+        @Expose
+        @ColumnInfo(name = "supervisorname")
+        private String supervisorname;
+        @SerializedName("supervisorcontactno")
+        @Expose
+        @ColumnInfo(name = "supervisorcontactno")
+        private String supervisorcontactno;
+        @SerializedName("drivername")
+        @Expose
+        @ColumnInfo(name = "drivername")
+        private String drivername;
+        @SerializedName("drivercontactno")
+        @Expose
+        @ColumnInfo(name = "drivercontactno")
+        private String drivercontactno;
+
+        public String getTripid() {
+            return tripid;
+        }
+
+        public void setTripid(String tripid) {
+            this.tripid = tripid;
+        }
+
+        public String getVehiclenumber() {
+            return vehiclenumber;
+        }
+
+        public void setVehiclenumber(String vehiclenumber) {
+            this.vehiclenumber = vehiclenumber;
+        }
+
+        public String getSupervisorname() {
+            return supervisorname;
+        }
+
+        public void setSupervisorname(String supervisorname) {
+            this.supervisorname = supervisorname;
+        }
+
+        public String getSupervisorcontactno() {
+            return supervisorcontactno;
+        }
+
+        public void setSupervisorcontactno(String supervisorcontactno) {
+            this.supervisorcontactno = supervisorcontactno;
+        }
+
+        public String getDrivername() {
+            return drivername;
+        }
+
+        public void setDrivername(String drivername) {
+            this.drivername = drivername;
+        }
+
+        public String getDrivercontactno() {
+            return drivercontactno;
+        }
+
+        public void setDrivercontactno(String drivercontactno) {
+            this.drivercontactno = drivercontactno;
+        }
+
         public String getEwaybillno() {
             return ewaybillno;
         }

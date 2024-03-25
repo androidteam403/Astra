@@ -30,11 +30,13 @@ public class ScannedRoutesListAdapter extends RecyclerView.Adapter<ScannedRoutes
     LogisticsCallback callback;
     String charString;
     private ScannedInvoiceAdapter scannedInvoiceAdapter;
+    private boolean isEwayGenerated;
 
-    public ScannedRoutesListAdapter(Context mContext, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, LogisticsCallback callback) {
+    public ScannedRoutesListAdapter(Context mContext, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, LogisticsCallback callback,boolean isEwayGenerated) {
         this.mContext = mContext;
         this.routeIdsGroupedList = routeIdsGroupedList;
         this.callback = callback;
+        this.isEwayGenerated=isEwayGenerated;
 
 
     }
@@ -85,15 +87,26 @@ public class ScannedRoutesListAdapter extends RecyclerView.Adapter<ScannedRoutes
 
             // Now you can use routeName and indentDetails as needed
             holder.routesListLayoutBinding.routeNumber.setText(routeName);
+            if (isEwayGenerated){
+                scannedInvoiceAdapter = new ScannedInvoiceAdapter(mContext, new ArrayList<>(indentDetails.stream()
+                        .filter(indentdetail -> indentdetail.getCurrentstatus().equalsIgnoreCase("EWAYBILLGENERATED")).collect(Collectors.toList())), callback, routeIdsGroupedList);
 
-            scannedInvoiceAdapter = new ScannedInvoiceAdapter(mContext, new ArrayList<>(indentDetails.stream()
-                    .filter(indentdetail -> indentdetail.getNoofboxes() == 0.0 ||
-                            indentdetail.getBarcodedetails().stream().anyMatch(AllocationDetailsResponse.Barcodedetail::isScanned))
-                    .collect(Collectors.toList())), callback, routeIdsGroupedList);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                holder.routesListLayoutBinding.logisticsRecycleview.setLayoutManager(layoutManager);
+                holder.routesListLayoutBinding.logisticsRecycleview.setAdapter(scannedInvoiceAdapter);
+            }else {
+                scannedInvoiceAdapter = new ScannedInvoiceAdapter(mContext, new ArrayList<>(indentDetails.stream()
 
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-            holder.routesListLayoutBinding.logisticsRecycleview.setLayoutManager(layoutManager);
-            holder.routesListLayoutBinding.logisticsRecycleview.setAdapter(scannedInvoiceAdapter);
+                        .filter(indentdetail -> indentdetail.getNoofboxes() == 0.0 ||
+                                indentdetail.getBarcodedetails().stream().anyMatch(AllocationDetailsResponse.Barcodedetail::isScanned))
+                        .collect(Collectors.toList())), callback, routeIdsGroupedList);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                holder.routesListLayoutBinding.logisticsRecycleview.setLayoutManager(layoutManager);
+                holder.routesListLayoutBinding.logisticsRecycleview.setAdapter(scannedInvoiceAdapter);
+
+            }
+
+
 
         }
     }

@@ -26,18 +26,19 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
     private ArrayList<AllocationDetailsResponse.Indentdetail> salesinvoiceList;
 
     public Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList;
+    private String key;
 
 
     LogisticsCallback callback;
     String charString;
 
 
-    public SalesInvoiceAdapter(Context mContext, ArrayList<AllocationDetailsResponse.Indentdetail> salesinvoiceList, LogisticsCallback callback, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList) {
+    public SalesInvoiceAdapter(Context mContext, ArrayList<AllocationDetailsResponse.Indentdetail> salesinvoiceList, LogisticsCallback callback, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String key) {
         this.mContext = mContext;
         this.salesinvoiceList = salesinvoiceList;
         this.callback = callback;
         this.routeIdsGroupedList = routeIdsGroupedList;
-
+        this.key = key;
 
     }
 
@@ -61,7 +62,6 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
         items.setStatus(status);
 
 
-
         if (items.getCurrentstatus().equalsIgnoreCase("INPROCESS")) {
             holder.salesInvoiceLayoutBinding.status.setText(items.getCurrentstatus());
 
@@ -71,14 +71,16 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
             holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#068A67"));
             holder.salesInvoiceLayoutBinding.status.setText(items.getCurrentstatus());
 
-        }
-        else if (items.getCurrentstatus().equalsIgnoreCase("New")||items.getCurrentstatus().equalsIgnoreCase("assigned")) {
+        } else if (items.getCurrentstatus().equalsIgnoreCase("New") || items.getCurrentstatus().equalsIgnoreCase("assigned")) {
             holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#096BB4"));
             holder.salesInvoiceLayoutBinding.status.setText("New");
 
-        }
-        else if (items.getCurrentstatus().equalsIgnoreCase("SCANNED")) {
+        } else if (items.getCurrentstatus().equalsIgnoreCase("SCANNED")) {
             holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#3CB371"));
+            holder.salesInvoiceLayoutBinding.status.setText(items.getCurrentstatus());
+
+        } else if (items.getCurrentstatus().equalsIgnoreCase("EWAYBILLGENERATED")) {
+            holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#096BB4"));
             holder.salesInvoiceLayoutBinding.status.setText(items.getCurrentstatus());
 
         }
@@ -113,7 +115,7 @@ public class SalesInvoiceAdapter extends RecyclerView.Adapter<SalesInvoiceAdapte
 //            if (items.getStatus().equals("In Progress")) {
 
 //                holder.salesInvoiceLayoutBinding.status.setTextColor(Color.parseColor("#ffc12f"));
-            callback.onClickIndent(position, (ArrayList<AllocationDetailsResponse.Barcodedetail>) items.getBarcodedetails(), salesinvoiceList, routeIdsGroupedList, items.getIndentno(),items.getInvoicenumber(),items.getSiteid(),items.getSitename(),items.getVahanroute());
+            callback.onClickIndent(position, (ArrayList<AllocationDetailsResponse.Barcodedetail>) items.getBarcodedetails(), salesinvoiceList, routeIdsGroupedList, items.getIndentno(), items.getInvoicenumber(), items.getSiteid(), items.getSitename(), items.getVahanroute(), items.getCurrentstatus(),key);
 //            }
         });
     }
