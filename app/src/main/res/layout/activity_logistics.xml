@@ -241,27 +241,26 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
+                        android:orientation="horizontal">
 
                         <LinearLayout
                             android:id="@+id/scannedlayout"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".35"
+                            android:layout_weight=".29"
                             android:background="@{selectedStatus == 7 ? @color/navy : @color/transperancy}"
                             android:gravity="center"
-
                             android:onClick="@{() -> callback.filterByStatus(`scanned`, 7)}"
+
                             android:orientation="vertical">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:paddingTop="3dp"
                                 android:text="SCANNED"
-                                android:textAlignment="center"
+
                                 android:textAllCaps="true"
                                 android:textColor="@color/black"
                                 android:textSize="7sp" />
@@ -271,62 +270,23 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_bold"
-                                android:text="0"
+                                android:text=""
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/dimen9sp" />
-
 
                         </LinearLayout>
 
                         <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/grey" />
-
-                        <LinearLayout
-                            android:id="@+id/completetedlayout"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.35"
-                            android:background="@{selectedStatus == 3 ? @color/navy : @color/transperancy}"
-                            android:gravity="center"
-
-                            android:onClick="@{() -> callback.filterByStatus(`completed`, 3)}"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/poppins_semibold"
-                                android:paddingTop="3dp"
-                                android:text="@string/completed"
-                                android:textAlignment="center"
-                                android:textAllCaps="true"
-                                android:textColor="@color/black"
-                                android:textSize="7sp" />
-
-                            <TextView
-                                android:id="@+id/completecount"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/poppins_bold"
-                                android:text="0"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/dimen9sp" />
-
-
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="1dp"
                             android:layout_height="match_parent"
+                            android:layout_weight=".01"
                             android:background="@color/grey" />
 
                         <LinearLayout
                             android:id="@+id/ewaygeneratedlayout"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.3"
+                            android:layout_weight=".29"
                             android:background="@{selectedStatus == 35 ? @color/navy : @color/transperancy}"
                             android:gravity="center"
 
@@ -340,12 +300,53 @@
                                 android:paddingTop="3dp"
                                 android:text="E-way Bill"
                                 android:textAlignment="center"
+
                                 android:textAllCaps="true"
                                 android:textColor="@color/black"
                                 android:textSize="7sp" />
 
                             <TextView
                                 android:id="@+id/ewaygeneratedcount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_bold"
+                                android:text="0"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen9sp" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight=".01"
+                            android:background="@color/grey" />
+
+                        <LinearLayout
+                            android:id="@+id/completetedlayout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".36"
+                            android:background="@{selectedStatus == 3 ? @color/navy : @color/transperancy}"
+                            android:gravity="center"
+
+                            android:onClick="@{() -> callback.filterByStatus(`completed`, 3)}"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:paddingTop="3dp"
+                                android:text="COMPLETED"
+
+                                android:textAlignment="center"
+                                android:textAllCaps="true"
+                                android:textColor="@color/black"
+                                android:textSize="7sp" />
+
+                            <TextView
+                                android:id="@+id/completecount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_bold"
