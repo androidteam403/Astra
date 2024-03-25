@@ -38,14 +38,14 @@ public interface LogisticsCallback {
 
     void onSuccessTripCreationApiCallForScannedIndent(TripCreationResponse tripCreationResponse,Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList,String indentNo,String boxID);
 
-    void onSuccessTripCreationApiCall(TripCreationResponse tripCreationResponse, EwayBillResponse ewayBillResponse);
+    void onSuccessTripCreationApiCall(TripCreationResponse tripCreationResponse,Map<String, List<AllocationDetailsResponse.Indentdetail>> groupedByVehicle);
 
     void onSuccessTripCreationApiCallForZeroBoxes(TripCreationResponse tripCreationResponse, AllocationDetailsResponse allocationDetailsResponse);
 
 
     void onSuccessEwaybillApiCall(EwayBillResponse ewayBillResponse);
 
-    void counts(int newCont, int progress, int completed, int scanned);
+    void counts(int newCont, int progress, int completed, int scanned,int eway);
 
     void onClickCheckBox(int pos, ArrayList<AllocationDetailsResponse.Indentdetail> logisticsModelLists, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String indentNo);
 
@@ -53,7 +53,8 @@ public interface LogisticsCallback {
 
     void onClickUnTag(int pos, ArrayList<AllocationDetailsResponse.Barcodedetail> salesinvoiceList, String indentNUmber,String boxId);
 
-    void onClickIndent(int pos, ArrayList<AllocationDetailsResponse.Barcodedetail> logisticsModelLists, ArrayList<AllocationDetailsResponse.Indentdetail> indentdetailArrayList, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String indentNumber, String invoiceNum, String siteId, String siteName,String vahanRoute);
+    void onClickIndent(int pos, ArrayList<AllocationDetailsResponse.Barcodedetail> logisticsModelLists, ArrayList<AllocationDetailsResponse.Indentdetail> indentdetailArrayList, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, String indentNumber, String invoiceNum, String siteId, String siteName,String vahanRoute,String currentStatus,String key);
 
+    void onClickTripCreationButton();
 
 }

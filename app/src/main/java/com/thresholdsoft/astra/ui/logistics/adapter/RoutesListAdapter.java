@@ -78,7 +78,7 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
             // Access the entry at the specified position
             Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry = filteredList.get(position);
             if (!isCounted) {
-                callback.counts(countNewStatus(), countinProcessStatus(), countCompleteStatus(), countScannedStatus());
+                callback.counts(countNewStatus(), countinProcessStatus(), countCompleteStatus(), countScannedStatus(),countEwayBillStatus());
 
             }
 
@@ -136,7 +136,7 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
 
 
 
-            salesInvoiceAdapter = new SalesInvoiceAdapter(mContext, (ArrayList<AllocationDetailsResponse.Indentdetail>) indentDetails, callback, routeIdsGroupedList);
+            salesInvoiceAdapter = new SalesInvoiceAdapter(mContext, (ArrayList<AllocationDetailsResponse.Indentdetail>) indentDetails, callback, routeIdsGroupedList,entry.getKey());
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
             holder.routesListLayoutBinding.logisticsRecycleview.setLayoutManager(layoutManager);
             holder.routesListLayoutBinding.logisticsRecycleview.setAdapter(salesInvoiceAdapter);
@@ -185,6 +185,31 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
 
         return count;
     }
+
+    public int countEwayBillStatus() {
+        int count = 0;
+
+        for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : originalList) {
+            List<AllocationDetailsResponse.Indentdetail> indentDetails = entry.getValue();
+
+            for (AllocationDetailsResponse.Indentdetail indentDetail : indentDetails) {
+//                int noOfBoxes = (int) Double.parseDouble(indentDetail.getNoofboxes().toString());
+//
+//                boolean allBarcodesScanned = indentDetail.getBarcodedetails().stream()
+//                        .allMatch(barcodeDetail -> barcodeDetail.isScanned())||noOfBoxes==0;
+                if ("EWAYBILLGENERATED".equalsIgnoreCase(indentDetail.getCurrentstatus())) {
+                    count++;
+                }
+
+//                if (allBarcodesScanned) {
+//                    count++;
+//                }
+            }
+        }
+
+        return count;
+    }
+
 
     public int countinProcessStatus() {
         int count = 0;

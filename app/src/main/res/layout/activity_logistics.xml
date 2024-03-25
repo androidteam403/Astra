@@ -248,7 +248,7 @@
                             android:id="@+id/scannedlayout"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".49"
+                            android:layout_weight=".35"
                             android:background="@{selectedStatus == 7 ? @color/navy : @color/transperancy}"
                             android:gravity="center"
 
@@ -287,7 +287,7 @@
                             android:id="@+id/completetedlayout"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".49"
+                            android:layout_weight="0.35"
                             android:background="@{selectedStatus == 3 ? @color/navy : @color/transperancy}"
                             android:gravity="center"
 
@@ -307,6 +307,45 @@
 
                             <TextView
                                 android:id="@+id/completecount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_bold"
+                                android:text="0"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/dimen9sp" />
+
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/grey" />
+
+                        <LinearLayout
+                            android:id="@+id/ewaygeneratedlayout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:background="@{selectedStatus == 35 ? @color/navy : @color/transperancy}"
+                            android:gravity="center"
+
+                            android:onClick="@{() -> callback.filterByStatus(`EWAYBILLGENERATED`, 35)}"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:paddingTop="3dp"
+                                android:text="E-way Bill"
+                                android:textAlignment="center"
+                                android:textAllCaps="true"
+                                android:textColor="@color/black"
+                                android:textSize="7sp" />
+
+                            <TextView
+                                android:id="@+id/ewaygeneratedcount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_bold"
@@ -377,7 +416,6 @@
                         android:paddingStart="12dp"
                         android:paddingTop="7dp"
                         android:paddingEnd="@dimen/dimen8dp"
-                        android:paddingBottom="2dp"
 
                         android:text="ROUTE-10"
                         android:textColor="@color/white"
@@ -392,7 +430,7 @@
                         android:text="SELECTED SALES INVOICE"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textSize="11sp" />
+                        android:textSize="9.5sp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -457,17 +495,16 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:fontFamily="@font/poppins_semibold"
-                            android:text="Indent Details:"
+                            android:text="Indent Details :"
                             android:textAllCaps="true"
-
-                            android:textColor="@color/white"
+                            android:textColor="#91A4A8"
                             android:textSize="8sp" />
 
                         <TextView
@@ -477,43 +514,125 @@
                             android:layout_centerHorizontal="true"
                             android:fontFamily="@font/poppins_semibold"
                             android:text="-"
-
+                            android:paddingStart="2dp"
                             android:textAllCaps="true"
                             android:textColor="@color/white"
                             android:textSize="9sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="2dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="Site :"
+                                android:textAlignment="center"
+                                android:textAllCaps="true"
+
+                                android:textColor="#91A4A8"
+                                android:textSize="8sp" />
+
+                            <TextView
+                                android:id="@+id/siteName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:paddingStart="2sp"
+                                android:text="-"
+                                android:textAlignment="viewStart"
+
+                                android:textAllCaps="true"
+                                android:textColor="@color/white"
+                                android:textSize="9sp" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
                         android:orientation="horizontal"
                         android:weightSum="1">
-
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".6"
-                            android:orientation="vertical">
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
                                 android:fontFamily="@font/poppins_semibold"
-                                android:text="Invoice number:"
+                                android:text="Scanned :"
+                                android:textColor="#91A4A8"
+
+                                android:textSize="8sp" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/scannedIndentNumber"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:text="0/"
+                                    android:paddingStart="2dp"
+                                    android:textColor="@color/white"
+                                    android:textSize="9sp" />
+
+                                <TextView
+                                    android:id="@+id/totalIndentNumber"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:text="10"
+                                    android:textColor="@color/white"
+                                    android:textSize="9sp" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="Invoice number :"
                                 android:textAllCaps="true"
 
-                                android:textColor="@color/white"
+                                android:textColor="#91A4A8"
                                 android:textSize="8sp" />
 
                             <TextView
                                 android:id="@+id/invoiceNumber"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:text="-"
+                                android:paddingStart="2dp"
                                 android:textAlignment="center"
 
                                 android:textAllCaps="true"
@@ -522,18 +641,18 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:layout_weight=".4"
-                            android:orientation="vertical">
+                            android:visibility="gone"
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
                                 android:fontFamily="@font/poppins_semibold"
-                                android:text="Site Id:"
+                                android:text="Site Id :"
                                 android:textAlignment="viewStart"
 
                                 android:textAllCaps="true"
@@ -557,97 +676,12 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="1"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight=".4"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:text="Scanned:"
-                            android:textColor="@color/white"
-
-                            android:textSize="9sp" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="13dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/scannedIndentNumber"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/poppins_bold"
-                                android:text="0/"
-                                android:textColor="@color/white"
-                                android:textSize="10sp" />
-
-                            <TextView
-                                android:id="@+id/totalIndentNumber"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/poppins_bold"
-                                android:text="10"
-                                android:textColor="@color/white"
-                                android:textSize="10sp" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight=".6"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/dimen10dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:paddingStart="20sp"
-                            android:text="Site name:"
-                            android:textAlignment="center"
-                            android:textAllCaps="true"
-
-                            android:textColor="@color/white"
-                            android:textSize="8sp" />
-
-                        <TextView
-                            android:id="@+id/siteName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:paddingStart="20sp"
-                            android:text="-"
-                            android:textAlignment="viewStart"
-
-                            android:textAllCaps="true"
-                            android:textColor="@color/white"
-                            android:textSize="9sp" />
-                    </LinearLayout>
-
-                </LinearLayout>
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
                     android:orientation="horizontal"
                     android:weightSum="1">
 
@@ -791,7 +825,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight=".85"
+                        android:layout_weight=".93"
                         android:id="@+id/thirdParentRecycleviewLayout"
 
                         android:orientation="vertical">
@@ -1048,7 +1082,42 @@
 
 
                 </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/tripCreationLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="#068A67"
 
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tripCreationButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="@dimen/dimen5dp"
+                    android:background="@drawable/red_round_corners_bg"
+                    android:backgroundTint="@color/req_qty_bg"
+                    android:clickable="false"
+                    android:enabled="false"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:onClick="@{() -> callback.onClickTripCreationButton()}"
+                    android:paddingStart="6dp"
+                    android:paddingTop="5dp"
+
+                    android:paddingEnd="6dp"
+                    android:paddingBottom="5dp"
+                    android:text="Trip Creation"
+                    android:textColor="@color/black"
+                    android:textSize="9sp"
+
+                    android:visibility="visible" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/checkboxLayout"
