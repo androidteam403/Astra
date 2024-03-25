@@ -225,11 +225,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         });
 
         activityLogisticsBinding.availableDriver.setOnClickListener(v -> openLogisticsDialog());
-        activityLogisticsBinding.startScan.setOnClickListener(view -> {
-            activityLogisticsBinding.startScanLayout.setVisibility(View.GONE);
-            activityLogisticsBinding.scannedAndLoadedLayout.setVisibility(View.VISIBLE);
-            activityLogisticsBinding.checkboxLayout.setVisibility(View.VISIBLE);
-        });
+
 
 //        activityLogisticsBinding.completetedlayout.setOnClickListener(view -> {
 //            activityLogisticsBinding.setSelectedStatus(3);
@@ -1072,8 +1068,9 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                     completedIndents.put(entry.getKey(), filteredIndents);
                 }
             }
+            groupedByVehicle = completedIndents;
+
             if (completedIndents.size() > 0) {
-                groupedByVehicle = completedIndents;
                 for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : groupedByVehicle.entrySet()) {
                     String routeKey = entry.getKey();
                     List<AllocationDetailsResponse.Indentdetail> indentDetailList = entry.getValue();
@@ -1101,6 +1098,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 activityLogisticsBinding.tripCreationButton.setVisibility(View.VISIBLE);
                 activityLogisticsBinding.checkboxLayout.setVisibility(View.GONE);
                 activityLogisticsBinding.driversDialog.setVisibility(View.GONE);
+                activityLogisticsBinding.startScanLayout.setVisibility(View.GONE);
 
                 activityLogisticsBinding.subMenu.setVisibility(View.GONE);
                 activityLogisticsBinding.nolistFound.setVisibility(View.GONE);
@@ -1112,7 +1110,24 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             } else {
                 activityLogisticsBinding.nolistFound.setVisibility(View.VISIBLE);
                 activityLogisticsBinding.logisticsRecycleview.setVisibility(View.GONE);
+                onCallScannedAdapter(groupedByVehicle, "", true);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
+                layoutParams.weight = .7F;
+                LinearLayout.LayoutParams layoutParamsforThirdParentLAyout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
+                layoutParamsforThirdParentLAyout.weight = .9F;
+                layoutParams.setMargins(8, 0, 0, 0);
+                activityLogisticsBinding.thirdParentLayout.setLayoutParams(layoutParams);
+                activityLogisticsBinding.thirdParentRecycleviewLayout.setLayoutParams(layoutParamsforThirdParentLAyout);
+                activityLogisticsBinding.scannedAndLoadedLayout.setVisibility(View.GONE);
+                activityLogisticsBinding.startScanLayout.setVisibility(View.VISIBLE);
 
+                activityLogisticsBinding.thirdParentLayout.setVisibility(View.VISIBLE);
+                activityLogisticsBinding.tripCreationLayout.setVisibility(View.GONE);
+                activityLogisticsBinding.tripCreationButton.setVisibility(View.GONE);
+                activityLogisticsBinding.checkboxLayout.setVisibility(View.GONE);
+                activityLogisticsBinding.driversDialog.setVisibility(View.GONE);
+
+                activityLogisticsBinding.subMenu.setVisibility(View.GONE);
             }
             // Assuming routeIdsGroupedList is already grouped by getVahanroute
 
