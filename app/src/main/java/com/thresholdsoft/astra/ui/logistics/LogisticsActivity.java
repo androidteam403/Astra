@@ -1012,6 +1012,17 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         activityLogisticsBinding.setSelectedStatus(setStatus);
         if (status.isEmpty()) {
             if (mainRouteIdsGroupedList.size() > 0) {
+                for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : routeIdsGroupedList.entrySet()) {
+                    String routeKey = entry.getKey();
+                    List<AllocationDetailsResponse.Indentdetail> indentDetailList = entry.getValue();
+                    if (entry.getValue().stream().anyMatch(AllocationDetailsResponse.Indentdetail::isChecked)) {
+                        // At least one item is checked
+//                activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.yellow));
+                    } else {
+                        // No item is checked
+                        activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.req_qty_bg));
+                    }
+                }
 
                 onCallScannedAdapter(routeIdsGroupedList, "", false);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -1027,6 +1038,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 activityLogisticsBinding.tripCreationButton.setVisibility(View.GONE);
                 activityLogisticsBinding.checkboxLayout.setVisibility(View.VISIBLE);
                 activityLogisticsBinding.driversDialog.setVisibility(View.VISIBLE);
+                activityLogisticsBinding.generateBillLayout.setVisibility(View.GONE);
 
                 activityLogisticsBinding.subMenu.setVisibility(View.GONE);
                 activityLogisticsBinding.nolistFound.setVisibility(View.GONE);
@@ -1042,7 +1054,8 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 activityLogisticsBinding.logisticsRecycleview.setVisibility(View.GONE);
             }
 
-        } else if (status.equalsIgnoreCase("EWAYBILLGENERATED")) {
+        }
+        else if (status.equalsIgnoreCase("EWAYBILLGENERATED")) {
             Map<String, List<AllocationDetailsResponse.Indentdetail>> completedIndents = new HashMap<>();
 
             for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : groupedByVehicle.entrySet()) {
@@ -1116,6 +1129,18 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             }
             if (completedIndents.size() > 0) {
 //                routeIdsGroupedList = completedIndents;
+                for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : routeIdsGroupedList.entrySet()) {
+                    String routeKey = entry.getKey();
+                    List<AllocationDetailsResponse.Indentdetail> indentDetailList = entry.getValue();
+                    if (entry.getValue().stream().anyMatch(AllocationDetailsResponse.Indentdetail::isChecked)) {
+                        // At least one item is checked
+//                activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.yellow));
+                    } else {
+                        // No item is checked
+                        activityLogisticsBinding.driversDialog.setBackgroundTintList(ContextCompat.getColorStateList(LogisticsActivity.this, R.color.req_qty_bg));
+                    }
+                }
+
                 onCallScannedAdapter(routeIdsGroupedList.entrySet().stream()
                         .filter(entry -> entry.getValue().stream().anyMatch(indent -> !indent.getCurrentstatus().equalsIgnoreCase("EWAYBILLGENERATED")))
                         .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().stream()
@@ -1134,6 +1159,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 activityLogisticsBinding.tripCreationButton.setVisibility(View.GONE);
                 activityLogisticsBinding.checkboxLayout.setVisibility(View.VISIBLE);
                 activityLogisticsBinding.driversDialog.setVisibility(View.VISIBLE);
+                activityLogisticsBinding.generateBillLayout.setVisibility(View.GONE);
 
                 activityLogisticsBinding.subMenu.setVisibility(View.GONE);
                 activityLogisticsBinding.nolistFound.setVisibility(View.GONE);
@@ -1409,6 +1435,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     public void onSuccessEwaybillApiCall(EwayBillResponse ewayBillResponse) {
         if (ewayBillResponse != null && ewayBillResponse.getStatus()) {
             ewayBillData = ewayBillResponse;
+            Toast.makeText(this,ewayBillResponse.getMessage(),Toast.LENGTH_LONG).show();
 
             activityLogisticsBinding.driversDialog.setEnabled(false);
             activityLogisticsBinding.driversDialog.setClickable(false);
