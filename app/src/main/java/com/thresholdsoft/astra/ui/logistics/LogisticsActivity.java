@@ -70,6 +70,7 @@ import com.thresholdsoft.astra.ui.logout.LogOutUsersActivity;
 import com.thresholdsoft.astra.ui.menucallbacks.CustomMenuSupervisorCallback;
 import com.thresholdsoft.astra.ui.pickerrequests.PickerRequestActivity;
 import com.thresholdsoft.astra.ui.scanner.ScannerActivity;
+import com.thresholdsoft.astra.utils.ActivityUtils;
 import com.thresholdsoft.astra.utils.NetworkUtils;
 import com.thresholdsoft.astra.utils.Utils;
 
@@ -95,6 +96,8 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
     EwayBillResponse ewayBillData;
     LogisticDialog logisticDialog;
     LogisticDriversDialog logisticDriversDialog;
+    int max = 0;
+    int progressCount = 0;
 
     GetVechicleMasterResponse.Vehicledetail vehicledetail;
     private static final int REQUEST_ENABLE_BT = 1;
@@ -1221,26 +1224,41 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
     }
 
+
+
     @Override
     public void onClickGenerateEwayButton() {
+        boolean isFirstEntryProcessed = false;
         List<EwayBillRequest.Ewaybilldetail> detailList = new ArrayList<>();
+        max=0;
+        progressCount=0;
+        max = countCheckedIndents(routeIdsGroupedList);
+//        ActivityUtils.progressBar.setMax(countCheckedIndents(routeIdsGroupedList));
         if (vehicledetail != null) {
+            outerLoop:
+            // Label for the outer loop
             for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : routeIdsGroupedList.entrySet()) {
                 List<AllocationDetailsResponse.Indentdetail> indentDetailList = entry.getValue();
                 if (indentDetailList != null) {
                     for (AllocationDetailsResponse.Indentdetail indentDetail : indentDetailList) {
                         if (indentDetail.isChecked()) {
                             indentDetail.setChecked(false);
+                            isFirstEntryProcessed = true;
+                            progressCount++;
                             EwayBillRequest.Ewaybilldetail ewaybilldetail = new EwayBillRequest.Ewaybilldetail(indentDetail.getIndentno(), indentDetail.getSiteid(), (int) Math.round(indentDetail.getDistance()), indentDetail.getIrnno(), indentDetail.getTransportercode(), indentDetail.getTransporter(), vehicledetail.getVehicleno(), vehicledetail.getVehicleid(), vehicledetail.getAssignedsupervisior(), vehicledetail.getSupervisiorcontactno(), vehicledetail.getDrivername(), vehicledetail.getDrivercontactno());
                             indentNumEway = indentDetail.getIndentno();
                             detailList.add(ewaybilldetail);
+                            break outerLoop; // Break the outer loop
                         }
                     }
                 }
             }
+            if (isFirstEntryProcessed) {
+                ActivityUtils.showProgressBar(this, max, progressCount);
 
-            EwayBillRequest ewayBillRequest = new EwayBillRequest(getSessionManager().getEmplId(), getSessionManager().getDc(), detailList);
-            getController().getEwayBillResponse(ewayBillRequest);
+                EwayBillRequest ewayBillRequest = new EwayBillRequest(getSessionManager().getEmplId(), getSessionManager().getDc(), detailList);
+                getController().getEwayBillResponse(ewayBillRequest, routeIdsGroupedList);
+            }
         }
     }
 
@@ -1449,8 +1467,11 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         }
     }
 
+
     @Override
-    public void onSuccessEwaybillApiCall(EwayBillResponse ewayBillResponse) {
+    public void onSuccessEwaybillApiCall(EwayBillResponse ewayBillResponse, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdGroupedList) {
+
+
         if (ewayBillResponse != null && ewayBillResponse.getStatus()) {
             ewayBillData = ewayBillResponse;
             Toast.makeText(this, ewayBillResponse.getMessage(), Toast.LENGTH_LONG).show();
@@ -1500,13 +1521,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                     }
                 }
 
-//                for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entryss : routeIdsGroupedList.entrySet()) {
-//                    List<AllocationDetailsResponse.Indentdetail> indentdetails = entryss.getValue();
-//                    existingAllocationResponse.groupByRouteList.clear();
-//                    existingAllocationResponse.getIndentdetails().clear();
-//                    existingAllocationResponse.setIndentdetails(indentdetails);
-//                    existingAllocationResponse.groupByRouteList.add(indentdetails);
-//                }
+
                 AppDatabase.getDatabaseInstance(this).insertOrUpdateAllocationResponse(existingAllocationResponse, true);
 
             }
@@ -1526,6 +1541,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             activityLogisticsBinding.thirdParentRecycleviewLayout.setLayoutParams(layoutParamsforThirdParentLAyout);
             activityLogisticsBinding.scannedAndLoadedLayout.setVisibility(View.VISIBLE);
             activityLogisticsBinding.ewayBillLayout.setVisibility(View.VISIBLE);
+
             activityLogisticsBinding.checkboxLayout.setVisibility(View.GONE);
             activityLogisticsBinding.driversDialog.setVisibility(View.GONE);
             activityLogisticsBinding.tripCreationLayout.setVisibility(View.GONE);
@@ -1546,7 +1562,39 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             scannedRoutesListAdapter.notifyDataSetChanged();
             Toast.makeText(this, ewayBillResponse.getMessage(), Toast.LENGTH_LONG).show();
         }
+        boolean isFirstEntryProcessed = false;
+        List<EwayBillRequest.Ewaybilldetail> detailList = new ArrayList<>();
+        if (vehicledetail != null) {
+            outerLoop:
+            // Label for the outer loop
+            for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : routeIdsGroupedList.entrySet()) {
+                List<AllocationDetailsResponse.Indentdetail> indentDetailList = entry.getValue();
+                if (indentDetailList != null) {
+                    for (AllocationDetailsResponse.Indentdetail indentDetail : indentDetailList) {
+                        if (indentDetail.isChecked()) {
+                            indentDetail.setChecked(false);
+                            ActivityUtils.hideProgressBar();
+                            progressCount++;
 
+                            isFirstEntryProcessed = true;
+                            EwayBillRequest.Ewaybilldetail ewaybilldetail = new EwayBillRequest.Ewaybilldetail(indentDetail.getIndentno(), indentDetail.getSiteid(), (int) Math.round(indentDetail.getDistance()), indentDetail.getIrnno(), indentDetail.getTransportercode(), indentDetail.getTransporter(), vehicledetail.getVehicleno(), vehicledetail.getVehicleid(), vehicledetail.getAssignedsupervisior(), vehicledetail.getSupervisiorcontactno(), vehicledetail.getDrivername(), vehicledetail.getDrivercontactno());
+                            indentNumEway = indentDetail.getIndentno();
+                            detailList.add(ewaybilldetail);
+                            break outerLoop; // Break the outer loop
+                        }
+                    }
+                }
+            }
+            if (isFirstEntryProcessed) {
+                ActivityUtils.showProgressBar(this, max, progressCount);
+                EwayBillRequest ewayBillRequest = new EwayBillRequest(getSessionManager().getEmplId(), getSessionManager().getDc(), detailList);
+                getController().getEwayBillResponse(ewayBillRequest, routeIdsGroupedList);
+            } else {
+                ActivityUtils.hideProgressBar();
+//                    onClickRefresh();
+            }
+
+        }
     }
 
     public void callTripCreationApiForZeroBoxes(AllocationDetailsResponse allocationDetailsResponse) {
@@ -1837,7 +1885,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
 
     @Override
     public void onClickIndent(int pos, ArrayList<AllocationDetailsResponse.Barcodedetail> barcodedetails, ArrayList<AllocationDetailsResponse.Indentdetail> indentdetailArrayList, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdGroupedList, String indentNumber, String invoiceNum, String siteId, String siteName, String vahanRoute, String currentStatus, String key) {
-        if (key.contains("ROUTE")) {
+        if (!key.contains("EWAYBILLGENERATED")) {
             dummyPos = pos;
             dummyBarcodedetails = barcodedetails;
             originalBarcodedetails = new ArrayList<>(dummyBarcodedetails);
@@ -2271,6 +2319,21 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
             }
         });
 
+    }
+
+    public int countCheckedIndents(Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList) {
+        int count = 0;
+        for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : routeIdsGroupedList.entrySet()) {
+            List<AllocationDetailsResponse.Indentdetail> indentDetailList = entry.getValue();
+            if (indentDetailList != null) {
+                for (AllocationDetailsResponse.Indentdetail indentDetail : indentDetailList) {
+                    if (indentDetail.isChecked()) {
+                        count++;
+                    }
+                }
+            }
+        }
+        return count;
     }
 
     Handler barcodeScanHandler = new Handler();

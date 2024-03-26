@@ -74,7 +74,7 @@ public class ScannedInvoiceAdapter extends RecyclerView.Adapter<ScannedInvoiceAd
             holder.scannedInvoiceLayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#f8d2d2"));
 
 
-        } else if (items != null && (items.getEwaybillno() == null || items.getEwaybillno().isEmpty())) {
+        } else if (!items.getCurrentstatus().equalsIgnoreCase("scanned")&&!items.getCurrentstatus().equalsIgnoreCase("EWAYBILLGENERATED")) {
             holder.scannedInvoiceLayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#EDFEF6"));
 
         } else {

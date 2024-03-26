@@ -240,7 +240,7 @@ public class LogisticActivityController {
             });
         }
     }
-    public void getEwayBillResponse(EwayBillRequest ewayBillRequest) {
+    public void getEwayBillResponse(EwayBillRequest ewayBillRequest,Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             ActivityUtils.showDialog(mContext, "Please wait.");
             String url = getDataManager().getApi();
@@ -261,7 +261,7 @@ public class LogisticActivityController {
                 public void onResponse(@NotNull Call<EwayBillResponse> call, @NotNull Response<EwayBillResponse> response) {
                     ActivityUtils.hideDialog();
                     if (response.isSuccessful() && response.body() != null) {
-                        mCallback.onSuccessEwaybillApiCall(response.body());
+                        mCallback.onSuccessEwaybillApiCall(response.body(),routeIdsGroupedList);
 
                     }
                 }
