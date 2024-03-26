@@ -242,7 +242,7 @@ public class LogisticActivityController {
     }
     public void getEwayBillResponse(EwayBillRequest ewayBillRequest,Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
-            ActivityUtils.showDialog(mContext, "Please wait.");
+//            ActivityUtils.showDialog(mContext, "Please wait.");
             String url = getDataManager().getApi();
             ValidateResponse data = new Gson().fromJson(url, ValidateResponse.class);
             String baseUrl = "";
@@ -259,7 +259,7 @@ public class LogisticActivityController {
             call.enqueue(new Callback<EwayBillResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<EwayBillResponse> call, @NotNull Response<EwayBillResponse> response) {
-                    ActivityUtils.hideDialog();
+//                    ActivityUtils.hideDialog();
                     if (response.isSuccessful() && response.body() != null) {
                         mCallback.onSuccessEwaybillApiCall(response.body(),routeIdsGroupedList);
 
