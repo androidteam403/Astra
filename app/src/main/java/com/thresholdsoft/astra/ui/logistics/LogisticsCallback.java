@@ -43,7 +43,7 @@ public interface LogisticsCallback {
     void onSuccessTripCreationApiCallForZeroBoxes(TripCreationResponse tripCreationResponse, AllocationDetailsResponse allocationDetailsResponse);
 
 
-    void onSuccessEwaybillApiCall(EwayBillResponse ewayBillResponse);
+    void onSuccessEwaybillApiCall(EwayBillResponse ewayBillResponse,Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList);
 
     void counts(int newCont, int progress, int completed, int scanned,int eway);
 
