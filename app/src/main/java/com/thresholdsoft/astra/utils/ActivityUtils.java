@@ -47,7 +47,7 @@ public class ActivityUtils {
             countTextView = customProgressBarLayout.findViewById(R.id.countTextView);
             progressBar.setMax(100);
             progressBar.setProgress(0, true); // Start from 0% progress
-            Objects.requireNonNull(progressBar).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#88000000")));
+            Objects.requireNonNull(progressLayout).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#88000000")));
         }
         // Calculate the progress based on current progressCount and max values
         int progress = (int) (((float) progressCount / max) * 100);
@@ -68,6 +68,8 @@ public class ActivityUtils {
             ViewGroup rootView = (ViewGroup) progressBar.getParent();
             rootView.removeView(progressBar);
             progressBar = null;
+            Objects.requireNonNull(progressLayout).setBackgroundDrawable(null);
+
             countTextView.setVisibility(View.GONE);
         }
     }
