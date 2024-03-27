@@ -1586,12 +1586,18 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
                 }
             }
             if (isFirstEntryProcessed) {
-                ActivityUtils.showProgressBar(this, max, progressCount);
-                EwayBillRequest ewayBillRequest = new EwayBillRequest(getSessionManager().getEmplId(), getSessionManager().getDc(), detailList);
-                getController().getEwayBillResponse(ewayBillRequest, routeIdsGroupedList);
+
+
+                    ActivityUtils.showProgressBar(this, max, progressCount);
+                    EwayBillRequest ewayBillRequest = new EwayBillRequest(getSessionManager().getEmplId(), getSessionManager().getDc(), detailList);
+                    getController().getEwayBillResponse(ewayBillRequest, routeIdsGroupedList);
+
+
             } else {
-                ActivityUtils.hideProgressBar();
-//                    onClickRefresh();
+
+                    ActivityUtils.hideProgressBar();
+
+
             }
 
         }

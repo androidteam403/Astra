@@ -67,12 +67,7 @@ public class ScannedInvoiceSubAdapter extends RecyclerView.Adapter<ScannedInvoic
 
         holder.subInvoiceLayoutBinding.boxes.setText(items.getId());
 
-        holder.subInvoiceLayoutBinding.unTag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callback.onClickUnTag(position, salesinvoiceList, indentNumber,items.getId());
-            }
-        });
+        holder.subInvoiceLayoutBinding.unTag.setOnClickListener(v -> callback.onClickUnTag(position, salesinvoiceList, indentNumber,items.getId()));
 
     }
 

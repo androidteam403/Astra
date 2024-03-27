@@ -5,28 +5,20 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.view.Gravity;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
-
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.thresholdsoft.astra.R;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAdjusters;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import dmax.dialog.SpotsDialog;
 
@@ -35,44 +27,39 @@ public class ActivityUtils {
     static SpotsDialog spotsDialog;
 
     public static ProgressBar progressBar;
-    public static TextView totalCountTextView;
+    public static int progress;
+    public static float currentProgress;
 
     public static TextView countTextView;
 
     @SuppressLint({"ResourceType", "MissingInflatedId"})
     public static void showProgressBar(Context context, int max, int progressCount) {
-        hideProgressBar(); // Hide any existing progress bar
-
-        // Inflate your custom layout containing the ProgressBar
-        View customProgressBarLayout = LayoutInflater.from(context).inflate(R.layout.progress, null);
-        progressBar = customProgressBarLayout.findViewById(R.id.progressBar);
-        countTextView = customProgressBarLayout.findViewById(R.id.countTextView);
-        totalCountTextView = customProgressBarLayout.findViewById(R.id.totalCountTextView);
-        countTextView.setText(String.valueOf(progressCount));
-        totalCountTextView.setText(" /" + String.valueOf(max));
-
-        // Set the custom layout's width, height, and other properties as needed
-        progressBar.setMax(max);
-        progressBar.setProgressDrawable(ContextCompat.getDrawable(context, R.drawable.circular_progress_bar));
-        updateProgressBar(progressCount, max);
-        // Set the countTextView text as needed
-        // e.g. countTextView.setText("0");
-
-        ViewGroup rootView = ((Activity) context).findViewById(android.R.id.content);
-        rootView.addView(customProgressBarLayout);
-        animateProgressBar();
-
-    }
-
-    public static void updateProgressBar(int checkedCount, int max) {
-        if (max == 0) {
-            // Handle division by zero error
-            return;
+        if (progressBar == null) {
+            // If progress bar is not yet initialized, create and initialize it
+            // Inflate your custom layout containing the ProgressBar
+            View customProgressBarLayout = LayoutInflater.from(context).inflate(R.layout.progress, null);
+            ViewGroup rootView = ((Activity) context).findViewById(android.R.id.content);
+            rootView.addView(customProgressBarLayout);
+            progressBar = customProgressBarLayout.findViewById(R.id.circularProgressBar);
+            countTextView = customProgressBarLayout.findViewById(R.id.countTextView);
+            progressBar.setMax(100);
+            progressBar.setProgress(0, true); // Start from 0% progress
+            Objects.requireNonNull(progressBar).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
 
-        int progress = (int) (((double) checkedCount / max) * 100);
-        progressBar.setProgress(progress);
+        // Calculate the progress based on current progressCount and max values
+        int progress = (int) (((float) progressCount / max) * 100);
+
+        // Create an ObjectAnimator to animate the progress
+        ObjectAnimator progressAnimator = ObjectAnimator.ofInt(progressBar, "progress", progressBar.getProgress(), progress);
+        progressAnimator.setDuration(200); // Set the duration of the animation in milliseconds (e.g., 500ms)
+        progressAnimator.setInterpolator(new DecelerateInterpolator()); // Use a decelerate interpolator for a smoother animation
+        progressAnimator.start();
+
+        countTextView.setText(progressCount + " / " + max);
     }
+
+
 
     public static void hideProgressBar() {
         if (progressBar != null) {
@@ -80,16 +67,6 @@ public class ActivityUtils {
             rootView.removeView(progressBar);
             progressBar = null;
             countTextView.setVisibility(View.GONE);
-            totalCountTextView.setVisibility(View.GONE);
-        }
-    }
-
-    private static void animateProgressBar() {
-        if (progressBar != null) {
-            ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 0, 100);
-            animation.setDuration(1000); // Set the duration of the animation in milliseconds
-            animation.setInterpolator(new LinearInterpolator());
-            animation.start();
         }
     }
 
@@ -113,8 +90,7 @@ public class ActivityUtils {
 
     public static void hideDialog() {
         try {
-            if (spotsDialog.isShowing())
-                spotsDialog.dismiss();
+            if (spotsDialog.isShowing()) spotsDialog.dismiss();
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
