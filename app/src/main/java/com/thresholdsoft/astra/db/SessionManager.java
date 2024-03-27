@@ -94,11 +94,12 @@ public class SessionManager {
     public void setEmpId(String empId) {
         preferences.edit().putString(PREF_KEY_EMP_ID, empId).apply();
     }
-    public void  saveGlobalResponse(String apiItems) {
+
+    public void saveGlobalResponse(String apiItems) {
         preferences.edit().putString(KEY_GLOBAL_RESPONSE, apiItems).apply();
     }
 
-    public String getGlobalResponse(){
+    public String getGlobalResponse() {
         return preferences.getString(KEY_GLOBAL_RESPONSE, "");
     }
 
@@ -234,6 +235,6 @@ public class SessionManager {
     }
 
     public Boolean isCopy() {
-        return true;
+        return preferences.getBoolean(PREF_KEY_IS_COPY, false);
     }
 }

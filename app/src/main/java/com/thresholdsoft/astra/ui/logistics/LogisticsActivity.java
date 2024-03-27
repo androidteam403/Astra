@@ -1608,7 +1608,7 @@ public class LogisticsActivity extends BaseActivity implements CustomMenuSupervi
         List<TripCreationRequest.Indentdetail.Barcodedetail> tripBarcodedetailsList = new ArrayList<>();
         TripCreationRequest tripCreationRequest;
         for (int i = 0; i < allocationDetailsResponse.getIndentdetails().size(); i++) {
-            if (allocationDetailsResponse.getIndentdetails().get(i).getNoofboxes() == 0.0 && !allocationDetailsResponse.getIndentdetails().get(i).getCurrentstatus().equalsIgnoreCase("scanned")) {
+            if (allocationDetailsResponse.getIndentdetails().get(i).getNoofboxes() == 0.0 && allocationDetailsResponse.getIndentdetails().get(i).getCurrentstatus().equalsIgnoreCase("ASSIGNED")) {
                 allocationDetailsResponse.getIndentdetails().get(i).setApiCalledForZeroBoxes(true);
                 TripCreationRequest.Indentdetail tripIndentdetail = new TripCreationRequest.Indentdetail(allocationDetailsResponse.getIndentdetails().get(i).getIndentno(), (int) Math.round(allocationDetailsResponse.getIndentdetails().get(i).getNoofboxes()), (int) Math.round(allocationDetailsResponse.getIndentdetails().get(i).getNoofskus()), allocationDetailsResponse.getIndentdetails().get(i).getSiteid(), tripBarcodedetailsList);
                 tripIndentdetailsList.add(tripIndentdetail);
