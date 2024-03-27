@@ -114,20 +114,15 @@ public class ScannedInvoiceAdapter extends RecyclerView.Adapter<ScannedInvoiceAd
             holder.scannedInvoiceLayoutBinding.subInvoiceRecycleview.setVisibility(View.GONE);
         }
 
-        holder.scannedInvoiceLayoutBinding.arrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.scannedInvoiceLayoutBinding.arrow.setOnClickListener(v -> {
 
-                if (items.getBarcodedetails().stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned)) {
-                    callback.onClickCheckBox(position, salesinvoiceList, routeIdsGroupedList, items.getIndentno());
+            if (items.getBarcodedetails().stream().allMatch(AllocationDetailsResponse.Barcodedetail::isScanned)) {
+                callback.onClickCheckBox(position, salesinvoiceList, routeIdsGroupedList, items.getIndentno());
 
-                } else {
-                    Toast.makeText(mContext, "Please Scan All Boxes", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(mContext, "Please Scan All Boxes", Toast.LENGTH_LONG).show();
 
-                }
             }
-
-
         });
 
 

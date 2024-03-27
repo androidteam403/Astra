@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +29,7 @@ public class ActivityUtils {
 
     public static ProgressBar progressBar;
     public static int progress;
-    public static float currentProgress;
+    public static RelativeLayout progressLayout;
 
     public static TextView countTextView;
 
@@ -41,18 +42,19 @@ public class ActivityUtils {
             ViewGroup rootView = ((Activity) context).findViewById(android.R.id.content);
             rootView.addView(customProgressBarLayout);
             progressBar = customProgressBarLayout.findViewById(R.id.circularProgressBar);
+            progressLayout = customProgressBarLayout.findViewById(R.id.progressBarlayout);
+
             countTextView = customProgressBarLayout.findViewById(R.id.countTextView);
             progressBar.setMax(100);
             progressBar.setProgress(0, true); // Start from 0% progress
-            Objects.requireNonNull(progressBar).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            Objects.requireNonNull(progressBar).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#88000000")));
         }
-
         // Calculate the progress based on current progressCount and max values
         int progress = (int) (((float) progressCount / max) * 100);
 
         // Create an ObjectAnimator to animate the progress
         ObjectAnimator progressAnimator = ObjectAnimator.ofInt(progressBar, "progress", progressBar.getProgress(), progress);
-        progressAnimator.setDuration(200); // Set the duration of the animation in milliseconds (e.g., 500ms)
+        progressAnimator.setDuration(300); // Set the duration of the animation in milliseconds (e.g., 500ms)
         progressAnimator.setInterpolator(new DecelerateInterpolator()); // Use a decelerate interpolator for a smoother animation
         progressAnimator.start();
 

@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/progressBarlayout"
+
     android:layout_height="match_parent">
 
     <!--Progress Bar created-->
@@ -32,7 +34,7 @@
             android:gravity="center"
             android:text="0"
             android:layout_centerVertical="true"
-            android:textColor="#ff222222"
+            android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold" />
     </RelativeLayout>
