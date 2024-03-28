@@ -42,6 +42,7 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
     public SalesInvoiceAdapter salesInvoiceAdapter;
     public List<Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>>> entryList;
     private int selectedItemPosition = -1;
+
     public RoutesListAdapter(Context mContext, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, LogisticsCallback callback, Boolean iscounted) {
         this.mContext = mContext;
         this.routeIdsGroupedList = routeIdsGroupedList;
@@ -78,23 +79,19 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
         if (position < filteredList.size()) {
             // Access the entry at the specified position
             Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry = filteredList.get(position);
-            if (!isCounted) {
-                callback.counts(countNewStatus(), countinProcessStatus(), countCompleteStatus(), countScannedStatus(),countEwayBillStatus());
 
-            }
 
             holder.routesListLayoutBinding.itemCount.setText(String.valueOf(filteredList.get(position).getValue().size()));
 
             if (filteredList.get(position).getValue().stream()
-                    .allMatch(detail -> "COMPLETED".equalsIgnoreCase(detail.getCurrentstatus()))){
+                    .allMatch(detail -> "COMPLETED".equalsIgnoreCase(detail.getCurrentstatus()))) {
                 holder.routesListLayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#068A67"));
 
-            }else if(filteredList.get(position).getValue().stream()
-                    .allMatch(detail -> "ASSIGNED".equalsIgnoreCase(detail.getCurrentstatus()))){
+            } else if (filteredList.get(position).getValue().stream()
+                    .allMatch(detail -> "ASSIGNED".equalsIgnoreCase(detail.getCurrentstatus()))) {
                 holder.routesListLayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#B8C0CE"));
 
-            }
-            else {
+            } else {
                 holder.routesListLayoutBinding.parentLayout.setBackgroundColor(Color.parseColor("#93E2A9"));
 
             }
@@ -102,9 +99,20 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
 
             // Access key and value
             String routeName = entry.getKey();
+            if (routeName.contains("TP")) {
+                String[] parts = routeName.split("/");
+                holder.routesListLayoutBinding.tripId.setText(parts[1]);
+                holder.routesListLayoutBinding.tripId.setVisibility(View.VISIBLE);
+                holder.routesListLayoutBinding.routeNumber.setVisibility(View.GONE);
+
+            } else {
+                holder.routesListLayoutBinding.routeNumber.setText(routeName);
+                holder.routesListLayoutBinding.routeNumber.setVisibility(View.VISIBLE);
+                holder.routesListLayoutBinding.tripId.setVisibility(View.GONE);
+
+            }
 
             // Now you can use routeName and indentDetails as needed
-            holder.routesListLayoutBinding.routeNumber.setText(routeName);
 
             List<AllocationDetailsResponse.Indentdetail> indentDetails = entry.getValue();
 
@@ -134,131 +142,13 @@ public class RoutesListAdapter extends RecyclerView.Adapter<RoutesListAdapter.Vi
             });
 
 
-
-
-
-            salesInvoiceAdapter = new SalesInvoiceAdapter(mContext, (ArrayList<AllocationDetailsResponse.Indentdetail>) indentDetails, callback, routeIdsGroupedList,entry.getKey());
+            salesInvoiceAdapter = new SalesInvoiceAdapter(mContext, (ArrayList<AllocationDetailsResponse.Indentdetail>) indentDetails, callback, routeIdsGroupedList, entry.getKey());
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
             holder.routesListLayoutBinding.logisticsRecycleview.setLayoutManager(layoutManager);
             holder.routesListLayoutBinding.logisticsRecycleview.setAdapter(salesInvoiceAdapter);
         }
     }
 
-
-    public int countNewStatus() {
-        int count = 0;
-
-        for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : originalList) {
-            List<AllocationDetailsResponse.Indentdetail> indentDetails = entry.getValue();
-
-            for (AllocationDetailsResponse.Indentdetail indentDetail : indentDetails) {
-                boolean allBarcodesScanned = indentDetail.getBarcodedetails().stream()
-                        .allMatch(barcodeDetail -> barcodeDetail.isScanned());
-                if ("Assigned".equalsIgnoreCase(indentDetail.getCurrentstatus()) || Objects.isNull(indentDetail.getCurrentstatus())) {
-                    count++;
-                }
-            }
-        }
-
-        return count;
-    }
-
-    public int countScannedStatus() {
-        int count = 0;
-
-        for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : originalList) {
-            List<AllocationDetailsResponse.Indentdetail> indentDetails = entry.getValue();
-
-            for (AllocationDetailsResponse.Indentdetail indentDetail : indentDetails) {
-//                int noOfBoxes = (int) Double.parseDouble(indentDetail.getNoofboxes().toString());
-//
-//                boolean allBarcodesScanned = indentDetail.getBarcodedetails().stream()
-//                        .allMatch(barcodeDetail -> barcodeDetail.isScanned())||noOfBoxes==0;
-                if ("scanned".equalsIgnoreCase(indentDetail.getCurrentstatus())) {
-                    count++;
-                }
-
-//                if (allBarcodesScanned) {
-//                    count++;
-//                }
-            }
-        }
-
-        return count;
-    }
-
-    public int countEwayBillStatus() {
-        int count = 0;
-
-        for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : originalList) {
-            List<AllocationDetailsResponse.Indentdetail> indentDetails = entry.getValue();
-
-            for (AllocationDetailsResponse.Indentdetail indentDetail : indentDetails) {
-//                int noOfBoxes = (int) Double.parseDouble(indentDetail.getNoofboxes().toString());
-//
-//                boolean allBarcodesScanned = indentDetail.getBarcodedetails().stream()
-//                        .allMatch(barcodeDetail -> barcodeDetail.isScanned())||noOfBoxes==0;
-                if ("EWAYBILLGENERATED".equalsIgnoreCase(indentDetail.getCurrentstatus())) {
-                    count++;
-                }
-
-//                if (allBarcodesScanned) {
-//                    count++;
-//                }
-            }
-        }
-
-        return count;
-    }
-
-
-    public int countinProcessStatus() {
-        int count = 0;
-
-        for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : originalList) {
-            List<AllocationDetailsResponse.Indentdetail> indentDetails = entry.getValue();
-
-            for (AllocationDetailsResponse.Indentdetail indentDetail : indentDetails) {
-//                int noOfBoxes = (int) Double.parseDouble(indentDetail.getNoofboxes().toString());
-//
-//                boolean allBarcodesScanned = indentDetail.getBarcodedetails().stream()
-//                        .allMatch(barcodeDetail -> barcodeDetail.isScanned())||noOfBoxes==0;
-                if ("inprocess".equalsIgnoreCase(indentDetail.getCurrentstatus())) {
-                    count++;
-                }
-
-//                if (allBarcodesScanned) {
-//                    count++;
-//                }
-            }
-        }
-
-        return count;
-    }
-
-    public int countCompleteStatus() {
-        int count = 0;
-
-        for (Map.Entry<String, List<AllocationDetailsResponse.Indentdetail>> entry : originalList) {
-            List<AllocationDetailsResponse.Indentdetail> indentDetails = entry.getValue();
-
-            for (AllocationDetailsResponse.Indentdetail indentDetail : indentDetails) {
-//                int noOfBoxes = (int) Double.parseDouble(indentDetail.getNoofboxes().toString());
-//
-//                boolean allBarcodesScanned = indentDetail.getBarcodedetails().stream()
-//                        .allMatch(barcodeDetail -> barcodeDetail.isScanned())||noOfBoxes==0;
-                if ("COMPLETED".equalsIgnoreCase(indentDetail.getCurrentstatus())) {
-                    count++;
-                }
-
-//                if (allBarcodesScanned) {
-//                    count++;
-//                }
-            }
-        }
-
-        return count;
-    }
 
     @Override
     public int getItemCount() {

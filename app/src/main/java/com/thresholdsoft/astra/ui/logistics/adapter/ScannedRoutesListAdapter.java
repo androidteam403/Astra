@@ -31,12 +31,14 @@ public class ScannedRoutesListAdapter extends RecyclerView.Adapter<ScannedRoutes
     String charString;
     private ScannedInvoiceAdapter scannedInvoiceAdapter;
     private boolean isEwayGenerated;
+    private  boolean isCompleted;
 
-    public ScannedRoutesListAdapter(Context mContext, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, LogisticsCallback callback,boolean isEwayGenerated) {
+    public ScannedRoutesListAdapter(Context mContext, Map<String, List<AllocationDetailsResponse.Indentdetail>> routeIdsGroupedList, LogisticsCallback callback,boolean isEwayGenerated,boolean isCompleted) {
         this.mContext = mContext;
         this.routeIdsGroupedList = routeIdsGroupedList;
         this.callback = callback;
         this.isEwayGenerated=isEwayGenerated;
+        this.isCompleted=isCompleted;
 
 
     }
@@ -90,9 +92,12 @@ public class ScannedRoutesListAdapter extends RecyclerView.Adapter<ScannedRoutes
                 if (indentDetails.stream().filter(indentdetail -> indentdetail.getCurrentstatus().equalsIgnoreCase("EWAYBILLGENERATED")).collect(Collectors.toList()).size()>0){
                     holder.routesListLayoutBinding.routeNumber.setText(routeName);
                     holder.routesListLayoutBinding.routeLayout.setVisibility(View.VISIBLE);
+                    holder.routesListLayoutBinding.tripIdLayout.setVisibility(View.GONE);
 
                 }
                 else {
+                    holder.routesListLayoutBinding.tripIdLayout.setVisibility(View.GONE);
+
                     holder.routesListLayoutBinding.routeLayout.setVisibility(View.GONE);
                 }
                 scannedInvoiceAdapter = new ScannedInvoiceAdapter(mContext, new ArrayList<>(indentDetails.stream()
@@ -101,16 +106,44 @@ public class ScannedRoutesListAdapter extends RecyclerView.Adapter<ScannedRoutes
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                 holder.routesListLayoutBinding.logisticsRecycleview.setLayoutManager(layoutManager);
                 holder.routesListLayoutBinding.logisticsRecycleview.setAdapter(scannedInvoiceAdapter);
-            }else {
+            }
+          else   if (isCompleted){
+                if (indentDetails.stream().filter(indentdetail -> indentdetail.getCurrentstatus().equalsIgnoreCase("COMPLETED")).collect(Collectors.toList()).size()>0){
+                    String[] parts = routeName.split("/");
+
+
+                    holder.routesListLayoutBinding.routeNumber.setText(parts[0]);
+                    holder.routesListLayoutBinding.tripIdLayout.setVisibility(View.VISIBLE);
+                    holder.routesListLayoutBinding.routeLayout.setVisibility(View.VISIBLE);
+                    holder.routesListLayoutBinding.tripId.setText(parts[1]);
+
+                }
+                else {
+                    holder.routesListLayoutBinding.tripIdLayout.setVisibility(View.GONE);
+
+                    holder.routesListLayoutBinding.routeLayout.setVisibility(View.GONE);
+                }
+                scannedInvoiceAdapter = new ScannedInvoiceAdapter(mContext, new ArrayList<>(indentDetails.stream()
+                        .filter(indentdetail -> indentdetail.getCurrentstatus().equalsIgnoreCase("COMPLETED")).collect(Collectors.toList())), callback, routeIdsGroupedList);
+
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                holder.routesListLayoutBinding.logisticsRecycleview.setLayoutManager(layoutManager);
+                holder.routesListLayoutBinding.logisticsRecycleview.setAdapter(scannedInvoiceAdapter);
+            }
+
+            else {
                 if (indentDetails.stream().filter(indentdetail -> indentdetail.getNoofboxes() == 0.0 ||
                                 indentdetail.getBarcodedetails().stream().anyMatch(AllocationDetailsResponse.Barcodedetail::isScanned))
                         .collect(Collectors.toList()).size()>0){
                     holder.routesListLayoutBinding.routeNumber.setText(routeName);
+                    holder.routesListLayoutBinding.tripIdLayout.setVisibility(View.GONE);
+
                     holder.routesListLayoutBinding.routeLayout.setVisibility(View.VISIBLE);
 
                 }
                 else {
                     holder.routesListLayoutBinding.routeLayout.setVisibility(View.GONE);
+                    holder.routesListLayoutBinding.tripIdLayout.setVisibility(View.GONE);
 
                 }
                 scannedInvoiceAdapter = new ScannedInvoiceAdapter(mContext, new ArrayList<>(indentDetails.stream()

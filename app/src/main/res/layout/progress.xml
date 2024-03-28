@@ -6,11 +6,24 @@
     android:id="@+id/progressBarlayout"
 
     android:layout_height="match_parent">
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:layout_above="@id/parent_layout"
+        android:paddingStart="45dp"
+        android:text="Generating E-Way Bills...."
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:fontFamily="@font/poppins_semibold"
+        android:id="@+id/eway" />
     <!--Progress Bar created-->
     <RelativeLayout
         android:layout_width="200dp"
         android:layout_height="200dp"
+        android:id="@+id/parent_layout"
         android:layout_centerInParent="true"
 
         >

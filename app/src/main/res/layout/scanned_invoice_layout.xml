@@ -18,23 +18,23 @@
             android:weightSum="1"
             android:orientation="horizontal">
             <ImageView
-                android:layout_width="30dp"
+                android:layout_width="27dp"
                 android:src="@drawable/logistics_arrow_right"
                 android:id="@+id/right"
                 android:rotation="0"
                 android:visibility="gone"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
-                android:layout_height="30dp"/>
+                android:layout_height="27dp"/>
             <ImageView
-                android:layout_width="30dp"
+                android:layout_width="27dp"
                 android:src="@drawable/logistics_checkbox"
                 android:id="@+id/arrow"
                 android:rotation="0"
                 android:layout_marginTop="3dp"
 
                 android:layout_marginBottom="3dp"
-                android:layout_height="30dp"/>
+                android:layout_height="27dp"/>
             <LinearLayout
                 android:layout_width="@dimen/dimen0dp"
                 android:layout_height="wrap_content"

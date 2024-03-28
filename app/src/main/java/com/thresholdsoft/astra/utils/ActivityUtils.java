@@ -30,6 +30,7 @@ public class ActivityUtils {
     public static ProgressBar progressBar;
     public static int progress;
     public static RelativeLayout progressLayout;
+    public static TextView eway;
 
     public static TextView countTextView;
 
@@ -43,6 +44,7 @@ public class ActivityUtils {
             rootView.addView(customProgressBarLayout);
             progressBar = customProgressBarLayout.findViewById(R.id.circularProgressBar);
             progressLayout = customProgressBarLayout.findViewById(R.id.progressBarlayout);
+            eway = customProgressBarLayout.findViewById(R.id.eway);
 
             countTextView = customProgressBarLayout.findViewById(R.id.countTextView);
             progressBar.setMax(100);
@@ -69,7 +71,7 @@ public class ActivityUtils {
             rootView.removeView(progressBar);
             progressBar = null;
             Objects.requireNonNull(progressLayout).setBackgroundDrawable(null);
-
+eway.setVisibility(View.GONE);
             countTextView.setVisibility(View.GONE);
         }
     }

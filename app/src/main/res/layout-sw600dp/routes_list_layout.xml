@@ -34,6 +34,19 @@
                     android:textColor="@color/white"
                     android:textSize="14sp" />
 
+                <TextView
+                    android:id="@+id/tripId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingStart="3dp"
+                    android:paddingTop="7dp"
+                    android:paddingBottom="@dimen/dimen5dp"
+                    android:text="ROUTE-12"
+                    android:textColor="@color/white"
+                    android:textSize="11sp"
+                    android:visibility="gone" />
+
                 <RelativeLayout
                     android:layout_width="26dp"
                     android:layout_height="26dp"

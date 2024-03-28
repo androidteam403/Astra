@@ -64,6 +64,33 @@
 
 
             </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#096BB4"
+                android:layout_marginStart="@dimen/dimen5dp"
+                android:layout_marginTop="4dp"
+                android:id="@+id/tripIdLayout"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tripId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="@dimen/dimen8dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+
+                    android:text="ROUTE-12"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+
+
+
+            </RelativeLayout>
 
 
             <androidx.recyclerview.widget.RecyclerView
